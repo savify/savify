@@ -1,2 +1,8 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
 .idea
 docs/C4/plantuml-icon-font-sprites
+.DS_Store
