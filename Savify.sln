@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BuildingBlocks.Infrastr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BuildingBlocks.Integration", "src\BuildingBlocks\Integration\App.BuildingBlocks.Integration.csproj", "{3254F9ED-B4B6-48AD-B523-E45B16BBD778}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BuildingBlocks.Tests", "src\BuildingBlocks\Tests\App.BuildingBlocks.Tests.csproj", "{F5B7C9AD-90DA-469E-8C93-2F93DFB521B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{3254F9ED-B4B6-48AD-B523-E45B16BBD778}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3254F9ED-B4B6-48AD-B523-E45B16BBD778}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3254F9ED-B4B6-48AD-B523-E45B16BBD778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5B7C9AD-90DA-469E-8C93-2F93DFB521B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5B7C9AD-90DA-469E-8C93-2F93DFB521B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5B7C9AD-90DA-469E-8C93-2F93DFB521B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5B7C9AD-90DA-469E-8C93-2F93DFB521B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
