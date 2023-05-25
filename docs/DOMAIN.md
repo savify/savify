@@ -42,6 +42,9 @@ Apple or Google authentication.
 During `User Registration` with email/password, `Confirmation Code` should be generated and sent to provided email address.
 `User Registration` should be confirmed using sent `Confirmation Code` (by typing it or by scanning QR code).
 
+`Confirmation Code` has a validity period (e.g. 10mins). After `Confirmation Code` expiration `User` should request new
+one to be able to process `User Registration` process.
+
 When `User` forgot his password, he can reset it. Email with `Confirmation Code` should be sent to `User`, and after 
 confirming password reset action, `User` can set new password.
 
