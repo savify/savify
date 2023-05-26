@@ -2,6 +2,7 @@ using App.API.Modules.UserAccess.Users.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
+using App.Modules.UserAccess.Application.Users.GetUsers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.API.Modules.UserAccess.Users;
@@ -32,5 +33,13 @@ public class UsersController : ControllerBase
         {
             Id = userId
         });
+    }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetList()
+    {
+        var users = await _userAccessModule.ExecuteQueryAsync(new GetUsersQuery());
+
+        return Ok(users);
     }
 }
