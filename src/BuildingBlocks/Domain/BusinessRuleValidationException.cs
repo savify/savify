@@ -4,7 +4,7 @@ public class BusinessRuleValidationException : Exception
 {
     public IBusinessRule BrokenRule { get; }
     
-    public BusinessRuleValidationException(IBusinessRule brokenRule) : base(brokenRule.Message)
+    public BusinessRuleValidationException(IBusinessRule brokenRule, string? message = null) : base(message ?? brokenRule.Message)
     {
         BrokenRule = brokenRule;
     }

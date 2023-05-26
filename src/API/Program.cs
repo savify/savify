@@ -5,7 +5,12 @@ using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Authentication;
+using App.BuildingBlocks.Infrastructure.Data;
+using App.BuildingBlocks.Infrastructure.Emails;
 using App.BuildingBlocks.Infrastructure.Exceptions;
+using App.BuildingBlocks.Infrastructure.Localization;
+using App.Modules.UserAccess.Infrastructure;
+using App.Modules.UserAccess.Infrastructure.Configuration;
 using Destructurama;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
@@ -30,9 +35,9 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
         ConfigureLogger(builder.Configuration);
-        
+
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
 
@@ -40,6 +45,7 @@ public class Program
         
         // ConfigureIdentityServer(builder);
         
+        builder.Services.AddSingleton<IServiceProvider>(provider => provider);
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
         
@@ -66,12 +72,11 @@ public class Program
         // });
         
         // builder.Services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
-        
-        // for EF migrations
-        AddDbContexts(builder);
+
+        builder.Services.AddUserAccessModule(builder.Configuration, _logger);
 
         var app = builder.Build();
-        
+
         app.UseCors(corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
         
         var supportedCultures = new[] { "en", "ua" };
@@ -132,16 +137,5 @@ public class Program
         
         _loggerForApi = _logger.ForContext("Module", "API");
         _loggerForApi.Information("Logger configured");
-    }
-    
-    private static void AddDbContexts(WebApplicationBuilder builder)
-    {
-        // builder.Services.AddDbContext<UserAccessContext>(options =>
-        // {
-        //     options.UseNpgsql(builder.Configuration.GetConnectionString("UserAccess"));
-        //     options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
-        // });
-
-        _loggerForApi.Information("DD contexts added");
     }
 }

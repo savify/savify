@@ -17,20 +17,20 @@ public abstract class Entity
 
         _domainEvents.Add(domainEvent);
     }
-    
-    protected void CheckRule(IBusinessRule rule)
-    {
-        if (rule.IsBroken())
-        {
-            throw new BusinessRuleValidationException(rule);
-        }
-    }
 
     protected void CheckRules(params IBusinessRule[] rules)
     {
         foreach (IBusinessRule rule in rules)
         {
             CheckRule(rule);
+        }
+    }
+    
+    private void CheckRule(IBusinessRule rule)
+    {
+        if (rule.IsBroken())
+        {
+            throw new BusinessRuleValidationException(rule);
         }
     }
 }

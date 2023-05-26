@@ -12,6 +12,10 @@
       <PackageReference Include="IdentityServer4" Version="4.1.2" />
       <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Serilog" Version="2.12.0" />
       <PackageReference Include="Serilog.Enrichers.Sensitive" Version="1.7.2" />
       <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
@@ -21,6 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BuildingBlocks\Infrastructure\App.BuildingBlocks.Infrastructure.csproj" />
+      <ProjectReference Include="..\Modules\UserAccess\Infrastructure\App.Modules.UserAccess.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

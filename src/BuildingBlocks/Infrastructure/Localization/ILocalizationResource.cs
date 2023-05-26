@@ -1,4 +1,4 @@
-namespace App.API.Configuration.Localization;
+namespace App.BuildingBlocks.Infrastructure.Localization;
 
 public interface ILocalizationResource
 {

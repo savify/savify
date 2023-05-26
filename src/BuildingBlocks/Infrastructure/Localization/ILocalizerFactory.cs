@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Localization;
 
-namespace App.API.Configuration.Localization;
+namespace App.BuildingBlocks.Infrastructure.Localization;
 
 public interface ILocalizerFactory : IStringLocalizerFactory
 {

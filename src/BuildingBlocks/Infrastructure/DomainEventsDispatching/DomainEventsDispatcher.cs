@@ -1,17 +1,15 @@
 using App.BuildingBlocks.Application.Events;
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Infrastructure.Serialization;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 
 public class DomainEventsDispatcher : IDomainEventsDispatcher
 {
     private readonly IMediator _mediator;
-
-    private readonly IServiceScope _scope;
 
     private readonly IOutbox _outbox;
 
@@ -21,13 +19,11 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
 
     public DomainEventsDispatcher(
         IMediator mediator,
-        IServiceScope scope,
         IOutbox outbox,
         IDomainEventsAccessor domainEventsAccessor,
         IDomainNotificationsMapper domainNotificationsMapper)
     {
         _mediator = mediator;
-        _scope = scope;
         _outbox = outbox;
         _domainEventsAccessor = domainEventsAccessor;
         _domainNotificationsMapper = domainNotificationsMapper;
@@ -40,16 +36,12 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
         var domainEventNotifications = new List<IDomainEventNotification<IDomainEvent>>();
         foreach (var domainEvent in domainEvents)
         {
-            Type domainEvenNotificationType = typeof(IDomainEventNotification<>);
-            var domainNotificationWithGenericType = domainEvenNotificationType.MakeGenericType(domainEvent.GetType());
+            Type domainNotificationType = _domainNotificationsMapper.GetType(domainEvent.GetType().Name);
 
-            // TODO: changed from Autofac - could not work!!!
-            var domainNotification = ActivatorUtilities.CreateInstance(
-                _scope.ServiceProvider,
-                domainNotificationWithGenericType,
+            var domainNotification = Activator.CreateInstance(
+                domainNotificationType,
                 domainEvent.Id,
-                domainEvent
-            );
+                domainEvent);
 
             if (domainNotification != null)
             {
@@ -67,8 +59,10 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
         foreach (var domainEventNotification in domainEventNotifications)
         {
             var type = _domainNotificationsMapper.GetName(domainEventNotification.GetType());
-            // TODO: changed from Newtonsoft.Json - could not work!!!
-            var data = JsonSerializer.Serialize(domainEventNotification);
+            var data = JsonConvert.SerializeObject(domainEventNotification, new JsonSerializerSettings
+            {
+                ContractResolver = new AllPropertiesContractResolver()
+            });
 
             var outboxMessage = new OutboxMessage(
                 domainEventNotification.Id,

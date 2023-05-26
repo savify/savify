@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Infrastructure.Localization;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
