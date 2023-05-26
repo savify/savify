@@ -17,9 +17,8 @@ public class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDTO>>
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT id, name, email, is_active AS isActive, created_at AS createdAt, role_code AS role " +
-                           "FROM users u " +
-                           "INNER JOIN user_roles r ON u.id = r.user_id";
+        const string sql = "SELECT id, name, email, is_active AS isActive, created_at AS createdAt, roles " +
+                           "FROM user_access.users";
         var users = await connection.QueryAsync<UserDTO>(sql);
 
         return users.AsList();

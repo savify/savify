@@ -8,7 +8,7 @@ public class InboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<Inbo
 {
     public void Configure(EntityTypeBuilder<InboxMessage> builder)
     {
-        builder.ToTable("inbox_messages");
+        builder.ToTable("inbox_messages", "user_access");
         
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");

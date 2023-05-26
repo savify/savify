@@ -39,14 +39,14 @@ public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
                   $"message.id as {nameof(OutboxMessageDto.Id)}, " +
                   $"message.type as {nameof(OutboxMessageDto.Type)}, " +
                   $"message.data as {nameof(OutboxMessageDto.Data)} " +
-                  "FROM outbox_messages AS message " +
+                  "FROM user_access.outbox_messages AS message " +
                   "WHERE message.processed_date IS NULL " +
                   "ORDER BY message.occurred_on";
         
         var messages = await connection.QueryAsync<OutboxMessageDto>(sql);
         var messagesList = messages.AsList();
         
-        const string sqlUpdateProcessedDate = "UPDATE outbox_messages " +
+        const string sqlUpdateProcessedDate = "UPDATE user_access.outbox_messages " +
                                               "SET processed_date = @Date " +
                                               "WHERE id = @Id";
         

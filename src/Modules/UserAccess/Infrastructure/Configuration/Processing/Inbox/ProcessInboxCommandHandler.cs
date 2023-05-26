@@ -29,14 +29,14 @@ public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
                      $"message.id as {nameof(InboxMessageDto.Id)}, " +
                      $"message.type as {nameof(InboxMessageDto.Type)}, " +
                      $"message.data as {nameof(InboxMessageDto.Data)} " +
-                     "FROM inbox_messages AS message " +
+                     "FROM user_access.inbox_messages AS message " +
                      "WHERE message.processed_date IS NULL " +
                      "ORDER BY message.occurred_on";
         
         var messages = await connection.QueryAsync<InboxMessageDto>(sql);
         var messagesList = messages.AsList();
         
-        const string sqlUpdateProcessedDate = "UPDATE inbox_messages " +
+        const string sqlUpdateProcessedDate = "UPDATE user_access.inbox_messages " +
                                               "SET processed_date = @Date " +
                                               "WHERE id = @Id";
         

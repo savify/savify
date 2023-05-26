@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -6,13 +7,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace App.Modules.UserAccess.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeModule : Migration
+    public partial class ModuleInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "user_access");
+
             migrationBuilder.CreateTable(
                 name: "inbox_messages",
+                schema: "user_access",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -28,6 +33,7 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "internal_commands",
+                schema: "user_access",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -44,6 +50,7 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "outbox_messages",
+                schema: "user_access",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -59,6 +66,7 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "users",
+                schema: "user_access",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -66,29 +74,12 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
                     email = table.Column<string>(type: "text", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
-                    password = table.Column<string>(type: "text", nullable: false)
+                    password = table.Column<string>(type: "text", nullable: false),
+                    roles = table.Column<List<string>>(type: "text[]", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "user_roles",
-                columns: table => new
-                {
-                    role_code = table.Column<string>(type: "text", nullable: false),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_user_roles", x => new { x.user_id, x.role_code });
-                    table.ForeignKey(
-                        name: "FK_user_roles_users_user_id",
-                        column: x => x.user_id,
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
         }
 
@@ -96,19 +87,20 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "inbox_messages");
+                name: "inbox_messages",
+                schema: "user_access");
 
             migrationBuilder.DropTable(
-                name: "internal_commands");
+                name: "internal_commands",
+                schema: "user_access");
 
             migrationBuilder.DropTable(
-                name: "outbox_messages");
+                name: "outbox_messages",
+                schema: "user_access");
 
             migrationBuilder.DropTable(
-                name: "user_roles");
-
-            migrationBuilder.DropTable(
-                name: "users");
+                name: "users",
+                schema: "user_access");
         }
     }
 }

@@ -47,7 +47,7 @@ public static class UserAccessModuleCollectionExtensions
         
         OutboxModule.Configure(services, domainNotificationsMap);
         AuthenticationModule.Configure(services, configuration.GetSection("Authentication").Get<AuthenticationConfiguration>());
-        DataAccessModule.Configure(services, configuration.GetConnectionString("UserAccess"));
+        DataAccessModule.Configure(services, configuration.GetConnectionString("Savify"));
         DomainModule.Configure(services);
         EmailModule.Configure(services, configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
         LoggingModule.Configure(services, logger);

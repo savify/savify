@@ -17,7 +17,7 @@ public class UsersCounter : IUsersCounter
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT COUNT(*) FROM users WHERE email = @email";
+        const string sql = "SELECT COUNT(*) FROM user_access.users WHERE email = @email";
 
         return connection.QuerySingle<int>(sql, new {email});
     }

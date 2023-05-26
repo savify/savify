@@ -8,7 +8,7 @@ public class UserDTO
     
     public string Email { get; set; }
     
-    public string Role { get; set; }
+    public string[] Roles { get; set; }
     
     public bool IsActive { get; set; }
     

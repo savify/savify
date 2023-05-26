@@ -20,7 +20,7 @@ internal class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> w
             ContractResolver = new AllPropertiesContractResolver()
         });
 
-        var sql = "INSERT INTO inbox_messages (id, occurred_on, type, data) " +
+        var sql = "INSERT INTO user_access.inbox_messages (id, occurred_on, type, data) " +
                   "VALUES (@Id, @OccurredOn, @Type, @Data)";
 
         await connection.ExecuteScalarAsync(sql, new
