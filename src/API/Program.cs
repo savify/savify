@@ -2,22 +2,17 @@ using App.API.Configuration.Authorization;
 using App.API.Configuration.ExecutionContext;
 using App.API.Configuration.Localization;
 using App.API.Configuration.Validation;
-using App.API.Modules.UserAccess.Authentication;
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
-using App.BuildingBlocks.Infrastructure.Authentication;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
-using App.Modules.UserAccess.Infrastructure.IdentityServer;
 using Destructurama;
 using Hellang.Middleware.ProblemDetails;
-using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Enrichers.Sensitive;
 
@@ -33,6 +28,8 @@ public class Program
     
     public static void Main(string[] args)
     {
+        ConfigureLogger();
+        
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
@@ -46,10 +43,7 @@ public class Program
         builder.Services.AddLocalization();
         builder.Services.AddDistributedMemoryCache();
         builder.Services.AddSingleton<ILocalizerFactory, JsonStringLocalizerFactory>();
-        
-        ConfigureLogger();
-        ConfigureIdentityServer(builder);
-        
+
         builder.Services.AddProblemDetails(x =>
         {
             x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
@@ -59,6 +53,8 @@ public class Program
             x.Map<UserContextIsNotAvailableException>(ex => new UserContextIsNotAvailableProblemDetails(ex));
         });
         
+        builder.Services.AddUserAuthentication(builder.Configuration);
+        builder.Services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
         builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
@@ -67,8 +63,6 @@ public class Program
                 policyBuilder.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
             });
         });
-        
-        builder.Services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
 
@@ -125,42 +119,5 @@ public class Program
         
         _loggerForApi = _logger.ForContext("Module", "API");
         _loggerForApi.Information("Logger configured");
-    }
-    
-    private static void ConfigureIdentityServer(WebApplicationBuilder builder)
-    {
-        var authenticationConfiguration = builder.Configuration.GetSection("Authentication").Get<AuthenticationConfiguration>();
-        
-        builder.Services.AddIdentityServer()
-            .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-            .AddInMemoryApiResources(IdentityServerConfig.GetApis(authenticationConfiguration))
-            .AddInMemoryClients(IdentityServerConfig.GetClients(authenticationConfiguration))
-            .AddInMemoryPersistedGrants()
-            .AddProfileService<ProfileService>()
-            .AddDeveloperSigningCredential();
-
-        builder.Services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
-
-        builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.Authority = authenticationConfiguration.Authority;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = authenticationConfiguration.Authority,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                };
-            });
-
-        builder.Services.AddSingleton<IAuthenticationConfigurationProvider>(
-            _ => new AuthenticationConfigurationProvider(authenticationConfiguration));
     }
 }
