@@ -1,8 +1,10 @@
+using App.API.Configuration.Authorization;
 using App.API.Modules.UserAccess.Users.Requests;
-using App.BuildingBlocks.Application;
+using App.Modules.UserAccess.Application.Authorization;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.Application.Users.GetUsers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.API.Modules.UserAccess.Users;
@@ -12,14 +14,14 @@ namespace App.API.Modules.UserAccess.Users;
 public class UsersController : ControllerBase
 {
     private readonly IUserAccessModule _userAccessModule;
-    private readonly IExecutionContextAccessor _executionContextAccessor;
-    
-    public UsersController(IUserAccessModule userAccessModule, IExecutionContextAccessor executionContextAccessor)
+
+    public UsersController(IUserAccessModule userAccessModule)
     {
         _userAccessModule = userAccessModule;
-        _executionContextAccessor = executionContextAccessor;
     }
     
+    [Authorize]
+    [HasPermission(UserAccessPermissions.ManageUsers)]
     [HttpPost("")]
     public async Task<IActionResult> CreateNew(CreateNewUserRequest request)
     {
@@ -35,7 +37,10 @@ public class UsersController : ControllerBase
         });
     }
 
+    [Authorize]
+    [HasPermission(UserAccessPermissions.ManageUsers)]
     [HttpGet("")]
+    [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList()
     {
         var users = await _userAccessModule.ExecuteQueryAsync(new GetUsersQuery());

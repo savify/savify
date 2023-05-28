@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Exceptions;
 
@@ -16,14 +17,14 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
     {
         get
         {
+            var user = _httpContextAccessor.HttpContext?.User;
+            
             if (_httpContextAccessor
                     .HttpContext?
-                    .User?
-                    .Claims?
-                    .SingleOrDefault(x => x.Type == "sub")?
-                    .Value != null)
+                    .User
+                    .FindFirst(ClaimTypes.NameIdentifier)?.Value != null)
             {
-                return Guid.Parse(_httpContextAccessor.HttpContext.User.Claims.Single(x => x.Type == "sub").Value);
+                return Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             }
 
             throw new UserContextIsNotAvailableException("User context is not available");

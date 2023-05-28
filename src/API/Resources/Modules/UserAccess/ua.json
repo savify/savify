@@ -1,0 +1,6 @@
+{
+  "User with email '{0}' already exists": "Користувач з електронною адресою '{0}' вже існує",
+  "Email address is required to authenticate": "Електронна пошта користувача є необхідною для автентикації",
+  "Password is required to authenticate": "Пароль користувача є необхідним для автентикації",
+  "Invalid refresh token": "Неправильний токен для оновлення"
+}

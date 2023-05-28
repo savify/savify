@@ -38,7 +38,7 @@ internal static class QuartzInitialization
     private static IScheduler CreateScheduler()
     {
         var schedulerConfiguration = new NameValueCollection();
-        schedulerConfiguration.Add("quartz.scheduler.instanceName", "DensMed");
+        schedulerConfiguration.Add("quartz.scheduler.instanceName", "Savify");
         
         ISchedulerFactory schedulerFactory = new StdSchedulerFactory(schedulerConfiguration);
         var scheduler = schedulerFactory.GetScheduler().GetAwaiter().GetResult();

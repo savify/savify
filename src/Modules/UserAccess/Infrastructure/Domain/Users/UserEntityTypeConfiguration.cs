@@ -19,10 +19,13 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
         builder.Property<bool>("_isActive").HasColumnName("is_active");
         builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
 
-        builder.Property<List<UserRole>>("_roles")
-            .HasPostgresArrayConversion(
-                userRole => userRole.Value, 
-                value => UserRole.From(value))
-            .HasColumnName("roles");
+        builder.OwnsMany<UserRole>("_roles", b =>
+        {
+            b.WithOwner().HasForeignKey("UserId");
+            b.ToTable("user_roles");
+            b.Property<UserId>("UserId").HasColumnName("user_id");
+            b.Property<string>("Value").HasColumnName("role_code");
+            b.HasKey("UserId", "Value");
+        });
     }
 }

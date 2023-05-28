@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -74,12 +73,31 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
                     email = table.Column<string>(type: "text", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
-                    password = table.Column<string>(type: "text", nullable: false),
-                    roles = table.Column<List<string>>(type: "text[]", nullable: false)
+                    password = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_roles",
+                schema: "user_access",
+                columns: table => new
+                {
+                    role_code = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_roles", x => new { x.user_id, x.role_code });
+                    table.ForeignKey(
+                        name: "FK_user_roles_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "user_access",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
         }
 
@@ -96,6 +114,10 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "outbox_messages",
+                schema: "user_access");
+
+            migrationBuilder.DropTable(
+                name: "user_roles",
                 schema: "user_access");
 
             migrationBuilder.DropTable(

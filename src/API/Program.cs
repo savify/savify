@@ -1,26 +1,25 @@
+using App.API.Configuration.Authorization;
 using App.API.Configuration.ExecutionContext;
 using App.API.Configuration.Localization;
 using App.API.Configuration.Validation;
+using App.API.Modules.UserAccess.Authentication;
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Authentication;
-using App.BuildingBlocks.Infrastructure.Data;
-using App.BuildingBlocks.Infrastructure.Emails;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
-using App.Modules.UserAccess.Infrastructure;
+using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
+using App.Modules.UserAccess.Infrastructure.IdentityServer;
 using Destructurama;
 using Hellang.Middleware.ProblemDetails;
-using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Validation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Enrichers.Sensitive;
-using Serilog.Sinks.Elasticsearch;
 
 using ILogger = Serilog.ILogger;
 
@@ -36,15 +35,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        ConfigureLogger(builder.Configuration);
-
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-
         builder.Services.AddSwaggerGen();
-        
-        // ConfigureIdentityServer(builder);
-        
+
         builder.Services.AddSingleton<IServiceProvider>(provider => provider);
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
@@ -53,25 +47,28 @@ public class Program
         builder.Services.AddDistributedMemoryCache();
         builder.Services.AddSingleton<ILocalizerFactory, JsonStringLocalizerFactory>();
         
+        ConfigureLogger();
+        ConfigureIdentityServer(builder);
+        
         builder.Services.AddProblemDetails(x =>
         {
             x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
             x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
             x.Map<RepositoryException>(ex => new RepositoryExceptionProblemDetails(ex));
-            // x.Map<AuthenticationException>(ex => new AuthenticationExceptionProblemDetails(ex));
+            x.Map<AuthenticationException>(ex => new AuthenticationExceptionProblemDetails(ex));
             x.Map<UserContextIsNotAvailableException>(ex => new UserContextIsNotAvailableProblemDetails(ex));
         });
         
-        // builder.Services.AddAuthorization(options =>
-        // {
-        //     options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
-        //     {
-        //         policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
-        //         policyBuilder.AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme);
-        //     });
-        // });
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+            {
+                policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
+                policyBuilder.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+            });
+        });
         
-        // builder.Services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
+        builder.Services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
 
@@ -87,15 +84,10 @@ public class Program
             .SetDefaultCulture(supportedCultures[0])
             .AddSupportedCultures(supportedCultures)
             .AddSupportedUICultures(supportedCultures);
-        
+
         app.UseRequestLocalization(localizationOptions);
-        
-        // var container = app.Services.GetAutofacRoot();
-        // InitializeModules(container, app.Configuration);
-        
         app.UseMiddleware<CorrelationMiddleware>();
-        
-        // app.UseIdentityServer();
+        app.UseIdentityServer();
         app.UseProblemDetails();
         
         if (!app.Environment.IsDevelopment())
@@ -112,13 +104,14 @@ public class Program
         
         app.UseHttpsRedirection();
         app.UseRouting();
+        app.UseAuthentication();
         app.UseAuthorization();
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         
         app.Run();
     }
     
-    private static void ConfigureLogger(IConfigurationRoot configuration)
+    private static void ConfigureLogger()
     {
         string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
 
@@ -128,14 +121,46 @@ public class Program
             .Destructure.UsingAttributes()
             .Enrich.WithProperty("Environment", environment!)
             .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
-            // .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"])){
-            //     AutoRegisterTemplate = true,
-            //     AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-            //     IndexFormat = $"{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
-            // })
             .CreateLogger();
         
         _loggerForApi = _logger.ForContext("Module", "API");
         _loggerForApi.Information("Logger configured");
+    }
+    
+    private static void ConfigureIdentityServer(WebApplicationBuilder builder)
+    {
+        var authenticationConfiguration = builder.Configuration.GetSection("Authentication").Get<AuthenticationConfiguration>();
+        
+        builder.Services.AddIdentityServer()
+            .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+            .AddInMemoryApiResources(IdentityServerConfig.GetApis(authenticationConfiguration))
+            .AddInMemoryClients(IdentityServerConfig.GetClients(authenticationConfiguration))
+            .AddInMemoryPersistedGrants()
+            .AddProfileService<ProfileService>()
+            .AddDeveloperSigningCredential();
+
+        builder.Services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.Authority = authenticationConfiguration.Authority;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = authenticationConfiguration.Authority,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                };
+            });
+
+        builder.Services.AddSingleton<IAuthenticationConfigurationProvider>(
+            _ => new AuthenticationConfigurationProvider(authenticationConfiguration));
     }
 }

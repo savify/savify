@@ -11,7 +11,7 @@ public class IdentityServerConfig
     {
         return new List<ApiResource>
         {
-            // new(configuration.ApiName, "Savify API")
+            new(configuration.ApiName, "Savify API")
         };
     }
     
