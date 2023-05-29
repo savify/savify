@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.Infrastructure", "src\Modules\UserAccess\Infrastructure\App.Modules.UserAccess.Infrastructure.csproj", "{CA101363-2177-4B85-9DC8-C6F7CC85931E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.IntegrationEvents", "src\Modules\UserAccess\IntegrationEvents\App.Modules.UserAccess.IntegrationEvents.csproj", "{A2703147-DB6F-44EA-A84F-AF6433C7EE64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{CA101363-2177-4B85-9DC8-C6F7CC85931E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA101363-2177-4B85-9DC8-C6F7CC85931E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA101363-2177-4B85-9DC8-C6F7CC85931E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2703147-DB6F-44EA-A84F-AF6433C7EE64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2703147-DB6F-44EA-A84F-AF6433C7EE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2703147-DB6F-44EA-A84F-AF6433C7EE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2703147-DB6F-44EA-A84F-AF6433C7EE64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
