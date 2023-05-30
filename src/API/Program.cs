@@ -64,10 +64,7 @@ public class Program
             });
         });
  
-        if (!builder.Environment.IsEnvironment("Testing"))
-        {
-            builder.Services.AddUserAccessModule(builder.Configuration, _logger);            
-        }
+        builder.Services.AddUserAccessModule(builder.Configuration, _logger);
 
         var app = builder.Build();
 

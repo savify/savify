@@ -20,6 +20,7 @@
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Domain.Users.UserTests.CreateUser_WithUniqueEmail_IsSuccessful&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.Users.CreateNewUserTests.CreateNewUserCommand_Test&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.Users.CreateNewUserTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=ASPNETCORE_005FENVIRONMENT/@EntryIndexedValue">Testing</s:String>

@@ -1,14 +1,12 @@
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Emails;
 using App.BuildingBlocks.Tests.IntegrationTests;
-using App.Modules.UserAccess.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NSubstitute;
-using Serilog;
 
 namespace App.Modules.UserAccess.IntegrationTests.SeedWork;
 
@@ -32,13 +30,11 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
             services.RemoveAll<IExecutionContextAccessor>();
             services.AddSingleton<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid()));
 
-            // services.RemoveAll<>();
-            services.AddTestUserAccessModule(
-                ConnectionString,
-                Substitute.For<ILogger>(),
-                Substitute.For<IEmailSender>(),
-                Substitute.For<IEmailMessageFactory>(),
-                null);
+            services.RemoveAll<IEmailSender>();
+            services.AddSingleton<IEmailSender>(_ => Substitute.For<IEmailSender>());
+            
+            services.RemoveAll<IEmailMessageFactory>();
+            services.AddSingleton<IEmailMessageFactory>(_ => Substitute.For<IEmailMessageFactory>());
         });
     }
 }

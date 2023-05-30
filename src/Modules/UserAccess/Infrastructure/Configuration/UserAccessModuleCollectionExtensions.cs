@@ -46,30 +46,6 @@ public static class UserAccessModuleCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddTestUserAccessModule(
-        this IServiceCollection services,
-        string connectionString,
-        ILogger logger,
-        IEmailSender emailSender,
-        IEmailMessageFactory emailMessageFactory,
-        IEventBus? eventBus
-        )
-    {
-        ConfigureCompositionRoot(
-            services,
-            connectionString,
-            new AuthenticationConfiguration(),
-            new EmailConfiguration(),
-            logger,
-            emailSender,
-            emailMessageFactory,
-            eventBus);
-        
-        services.AddScoped<IUserAccessModule, UserAccessModule>();
-        
-        return services;
-    }
-    
     private static void ConfigureCompositionRoot(
         this IServiceCollection services,
         string connectionString,
