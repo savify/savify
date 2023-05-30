@@ -4,7 +4,7 @@ using Microsoft.Extensions.Localization;
 
 namespace App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 
-public class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensCommand, TokensResult>
+internal class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensCommand, TokensResult>
 {
     private readonly IAuthenticationClient _client;
     private readonly IStringLocalizer _localizer;

@@ -4,7 +4,7 @@ using App.Modules.UserAccess.Domain.Users;
 
 namespace App.Modules.UserAccess.Application.Users.CreateNewUser;
 
-public class CreateNewUserCommandHandler : ICommandHandler<CreateNewUserCommand, Guid>
+internal class CreateNewUserCommandHandler : ICommandHandler<CreateNewUserCommand, Guid>
 {
     private readonly IUserRepository _userRepository;
 

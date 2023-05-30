@@ -4,7 +4,7 @@ using Microsoft.Extensions.Localization;
 
 namespace App.Modules.UserAccess.Application.Authentication.AuthenticateUser;
 
-public class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUserCommand, TokensResult>
+internal class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUserCommand, TokensResult>
 {
     private readonly IAuthenticationClient _client;
     private readonly IStringLocalizer _localizer;

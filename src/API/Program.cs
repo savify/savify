@@ -63,8 +63,11 @@ public class Program
                 policyBuilder.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
             });
         });
-
-        builder.Services.AddUserAccessModule(builder.Configuration, _logger);
+ 
+        if (!builder.Environment.IsEnvironment("Testing"))
+        {
+            builder.Services.AddUserAccessModule(builder.Configuration, _logger);            
+        }
 
         var app = builder.Build();
 

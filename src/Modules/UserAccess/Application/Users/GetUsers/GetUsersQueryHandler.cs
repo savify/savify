@@ -4,7 +4,7 @@ using Dapper;
 
 namespace App.Modules.UserAccess.Application.Users.GetUsers;
 
-public class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDTO>>
+internal class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDTO>>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

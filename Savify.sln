@@ -20,6 +20,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.Infr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.IntegrationEvents", "src\Modules\UserAccess\IntegrationEvents\App.Modules.UserAccess.IntegrationEvents.csproj", "{A2703147-DB6F-44EA-A84F-AF6433C7EE64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.ArchTests", "src\Modules\UserAccess\Tests\ArchTests\App.Modules.UserAccess.ArchTests.csproj", "{6EB89093-D1D6-4930-ABF2-3C5530338FC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.UnitTests", "src\Modules\UserAccess\Tests\UnitTests\App.Modules.UserAccess.UnitTests.csproj", "{A0CC105C-2927-43B7-AA71-52636709BD3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.IntegrationTests", "src\Modules\UserAccess\Tests\IntegrationTests\App.Modules.UserAccess.IntegrationTests.csproj", "{1F452E65-B0F6-4C60-BCDD-F6EB36179C8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +72,17 @@ Global
 		{A2703147-DB6F-44EA-A84F-AF6433C7EE64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2703147-DB6F-44EA-A84F-AF6433C7EE64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2703147-DB6F-44EA-A84F-AF6433C7EE64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB89093-D1D6-4930-ABF2-3C5530338FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB89093-D1D6-4930-ABF2-3C5530338FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB89093-D1D6-4930-ABF2-3C5530338FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB89093-D1D6-4930-ABF2-3C5530338FC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0CC105C-2927-43B7-AA71-52636709BD3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0CC105C-2927-43B7-AA71-52636709BD3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0CC105C-2927-43B7-AA71-52636709BD3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0CC105C-2927-43B7-AA71-52636709BD3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F452E65-B0F6-4C60-BCDD-F6EB36179C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F452E65-B0F6-4C60-BCDD-F6EB36179C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F452E65-B0F6-4C60-BCDD-F6EB36179C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F452E65-B0F6-4C60-BCDD-F6EB36179C8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

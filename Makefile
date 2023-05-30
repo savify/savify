@@ -9,3 +9,8 @@ db-update: user-access-db-update
 
 user-access-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext
+
+test-db-update: user-access-test-db-update
+
+user-access-test-db-update:
+	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext -- --environment Testing

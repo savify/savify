@@ -7,6 +7,7 @@ namespace App.Modules.UserAccess.Infrastructure.IdentityServer;
 public class AuthenticationClient : IAuthenticationClient
 {
     private readonly HttpClient _client;
+
     private readonly AuthenticationConfiguration _configuration;
 
     public AuthenticationClient(IAuthenticationConfigurationProvider authenticationConfigurationProvider)

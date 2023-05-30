@@ -6,7 +6,7 @@ using App.Modules.UserAccess.Application.Contracts;
 
 namespace App.Modules.UserAccess.Application.Authentication.Authenticate;
 
-public class AuthenticateCommandHandler : ICommandHandler<AuthenticateCommand, AuthenticationResult>
+internal class AuthenticateCommandHandler : ICommandHandler<AuthenticateCommand, AuthenticationResult>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

@@ -15,9 +15,4 @@ public class Outbox : IOutbox
     {
         _userAccessContext.OutboxMessages?.Add(message);
     }
-
-    public Task Save()
-    {
-        return Task.CompletedTask;
-    }
 }

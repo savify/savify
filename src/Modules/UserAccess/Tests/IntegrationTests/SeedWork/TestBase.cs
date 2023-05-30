@@ -1,0 +1,63 @@
+using System.Data;
+using App.API;
+using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
+using Dapper;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
+
+namespace App.Modules.UserAccess.IntegrationTests.SeedWork;
+
+public class TestBase
+{
+    protected IUserAccessModule UserAccessModule { get; private set; }
+    
+    protected string ConnectionString { get; private set; }
+
+    [OneTimeSetUp]
+    public void Init()
+    {
+        var webApplicationFactory = new CustomWebApplicationFactory<Program>();
+        
+        using var scope = webApplicationFactory.Services.CreateScope();
+        UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
+        ConnectionString = webApplicationFactory.ConnectionString;
+    }
+
+    [SetUp]
+    public async Task BeforeEachTest()
+    {
+        await using var sqlConnection = new NpgsqlConnection(ConnectionString);
+        await ClearDatabase(sqlConnection);
+    }
+    
+    protected async Task<List<OutboxMessageDto>> GetOutboxMessages()
+    {
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection);
+
+        return messages;
+    }
+    
+    protected async Task<T> GetLastOutboxMessage<T>() where T : class, INotification
+    {
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection);
+
+        return OutboxMessagesAccessor.Deserialize<T>(messages.Last());
+    }
+    
+    private static async Task ClearDatabase(IDbConnection connection)
+    {
+        const string sql = "DELETE FROM user_access.internal_commands; " +
+                           "DELETE FROM user_access.outbox_messages; " +
+                           "DELETE FROM user_access.roles_permissions; " +
+                           "DELETE FROM user_access.users; " +
+                           "DELETE FROM user_access.user_roles; " +
+                           "DELETE FROM user_access.permissions; " +
+                           "DELETE FROM user_access.inbox_messages; ";
+
+        await connection.ExecuteScalarAsync(sql);
+    }
+}
