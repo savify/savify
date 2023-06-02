@@ -1,0 +1,6 @@
+{
+  "User with email '{0}' already exists": "User with email '{0}' already exists",
+  "Email address is required to authenticate": "Email address is required to authenticate",
+  "Password is required to authenticate": "Password is required to authenticate",
+  "Invalid refresh token": "Invalid refresh token"
+}
