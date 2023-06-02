@@ -27,18 +27,13 @@ public class User : Entity, IAggregateRoot
         UserRole role,
         IUsersCounter usersCounter)
     {
-        return new User(email, password, name, role, usersCounter);
-    }
-
-    private User(
-        string email,
-        string password,
-        string name,
-        UserRole role,
-        IUsersCounter usersCounter)
-    {
         CheckRules(new UserEmailMustBeUniqueRule(usersCounter, email));
         
+        return new User(email, password, name, role);
+    }
+
+    private User(string email, string password, string name, UserRole role)
+    {
         Id = new UserId(Guid.NewGuid());
         _email = email;
         _password = password;
