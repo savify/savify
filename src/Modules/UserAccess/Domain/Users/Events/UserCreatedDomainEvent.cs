@@ -11,16 +11,20 @@ public class UserCreatedDomainEvent : DomainEventBase
     public string Name { get; }
 
     public UserRole UserRole { get; }
+    
+    public Language PreferredLanguage { get; }
 
     public UserCreatedDomainEvent(
         UserId userId,
         string email,
         string name,
-        UserRole userRole)
+        UserRole userRole,
+        Language preferredLanguage)
     {
         UserId = userId;
         Email = email;
         Name = name;
         UserRole = userRole;
+        PreferredLanguage = preferredLanguage;
     }
 }

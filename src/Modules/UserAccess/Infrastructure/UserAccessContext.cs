@@ -1,7 +1,9 @@
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.Modules.UserAccess.Domain.UserRegistrations;
 using App.Modules.UserAccess.Domain.Users;
+using App.Modules.UserAccess.Infrastructure.Domain.UserRegistrations;
 using App.Modules.UserAccess.Infrastructure.Domain.Users;
 using App.Modules.UserAccess.Infrastructure.Inbox;
 using App.Modules.UserAccess.Infrastructure.InternalCommands;
@@ -14,6 +16,8 @@ public class UserAccessContext : DbContext
 {
     public DbSet<User>? Users { get; set; }
     
+    public DbSet<UserRegistration>? UserRegistrations { get; set; }
+
     public DbSet<OutboxMessage>? OutboxMessages { get; set; }
     
     public DbSet<InboxMessage>? InboxMessages { get; set; }
@@ -27,6 +31,7 @@ public class UserAccessContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new UserRegistrationEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());

@@ -113,6 +113,44 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
                     b.ToTable("internal_commands", "user_access");
                 });
 
+            modelBuilder.Entity("App.Modules.UserAccess.Domain.UserRegistrations.UserRegistration", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("_confirmedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("confirmed_at");
+
+                    b.Property<DateTime>("_createdAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("_email")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<string>("_name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("_password")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("password");
+
+                    b.Property<DateTime>("_validTill")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("valid_till");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user_registrations", "user_access");
+                });
+
             modelBuilder.Entity("App.Modules.UserAccess.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -147,8 +185,89 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
                     b.ToTable("users", "user_access");
                 });
 
+            modelBuilder.Entity("App.Modules.UserAccess.Domain.UserRegistrations.UserRegistration", b =>
+                {
+                    b.OwnsOne("App.Modules.UserAccess.Domain.UserRegistrations.ConfirmationCode", "_confirmationCode", b1 =>
+                        {
+                            b1.Property<Guid>("UserRegistrationId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("confirmation_code");
+
+                            b1.HasKey("UserRegistrationId");
+
+                            b1.ToTable("user_registrations", "user_access");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserRegistrationId");
+                        });
+
+                    b.OwnsOne("App.Modules.UserAccess.Domain.Users.Language", "_preferredLanguage", b1 =>
+                        {
+                            b1.Property<Guid>("UserRegistrationId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("preferred_language");
+
+                            b1.HasKey("UserRegistrationId");
+
+                            b1.ToTable("user_registrations", "user_access");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserRegistrationId");
+                        });
+
+                    b.OwnsOne("App.Modules.UserAccess.Domain.UserRegistrations.UserRegistrationStatus", "_status", b1 =>
+                        {
+                            b1.Property<Guid>("UserRegistrationId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("status");
+
+                            b1.HasKey("UserRegistrationId");
+
+                            b1.ToTable("user_registrations", "user_access");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserRegistrationId");
+                        });
+
+                    b.Navigation("_confirmationCode");
+
+                    b.Navigation("_preferredLanguage");
+
+                    b.Navigation("_status");
+                });
+
             modelBuilder.Entity("App.Modules.UserAccess.Domain.Users.User", b =>
                 {
+                    b.OwnsOne("App.Modules.UserAccess.Domain.Users.Language", "_preferredLanguage", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("preferred_language");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("users", "user_access");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsMany("App.Modules.UserAccess.Domain.Users.UserRole", "_roles", b1 =>
                         {
                             b1.Property<Guid>("UserId")
@@ -166,6 +285,8 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
+
+                    b.Navigation("_preferredLanguage");
 
                     b.Navigation("_roles");
                 });

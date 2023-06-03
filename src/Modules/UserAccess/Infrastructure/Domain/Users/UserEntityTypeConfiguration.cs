@@ -27,5 +27,10 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             b.Property<string>("Value").HasColumnName("role_code");
             b.HasKey("UserId", "Value");
         });
+        
+        builder.OwnsOne<Language>("_preferredLanguage", b =>
+        {
+            b.Property(x => x.Value).HasColumnName("preferred_language");
+        });
     }
 }

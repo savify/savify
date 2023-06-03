@@ -18,7 +18,7 @@ public abstract class Entity
         _domainEvents.Add(domainEvent);
     }
 
-    protected void CheckRules(params IBusinessRule[] rules)
+    protected static void CheckRules(params IBusinessRule[] rules)
     {
         foreach (IBusinessRule rule in rules)
         {
@@ -26,7 +26,7 @@ public abstract class Entity
         }
     }
     
-    private void CheckRule(IBusinessRule rule)
+    private static void CheckRule(IBusinessRule rule)
     {
         if (rule.IsBroken())
         {

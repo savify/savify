@@ -1,9 +1,9 @@
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.Application.Users.GetUsers;
-using App.Modules.UserAccess.IntegrationTests.SeedWork;
 
 namespace App.Modules.UserAccess.IntegrationTests.Users;
 
+[TestFixture]
 public class CreateNewUserTests : TestBase
 {
     [Test]

@@ -4,7 +4,7 @@ using Dapper;
 
 namespace App.Modules.UserAccess.Application.Users.GetUsers;
 
-internal class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDTO>>
+internal class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDto>>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
@@ -13,7 +13,7 @@ internal class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDTO>
         _sqlConnectionFactory = sqlConnectionFactory;
     }
 
-    public async Task<List<UserDTO>> Handle(GetUsersQuery query, CancellationToken cancellationToken)
+    public async Task<List<UserDto>> Handle(GetUsersQuery query, CancellationToken cancellationToken)
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
@@ -21,7 +21,7 @@ internal class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDTO>
                            "FROM user_access.users u " +
                            "INNER JOIN user_access.user_roles ur on u.id = ur.user_id " +
                            "GROUP BY id";
-        var users = await connection.QueryAsync<UserDTO>(sql);
+        var users = await connection.QueryAsync<UserDto>(sql);
 
         return users.AsList();
     }
