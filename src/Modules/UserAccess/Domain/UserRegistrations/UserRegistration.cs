@@ -1,7 +1,6 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.UserAccess.Domain.UserRegistrations.Events;
 using App.Modules.UserAccess.Domain.UserRegistrations.Rules;
-using App.Modules.UserAccess.Domain.UserRegistrations.Specifications;
 using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Domain.Users.Rules;
 
@@ -52,11 +51,11 @@ public class UserRegistration : Entity, IAggregateRoot
         return User.CreateFromUserRegistration(Id, _email, _password, _name, _preferredLanguage);
     }
     
-    public void Confirm(ConfirmationCode confirmationCode, ConfirmationDateSpecification specification)
+    public void Confirm(ConfirmationCode confirmationCode)
     {
         CheckRules(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
         
-        if (!specification.IsSatisfiedBy(_validTill))
+        if (!(_validTill > DateTime.UtcNow))
         {
             Expire();
         }

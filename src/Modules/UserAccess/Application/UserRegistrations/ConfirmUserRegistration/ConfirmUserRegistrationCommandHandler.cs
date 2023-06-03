@@ -1,7 +1,6 @@
 using App.Modules.UserAccess.Application.Configuration.Commands;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Domain.UserRegistrations;
-using App.Modules.UserAccess.Domain.UserRegistrations.Specifications;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 
@@ -19,7 +18,7 @@ public class ConfirmUserRegistrationCommandHandler : ICommandHandler<ConfirmUser
         var userRegistration = await _userRegistrationRepository.GetByIdAsync(
             new UserRegistrationId(command.UserRegistrationId));
         
-        userRegistration.Confirm(ConfirmationCode.From(command.ConfirmationCode), new ConfirmationDateSpecification());
+        userRegistration.Confirm(ConfirmationCode.From(command.ConfirmationCode));
         
         return Result.Success;
     }
