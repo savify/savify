@@ -4,7 +4,9 @@ using App.BuildingBlocks.Infrastructure.Authentication;
 using App.BuildingBlocks.Infrastructure.Emails;
 using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
+using App.Modules.UserAccess.Domain.UserRegistrations.Events;
 using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Infrastructure.Configuration.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.DataAccess;
@@ -60,6 +62,7 @@ public static class UserAccessModuleCollectionExtensions
         var domainNotificationsMap = new BiDictionary<string, Type>();
         
         domainNotificationsMap.Add(nameof(UserCreatedDomainEvent), typeof(UserCreatedNotification));
+        domainNotificationsMap.Add(nameof(NewUserRegisteredDomainEvent), typeof(NewUserRegisteredNotification));
         
         OutboxModule.Configure(services, domainNotificationsMap);
         AuthenticationModule.Configure(services, authenticationConfiguration);

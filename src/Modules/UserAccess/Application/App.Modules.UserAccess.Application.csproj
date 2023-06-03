@@ -8,7 +8,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlocks\Application\App.BuildingBlocks.Application.csproj" />
+      <ProjectReference Include="..\..\..\BuildingBlocks\Integration\App.BuildingBlocks.Integration.csproj" />
       <ProjectReference Include="..\Domain\App.Modules.UserAccess.Domain.csproj" />
+      <ProjectReference Include="..\IntegrationEvents\App.Modules.UserAccess.IntegrationEvents.csproj" />
     </ItemGroup>
 
     <ItemGroup>
