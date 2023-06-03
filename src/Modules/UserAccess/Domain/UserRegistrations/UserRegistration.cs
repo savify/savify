@@ -9,6 +9,8 @@ namespace App.Modules.UserAccess.Domain.UserRegistrations;
 
 public class UserRegistration : Entity, IAggregateRoot
 {
+    private static readonly TimeSpan ValidTimeSpan = new(0, 30, 0);
+    
     public UserRegistrationId Id { get; private set; }
 
     private string _email;
@@ -24,10 +26,10 @@ public class UserRegistration : Entity, IAggregateRoot
     private Language _preferredLanguage;
 
     private DateTime _createdAt;
+    
+    private DateTime _validTill;
 
     private DateTime? _confirmedAt = null;
-
-    private DateTime? _renewedAt = null;
 
     public static UserRegistration RegisterNewUser(
         string email,
@@ -54,12 +56,9 @@ public class UserRegistration : Entity, IAggregateRoot
     {
         CheckRules(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
         
-        if (!specification.IsSatisfiedBy(_createdAt))
+        if (!specification.IsSatisfiedBy(_validTill))
         {
-            if (_renewedAt == null || !specification.IsSatisfiedBy((DateTime) _renewedAt))
-            {
-                Expire();   
-            }
+            Expire();
         }
         
         CheckRules(
@@ -79,7 +78,7 @@ public class UserRegistration : Entity, IAggregateRoot
         
         _status = UserRegistrationStatus.WaitingForConfirmation;
         _confirmationCode = confirmationCode;
-        _renewedAt = DateTime.UtcNow;
+        _validTill = DateTime.UtcNow.Add(ValidTimeSpan);
         
         AddDomainEvent(new UserRegistrationRenewedDomainEvent(
             Id,
@@ -116,6 +115,7 @@ public class UserRegistration : Entity, IAggregateRoot
         _confirmationCode = confirmationCode;
         _status = UserRegistrationStatus.WaitingForConfirmation;
         _createdAt = DateTime.UtcNow;
+        _validTill = DateTime.UtcNow.Add(ValidTimeSpan);
         
         AddDomainEvent(new NewUserRegisteredDomainEvent(Id, _email, _name, preferredLanguage, _confirmationCode));
     }

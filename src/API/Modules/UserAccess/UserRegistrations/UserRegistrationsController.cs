@@ -2,6 +2,7 @@ using System.Globalization;
 using App.API.Modules.UserAccess.UserRegistrations.Requests;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
+using App.Modules.UserAccess.Application.UserRegistrations.GetUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 using App.Modules.UserAccess.Application.UserRegistrations.RenewUserRegistration;
 using Microsoft.AspNetCore.Authorization;
@@ -35,6 +36,17 @@ public class UserRegistrationsController : ControllerBase
         {
             Id = userRegistrationId
         });
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{userRegistrationId}")]
+    [ProducesResponseType(typeof(UserRegistrationDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUserRegistration(Guid userRegistrationId)
+    {
+        var userRegistration =
+            await _userAccessModule.ExecuteQueryAsync(new GetUserRegistrationQuery(userRegistrationId));
+
+        return Ok(userRegistration);
     }
     
     [AllowAnonymous]

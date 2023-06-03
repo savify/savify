@@ -40,7 +40,7 @@ public class UsersController : ControllerBase
     [Authorize]
     [HasPermission(UserAccessPermissions.ManageUsers)]
     [HttpGet("")]
-    [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList()
     {
         var users = await _userAccessModule.ExecuteQueryAsync(new GetUsersQuery());

@@ -1,6 +1,6 @@
 namespace App.Modules.UserAccess.Application.Users.GetUsers;
 
-public class UserDTO
+public class UserDto
 {
     public Guid Id { get; set; }
     

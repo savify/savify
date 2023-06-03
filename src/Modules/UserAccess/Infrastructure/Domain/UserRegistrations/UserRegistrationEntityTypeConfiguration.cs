@@ -18,9 +18,9 @@ public class UserRegistrationEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.Property<string>("_password").HasColumnName("password");
         builder.Property<string>("_name").HasColumnName("name");
         builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
+        builder.Property<DateTime>("_validTill").HasColumnName("valid_till");
         builder.Property<DateTime?>("_confirmedAt").HasColumnName("confirmed_at");
-        builder.Property<DateTime?>("_renewedAt").HasColumnName("renewed_at");
-        
+
         builder.OwnsOne<ConfirmationCode>("_confirmationCode", b =>
         {
             b.Property(x => x.Value).HasColumnName("confirmation_code");
