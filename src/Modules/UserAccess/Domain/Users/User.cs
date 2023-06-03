@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Domain;
+using App.Modules.UserAccess.Domain.UserRegistrations;
 using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Domain.Users.Rules;
 
@@ -31,12 +32,17 @@ public class User : Entity, IAggregateRoot
     {
         CheckRules(new UserEmailMustBeUniqueRule(usersCounter, email));
         
-        return new User(email, password, name, role, Language.From("en"));
+        return new User(new UserId(Guid.NewGuid()), email, password, name, role, Language.From("en"));
     }
 
-    private User(string email, string password, string name, UserRole role, Language preferredLanguage)
+    internal static User CreateFromUserRegistration(UserRegistrationId id, string email, string password, string name, Language preferredLanguage)
     {
-        Id = new UserId(Guid.NewGuid());
+        return new User(new UserId(id.Value), email, password, name, UserRole.User, preferredLanguage);
+    }
+
+    private User(UserId id, string email, string password, string name, UserRole role, Language preferredLanguage)
+    {
+        Id = id;
         _email = email;
         _password = password;
         _name = name;

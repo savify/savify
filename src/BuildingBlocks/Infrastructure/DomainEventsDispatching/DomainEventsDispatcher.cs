@@ -36,12 +36,16 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
         var domainEventNotifications = new List<IDomainEventNotification<IDomainEvent>>();
         foreach (var domainEvent in domainEvents)
         {
-            Type domainNotificationType = _domainNotificationsMapper.GetType(domainEvent.GetType().Name);
-
-            var domainNotification = Activator.CreateInstance(
-                domainNotificationType,
-                domainEvent.Id,
-                domainEvent);
+            Type? domainNotificationType = _domainNotificationsMapper.GetType(domainEvent.GetType().Name);
+            object? domainNotification = null;
+            
+            if (domainNotificationType != null)
+            {
+                domainNotification = Activator.CreateInstance(
+                    domainNotificationType,
+                    domainEvent.Id,
+                    domainEvent);   
+            }
 
             if (domainNotification != null)
             {

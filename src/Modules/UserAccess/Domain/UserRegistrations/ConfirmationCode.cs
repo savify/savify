@@ -14,4 +14,9 @@ public record ConfirmationCode(string Value)
      
         return new ConfirmationCode(value);
     }
+
+    public static ConfirmationCode From(string value)
+    {
+        return new ConfirmationCode(value);
+    }
 }

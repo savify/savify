@@ -1,6 +1,7 @@
 using System.Globalization;
 using App.API.Modules.UserAccess.UserRegistrations.Requests;
 using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,5 +34,17 @@ public class UserRegistrationsController : ControllerBase
         {
             Id = userRegistrationId
         });
+    }
+    
+    [AllowAnonymous]
+    [HttpPost("{userRegistrationId}/confirm")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> ConfirmUserRegistration(Guid userRegistrationId, ConfirmUserRegistrationRequest request)
+    {
+        await _userAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(
+            userRegistrationId,
+            request.ConfirmationCode));
+
+        return Accepted();
     }
 }

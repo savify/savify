@@ -42,6 +42,13 @@ public class UserRegistration : Entity, IAggregateRoot
 
         return new UserRegistration(email, password, name, preferredLanguage, confirmationCode);
     }
+
+    public User CreateUser()
+    {
+        CheckRules(new UserRegistrationMustBeConfirmedRule(_status));
+        
+        return User.CreateFromUserRegistration(Id, _email, _password, _name, _preferredLanguage);
+    }
     
     public void Confirm(ConfirmationCode confirmationCode, ConfirmationDateSpecification specification)
     {

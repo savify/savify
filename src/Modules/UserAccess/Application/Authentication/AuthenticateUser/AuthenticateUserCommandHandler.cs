@@ -7,6 +7,7 @@ namespace App.Modules.UserAccess.Application.Authentication.AuthenticateUser;
 internal class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUserCommand, TokensResult>
 {
     private readonly IAuthenticationClient _client;
+    
     private readonly IStringLocalizer _localizer;
 
     public AuthenticateUserCommandHandler(IAuthenticationClient client, IStringLocalizer localizer)
