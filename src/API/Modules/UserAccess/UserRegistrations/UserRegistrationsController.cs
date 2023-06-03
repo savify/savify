@@ -3,6 +3,7 @@ using App.API.Modules.UserAccess.UserRegistrations.Requests;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
+using App.Modules.UserAccess.Application.UserRegistrations.RenewUserRegistration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,13 +38,23 @@ public class UserRegistrationsController : ControllerBase
     }
     
     [AllowAnonymous]
-    [HttpPost("{userRegistrationId}/confirm")]
+    [HttpPatch("{userRegistrationId}/confirm")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> ConfirmUserRegistration(Guid userRegistrationId, ConfirmUserRegistrationRequest request)
     {
         await _userAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(
             userRegistrationId,
             request.ConfirmationCode));
+
+        return Accepted();
+    }
+    
+    [AllowAnonymous]
+    [HttpPatch("{userRegistrationId}/renew")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> RenewUserRegistration(Guid userRegistrationId)
+    {
+        await _userAccessModule.ExecuteCommandAsync(new RenewUserRegistrationCommand(userRegistrationId));
 
         return Accepted();
     }
