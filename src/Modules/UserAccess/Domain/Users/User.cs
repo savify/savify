@@ -15,6 +15,8 @@ public class User : Entity, IAggregateRoot
     private string _name;
 
     private List<UserRole> _roles;
+    
+    private Language _preferredLanguage;
 
     private bool _isActive;
 
@@ -29,22 +31,23 @@ public class User : Entity, IAggregateRoot
     {
         CheckRules(new UserEmailMustBeUniqueRule(usersCounter, email));
         
-        return new User(email, password, name, role);
+        return new User(email, password, name, role, Language.From("en"));
     }
 
-    private User(string email, string password, string name, UserRole role)
+    private User(string email, string password, string name, UserRole role, Language preferredLanguage)
     {
         Id = new UserId(Guid.NewGuid());
         _email = email;
         _password = password;
         _name = name;
+        _preferredLanguage = preferredLanguage;
         _isActive = true;
         _createdAt = DateTime.UtcNow;
 
         _roles = new List<UserRole>();
         _roles.Add(role);
 
-        AddDomainEvent(new UserCreatedDomainEvent(Id, email, name, role));
+        AddDomainEvent(new UserCreatedDomainEvent(Id, _email, _name, role, _preferredLanguage));
     }
     
     private User() {}
