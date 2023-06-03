@@ -20,6 +20,6 @@ public class GetUserRegistrationQueryHandler : IQueryHandler<GetUserRegistration
         string sql = "SELECT id, email, name, status, valid_till as validTill " +
                      "FROM user_access.user_registrations WHERE id = @UserRegistrationId";
 
-        return await connection.QuerySingleAsync<UserRegistrationDto>(sql, new { query.UserRegistrationId });
+        return await connection.QuerySingleOrDefaultAsync<UserRegistrationDto>(sql, new { query.UserRegistrationId });
     }
 }

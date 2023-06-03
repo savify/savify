@@ -10,5 +10,5 @@ public class UserRegistrationDto
     
     public string Status { get; set; }
     
-    public string ValidTill { get; set; }
+    public DateTime ValidTill { get; set; }
 }
