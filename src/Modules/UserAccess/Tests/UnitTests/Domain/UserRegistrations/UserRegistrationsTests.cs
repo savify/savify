@@ -4,6 +4,7 @@ using App.Modules.UserAccess.Domain.UserRegistrations.Rules;
 using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Domain.Users.Rules;
+using App.Modules.UserAccess.Domain;
 
 namespace App.Modules.UserAccess.UnitTests.Domain.UserRegistrations;
 

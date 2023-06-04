@@ -55,7 +55,7 @@ public class UserRegistration : Entity, IAggregateRoot
     {
         CheckRules(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
         
-        if (!(_validTill > DateTime.UtcNow))
+        if (!(_validTill > DateTime.Now))
         {
             Expire();
         }
@@ -66,7 +66,7 @@ public class UserRegistration : Entity, IAggregateRoot
         );
         
         _status = UserRegistrationStatus.Confirmed;
-        _confirmedAt = DateTime.UtcNow;
+        _confirmedAt = DateTime.Now;
         
         AddDomainEvent(new UserRegistrationConfirmedDomainEvent(Id, _email));
     }
@@ -77,7 +77,7 @@ public class UserRegistration : Entity, IAggregateRoot
         
         _status = UserRegistrationStatus.WaitingForConfirmation;
         _confirmationCode = confirmationCode;
-        _validTill = DateTime.UtcNow.Add(ValidTimeSpan);
+        _validTill = DateTime.Now.Add(ValidTimeSpan);
         
         AddDomainEvent(new UserRegistrationRenewedDomainEvent(
             Id,
@@ -113,8 +113,8 @@ public class UserRegistration : Entity, IAggregateRoot
         _preferredLanguage = preferredLanguage;
         _confirmationCode = confirmationCode;
         _status = UserRegistrationStatus.WaitingForConfirmation;
-        _createdAt = DateTime.UtcNow;
-        _validTill = DateTime.UtcNow.Add(ValidTimeSpan);
+        _createdAt = DateTime.Now;
+        _validTill = DateTime.Now.Add(ValidTimeSpan);
         
         AddDomainEvent(new NewUserRegisteredDomainEvent(Id, _email, _name, preferredLanguage, _confirmationCode));
     }

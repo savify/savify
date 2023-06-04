@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace App.Modules.UserAccess.Domain.UserRegistrations;
+namespace App.Modules.UserAccess.Domain;
 
 public record ConfirmationCode(string Value)
 {

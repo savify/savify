@@ -32,7 +32,7 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
         
             if (internalCommand != null)
             {
-                internalCommand.ProcessedDate = DateTime.UtcNow;
+                internalCommand.ProcessedDate = DateTime.Now;
             }
         }
         

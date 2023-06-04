@@ -48,7 +48,7 @@ public class User : Entity, IAggregateRoot
         _name = name;
         _preferredLanguage = preferredLanguage;
         _isActive = true;
-        _createdAt = DateTime.UtcNow;
+        _createdAt = DateTime.Now;
 
         _roles = new List<UserRole>();
         _roles.Add(role);

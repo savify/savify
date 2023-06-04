@@ -1,4 +1,4 @@
-using App.Modules.UserAccess.Domain.UserRegistrations;
+using App.Modules.UserAccess.Domain;
 
 namespace App.Modules.UserAccess.UnitTests.Domain.UserRegistrations;
 

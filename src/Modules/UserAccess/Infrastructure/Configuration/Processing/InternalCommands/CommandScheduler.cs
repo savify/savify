@@ -31,7 +31,7 @@ public class CommandScheduler : ICommandScheduler
         {
             ContractResolver = new AllPropertiesContractResolver()
         });
-        internalCommand.EnqueueDate = DateTime.UtcNow;
+        internalCommand.EnqueueDate = DateTime.Now;
 
         return internalCommand;
     }
