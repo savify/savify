@@ -41,7 +41,7 @@ public static class UserAccessModuleCollectionExtensions
             configuration.GetSection("Authentication").Get<AuthenticationConfiguration>(),
             configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>(),
             moduleLogger);
-
+        
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
         

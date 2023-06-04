@@ -1,7 +1,5 @@
-using App.API.Modules.UserAccess.Authentication;
+using System.Text;
 using App.BuildingBlocks.Infrastructure.Authentication;
-using App.Modules.UserAccess.Infrastructure.IdentityServer;
-using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,33 +12,19 @@ public static class ApiCollectionExtensions
         IConfiguration configuration)
     {
         var authenticationConfiguration = configuration.GetSection("Authentication").Get<AuthenticationConfiguration>();
-        
-        services.AddIdentityServer()
-            .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-            .AddInMemoryApiResources(IdentityServerConfig.GetApis(authenticationConfiguration))
-            .AddInMemoryClients(IdentityServerConfig.GetClients(authenticationConfiguration))
-            .AddInMemoryPersistedGrants()
-            .AddProfileService<ProfileService>()
-            .AddDeveloperSigningCredential();
 
-        services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
-
-        services.AddAuthentication(options =>
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.Authority = authenticationConfiguration.Authority;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters()
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = authenticationConfiguration.Authority,
-                    ValidateAudience = false,
+                    ValidateAudience = true,
                     ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = authenticationConfiguration.Issuer,
+                    ValidAudience = authenticationConfiguration.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationConfiguration.IssuerSigningKey))
                 };
             });
 
