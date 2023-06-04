@@ -23,6 +23,7 @@ public class UsersController : ControllerBase
     [Authorize]
     [HasPermission(UserAccessPermissions.ManageUsers)]
     [HttpPost("")]
+    [ProducesResponseType( StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateNew(CreateNewUserRequest request)
     {
         var userId = await _userAccessModule.ExecuteCommandAsync(new CreateNewUserCommand(
