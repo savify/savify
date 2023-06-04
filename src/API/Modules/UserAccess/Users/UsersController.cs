@@ -1,9 +1,11 @@
 using App.API.Configuration.Authorization;
 using App.API.Modules.UserAccess.Users.Requests;
+using App.BuildingBlocks.Application;
 using App.Modules.UserAccess.Application.Authorization;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.Application.Users.GetUsers;
+using App.Modules.UserAccess.Application.Users.SetNewPassword;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,11 +17,14 @@ public class UsersController : ControllerBase
 {
     private readonly IUserAccessModule _userAccessModule;
 
-    public UsersController(IUserAccessModule userAccessModule)
+    private readonly IExecutionContextAccessor _executionContextAccessor;
+
+    public UsersController(IUserAccessModule userAccessModule, IExecutionContextAccessor executionContextAccessor)
     {
         _userAccessModule = userAccessModule;
+        _executionContextAccessor = executionContextAccessor;
     }
-    
+
     [Authorize]
     [HasPermission(UserAccessPermissions.ManageUsers)]
     [HttpPost("")]
@@ -36,6 +41,17 @@ public class UsersController : ControllerBase
         {
             Id = userId
         });
+    }
+
+    [Authorize]
+    [NoPermissionRequired]
+    [HttpPatch("passwords")]
+    [ProducesResponseType( StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> SetNewPassword(SetNewPasswordRequest request)
+    {
+        await _userAccessModule.ExecuteCommandAsync(new SetNewPasswordCommand(_executionContextAccessor.UserId, request.Password));
+
+        return Accepted();
     }
 
     [Authorize]
