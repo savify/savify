@@ -6,32 +6,38 @@ namespace App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 
 internal class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensCommand, TokensResult>
 {
-    private readonly IAuthenticationClient _client;
     private readonly IStringLocalizer _localizer;
+    
+    private readonly IAuthenticationTokenGenerator _tokenGenerator;
 
-    public RefreshTokensCommandHandler(IAuthenticationClient client, IStringLocalizer localizer)
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
+
+    public RefreshTokensCommandHandler(IStringLocalizer localizer, IAuthenticationTokenGenerator tokenGenerator, IRefreshTokenRepository refreshTokenRepository)
     {
-        _client = client;
         _localizer = localizer;
+        _tokenGenerator = tokenGenerator;
+        _refreshTokenRepository = refreshTokenRepository;
     }
 
     public async Task<TokensResult> Handle(RefreshTokensCommand command, CancellationToken cancellationToken)
     {
-        var response = await _client.RefreshTokens(command.RefreshToken);
+        var refreshToken = await _refreshTokenRepository.GetByUserIdAsync(command.UserId);
 
-        if (response.IsError && response.Error == "invalid_grant")
+        if (refreshToken == null)
         {
             throw new AuthenticationException(_localizer["Invalid refresh token"]);
         }
-        
-        if (response.IsError)
+
+        if (refreshToken.ExpiresAt < DateTime.Now)
         {
-            throw new AuthenticationException(_localizer[response.ErrorDescription]);
+            throw new AuthenticationException(_localizer["Refresh token expired"]);
         }
 
-        return new TokensResult(
-            response.AccessToken,
-            response.RefreshToken,
-            response.ExpiresIn);
+        var accessToken = _tokenGenerator.GenerateAccessToken(command.UserId);
+        var newRefreshToken = _tokenGenerator.GenerateRefreshToken(refreshToken.Value);
+
+        await _refreshTokenRepository.UpdateAsync(command.UserId, newRefreshToken.Value, newRefreshToken.Expires);
+
+        return new TokensResult(accessToken.Value, refreshToken.Value);
     }
 }

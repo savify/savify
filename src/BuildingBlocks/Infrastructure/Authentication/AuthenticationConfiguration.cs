@@ -2,9 +2,13 @@ namespace App.BuildingBlocks.Infrastructure.Authentication;
 
 public class AuthenticationConfiguration
 {
-    public string Authority { get; set; }
-    public string Address { get; set; }
-    public string ClientId { get; set; }
-    public string ClientSecret { get; set; }
-    public string ApiName { get; set; }
+    public string Issuer { get; set; }
+    
+    public string Audience { get; set; }
+    
+    public string IssuerSigningKey { get; set; }
+    
+    public int AccessTokenTtl { get; set; }
+    
+    public int RefreshTokenTtl { get; set; }
 }

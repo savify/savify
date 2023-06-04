@@ -1,6 +1,4 @@
-using System.Security.Claims;
-
-namespace App.Modules.UserAccess.Application.Authentication.Authenticate;
+namespace App.Modules.UserAccess.Application.Authentication.AuthenticateUser;
 
 public class UserDto
 {
@@ -13,6 +11,4 @@ public class UserDto
     public string Password { get; set; }
     
     public bool IsActive { get; set; }
-    
-    public List<Claim> Claims { get; set; }
 }

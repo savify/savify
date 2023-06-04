@@ -34,7 +34,7 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(typeof(TokensResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> RefreshAccessToken(RefreshAccessTokenRequest request)
     {
-        var tokens = await _userAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(request.RefreshToken));
+        var tokens = await _userAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(request.UserId, request.RefreshToken));
 
         return Ok(tokens);
     }

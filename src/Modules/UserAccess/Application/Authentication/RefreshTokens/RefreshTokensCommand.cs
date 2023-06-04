@@ -6,10 +6,14 @@ namespace App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 public class RefreshTokensCommand : CommandBase<TokensResult>
 {
     [LogMasked]
+    public Guid UserId { get; }
+    
+    [LogMasked]
     public string RefreshToken { get; }
 
-    public RefreshTokensCommand(string refreshToken)
+    public RefreshTokensCommand(Guid userId, string refreshToken)
     {
+        UserId = userId;
         RefreshToken = refreshToken;
     }
 }

@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using App.API.Configuration.Authorization;
 using App.API.Configuration.ExecutionContext;
 using App.API.Configuration.Localization;
@@ -68,6 +69,7 @@ public class Program
 
         var app = builder.Build();
 
+        // TODO: change for production
         app.UseCors(corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
         
         var supportedCultures = new[] { "en", "ua" };
@@ -81,7 +83,6 @@ public class Program
 
         app.UseRequestLocalization(localizationOptions);
         app.UseMiddleware<CorrelationMiddleware>();
-        app.UseIdentityServer();
         app.UseProblemDetails();
         
         if (!app.Environment.IsDevelopment())
@@ -98,8 +99,11 @@ public class Program
         
         app.UseHttpsRedirection();
         app.UseRouting();
+        
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         app.UseAuthentication();
         app.UseAuthorization();
+        
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         
         app.Run();

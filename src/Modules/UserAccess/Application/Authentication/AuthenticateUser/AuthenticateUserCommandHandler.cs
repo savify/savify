@@ -1,33 +1,61 @@
+using App.BuildingBlocks.Application.Data;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Application.Configuration.Commands;
+using Dapper;
 using Microsoft.Extensions.Localization;
 
 namespace App.Modules.UserAccess.Application.Authentication.AuthenticateUser;
 
 internal class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUserCommand, TokensResult>
 {
-    private readonly IAuthenticationClient _client;
-    
+    private readonly ISqlConnectionFactory _sqlConnectionFactory;
+
+    private readonly IAuthenticationTokenGenerator _tokenGenerator;
+
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
+
     private readonly IStringLocalizer _localizer;
 
-    public AuthenticateUserCommandHandler(IAuthenticationClient client, IStringLocalizer localizer)
+    public AuthenticateUserCommandHandler(
+        ISqlConnectionFactory sqlConnectionFactory,
+        IAuthenticationTokenGenerator tokenGenerator,
+        IRefreshTokenRepository refreshTokenRepository,
+        IStringLocalizer localizer)
     {
-        _client = client;
+        _sqlConnectionFactory = sqlConnectionFactory;
+        _tokenGenerator = tokenGenerator;
+        _refreshTokenRepository = refreshTokenRepository;
         _localizer = localizer;
     }
 
     public async Task<TokensResult> Handle(AuthenticateUserCommand command, CancellationToken cancellationToken)
     {
-        var response = await _client.RequestTokens(command.Email, command.Password);
+        var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        if (response.IsError)
+        const string sql = "SELECT id, name, email, password, is_active AS isActive FROM user_access.users WHERE email = @email";
+
+        var user = await connection.QuerySingleOrDefaultAsync<UserDto>(sql, new { command.Email });
+
+        if (user == null)
         {
-            throw new AuthenticationException(_localizer[response.ErrorDescription]);
+            throw new AuthenticationException(_localizer["Incorrect email or password"]);
+        }
+        
+        if (!user.IsActive)
+        {
+            throw new AuthenticationException(_localizer["User is not active"]);
+        }
+        
+        if (!PasswordHasher.IsPasswordValid(user.Password, command.Password))
+        {
+            throw new AuthenticationException(_localizer["Incorrect email or password"]);
         }
 
-        return new TokensResult(
-            response.AccessToken,
-            response.RefreshToken,
-            response.ExpiresIn);
+        var accessToken = _tokenGenerator.GenerateAccessToken(user.Id);
+        var refreshToken = _tokenGenerator.GenerateRefreshToken();
+
+        await _refreshTokenRepository.UpdateAsync(user.Id, refreshToken.Value, refreshToken.Expires);
+        
+        return new TokensResult(accessToken.Value, refreshToken.Value);;
     }
 }
