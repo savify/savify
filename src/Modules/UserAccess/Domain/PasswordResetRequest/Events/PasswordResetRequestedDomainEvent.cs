@@ -8,12 +8,12 @@ public class PasswordResetRequestedDomainEvent : DomainEventBase
     
     public ConfirmationCode ConfirmationCode { get; }
     
-    public DateTime ExpiresAt { get; }
+    public DateTime ValidTill { get; }
 
-    public PasswordResetRequestedDomainEvent(string userEmail, ConfirmationCode confirmationCode, DateTime expiresAt)
+    public PasswordResetRequestedDomainEvent(string userEmail, ConfirmationCode confirmationCode, DateTime validTill)
     {
         UserEmail = userEmail;
         ConfirmationCode = confirmationCode;
-        ExpiresAt = expiresAt;
+        ValidTill = validTill;
     }
 }

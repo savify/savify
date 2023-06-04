@@ -19,7 +19,7 @@ public class PasswordResetRequest : Entity, IAggregateRoot
 
     private DateTime _createdAt;
 
-    private DateTime _expiresAt;
+    private DateTime _validTill;
 
     private DateTime? _confirmedAt = null;
 
@@ -34,7 +34,7 @@ public class PasswordResetRequest : Entity, IAggregateRoot
     {
         CheckRules(
             new PasswordResetRequestCannotBeConfirmedMoreThanOnceRule(_status),
-            new PasswordResetRequestCannotBeConfirmedAfterExpirationRule(_expiresAt),
+            new PasswordResetRequestCannotBeConfirmedAfterExpirationRule(_validTill),
             new ConfirmationCodeMustMatchRule(confirmationCode, _confirmationCode));
         
         _status = PasswordResetRequestStatus.Confirmed;
@@ -51,9 +51,9 @@ public class PasswordResetRequest : Entity, IAggregateRoot
         _confirmationCode = confirmationCode;
         _status = PasswordResetRequestStatus.WaitingForConfirmation;
         _createdAt = DateTime.UtcNow;
-        _expiresAt = DateTime.UtcNow.Add(ValidTimeSpan);
+        _validTill = DateTime.UtcNow.Add(ValidTimeSpan);
         
-        AddDomainEvent(new PasswordResetRequestedDomainEvent(_userEmail, _confirmationCode, _expiresAt));
+        AddDomainEvent(new PasswordResetRequestedDomainEvent(_userEmail, _confirmationCode, _validTill));
     }
 
     private PasswordResetRequest() {}
