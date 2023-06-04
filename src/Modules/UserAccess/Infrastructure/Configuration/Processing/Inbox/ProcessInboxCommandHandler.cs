@@ -62,7 +62,7 @@ public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
 
             await connection.ExecuteAsync(sqlUpdateProcessedDate, new
             {
-                Date = DateTime.Now,
+                Date = DateTime.UtcNow,
                 message.Id
             });
             

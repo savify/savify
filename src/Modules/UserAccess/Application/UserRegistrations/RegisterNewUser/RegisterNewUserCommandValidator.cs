@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 
-public class RegisterNewUserCommandValidator : Validator<RegisterNewUserCommand>
+internal class RegisterNewUserCommandValidator : Validator<RegisterNewUserCommand>
 {
     public RegisterNewUserCommandValidator()
     {

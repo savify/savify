@@ -38,7 +38,7 @@ public class PasswordResetRequest : Entity, IAggregateRoot
             new ConfirmationCodeMustMatchRule(confirmationCode, _confirmationCode));
         
         _status = PasswordResetRequestStatus.Confirmed;
-        _confirmedAt = DateTime.Now;
+        _confirmedAt = DateTime.UtcNow;
         
         AddDomainEvent(new PasswordResetRequestConfirmedDomainEvent(Id));
     }
@@ -50,8 +50,8 @@ public class PasswordResetRequest : Entity, IAggregateRoot
         _userEmail = userEmail;
         _confirmationCode = confirmationCode;
         _status = PasswordResetRequestStatus.WaitingForConfirmation;
-        _createdAt = DateTime.Now;
-        _expiresAt = DateTime.Now.Add(ValidTimeSpan);
+        _createdAt = DateTime.UtcNow;
+        _expiresAt = DateTime.UtcNow.Add(ValidTimeSpan);
         
         AddDomainEvent(new PasswordResetRequestedDomainEvent(_userEmail, _confirmationCode, _expiresAt));
     }

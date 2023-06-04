@@ -52,7 +52,7 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
                     "WHERE id = @Id",
                     new
                     {
-                        NowDate = DateTime.Now,
+                        NowDate = DateTime.UtcNow,
                         Error = result.FinalException.ToString(),
                         internalCommand.Id
                     });

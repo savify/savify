@@ -11,7 +11,7 @@ public class PasswordResetRequestCannotBeConfirmedAfterExpirationRule : IBusines
         _expiresAt = expiresAt;
     }
 
-    public bool IsBroken() => _expiresAt < DateTime.Now;
+    public bool IsBroken() => _expiresAt < DateTime.UtcNow;
 
     public string MessageTemplate => "Password reset request cannot be confirmed because it was already expired";
 }

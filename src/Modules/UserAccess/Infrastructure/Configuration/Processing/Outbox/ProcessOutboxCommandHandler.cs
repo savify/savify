@@ -69,7 +69,7 @@ public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
 
             await connection.ExecuteAsync(sqlUpdateProcessedDate, new
             {
-                Date = DateTime.Now,
+                Date = DateTime.UtcNow,
                 message.Id
             });
             

@@ -53,20 +53,14 @@ public class UserRegistration : Entity, IAggregateRoot
     
     public void Confirm(ConfirmationCode confirmationCode)
     {
-        CheckRules(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
-        
-        if (!(_validTill > DateTime.Now))
-        {
-            Expire();
-        }
-        
         CheckRules(
-            new UserRegistrationCannotBeConfirmedAfterExpirationRule(_status),
+            new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status),
+            new UserRegistrationCannotBeConfirmedAfterExpirationRule(_validTill),
             new ConfirmationCodeMustMatchRule(confirmationCode, _confirmationCode)
         );
         
         _status = UserRegistrationStatus.Confirmed;
-        _confirmedAt = DateTime.Now;
+        _confirmedAt = DateTime.UtcNow;
         
         AddDomainEvent(new UserRegistrationConfirmedDomainEvent(Id, _email));
     }
@@ -77,7 +71,7 @@ public class UserRegistration : Entity, IAggregateRoot
         
         _status = UserRegistrationStatus.WaitingForConfirmation;
         _confirmationCode = confirmationCode;
-        _validTill = DateTime.Now.Add(ValidTimeSpan);
+        _validTill = DateTime.UtcNow.Add(ValidTimeSpan);
         
         AddDomainEvent(new UserRegistrationRenewedDomainEvent(
             Id,
@@ -85,18 +79,6 @@ public class UserRegistration : Entity, IAggregateRoot
             _name,
             _preferredLanguage,
             _confirmationCode));
-    }
-    
-    public void Expire()
-    {
-        CheckRules(
-            new UserRegistrationCannotBeExpiredMoreThanOnceRule(_status),
-            new UserRegistrationCannotBeExpiredWhenAlreadyConfirmedRule(_status)
-        );
-        
-        _status = UserRegistrationStatus.Expired;
-        
-        AddDomainEvent(new UserRegistrationExpiredDomainEvent(Id));
     }
 
     private UserRegistration(
@@ -113,8 +95,8 @@ public class UserRegistration : Entity, IAggregateRoot
         _preferredLanguage = preferredLanguage;
         _confirmationCode = confirmationCode;
         _status = UserRegistrationStatus.WaitingForConfirmation;
-        _createdAt = DateTime.Now;
-        _validTill = DateTime.Now.Add(ValidTimeSpan);
+        _createdAt = DateTime.UtcNow;
+        _validTill = DateTime.UtcNow.Add(ValidTimeSpan);
         
         AddDomainEvent(new NewUserRegisteredDomainEvent(Id, _email, _name, preferredLanguage, _confirmationCode));
     }

@@ -30,6 +30,6 @@ public class RegisterNewUserTests : TestBase
         Assert.That(userRegistration.Email, Is.EqualTo(UserRegistrationSampleData.Email));
         Assert.That(userRegistration.Name, Is.EqualTo(UserRegistrationSampleData.Name));
         Assert.That(userRegistration.Status, Is.EqualTo(UserRegistrationStatus.WaitingForConfirmation.Value));
-        Assert.That(userRegistration.ValidTill, Is.GreaterThan(DateTime.Now));
+        Assert.That(userRegistration.ValidTill, Is.GreaterThan(DateTime.UtcNow));
     }
 }

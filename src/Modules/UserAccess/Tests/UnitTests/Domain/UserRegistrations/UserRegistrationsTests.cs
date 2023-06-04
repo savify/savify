@@ -93,29 +93,7 @@ public class UserRegistrationsTests : UnitTestBase
             userRegistration.Confirm(ConfirmationCode.From("ABC123"));
         });
     }
-    
-    [Test]
-    public void ConfirmingUserRegistration_WhenIsExpired_CannotBeConfirmed()
-    {
-        var usersCounter = Substitute.For<IUsersCounter>();
-        usersCounter.CountUsersWithEmail("test@email.com").Returns(0);
 
-        var userRegistration = UserRegistration.RegisterNewUser(
-            "test@email.com",
-            "password",
-            "Name",
-            Language.From("en"),
-            ConfirmationCode.From("ABC123"),
-            usersCounter);
-        
-        userRegistration.Expire();
-
-        AssertBrokenRule<UserRegistrationCannotBeConfirmedAfterExpirationRule>(() =>
-        {
-            userRegistration.Confirm(ConfirmationCode.From("ABC123"));
-        });
-    }
-    
     [Test]
     public void ConfirmingUserRegistration_WithInvalidConfirmationCode_WillFail()
     {
@@ -135,71 +113,7 @@ public class UserRegistrationsTests : UnitTestBase
             userRegistration.Confirm(ConfirmationCode.From("INVALID"));
         });
     }
-    
-    [Test]
-    public void ExpiringUserRegistration_WhenWaitingForConfirmation_IsSuccessful()
-    {
-        var usersCounter = Substitute.For<IUsersCounter>();
-        usersCounter.CountUsersWithEmail("test@email.com").Returns(0);
 
-        var userRegistration = UserRegistration.RegisterNewUser(
-            "test@email.com",
-            "password",
-            "Name",
-            Language.From("en"),
-            ConfirmationCode.From("ABC123"),
-            usersCounter);
-        
-        userRegistration.Expire();
-
-        var userRegistrationExpiredDomainEvent = AssertPublishedDomainEvent<UserRegistrationExpiredDomainEvent>(userRegistration);
-        Assert.That(userRegistrationExpiredDomainEvent.UserRegistrationId, Is.EqualTo(userRegistration.Id));
-    }
-    
-    [Test]
-    public void UserRegistration_WhenIsExpired_CannotBeExpiredAgain()
-    {
-        var usersCounter = Substitute.For<IUsersCounter>();
-        usersCounter.CountUsersWithEmail("test@email.com").Returns(0);
-
-        var userRegistration = UserRegistration.RegisterNewUser(
-            "test@email.com",
-            "password",
-            "Name",
-            Language.From("en"),
-            ConfirmationCode.From("ABC123"),
-            usersCounter);
-        
-        userRegistration.Expire();
-        
-        AssertBrokenRule<UserRegistrationCannotBeExpiredMoreThanOnceRule>(() =>
-        {
-            userRegistration.Expire();
-        });
-    }
-    
-    [Test]
-    public void UserRegistration_WhenIsConfirmed_CannotBeExpired()
-    {
-        var usersCounter = Substitute.For<IUsersCounter>();
-        usersCounter.CountUsersWithEmail("test@email.com").Returns(0);
-
-        var userRegistration = UserRegistration.RegisterNewUser(
-            "test@email.com",
-            "password",
-            "Name",
-            Language.From("en"),
-            ConfirmationCode.From("ABC123"),
-            usersCounter);
-        
-        userRegistration.Confirm(ConfirmationCode.From("ABC123"));
-        
-        AssertBrokenRule<UserRegistrationCannotBeExpiredWhenAlreadyConfirmedRule>(() =>
-        {
-            userRegistration.Expire();
-        });
-    }
-    
     [Test]
     public void RenewingUserRegistration_WhenNotConfirmed_IsSuccessful()
     {

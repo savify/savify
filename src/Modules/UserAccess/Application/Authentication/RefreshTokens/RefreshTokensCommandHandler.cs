@@ -28,7 +28,7 @@ internal class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensComman
             throw new AuthenticationException(_localizer["Invalid refresh token"]);
         }
 
-        if (refreshToken.ExpiresAt < DateTime.Now)
+        if (refreshToken.ExpiresAt < DateTime.UtcNow)
         {
             throw new AuthenticationException(_localizer["Refresh token expired"]);
         }
