@@ -5,7 +5,7 @@ using App.Modules.UserAccess.Domain.Users;
 
 namespace App.Modules.UserAccess.Application.Users.SetNewPassword;
 
-public class SetNewPasswordCommandHandler : ICommandHandler<SetNewPasswordCommand, Result>
+internal class SetNewPasswordCommandHandler : ICommandHandler<SetNewPasswordCommand, Result>
 {
     private readonly IUserRepository _userRepository;
 

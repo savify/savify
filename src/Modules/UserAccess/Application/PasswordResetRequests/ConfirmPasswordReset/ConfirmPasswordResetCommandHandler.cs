@@ -6,7 +6,7 @@ using App.Modules.UserAccess.Domain.Users;
 
 namespace App.Modules.UserAccess.Application.PasswordResetRequests.ConfirmPasswordReset;
 
-public class ConfirmPasswordResetCommandHandler : ICommandHandler<ConfirmPasswordResetCommand, string>
+internal class ConfirmPasswordResetCommandHandler : ICommandHandler<ConfirmPasswordResetCommand, string>
 {
     private readonly IPasswordResetRequestRepository _passwordResetRequestRepository;
 
