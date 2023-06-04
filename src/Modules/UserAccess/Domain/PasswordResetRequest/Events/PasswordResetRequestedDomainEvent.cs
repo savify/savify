@@ -1,5 +1,4 @@
 using App.BuildingBlocks.Domain;
-using App.Modules.UserAccess.Domain.Users;
 
 namespace App.Modules.UserAccess.Domain.PasswordResetRequest.Events;
 

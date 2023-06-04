@@ -21,11 +21,26 @@ public class PasswordResetRequest : Entity, IAggregateRoot
 
     private DateTime _expiresAt;
 
+    private DateTime? _confirmedAt = null;
+
     public static PasswordResetRequest Create(string userEmail, ConfirmationCode confirmationCode, IUsersCounter usersCounter)
     {
         CheckRules(new UserWithGivenEmailMustExistRule(userEmail, usersCounter));
         
         return new PasswordResetRequest(userEmail, confirmationCode);
+    }
+
+    public void Confirm(ConfirmationCode confirmationCode)
+    {
+        CheckRules(
+            new PasswordResetRequestCannotBeConfirmedMoreThanOnceRule(_status),
+            new PasswordResetRequestCannotBeConfirmedAfterExpirationRule(_expiresAt),
+            new ConfirmationCodeMustMatchRule(confirmationCode, _confirmationCode));
+        
+        _status = PasswordResetRequestStatus.Confirmed;
+        _confirmedAt = DateTime.Now;
+        
+        AddDomainEvent(new PasswordResetRequestConfirmedDomainEvent(Id));
     }
     
     private PasswordResetRequest(string userEmail, ConfirmationCode confirmationCode)
