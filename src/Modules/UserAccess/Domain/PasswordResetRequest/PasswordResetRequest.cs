@@ -42,7 +42,12 @@ public class PasswordResetRequest : Entity, IAggregateRoot
         
         AddDomainEvent(new PasswordResetRequestConfirmedDomainEvent(Id));
     }
-    
+
+    public UserId GetUserId(IUserDetailsProvider userDetailsProvider)
+    {
+        return userDetailsProvider.ProvideUserIdByEmail(_userEmail);
+    }
+
     private PasswordResetRequest(string userEmail, ConfirmationCode confirmationCode)
     {
         Id = new PasswordResetRequestId(Guid.NewGuid());
