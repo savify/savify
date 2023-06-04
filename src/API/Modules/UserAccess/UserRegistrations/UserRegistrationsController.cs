@@ -1,5 +1,7 @@
 using System.Globalization;
 using App.API.Modules.UserAccess.UserRegistrations.Requests;
+using App.Modules.UserAccess.Application.Authentication;
+using App.Modules.UserAccess.Application.Authentication.AuthenticateUserByUserId;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.GetUserRegistration;
@@ -51,14 +53,16 @@ public class UserRegistrationsController : ControllerBase
     
     [AllowAnonymous]
     [HttpPatch("{userRegistrationId}/confirm")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(TokensResult), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> ConfirmUserRegistration(Guid userRegistrationId, ConfirmUserRegistrationRequest request)
     {
         await _userAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(
             userRegistrationId,
             request.ConfirmationCode));
 
-        return Accepted();
+        var tokens = await _userAccessModule.ExecuteCommandAsync(new AuthenticateUserByUserIdCommand(userRegistrationId));
+        
+        return Accepted(tokens);
     }
     
     [AllowAnonymous]
