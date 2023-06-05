@@ -7,9 +7,14 @@ internal class RefreshTokensCommandValidator : Validator<RefreshTokensCommand>
 {
     public RefreshTokensCommandValidator()
     {
+        RuleFor(c => c.UserId)
+            .NotNull()
+            .NotEmpty()
+            .WithMessage("Please provide user ID");
+        
         RuleFor(c => c.RefreshToken)
             .NotNull()
             .NotEmpty()
-            .WithMessage("This field is required");
+            .WithMessage("Please provide refresh token");
     }
 }
