@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.BuildingBlocks.Domain;
 using App.Modules.UserAccess.Domain.Users;
 using Dapper;
 
@@ -21,6 +22,11 @@ public class UserDetailsProvider : IUserDetailsProvider
         
         var userId = connection.QuerySingleOrDefault<Guid>(sql, new { email });
 
+        if (userId.Equals(Guid.Empty))
+        {
+            throw new DomainException($"User with email '{email}' does not exist");
+        }
+        
         return new UserId(userId);
     }
 }

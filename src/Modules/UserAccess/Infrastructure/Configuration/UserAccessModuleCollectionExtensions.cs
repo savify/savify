@@ -4,10 +4,12 @@ using App.BuildingBlocks.Infrastructure.Authentication;
 using App.BuildingBlocks.Infrastructure.Emails;
 using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
 using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 using App.Modules.UserAccess.Application.UserRegistrations.RenewUserRegistration;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
+using App.Modules.UserAccess.Domain.PasswordResetRequest.Events;
 using App.Modules.UserAccess.Domain.UserRegistrations.Events;
 using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Infrastructure.Configuration.Authentication;
@@ -67,6 +69,7 @@ public static class UserAccessModuleCollectionExtensions
         domainNotificationsMap.Add(nameof(NewUserRegisteredDomainEvent), typeof(NewUserRegisteredNotification));
         domainNotificationsMap.Add(nameof(UserRegistrationConfirmedDomainEvent), typeof(UserRegistrationConfirmedNotification));
         domainNotificationsMap.Add(nameof(UserRegistrationRenewedDomainEvent), typeof(UserRegistrationRenewedNotification));
+        domainNotificationsMap.Add(nameof(PasswordResetRequestedDomainEvent), typeof(PasswordResetRequestedNotification));
         
         OutboxModule.Configure(services, domainNotificationsMap);
         AuthenticationModule.Configure(services, authenticationConfiguration);

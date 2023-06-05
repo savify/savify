@@ -31,6 +31,11 @@
       &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.UserRegistrations.ConfirmUserRegistrationTests&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.UserRegistrations.RenewUserRegistrationTests&lt;/TestId&gt;
       &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Domain.PasswordResetRequests.PasswordResetRequestTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.Users.UserDetailsProviderTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.PasswordResetRequests.RequestPasswordResetTests.RequestPasswordResetCommand_Test&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.PasswordResetRequests.RequestPasswordResetTests.RequestPasswordReset_ForNonExistingEmail_WillFail&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.PasswordResetRequests.RequestPasswordResetTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.PasswordResetRequests.ConfirmPasswordResetTests&lt;/TestId&gt;
     &lt;/TestAncestor&gt;
     &lt;Project Location="/Users/avozniuk/Projects/savify/src/Modules/UserAccess/Tests/ArchTests" Presentation="&amp;lt;App.Modules.UserAccess.ArchTests&amp;gt;" /&gt;
   &lt;/Or&gt;
