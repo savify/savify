@@ -2,44 +2,8 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;
   &lt;Assembly Path="/Users/avozniuk/.nuget/packages/newtonsoft.json/12.0.2/lib/netstandard2.0/Newtonsoft.Json.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=736b483a_002D7d56_002D4660_002Da2a1_002D96af7b3dc0dd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DomainTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;NUnit3x::6EB89093-D1D6-4930-ABF2-3C5530338FC8::net6.0::App.Modules.UserAccess.ArchTests.DomainTests&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::6EB89093-D1D6-4930-ABF2-3C5530338FC8::net6.0::App.Modules.UserAccess.ArchTests.LayersTests&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::6EB89093-D1D6-4930-ABF2-3C5530338FC8::net6.0::App.Modules.UserAccess.ArchTests.ApplicationTests&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Domain.Users.UserTests&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Application.Authentication.PasswordHasherTests&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Infrastructure.OutboxTests.AddingOutboxMessage_AddsMessageToContext&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Infrastructure.OutboxTests&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Infrastructure.IdentityServer.IdentityServerConfigTests.GetApis_ReturnsValidApiResourceList&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Infrastructure.IdentityServer.IdentityServerConfigTests&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.Users.CreateNewUserTests&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ba96bb31_002D16ba_002D4b65_002D8588_002Dc760fc8cf34e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CreateUser_WithUniqueEmail_IsSuccessful" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Or&gt;
-    &lt;TestAncestor&gt;
-      &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Domain.Users.UserTests.CreateUser_WithUniqueEmail_IsSuccessful&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.Users.CreateNewUserTests.CreateNewUserCommand_Test&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.Users.CreateNewUserTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Domain.Users.UserTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Domain.UserRegistrations.ConfirmationCodeTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Domain.UserRegistrations.UserRegistrationsTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.UserRegistrations.RegisterNewUserTests.RegisterNewUserCommand_Test&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.UserRegistrations.RegisterNewUserTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.UserRegistrations.GetUserRegistrationTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.UserRegistrations.ConfirmUserRegistrationTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.UserRegistrations.RenewUserRegistrationTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::A0CC105C-2927-43B7-AA71-52636709BD3D::net6.0::App.Modules.UserAccess.UnitTests.Domain.PasswordResetRequests.PasswordResetRequestTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.Users.UserDetailsProviderTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.PasswordResetRequests.RequestPasswordResetTests.RequestPasswordResetCommand_Test&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.PasswordResetRequests.RequestPasswordResetTests.RequestPasswordReset_ForNonExistingEmail_WillFail&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.PasswordResetRequests.RequestPasswordResetTests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::1F452E65-B0F6-4C60-BCDD-F6EB36179C8F::net6.0::App.Modules.UserAccess.IntegrationTests.PasswordResetRequests.ConfirmPasswordResetTests&lt;/TestId&gt;
-    &lt;/TestAncestor&gt;
-    &lt;Project Location="/Users/avozniuk/Projects/savify/src/Modules/UserAccess/Tests/ArchTests" Presentation="&amp;lt;App.Modules.UserAccess.ArchTests&amp;gt;" /&gt;
-  &lt;/Or&gt;
-&lt;/SessionState&gt;</s:String>
+	
+	
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=ASPNETCORE_005FENVIRONMENT/@EntryIndexedValue">Testing</s:String>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=ASPNETCORE_005FINTEGRATION_005FTESTS_005FCONNECTION_005FSTRING/@EntryIndexedValue">Host=localhost; Database=savify_test; Username=user; Password=pass</s:String>
 	<s:Boolean x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=RESHARPER_005FHOST_005FVERSION/@EntryIndexRemoved">True</s:Boolean>

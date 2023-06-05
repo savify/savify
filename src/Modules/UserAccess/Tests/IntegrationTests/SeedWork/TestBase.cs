@@ -59,7 +59,10 @@ public class TestBase
                            "DELETE FROM user_access.users; " +
                            "DELETE FROM user_access.user_roles; " +
                            "DELETE FROM user_access.permissions; " +
-                           "DELETE FROM user_access.inbox_messages; ";
+                           "DELETE FROM user_access.inbox_messages; " +
+                           "DELETE FROM user_access.user_registrations; " +
+                           "DELETE FROM user_access.password_reset_requests; " +
+                           "DELETE FROM user_access.refresh_tokens; ";
 
         await connection.ExecuteScalarAsync(sql);
     }

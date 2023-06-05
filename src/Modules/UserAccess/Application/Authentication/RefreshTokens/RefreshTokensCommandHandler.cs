@@ -23,7 +23,7 @@ internal class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensComman
     {
         var refreshToken = await _refreshTokenRepository.GetByUserIdAsync(command.UserId);
 
-        if (refreshToken == null)
+        if (refreshToken == null || refreshToken.Value != command.RefreshToken)
         {
             throw new AuthenticationException(_localizer["Invalid refresh token"]);
         }

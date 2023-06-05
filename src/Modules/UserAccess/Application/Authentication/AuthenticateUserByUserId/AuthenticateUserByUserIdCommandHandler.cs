@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Data;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
+using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 using App.Modules.UserAccess.Application.Configuration.Commands;
 using Dapper;
 using Microsoft.Extensions.Localization;
