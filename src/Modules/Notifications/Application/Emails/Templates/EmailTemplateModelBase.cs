@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Localization;
 
-namespace App.BuildingBlocks.Application.Emails.Templates;
+namespace App.Modules.Notifications.Application.Emails.Templates;
 
 public abstract class EmailTemplateModelBase : IEmailTemplateModel
 {

@@ -1,8 +1,7 @@
-using App.BuildingBlocks.Application.Emails;
 using App.BuildingBlocks.Infrastructure;
-using App.BuildingBlocks.Infrastructure.Emails;
 using App.BuildingBlocks.Integration;
 using App.Modules.Notifications.Application.Contracts;
+using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Infrastructure.Configuration.DataAccess;
 using App.Modules.Notifications.Infrastructure.Configuration.Domain;
 using App.Modules.Notifications.Infrastructure.Configuration.Email;
@@ -12,6 +11,7 @@ using App.Modules.Notifications.Infrastructure.Configuration.Mediation;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing.Outbox;
 using App.Modules.Notifications.Infrastructure.Configuration.Quartz;
+using App.Modules.Notifications.Infrastructure.Emails;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;

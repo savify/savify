@@ -1,9 +1,9 @@
 using System.Globalization;
-using App.BuildingBlocks.Application.Emails;
-using App.BuildingBlocks.Application.Emails.Templates;
+using App.Modules.Notifications.Application.Emails;
+using App.Modules.Notifications.Application.Emails.Templates;
 using Microsoft.Extensions.Localization;
 
-namespace App.BuildingBlocks.Infrastructure.Emails;
+namespace App.Modules.Notifications.Infrastructure.Emails;
 
 public class EmailMessageFactory : IEmailMessageFactory
 {

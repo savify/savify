@@ -1,4 +1,4 @@
-namespace App.BuildingBlocks.Infrastructure.Emails;
+namespace App.Modules.Notifications.Infrastructure.Emails;
 
 public class EmailConfiguration
 {

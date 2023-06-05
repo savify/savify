@@ -1,9 +1,9 @@
-using App.BuildingBlocks.Application.Emails;
+using App.Modules.Notifications.Application.Emails;
 using MailKit.Net.Smtp;
 using MimeKit;
 using Serilog;
 
-namespace App.BuildingBlocks.Infrastructure.Emails;
+namespace App.Modules.Notifications.Infrastructure.Emails;
 
 public class EmailSender : IEmailSender
 {

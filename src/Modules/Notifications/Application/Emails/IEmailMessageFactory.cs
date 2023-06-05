@@ -1,6 +1,6 @@
-using App.BuildingBlocks.Application.Emails.Templates;
+using App.Modules.Notifications.Application.Emails.Templates;
 
-namespace App.BuildingBlocks.Application.Emails;
+namespace App.Modules.Notifications.Application.Emails;
 
 public interface IEmailMessageFactory
 {

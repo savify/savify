@@ -1,6 +1,5 @@
-using App.BuildingBlocks.Application.Emails;
-using App.BuildingBlocks.Application.Emails.Templates;
-using App.BuildingBlocks.Infrastructure.Emails;
+using App.Modules.Notifications.Application.Emails;
+using App.Modules.Notifications.Application.Emails.Templates;
 using App.Modules.Notifications.Infrastructure.Emails;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;

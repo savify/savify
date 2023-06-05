@@ -1,5 +1,5 @@
 using System.Text;
-using App.BuildingBlocks.Application.Emails.Templates;
+using App.Modules.Notifications.Application.Emails.Templates;
 using RazorEngineCore;
 
 namespace App.Modules.Notifications.Infrastructure.Emails;

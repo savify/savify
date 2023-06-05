@@ -1,5 +1,5 @@
 using App.BuildingBlocks.Application;
-using App.BuildingBlocks.Application.Emails;
+using App.Modules.Notifications.Application.Emails;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

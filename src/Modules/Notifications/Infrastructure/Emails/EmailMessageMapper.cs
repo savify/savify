@@ -1,7 +1,7 @@
-using App.BuildingBlocks.Application.Emails;
+using App.Modules.Notifications.Application.Emails;
 using MimeKit;
 
-namespace App.BuildingBlocks.Infrastructure.Emails;
+namespace App.Modules.Notifications.Infrastructure.Emails;
 
 public class EmailMessageMapper
 {

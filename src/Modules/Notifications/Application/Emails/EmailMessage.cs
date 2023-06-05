@@ -1,4 +1,4 @@
-namespace App.BuildingBlocks.Application.Emails;
+namespace App.Modules.Notifications.Application.Emails;
 
 public class EmailMessage
 {

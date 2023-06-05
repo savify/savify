@@ -1,7 +1,5 @@
-using App.BuildingBlocks.Application.Emails;
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Authentication;
-using App.BuildingBlocks.Infrastructure.Emails;
 using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
@@ -15,7 +13,6 @@ using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Infrastructure.Configuration.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.DataAccess;
 using App.Modules.UserAccess.Infrastructure.Configuration.Domain;
-using App.Modules.UserAccess.Infrastructure.Configuration.Email;
 using App.Modules.UserAccess.Infrastructure.Configuration.EventBus;
 using App.Modules.UserAccess.Infrastructure.Configuration.Logging;
 using App.Modules.UserAccess.Infrastructure.Configuration.Mediation;
@@ -41,7 +38,6 @@ public static class UserAccessModuleCollectionExtensions
             services,
             configuration.GetConnectionString("Savify"),
             configuration.GetSection("Authentication").Get<AuthenticationConfiguration>(),
-            configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>(),
             moduleLogger);
         
         QuartzInitialization.Initialize(moduleLogger);
@@ -56,10 +52,7 @@ public static class UserAccessModuleCollectionExtensions
         this IServiceCollection services,
         string connectionString,
         AuthenticationConfiguration authenticationConfiguration,
-        EmailConfiguration emailConfiguration,
         ILogger logger,
-        IEmailSender? emailSender = null,
-        IEmailMessageFactory? emailMessageFactory = null,
         IEventBus? eventBus = null)
     {
         // TODO: move map setup to separate class
@@ -75,7 +68,6 @@ public static class UserAccessModuleCollectionExtensions
         AuthenticationModule.Configure(services, authenticationConfiguration);
         DataAccessModule.Configure(services, connectionString);
         DomainModule.Configure(services);
-        EmailModule.Configure(services, emailConfiguration, emailSender, emailMessageFactory);
         LoggingModule.Configure(services, logger);
         EventBusModule.Configure(services, eventBus);
         QuartzModule.Configure(services);
