@@ -1,5 +1,5 @@
 using System.Text;
-using App.BuildingBlocks.Infrastructure.Authentication;
+using App.Modules.UserAccess.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 

@@ -14,7 +14,6 @@ internal static class MediatorModule
         var mediatorOpenTypes = new[]
         {
             typeof(IRequestHandler<,>),
-            // typeof(INotificationHandler<>),
             typeof(IValidator<>)
         };
 

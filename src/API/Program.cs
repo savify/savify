@@ -8,6 +8,7 @@ using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
+using App.Modules.Notifications.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
 using Destructurama;
@@ -66,6 +67,7 @@ public class Program
         });
  
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
+        builder.Services.AddNotificationsModule(builder.Configuration, _logger);
 
         var app = builder.Build();
 

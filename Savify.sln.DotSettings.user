@@ -2,6 +2,13 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;
   &lt;Assembly Path="/Users/avozniuk/.nuget/packages/newtonsoft.json/12.0.2/lib/netstandard2.0/Newtonsoft.Json.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=33988a71_002Dd642_002D4a96_002Dbb11_002D23304099588e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;App.Modules.UserAccess.UnitTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Or&gt;
+    &lt;Project Location="/Users/avozniuk/Projects/savify/src/Modules/UserAccess/Tests/UnitTests" Presentation="&amp;lt;App.Modules.UserAccess.UnitTests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/avozniuk/Projects/savify/src/Modules/UserAccess/Tests/IntegrationTests" Presentation="&amp;lt;App.Modules.UserAccess.IntegrationTests&amp;gt;" /&gt;
+    &lt;Project Location="/Users/avozniuk/Projects/savify/src/Modules/UserAccess/Tests/ArchTests" Presentation="&amp;lt;App.Modules.UserAccess.ArchTests&amp;gt;" /&gt;
+  &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String>
 	
 	
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=ASPNETCORE_005FENVIRONMENT/@EntryIndexedValue">Testing</s:String>
