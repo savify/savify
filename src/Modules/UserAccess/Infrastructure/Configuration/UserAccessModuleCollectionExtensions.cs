@@ -1,5 +1,4 @@
 using App.BuildingBlocks.Infrastructure;
-using App.BuildingBlocks.Infrastructure.Authentication;
 using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
@@ -10,6 +9,7 @@ using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.Domain.PasswordResetRequest.Events;
 using App.Modules.UserAccess.Domain.UserRegistrations.Events;
 using App.Modules.UserAccess.Domain.Users.Events;
+using App.Modules.UserAccess.Infrastructure.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.DataAccess;
 using App.Modules.UserAccess.Infrastructure.Configuration.Domain;

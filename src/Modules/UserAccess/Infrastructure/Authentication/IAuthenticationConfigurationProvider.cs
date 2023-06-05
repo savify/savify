@@ -1,4 +1,4 @@
-namespace App.BuildingBlocks.Infrastructure.Authentication;
+namespace App.Modules.UserAccess.Infrastructure.Authentication;
 
 public interface IAuthenticationConfigurationProvider
 {

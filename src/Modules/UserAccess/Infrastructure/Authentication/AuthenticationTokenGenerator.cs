@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using App.BuildingBlocks.Infrastructure.Authentication;
 using App.Modules.UserAccess.Application.Authentication;
 using Microsoft.IdentityModel.Tokens;
 

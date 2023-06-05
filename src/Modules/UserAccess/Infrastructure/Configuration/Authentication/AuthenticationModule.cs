@@ -1,4 +1,3 @@
-using App.BuildingBlocks.Infrastructure.Authentication;
 using App.Modules.UserAccess.Application.Authentication;
 using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 using App.Modules.UserAccess.Infrastructure.Authentication;
