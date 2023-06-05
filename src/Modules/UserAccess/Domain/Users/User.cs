@@ -40,6 +40,13 @@ public class User : Entity, IAggregateRoot
         return new User(new UserId(id.Value), email, password, name, UserRole.User, preferredLanguage);
     }
 
+    public void SetNewPassword(string password)
+    {
+        _password = password;
+        
+        AddDomainEvent(new NewPasswordWasSetDomainEvent(Id, _email, _name, _preferredLanguage));
+    }
+
     private User(UserId id, string email, string password, string name, UserRole role, Language preferredLanguage)
     {
         Id = id;

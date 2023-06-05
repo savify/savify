@@ -4,7 +4,7 @@ using Dapper;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.GetUserRegistration;
 
-public class GetUserRegistrationQueryHandler : IQueryHandler<GetUserRegistrationQuery, UserRegistrationDto>
+internal class GetUserRegistrationQueryHandler : IQueryHandler<GetUserRegistrationQuery, UserRegistrationDto>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

@@ -19,6 +19,11 @@ public class AuthenticationTokenGenerator : IAuthenticationTokenGenerator
 
     public Token GenerateAccessToken(Guid userId)
     {
+        return GenerateAccessToken(userId, DateTime.UtcNow.AddSeconds(_configuration.AccessTokenTtl));
+    }
+    
+    public Token GenerateAccessToken(Guid userId, DateTime expires)
+    {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.IssuerSigningKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -27,7 +32,6 @@ public class AuthenticationTokenGenerator : IAuthenticationTokenGenerator
             new Claim(ClaimTypes.NameIdentifier, userId.ToString())
         };
 
-        var expires = DateTime.Now.AddSeconds(_configuration.AccessTokenTtl);
         var token = new JwtSecurityToken(
             _configuration.Issuer,
             _configuration.Audience,
@@ -44,11 +48,11 @@ public class AuthenticationTokenGenerator : IAuthenticationTokenGenerator
         using var randomNumberGenerator = RandomNumberGenerator.Create();
         randomNumberGenerator.GetBytes(randomNumber);
 
-        return new Token(Convert.ToBase64String(randomNumber), DateTime.Now.AddSeconds(_configuration.RefreshTokenTtl));
+        return new Token(Convert.ToBase64String(randomNumber), DateTime.UtcNow.AddSeconds(_configuration.RefreshTokenTtl));
     }
 
     public Token GenerateRefreshToken(string value)
     {
-        return new Token(value, DateTime.Now.AddSeconds(_configuration.RefreshTokenTtl));
+        return new Token(value, DateTime.UtcNow.AddSeconds(_configuration.RefreshTokenTtl));
     }
 }

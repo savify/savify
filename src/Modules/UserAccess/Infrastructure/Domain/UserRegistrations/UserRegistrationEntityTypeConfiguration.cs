@@ -1,5 +1,6 @@
 using App.Modules.UserAccess.Domain.UserRegistrations;
 using App.Modules.UserAccess.Domain.Users;
+using App.Modules.UserAccess.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

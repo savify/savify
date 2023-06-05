@@ -4,6 +4,7 @@ using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
 using Dapper;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
@@ -11,6 +12,8 @@ namespace App.Modules.UserAccess.IntegrationTests.SeedWork;
 
 public class TestBase
 {
+    protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
+    
     protected IUserAccessModule UserAccessModule { get; private set; }
     
     protected string ConnectionString { get; private set; }
@@ -18,11 +21,11 @@ public class TestBase
     [OneTimeSetUp]
     public void Init()
     {
-        var webApplicationFactory = new CustomWebApplicationFactory<Program>();
+        WebApplicationFactory = new CustomWebApplicationFactory<Program>();
         
-        using var scope = webApplicationFactory.Services.CreateScope();
+        using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
-        ConnectionString = webApplicationFactory.ConnectionString;
+        ConnectionString = WebApplicationFactory.ConnectionString;
     }
 
     [SetUp]

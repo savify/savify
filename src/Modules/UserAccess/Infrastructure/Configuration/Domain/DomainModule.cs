@@ -9,5 +9,6 @@ internal static class DomainModule
     internal static void Configure(IServiceCollection services)
     {
         services.AddScoped<IUsersCounter, UsersCounter>();
+        services.AddScoped<IUserDetailsProvider, UserDetailsProvider>();
     }
 }

@@ -53,15 +53,9 @@ public class UserRegistration : Entity, IAggregateRoot
     
     public void Confirm(ConfirmationCode confirmationCode)
     {
-        CheckRules(new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status));
-        
-        if (!(_validTill > DateTime.UtcNow))
-        {
-            Expire();
-        }
-        
         CheckRules(
-            new UserRegistrationCannotBeConfirmedAfterExpirationRule(_status),
+            new UserRegistrationCannotBeConfirmedMoreThanOnceRule(_status),
+            new UserRegistrationCannotBeConfirmedAfterExpirationRule(_validTill),
             new ConfirmationCodeMustMatchRule(confirmationCode, _confirmationCode)
         );
         
@@ -85,18 +79,6 @@ public class UserRegistration : Entity, IAggregateRoot
             _name,
             _preferredLanguage,
             _confirmationCode));
-    }
-    
-    public void Expire()
-    {
-        CheckRules(
-            new UserRegistrationCannotBeExpiredMoreThanOnceRule(_status),
-            new UserRegistrationCannotBeExpiredWhenAlreadyConfirmedRule(_status)
-        );
-        
-        _status = UserRegistrationStatus.Expired;
-        
-        AddDomainEvent(new UserRegistrationExpiredDomainEvent(Id));
     }
 
     private UserRegistration(

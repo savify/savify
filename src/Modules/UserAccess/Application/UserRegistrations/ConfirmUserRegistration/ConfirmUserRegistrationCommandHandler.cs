@@ -1,10 +1,11 @@
 using App.Modules.UserAccess.Application.Configuration.Commands;
 using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Domain;
 using App.Modules.UserAccess.Domain.UserRegistrations;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 
-public class ConfirmUserRegistrationCommandHandler : ICommandHandler<ConfirmUserRegistrationCommand, Result>
+internal class ConfirmUserRegistrationCommandHandler : ICommandHandler<ConfirmUserRegistrationCommand, Result>
 {
     private readonly IUserRegistrationRepository _userRegistrationRepository;
 

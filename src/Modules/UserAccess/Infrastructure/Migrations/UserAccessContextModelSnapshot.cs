@@ -113,6 +113,34 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
                     b.ToTable("internal_commands", "user_access");
                 });
 
+            modelBuilder.Entity("App.Modules.UserAccess.Domain.PasswordResetRequest.PasswordResetRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("_confirmedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("confirmed_at");
+
+                    b.Property<DateTime>("_createdAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("_userEmail")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_email");
+
+                    b.Property<DateTime>("_validTill")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("valid_till");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("password_reset_requests", "user_access");
+                });
+
             modelBuilder.Entity("App.Modules.UserAccess.Domain.UserRegistrations.UserRegistration", b =>
                 {
                     b.Property<Guid>("Id")
@@ -185,9 +213,52 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
                     b.ToTable("users", "user_access");
                 });
 
+            modelBuilder.Entity("App.Modules.UserAccess.Domain.PasswordResetRequest.PasswordResetRequest", b =>
+                {
+                    b.OwnsOne("App.Modules.UserAccess.Domain.ConfirmationCode", "_confirmationCode", b1 =>
+                        {
+                            b1.Property<Guid>("PasswordResetRequestId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("confirmation_code");
+
+                            b1.HasKey("PasswordResetRequestId");
+
+                            b1.ToTable("password_reset_requests", "user_access");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PasswordResetRequestId");
+                        });
+
+                    b.OwnsOne("App.Modules.UserAccess.Domain.PasswordResetRequest.PasswordResetRequestStatus", "_status", b1 =>
+                        {
+                            b1.Property<Guid>("PasswordResetRequestId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("status");
+
+                            b1.HasKey("PasswordResetRequestId");
+
+                            b1.ToTable("password_reset_requests", "user_access");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PasswordResetRequestId");
+                        });
+
+                    b.Navigation("_confirmationCode");
+
+                    b.Navigation("_status");
+                });
+
             modelBuilder.Entity("App.Modules.UserAccess.Domain.UserRegistrations.UserRegistration", b =>
                 {
-                    b.OwnsOne("App.Modules.UserAccess.Domain.UserRegistrations.ConfirmationCode", "_confirmationCode", b1 =>
+                    b.OwnsOne("App.Modules.UserAccess.Domain.ConfirmationCode", "_confirmationCode", b1 =>
                         {
                             b1.Property<Guid>("UserRegistrationId")
                                 .HasColumnType("uuid");
