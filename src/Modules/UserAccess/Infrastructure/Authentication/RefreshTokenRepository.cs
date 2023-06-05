@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Data;
 using App.Modules.UserAccess.Application.Authentication;
+using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 using Dapper;
 
 namespace App.Modules.UserAccess.Infrastructure.Authentication;
