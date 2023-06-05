@@ -1,11 +1,11 @@
 using Dapper;
 using App.BuildingBlocks.Application.Data;
-using App.Modules.UserAccess.Application.Configuration.Commands;
+using App.Modules.Notifications.Application.Configuration.Commands;
 using MediatR;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing.Inbox;
+namespace App.Modules.Notifications.Infrastructure.Configuration.Processing.Inbox;
 
 public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
 {
@@ -29,14 +29,14 @@ public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
                      $"message.id as {nameof(InboxMessageDto.Id)}, " +
                      $"message.type as {nameof(InboxMessageDto.Type)}, " +
                      $"message.data as {nameof(InboxMessageDto.Data)} " +
-                     "FROM user_access.inbox_messages AS message " +
+                     "FROM notifications.inbox_messages AS message " +
                      "WHERE message.processed_date IS NULL " +
                      "ORDER BY message.occurred_on";
         
         var messages = await connection.QueryAsync<InboxMessageDto>(sql);
         var messagesList = messages.AsList();
         
-        const string sqlUpdateProcessedDate = "UPDATE user_access.inbox_messages " +
+        const string sqlUpdateProcessedDate = "UPDATE notifications.inbox_messages " +
                                               "SET processed_date = @Date " +
                                               "WHERE id = @Id";
         

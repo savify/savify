@@ -3,7 +3,7 @@ using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.UserAccess.Infrastructure.Configuration.Mediation;
+namespace App.Modules.Notifications.Infrastructure.Configuration.Mediation;
 
 internal static class MediatorModule
 {
