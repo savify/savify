@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Integration;
+using App.Modules.UserAccess.IntegrationEvents;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
@@ -15,7 +16,9 @@ public static class EventBusInitialization
     {
         var eventBus = NotificationsCompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
 
-        // SubscribeToIntegrationEvent<SomeIntegrationEvent>(eventBus, logger);
+        SubscribeToIntegrationEvent<NewUserRegisteredIntegrationEvent>(eventBus, logger);
+        SubscribeToIntegrationEvent<UserRegistrationRenewedIntegrationEvent>(eventBus, logger);
+        SubscribeToIntegrationEvent<UserRegistrationConfirmedIntegrationEvent>(eventBus, logger);
     }
 
     private static void SubscribeToIntegrationEvent<T>(IEventBus eventBus, ILogger logger) where T : IntegrationEvent

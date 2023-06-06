@@ -1,2 +1,11 @@
 {
+  "Hello, {0}": "Привіт, {0}",
+  "Welcome - Please confirm your registration": "Ласкаво просимо - Будь ласка, підтвердіть вашу реєстрацію",
+  "You have successfully registered in our platform. Now you have to confirm your registration.": "Ви успішно зареєструвалися в нашій платформі. Тепер вам потрібно підтвердити вашу реєстрацію.",
+  "Your confirmation code is '{0}'.": "Ваш код підтвердження '{0}'.",
+  "You have requested new confirmation code for registration.": "Ви запросили новий код підтвердження для вашої реєстрації.",
+  "Your new confirmation code is '{0}'.": "Ваш новий код підтвердження '{0}'.",
+  "You have successfully finished the registration process.": "Ви успішно завершили процес реєстрації.",
+  "You have successfully registered at Savify": "Ви успішно зареєструвалися в Savify",
+  "New confirmation code requested": "Запит на новий код підтвердження"
 }
