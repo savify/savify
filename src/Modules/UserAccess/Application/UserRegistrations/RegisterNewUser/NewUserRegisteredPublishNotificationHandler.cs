@@ -15,13 +15,12 @@ public class NewUserRegisteredPublishNotificationHandler : INotificationHandler<
 
     public async Task Handle(NewUserRegisteredNotification notification, CancellationToken cancellationToken)
     {
-        // TODO: add subscriber to integration event
-        // await _eventBus.Publish(new NewUserRegisteredIntegrationEvent(
-        //     notification.Id,
-        //     notification.DomainEvent.OccurredOn,
-        //     notification.DomainEvent.Email,
-        //     notification.DomainEvent.Name,
-        //     notification.DomainEvent.ConfirmationCode.Value,
-        //     notification.DomainEvent.PreferredLanguage.Value));
+        await _eventBus.Publish(new NewUserRegisteredIntegrationEvent(
+            notification.Id,
+            notification.DomainEvent.OccurredOn,
+            notification.DomainEvent.Email,
+            notification.DomainEvent.Name,
+            notification.DomainEvent.ConfirmationCode.Value,
+            notification.DomainEvent.PreferredLanguage.Value));
     }
 }

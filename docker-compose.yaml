@@ -14,6 +14,15 @@ services:
     networks:
       - savify
 
+  mailcatcher:
+    container_name: savify-mails
+    build:
+      context: .docker/mailcatcher
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8888:80"
+
 volumes: 
   database_data:
 

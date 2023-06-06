@@ -1,2 +1,6 @@
 {
+  "Hello, {0}": "Hello, {0}",
+  "Welcome - Please confirm your registration": "Welcome - Please confirm your registration",
+  "You have successfully registered in our platform. Now you have to confirm your registration.": "You have successfully registered in our platform. Now you have to confirm your registration.",
+  "Your confirmation code is '{0}'.": "Your confirmation code is '{0}'."
 }

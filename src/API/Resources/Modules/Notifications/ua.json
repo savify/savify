@@ -1,2 +1,6 @@
 {
+  "Hello, {0}": "Привіт, {0}",
+  "Welcome - Please confirm your registration": "Ласкаво просимо - Будь ласка, підтвердіть вашу реєстрацію",
+  "You have successfully registered in our platform. Now you have to confirm your registration.": "Ви успішно зареєструвалися в нашій платформі. Тепер вам потрібно підтвердити вашу реєстрацію.",
+  "Your confirmation code is '{0}'.": "Ваш код підтвердження '{0}'."
 }

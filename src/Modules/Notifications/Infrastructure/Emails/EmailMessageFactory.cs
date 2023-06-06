@@ -26,7 +26,7 @@ public class EmailMessageFactory : IEmailMessageFactory
         
         return new EmailMessage(
             receiverEmail,
-            $"App - {templateModel.Localizer[subject]}",
+            $"Savify - {templateModel.Localizer[subject]}",
             _emailTemplateGenerator.GenerateEmailTemplate(templateModel));
     }
 }
