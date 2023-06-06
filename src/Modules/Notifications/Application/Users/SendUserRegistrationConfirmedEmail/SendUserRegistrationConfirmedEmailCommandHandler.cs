@@ -2,26 +2,26 @@ using App.Modules.Notifications.Application.Configuration.Commands;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
 
-namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewalEmail;
+namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmedEmail;
 
-public class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<SendUserRegistrationRenewalEmailCommand, Result>
+public class SendUserRegistrationConfirmedEmailCommandHandler : ICommandHandler<SendUserRegistrationConfirmedEmailCommand, Result>
 {
     private readonly IEmailMessageFactory _emailMessageFactory;
     
     private readonly IEmailSender _emailSender;
 
-    public SendUserRegistrationRenewalEmailCommandHandler(IEmailMessageFactory emailMessageFactory, IEmailSender emailSender)
+    public SendUserRegistrationConfirmedEmailCommandHandler(IEmailMessageFactory emailMessageFactory, IEmailSender emailSender)
     {
         _emailMessageFactory = emailMessageFactory;
         _emailSender = emailSender;
     }
 
-    public async Task<Result> Handle(SendUserRegistrationRenewalEmailCommand command, CancellationToken cancellationToken)
+    public async Task<Result> Handle(SendUserRegistrationConfirmedEmailCommand command, CancellationToken cancellationToken)
     {
         var emailMessage = _emailMessageFactory.CreateLocalizedEmailMessage(
             command.Email,
-            "New confirmation code requested",
-            new RegistrationRenewalEmailTemplateModel(command.Name, command.ConfirmationCode),
+            "You have successfully registered at Savify",
+            new RegistrationConfirmedEmailTemplateModel(command.Name),
             command.Language);
 
         await _emailSender.SendEmailAsync(emailMessage);

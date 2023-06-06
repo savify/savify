@@ -4,5 +4,8 @@
   "You have successfully registered in our platform. Now you have to confirm your registration.": "You have successfully registered in our platform. Now you have to confirm your registration.",
   "Your confirmation code is '{0}'.": "Your confirmation code is '{0}'.",
   "You have requested new confirmation code for registration.": "You have requested new confirmation code for registration.",
-  "Your new confirmation code is '{0}'.": "Your new confirmation code is '{0}'."
+  "Your new confirmation code is '{0}'.": "Your new confirmation code is '{0}'.",
+  "You have successfully finished the registration process.": "You have successfully finished the registration process.",
+  "You have successfully registered at Savify": "You have successfully registered at Savify",
+  "New confirmation code requested": "New confirmation code requested"
 }

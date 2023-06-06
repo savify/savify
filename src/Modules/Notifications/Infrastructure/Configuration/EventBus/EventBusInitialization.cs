@@ -18,6 +18,7 @@ public static class EventBusInitialization
 
         SubscribeToIntegrationEvent<NewUserRegisteredIntegrationEvent>(eventBus, logger);
         SubscribeToIntegrationEvent<UserRegistrationRenewedIntegrationEvent>(eventBus, logger);
+        SubscribeToIntegrationEvent<UserRegistrationConfirmedIntegrationEvent>(eventBus, logger);
     }
 
     private static void SubscribeToIntegrationEvent<T>(IEventBus eventBus, ILogger logger) where T : IntegrationEvent
