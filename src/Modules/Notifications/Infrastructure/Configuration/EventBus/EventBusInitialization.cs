@@ -17,6 +17,7 @@ public static class EventBusInitialization
         var eventBus = NotificationsCompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
 
         SubscribeToIntegrationEvent<NewUserRegisteredIntegrationEvent>(eventBus, logger);
+        SubscribeToIntegrationEvent<UserRegistrationRenewedIntegrationEvent>(eventBus, logger);
     }
 
     private static void SubscribeToIntegrationEvent<T>(IEventBus eventBus, ILogger logger) where T : IntegrationEvent
