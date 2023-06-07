@@ -29,4 +29,9 @@ public class UserNotificationSettingsRepository : IUserNotificationSettingsRepos
 
         return userNotificationSettings;
     }
+
+    public async Task<Notifications.Domain.UserNotificationSettings.UserNotificationSettings> GetByUserEmailAsync(string email)
+    {
+        return await _notificationsContext.UserNotificationSettings.FirstOrDefaultAsync(x => x.Email == email);
+    }
 }

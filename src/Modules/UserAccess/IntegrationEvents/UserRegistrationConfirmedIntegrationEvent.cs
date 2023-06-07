@@ -12,7 +12,8 @@ public class UserRegistrationConfirmedIntegrationEvent : IntegrationEvent
 
     public string PreferredLanguage { get; }
     
-    public UserRegistrationConfirmedIntegrationEvent(Guid id,
+    public UserRegistrationConfirmedIntegrationEvent(
+        Guid id,
         DateTime occurredOn,
         Guid userId,
         string email,

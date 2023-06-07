@@ -12,7 +12,8 @@ public class UserRegistrationRenewedIntegrationEvent : IntegrationEvent
     
     public string PreferredLanguage { get; }
     
-    public UserRegistrationRenewedIntegrationEvent(Guid id,
+    public UserRegistrationRenewedIntegrationEvent(
+        Guid id,
         DateTime occurredOn,
         string email,
         string name,

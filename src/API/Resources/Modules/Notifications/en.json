@@ -8,5 +8,7 @@
   "You have successfully finished the registration process.": "You have successfully finished the registration process.",
   "You have successfully registered at Savify": "You have successfully registered at Savify",
   "New confirmation code requested": "New confirmation code requested",
-  "Notification settings for user with id '{0}' already exist": "Notification settings for user with id '{0}' already exist"
+  "Notification settings for user with id '{0}' already exist": "Notification settings for user with id '{0}' already exist",
+  "Password reset request": "Password reset request",
+  "You have requested a password reset for your account.": "You have requested a password reset for your account."
 }
