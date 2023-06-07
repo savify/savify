@@ -8,5 +8,7 @@
   "You have successfully finished the registration process.": "Ви успішно завершили процес реєстрації.",
   "You have successfully registered at Savify": "Ви успішно зареєструвалися в Savify",
   "New confirmation code requested": "Запит на новий код підтвердження",
-  "Notification settings for user with id '{0}' already exist": "Налаштування сповіщень для користувача з ID '{0}' вже існують"
+  "Notification settings for user with id '{0}' already exist": "Налаштування сповіщень для користувача з ID '{0}' вже існують",
+  "Password reset request": "Запит на скидання пароля",
+  "You have requested a password reset for your account.": "Ви подали запит на скидання пароля для свого облікового запису."
 }
