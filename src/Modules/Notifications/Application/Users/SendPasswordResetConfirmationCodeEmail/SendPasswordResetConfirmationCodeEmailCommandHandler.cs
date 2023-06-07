@@ -5,7 +5,7 @@ using App.Modules.Notifications.Domain.UserNotificationSettings;
 
 namespace App.Modules.Notifications.Application.Users.SendPasswordResetConfirmationCodeEmail;
 
-public class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHandler<SendPasswordResetConfirmationCodeEmailCommand, Result>
+internal class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHandler<SendPasswordResetConfirmationCodeEmailCommand, Result>
 {
     private readonly IUserNotificationSettingsRepository _notificationSettingsRepository;
     
