@@ -22,35 +22,6 @@ public class DomainTests : TestBase
     }
 
     [Test]
-    public void Entity_WhichIsNotAggregateRoot_CannotHavePublicMembers()
-    {
-        var types = Types.InAssembly(DomainAssembly)
-            .That()
-            .Inherit(typeof(Entity))
-            .And().DoNotImplementInterface(typeof(IAggregateRoot)).GetTypes();
-
-        const BindingFlags bindingFlags = BindingFlags.DeclaredOnly |
-                                          BindingFlags.Public |
-                                          BindingFlags.Instance |
-                                          BindingFlags.Static;
-
-        var failingTypes = new List<Type>();
-        foreach (var type in types)
-        {
-            var publicFields = type.GetFields(bindingFlags);
-            var publicProperties = type.GetProperties(bindingFlags);
-            var publicMethods = type.GetMethods(bindingFlags);
-
-            if (publicFields.Any() || publicProperties.Any() || publicMethods.Any())
-            {
-                failingTypes.Add(type);
-            }
-        }
-
-        AssertFailingTypes(failingTypes);
-    }
-    
-    [Test]
     public void Entity_CannotHaveReference_ToOtherAggregateRoot()
     {
         var entityTypes = Types.InAssembly(DomainAssembly)

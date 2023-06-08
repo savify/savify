@@ -1,12 +1,14 @@
 using App.BuildingBlocks.Application;
+using App.Modules.Notifications.Application.Emails;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using NSubstitute;
 
-namespace App.Modules.UserAccess.IntegrationTests.SeedWork;
+namespace App.Modules.Notifications.IntegrationTests.SeedWork;
 
 public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
@@ -27,6 +29,12 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         {
             services.RemoveAll<IExecutionContextAccessor>();
             services.AddSingleton<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid()));
+
+            services.RemoveAll<IEmailSender>();
+            services.AddSingleton<IEmailSender>(_ => Substitute.For<IEmailSender>());
+            
+            services.RemoveAll<IEmailMessageFactory>();
+            services.AddSingleton<IEmailMessageFactory>(_ => Substitute.For<IEmailMessageFactory>());
         });
     }
 }

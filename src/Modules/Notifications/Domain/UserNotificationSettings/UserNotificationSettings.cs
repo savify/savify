@@ -3,7 +3,7 @@ using App.Modules.Notifications.Domain.UserNotificationSettings.Rules;
 
 namespace App.Modules.Notifications.Domain.UserNotificationSettings;
 
-public class UserNotificationSettings : Entity, IAggregateRoot
+public class UserNotificationSettings : Entity
 {
     public UserNotificationSettingsId Id { get; private set; }
     

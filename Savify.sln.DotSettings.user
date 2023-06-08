@@ -8,6 +8,14 @@
     &lt;Project Location="/Users/avozniuk/Projects/savify/src/Modules/UserAccess/Tests/IntegrationTests" Presentation="&amp;lt;App.Modules.UserAccess.IntegrationTests&amp;gt;" /&gt;
     &lt;Project Location="/Users/avozniuk/Projects/savify/src/Modules/UserAccess/Tests/ArchTests" Presentation="&amp;lt;App.Modules.UserAccess.ArchTests&amp;gt;" /&gt;
     &lt;Project Location="/Users/avozniuk/Projects/savify/src/Modules/Notifications/Tests/ArchTests" Presentation="&amp;lt;App.Modules.Notifications.ArchTests&amp;gt;" /&gt;
+    &lt;TestAncestor&gt;
+      &lt;TestId&gt;NUnit3x::E7CD8FD6-299E-4E59-8FAB-1DBC6BB40E85::net6.0::App.Modules.Notifications.UnitTests.Domain.UserNotificationSettingsTests.CreatingUserNotificationSettings_ForNewUser_IsSuccessful&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::E7CD8FD6-299E-4E59-8FAB-1DBC6BB40E85::net6.0::App.Modules.Notifications.UnitTests.Domain.UserNotificationSettingsTests&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::0D46C2F2-F49C-468E-8369-DA790387891B::net6.0::App.Modules.Notifications.IntegrationTests.UserNotificationSettings.UserNotificationSettingsCounterTests.TestThat_ForExistingNotificationSettings_CountIsOne&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::0D46C2F2-F49C-468E-8369-DA790387891B::net6.0::App.Modules.Notifications.IntegrationTests.UserNotificationSettings.UserNotificationSettingsCounterTests.TestThat_ForNonExistingNotificationSettings_CountIsZero&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::0D46C2F2-F49C-468E-8369-DA790387891B::net6.0::App.Modules.Notifications.IntegrationTests.UserNotificationSettings.CreateUserNotificationSettingsTests.CreateUserNotificationSettingsCommand_Test&lt;/TestId&gt;
+      &lt;TestId&gt;NUnit3x::0D46C2F2-F49C-468E-8369-DA790387891B::net6.0::App.Modules.Notifications.IntegrationTests.Users.SendUserRegistrationConfirmationEmailTests&lt;/TestId&gt;
+    &lt;/TestAncestor&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
 	
