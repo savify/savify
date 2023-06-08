@@ -4,7 +4,7 @@ using App.Modules.Notifications.Domain.UserNotificationSettings;
 
 namespace App.Modules.Notifications.Application.UserNotificationSettings.CreateUserNotificationSettings;
 
-public class CreateNotificationSettingsCommandHandler : ICommandHandler<CreateNotificationSettingsCommand, Result>
+internal class CreateNotificationSettingsCommandHandler : ICommandHandler<CreateNotificationSettingsCommand, Result>
 {
     private readonly IUserNotificationSettingsRepository _userNotificationSettingsRepository;
 

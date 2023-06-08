@@ -4,7 +4,7 @@ using App.Modules.Notifications.Application.Emails;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewalEmail;
 
-public class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<SendUserRegistrationRenewalEmailCommand, Result>
+internal class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<SendUserRegistrationRenewalEmailCommand, Result>
 {
     private readonly IEmailMessageFactory _emailMessageFactory;
     

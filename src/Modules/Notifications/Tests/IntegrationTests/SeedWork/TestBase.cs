@@ -1,19 +1,19 @@
 using System.Data;
 using App.API;
-using App.Modules.UserAccess.Application.Contracts;
-using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Notifications.Application.Contracts;
+using App.Modules.Notifications.Infrastructure.Configuration.Processing.Outbox;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
-namespace App.Modules.UserAccess.IntegrationTests.SeedWork;
+namespace App.Modules.Notifications.IntegrationTests.SeedWork;
 
 public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
     
-    protected IUserAccessModule UserAccessModule { get; private set; }
+    protected INotificationsModule NotificationsModule { get; private set; }
     
     protected string ConnectionString { get; private set; }
 
@@ -23,7 +23,7 @@ public class TestBase
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
         
         using var scope = WebApplicationFactory.Services.CreateScope();
-        UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
+        NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
         ConnectionString = WebApplicationFactory.ConnectionString;
     }
 
@@ -52,16 +52,10 @@ public class TestBase
     
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM user_access.internal_commands; " +
-                           "DELETE FROM user_access.outbox_messages; " +
-                           "DELETE FROM user_access.roles_permissions; " +
-                           "DELETE FROM user_access.users; " +
-                           "DELETE FROM user_access.user_roles; " +
-                           "DELETE FROM user_access.permissions; " +
-                           "DELETE FROM user_access.inbox_messages; " +
-                           "DELETE FROM user_access.user_registrations; " +
-                           "DELETE FROM user_access.password_reset_requests; " +
-                           "DELETE FROM user_access.refresh_tokens; ";
+        const string sql = "DELETE FROM notifications.internal_commands; " +
+                           "DELETE FROM notifications.outbox_messages; " +
+                           "DELETE FROM notifications.inbox_messages; " +
+                           "DELETE FROM notifications.user_notification_settings; ";
 
         await connection.ExecuteScalarAsync(sql);
     }

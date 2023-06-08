@@ -4,7 +4,7 @@ using App.Modules.Notifications.Application.Emails;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmationEmail;
 
-public class SendUserRegistrationConfirmationEmailCommandHandler : ICommandHandler<SendUserRegistrationConfirmationEmailCommand, Result>
+internal class SendUserRegistrationConfirmationEmailCommandHandler : ICommandHandler<SendUserRegistrationConfirmationEmailCommand, Result>
 {
     private readonly IEmailMessageFactory _emailMessageFactory;
     
