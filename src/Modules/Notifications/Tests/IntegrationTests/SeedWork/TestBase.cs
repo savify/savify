@@ -52,8 +52,7 @@ public class TestBase
     
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM notifications.internal_commands; " +
-                           "DELETE FROM notifications.outbox_messages; " +
+        const string sql = "DELETE FROM notifications.outbox_messages; " +
                            "DELETE FROM notifications.inbox_messages; " +
                            "DELETE FROM notifications.user_notification_settings; ";
 

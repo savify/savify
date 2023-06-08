@@ -1,6 +1,5 @@
 using System.Collections.Specialized;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing.Inbox;
-using App.Modules.Notifications.Infrastructure.Configuration.Processing.InternalCommands;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing.Outbox;
 using Quartz;
 using Quartz.Impl;
@@ -25,7 +24,6 @@ internal static class QuartzInitialization
 
         ScheduleProcessOutboxJob(_scheduler);
         ScheduleProcessInboxJob(_scheduler);
-        ScheduleProcessInternalCommandJob(_scheduler);
         
         logger.Information("Quartz started");
     }
@@ -68,17 +66,5 @@ internal static class QuartzInitialization
             .Build();
 
         scheduler.ScheduleJob(processInboxJob, outboxProcessingTrigger).GetAwaiter().GetResult();
-    }
-
-    private static void ScheduleProcessInternalCommandJob(IScheduler scheduler)
-    {
-        var processInternalCommandsJob = JobBuilder.Create<ProcessInternalCommandsJob>().Build();
-        var commandsProcessingTrigger = TriggerBuilder
-            .Create()
-            .StartNow()
-            .WithCronSchedule("0/5 * * ? * *")
-            .Build();
-
-        scheduler.ScheduleJob(processInternalCommandsJob, commandsProcessingTrigger).GetAwaiter().GetResult();
     }
 }

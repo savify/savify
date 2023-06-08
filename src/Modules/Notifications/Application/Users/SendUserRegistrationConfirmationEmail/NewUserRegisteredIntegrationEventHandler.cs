@@ -1,4 +1,3 @@
-using App.Modules.Notifications.Application.Configuration.Commands;
 using App.Modules.UserAccess.IntegrationEvents;
 using MediatR;
 
@@ -6,16 +5,16 @@ namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfir
 
 public class NewUserRegisteredIntegrationEventHandler : INotificationHandler<NewUserRegisteredIntegrationEvent>
 {
-    private readonly ICommandScheduler _commandScheduler;
+    private readonly IMediator _mediator;
 
-    public NewUserRegisteredIntegrationEventHandler(ICommandScheduler commandScheduler)
+    public NewUserRegisteredIntegrationEventHandler(IMediator mediator)
     {
-        _commandScheduler = commandScheduler;
+        _mediator = mediator;
     }
 
     public async Task Handle(NewUserRegisteredIntegrationEvent @event, CancellationToken cancellationToken)
     {
-        await _commandScheduler.EnqueueAsync(new SendUserRegistrationConfirmationEmailCommand(
+        await _mediator.Send(new SendUserRegistrationConfirmationEmailCommand(
             @event.Id,
             @event.Name,
             @event.Email,

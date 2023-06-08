@@ -1,4 +1,3 @@
-using App.Modules.Notifications.Application.Configuration.Commands;
 using App.Modules.UserAccess.IntegrationEvents;
 using MediatR;
 
@@ -6,16 +5,16 @@ namespace App.Modules.Notifications.Application.Users.SendPasswordResetConfirmat
 
 public class PasswordResetRequestedIntegrationEventHandler : INotificationHandler<PasswordResetRequestedIntegrationEvent>
 {
-    private readonly ICommandScheduler _commandScheduler;
+    private readonly IMediator _mediator;
 
-    public PasswordResetRequestedIntegrationEventHandler(ICommandScheduler commandScheduler)
+    public PasswordResetRequestedIntegrationEventHandler(IMediator mediator)
     {
-        _commandScheduler = commandScheduler;
+        _mediator = mediator;
     }
 
     public async Task Handle(PasswordResetRequestedIntegrationEvent @event, CancellationToken cancellationToken)
     {
-        await _commandScheduler.EnqueueAsync(new SendPasswordResetConfirmationCodeEmailCommand(
+        await _mediator.Send(new SendPasswordResetConfirmationCodeEmailCommand(
             @event.Id,
             @event.Email,
             @event.ConfirmationCode));
