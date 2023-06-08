@@ -1,5 +1,4 @@
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Inbox;
-using App.Modules.UserAccess.Infrastructure.Configuration.Processing.InternalCommands;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
@@ -12,6 +11,5 @@ internal static class QuartzModule
     {
         services.AddTransient<IJob, ProcessOutboxJob>();
         services.AddTransient<IJob, ProcessInboxJob>();
-        services.AddTransient<IJob, ProcessInternalCommandsJob>();
     }
 }

@@ -1,10 +1,9 @@
-using App.Modules.Notifications.Application.Configuration.Commands;
 using App.Modules.Notifications.Application.Contracts;
 using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewalEmail;
 
-public class SendUserRegistrationRenewalEmailCommand : InternalCommandBase<Result>
+public class SendUserRegistrationRenewalEmailCommand : CommandBase<Result>
 {
     [JsonConstructor]
     public SendUserRegistrationRenewalEmailCommand(Guid id, string name, string email, string language, string confirmationCode) : base(id)
