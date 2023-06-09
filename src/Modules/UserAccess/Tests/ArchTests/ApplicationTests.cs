@@ -22,6 +22,10 @@ public class ApplicationTests : TestBase
             .Or()
             .Inherit(typeof(CommandBase<>))
             .Or()
+            .Inherit(typeof(InternalCommandBase<>))
+            .Or()
+            .Inherit(typeof(InternalCommandBase<>))
+            .Or()
             .ImplementInterface(typeof(ICommand))
             .Or()
             .ImplementInterface(typeof(ICommand<>))
@@ -105,6 +109,39 @@ public class ApplicationTests : TestBase
             .Should().NotBePublic().GetResult().FailingTypes;
 
         AssertFailingTypes(types);
+    }
+
+    [Test]
+    public void InternalCommand_ShouldHaveJsonConstructorAttribute()
+    {
+        var types = Types.InAssembly(ApplicationAssembly)
+            .That()
+            .Inherit(typeof(InternalCommandBase<>))
+            .GetTypes();
+
+        var failingTypes = new List<Type>();
+
+        foreach (var type in types)
+        {
+            bool hasJsonConstructorDefined = false;
+            var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var constructorInfo in constructors)
+            {
+                var jsonConstructorAttribute = constructorInfo.GetCustomAttributes(typeof(JsonConstructorAttribute), false);
+                if (jsonConstructorAttribute.Length > 0)
+                {
+                    hasJsonConstructorDefined = true;
+                    break;
+                }
+            }
+
+            if (!hasJsonConstructorDefined)
+            {
+                failingTypes.Add(type);
+            }
+        }
+
+        AssertFailingTypes(failingTypes);
     }
 
     [Test]

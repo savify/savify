@@ -6,16 +6,16 @@ namespace App.Modules.Notifications.Application.UserNotificationSettings.CreateU
 
 public class UserRegistrationsConfirmedIntegrationEventHandler : INotificationHandler<UserRegistrationConfirmedIntegrationEvent>
 {
-    private readonly IMediator _mediator;
+    private readonly ICommandScheduler _commandScheduler;
 
-    public UserRegistrationsConfirmedIntegrationEventHandler(IMediator mediator)
+    public UserRegistrationsConfirmedIntegrationEventHandler(ICommandScheduler commandScheduler)
     {
-        _mediator = mediator;
+        _commandScheduler = commandScheduler;
     }
 
     public async Task Handle(UserRegistrationConfirmedIntegrationEvent @event, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new CreateNotificationSettingsCommand(
+        await _commandScheduler.EnqueueAsync(new CreateNotificationSettingsCommand(
             @event.Id,
             @event.UserId,
             @event.Name,

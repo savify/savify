@@ -1,8 +1,10 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.BuildingBlocks.Infrastructure.Localization;
+using App.Modules.Notifications.Application.Configuration.Commands;
 using App.Modules.Notifications.Infrastructure.Configuration.Localization;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing.Decorators;
+using App.Modules.Notifications.Infrastructure.Configuration.Processing.InternalCommands;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +34,8 @@ internal static class ProcessingModule
                 provider.GetRequiredService<NotificationsContext>(),
                 provider.GetRequiredService<IDomainEventsDispatcher>());
         });
+
+        services.AddScoped<ICommandScheduler, CommandScheduler>();
 
         services.AddScoped<IList<IValidator>>(provider => provider.GetServices<IValidator>().ToList());
 
