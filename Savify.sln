@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Notifications.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Notifications.IntegrationTests", "src\Modules\Notifications\Tests\IntegrationTests\App.Modules.Notifications.IntegrationTests.csproj", "{0D46C2F2-F49C-468E-8369-DA790387891B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.IntegrationTests", "src\Tests\IntegrationTests\App.IntegrationTests.csproj", "{C868F983-CD9F-47F5-B70F-EF12DA50901B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,5 +128,9 @@ Global
 		{0D46C2F2-F49C-468E-8369-DA790387891B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D46C2F2-F49C-468E-8369-DA790387891B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D46C2F2-F49C-468E-8369-DA790387891B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C868F983-CD9F-47F5-B70F-EF12DA50901B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C868F983-CD9F-47F5-B70F-EF12DA50901B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C868F983-CD9F-47F5-B70F-EF12DA50901B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C868F983-CD9F-47F5-B70F-EF12DA50901B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
