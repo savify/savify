@@ -1,14 +1,15 @@
 using App.Modules.Notifications.Application.Configuration.Commands;
+using App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmedEmail;
 using App.Modules.UserAccess.IntegrationEvents;
 using MediatR;
 
 namespace App.Modules.Notifications.Application.UserNotificationSettings.CreateUserNotificationSettings;
 
-public class UserRegistrationsConfirmedIntegrationEventHandler : INotificationHandler<UserRegistrationConfirmedIntegrationEvent>
+public class UserRegistrationConfirmedIntegrationEventHandler : INotificationHandler<UserRegistrationConfirmedIntegrationEvent>
 {
     private readonly ICommandScheduler _commandScheduler;
 
-    public UserRegistrationsConfirmedIntegrationEventHandler(ICommandScheduler commandScheduler)
+    public UserRegistrationConfirmedIntegrationEventHandler(ICommandScheduler commandScheduler)
     {
         _commandScheduler = commandScheduler;
     }
@@ -18,6 +19,12 @@ public class UserRegistrationsConfirmedIntegrationEventHandler : INotificationHa
         await _commandScheduler.EnqueueAsync(new CreateNotificationSettingsCommand(
             @event.Id,
             @event.UserId,
+            @event.Name,
+            @event.Email,
+            @event.PreferredLanguage));
+        
+        await _commandScheduler.EnqueueAsync(new SendUserRegistrationConfirmedEmailCommand(
+            Guid.NewGuid(),
             @event.Name,
             @event.Email,
             @event.PreferredLanguage));

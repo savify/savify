@@ -57,7 +57,7 @@ public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
             catch (Exception exception)
             {
                 _logger.Error(exception, "Inbox message of type {Type} processing failed; {Message}", type, exception.Message);
-                throw;
+                continue;
             }
 
             await connection.ExecuteAsync(sqlUpdateProcessedDate, new
