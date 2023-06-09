@@ -35,8 +35,8 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
             .WaitAndRetryAsync(new[]
             {
                 TimeSpan.FromSeconds(1),
-                TimeSpan.FromSeconds(10),
-                TimeSpan.FromSeconds(30)
+                TimeSpan.FromSeconds(2),
+                TimeSpan.FromSeconds(3)
             });
         
         foreach (var internalCommand in internalCommandsList)

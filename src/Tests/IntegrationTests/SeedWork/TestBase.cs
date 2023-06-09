@@ -24,7 +24,7 @@ public class TestBase
     public void Init()
     {
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
-        
+
         using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
@@ -63,11 +63,13 @@ public class TestBase
                            "DELETE FROM user_access.user_roles; " +
                            "DELETE FROM user_access.permissions; " +
                            "DELETE FROM user_access.inbox_messages; " +
+                           "DELETE FROM user_access.internal_commands; " +
                            "DELETE FROM user_access.user_registrations; " +
                            "DELETE FROM user_access.password_reset_requests; " +
                            "DELETE FROM user_access.refresh_tokens; " +
                            "DELETE FROM notifications.outbox_messages; " +
                            "DELETE FROM notifications.inbox_messages; " +
+                           "DELETE FROM notifications.internal_commands; " +
                            "DELETE FROM notifications.user_notification_settings; ";
 
         await connection.ExecuteScalarAsync(sql);

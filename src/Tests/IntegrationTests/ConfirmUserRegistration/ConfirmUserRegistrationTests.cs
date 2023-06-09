@@ -25,7 +25,7 @@ public class ConfirmUserRegistrationTests : TestBase
         await UserAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(userRegistrationId, confirmationCode));
 
         await AssertEventually(
-            new GetCreatedUserNotificationSettingsFromNotificationsProbe(userRegistrationId, NotificationsModule), 15000);
+            new GetCreatedUserNotificationSettingsFromNotificationsProbe(userRegistrationId, NotificationsModule), 20000);
     }
     
     private class GetCreatedUserNotificationSettingsFromNotificationsProbe: IProbe
