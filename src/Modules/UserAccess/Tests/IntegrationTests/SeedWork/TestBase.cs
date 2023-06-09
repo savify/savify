@@ -52,7 +52,8 @@ public class TestBase
     
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM user_access.outbox_messages; " +
+        const string sql = "DELETE FROM user_access.internal_commands; " +
+                           "DELETE FROM user_access.outbox_messages; " +
                            "DELETE FROM user_access.roles_permissions; " +
                            "DELETE FROM user_access.users; " +
                            "DELETE FROM user_access.user_roles; " +

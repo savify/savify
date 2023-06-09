@@ -1,3 +1,4 @@
+using App.Modules.Notifications.Application.Configuration.Commands;
 using App.Modules.UserAccess.IntegrationEvents;
 using MediatR;
 
@@ -5,16 +6,16 @@ namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewa
 
 public class UserRegistrationRenewedIntegrationEventHandler : INotificationHandler<UserRegistrationRenewedIntegrationEvent>
 {
-    private readonly IMediator _mediator;
+    private readonly ICommandScheduler _commandScheduler;
 
-    public UserRegistrationRenewedIntegrationEventHandler(IMediator mediator)
+    public UserRegistrationRenewedIntegrationEventHandler(ICommandScheduler commandScheduler)
     {
-        _mediator = mediator;
+        _commandScheduler = commandScheduler;
     }
 
     public async Task Handle(UserRegistrationRenewedIntegrationEvent @event, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new SendUserRegistrationRenewalEmailCommand(
+        await _commandScheduler.EnqueueAsync(new SendUserRegistrationRenewalEmailCommand(
             @event.Id,
             @event.Name,
             @event.Email,

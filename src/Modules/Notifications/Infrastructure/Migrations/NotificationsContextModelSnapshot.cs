@@ -80,6 +80,39 @@ namespace App.Modules.Notifications.Infrastructure.Migrations
                     b.ToTable("inbox_messages", "notifications");
                 });
 
+            modelBuilder.Entity("App.BuildingBlocks.Infrastructure.InternalCommands.InternalCommand", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("data");
+
+                    b.Property<DateTime>("EnqueueDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("enqueue_date");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("text")
+                        .HasColumnName("error");
+
+                    b.Property<DateTime?>("ProcessedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_date");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("internal_commands", "notifications");
+                });
+
             modelBuilder.Entity("App.Modules.Notifications.Domain.UserNotificationSettings.UserNotificationSettings", b =>
                 {
                     b.Property<Guid>("Id")

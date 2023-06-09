@@ -1,8 +1,10 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.BuildingBlocks.Infrastructure.Localization;
+using App.Modules.UserAccess.Application.Configuration.Commands;
 using App.Modules.UserAccess.Infrastructure.Configuration.Localization;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Decorators;
+using App.Modules.UserAccess.Infrastructure.Configuration.Processing.InternalCommands;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +34,8 @@ internal static class ProcessingModule
                 provider.GetRequiredService<UserAccessContext>(),
                 provider.GetRequiredService<IDomainEventsDispatcher>());
         });
+
+        services.AddScoped<ICommandScheduler, CommandScheduler>();
 
         services.AddScoped<IList<IValidator>>(provider => provider.GetServices<IValidator>().ToList());
 
