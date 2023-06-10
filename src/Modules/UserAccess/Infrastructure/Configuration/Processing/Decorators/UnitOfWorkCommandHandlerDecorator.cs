@@ -28,7 +28,8 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
         if (command is InternalCommandBase<TResult>)
         {
             var internalCommand = await _userAccessContext.InternalCommands.FirstOrDefaultAsync(
-                x => x.Id == command.Id, cancellationToken: cancellationToken);
+                x => x.CausationId == command.Id && x.Type == command.GetType().FullName,
+                cancellationToken: cancellationToken);
         
             if (internalCommand != null)
             {
