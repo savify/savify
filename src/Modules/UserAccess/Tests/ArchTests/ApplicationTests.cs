@@ -5,7 +5,6 @@ using App.Modules.UserAccess.Application.Configuration.Queries;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.ArchTests.SeedWork;
 using MediatR;
-using NetArchTest.Rules;
 using Newtonsoft.Json;
 
 namespace App.Modules.UserAccess.ArchTests;

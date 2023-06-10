@@ -1,5 +1,4 @@
 using App.Modules.Notifications.ArchTests.SeedWork;
-using NetArchTest.Rules;
 
 namespace App.Modules.Notifications.ArchTests;
 

@@ -2,7 +2,6 @@ using System.Reflection;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Infrastructure;
-using NetArchTest.Rules;
 
 namespace App.Modules.UserAccess.ArchTests.SeedWork;
 
