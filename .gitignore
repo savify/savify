@@ -8,3 +8,4 @@ docs/C4/plantuml-icon-font-sprites
 .DS_Store
 src/API/tempkey.jwk
 .env
+.vs/

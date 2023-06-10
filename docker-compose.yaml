@@ -5,7 +5,7 @@ services:
     container_name: savify-database
     image: postgres:15-alpine
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
@@ -16,12 +16,20 @@ services:
 
   mailcatcher:
     container_name: savify-mails
-    build:
-      context: .docker/mailcatcher
+    restart: on-failure
+    image: dockage/mailcatcher:0.8.2
+    ports:
+      - "8888:1080"
+      - "1025:1025"
+
+  adminer:
+    container_name: savify-adminer
+    image: adminer
     restart: always
     ports:
-      - "1025:1025"
-      - "8888:80"
+      - 8880:8080
+    networks:
+      - savify
 
 volumes: 
   database_data:
