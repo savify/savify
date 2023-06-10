@@ -1,7 +1,6 @@
 using System.Reflection;
 using App.BuildingBlocks.Domain;
 using App.Modules.UserAccess.ArchTests.SeedWork;
-using NetArchTest.Rules;
 
 namespace App.Modules.UserAccess.ArchTests;
 

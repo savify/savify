@@ -1,17 +1,15 @@
 using System.Reflection;
-using App.Modules.Notifications.Application.Contracts;
-using App.Modules.Notifications.Domain.UserNotificationSettings;
-using App.Modules.Notifications.Infrastructure;
+using App.API.Configuration.ExecutionContext;
 
-namespace App.Modules.Notifications.ArchTests.SeedWork;
+namespace App.ArchTests.SeedWork;
 
 public abstract class TestBase
 {
-    protected static Assembly DomainAssembly => typeof(UserNotificationSettings).Assembly;
+    protected static Assembly ApiAssembly => typeof(ExecutionContextAccessor).Assembly;
 
-    protected static Assembly ApplicationAssembly => typeof(CommandBase).Assembly;
+    public const string UserAccessNamespace = "App.Modules.UserAccess";
     
-    protected static Assembly InfrastructureAssembly => typeof(NotificationsContext).Assembly;
+    public const string NotificationsNamespace = "App.Modules.Notifications";
     
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {
@@ -27,7 +25,7 @@ public abstract class TestBase
 
         AssertFailingTypes(failingTypes);
     }
-    
+
     protected static void AssertFailingTypes(IEnumerable<Type> types)
     {
         Assert.That(types, Is.Null.Or.Empty);

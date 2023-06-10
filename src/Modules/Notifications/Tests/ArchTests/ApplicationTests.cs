@@ -5,7 +5,6 @@ using App.Modules.Notifications.Application.Configuration.Queries;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.ArchTests.SeedWork;
 using MediatR;
-using NetArchTest.Rules;
 using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.ArchTests;
