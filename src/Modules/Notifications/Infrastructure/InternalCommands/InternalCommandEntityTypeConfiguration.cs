@@ -14,6 +14,7 @@ public class InternalCommandEntityTypeConfiguration : IEntityTypeConfiguration<I
         builder.Property(b => b.Id).HasColumnName("id");
         builder.Property(b => b.Id).ValueGeneratedNever();
 
+        builder.Property<Guid>("CausationId").HasColumnName("causation_id");
         builder.Property<string>("Type").HasColumnName("type");
         builder.Property<string>("Data").HasColumnName("data");
         builder.Property<DateTime>("EnqueueDate").HasColumnName("enqueue_date");

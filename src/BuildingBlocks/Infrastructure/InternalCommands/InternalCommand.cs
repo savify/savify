@@ -3,6 +3,8 @@ namespace App.BuildingBlocks.Infrastructure.InternalCommands;
 public class InternalCommand
 {
     public Guid Id { get; set; }
+    
+    public Guid CausationId { get; set; }
 
     public string Type { get; set; }
 

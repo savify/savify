@@ -24,7 +24,7 @@ public class UserRegistrationConfirmedIntegrationEventHandler : INotificationHan
             @event.PreferredLanguage));
         
         await _commandScheduler.EnqueueAsync(new SendUserRegistrationConfirmedEmailCommand(
-            Guid.NewGuid(),
+            @event.Id,
             @event.Name,
             @event.Email,
             @event.PreferredLanguage));

@@ -24,8 +24,9 @@ public class CommandScheduler : ICommandScheduler
     private InternalCommand CreateInternalCommandFrom<T>(ICommand<T> command)
     {
         var internalCommand = new InternalCommand();
-        
-        internalCommand.Id = command.Id;
+
+        internalCommand.Id = Guid.NewGuid();
+        internalCommand.CausationId = command.Id;
         internalCommand.Type = command.GetType().FullName;
         internalCommand.Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings
         {
