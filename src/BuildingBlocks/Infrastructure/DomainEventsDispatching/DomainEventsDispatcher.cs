@@ -49,7 +49,7 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
 
             if (domainNotification != null)
             {
-                domainEventNotifications.Add(domainNotification as IDomainEventNotification<IDomainEvent>);
+                domainEventNotifications.Add(domainNotification as IDomainEventNotification<IDomainEvent> ?? throw new InvalidOperationException());
             }
         }
         
@@ -71,7 +71,7 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
             var outboxMessage = new OutboxMessage(
                 domainEventNotification.Id,
                 domainEventNotification.DomainEvent.OccurredOn,
-                type,
+                type!,
                 data);
 
             _outbox.Add(outboxMessage);

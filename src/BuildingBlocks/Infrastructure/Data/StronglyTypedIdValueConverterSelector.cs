@@ -28,14 +28,14 @@ public class StronglyTypedIdValueConverterSelector : ValueConverterSelector
             var isTypedIdValue = typeof(TypedIdValueBase).IsAssignableFrom(underlyingModelType);
             if (isTypedIdValue)
             {
-                var converterType = typeof(TypedIdValueConverter<>).MakeGenericType(underlyingModelType);
+                var converterType = typeof(TypedIdValueConverter<>).MakeGenericType(underlyingModelType!);
 
-                yield return _converters.GetOrAdd((underlyingModelType, typeof(Guid)), _ =>
+                yield return _converters.GetOrAdd((underlyingModelType, typeof(Guid))!, _ =>
                 {
                     return new ValueConverterInfo(
                         modelClrType: modelClrType,
                         providerClrType: typeof(Guid),
-                        factory: valueConverterInfo => (ValueConverter) Activator.CreateInstance(converterType, valueConverterInfo.MappingHints));
+                        factory: valueConverterInfo => (ValueConverter) Activator.CreateInstance(converterType, valueConverterInfo.MappingHints)!);
                 });
             }
         }

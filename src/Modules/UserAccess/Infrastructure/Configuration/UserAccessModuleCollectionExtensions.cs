@@ -55,7 +55,6 @@ public static class UserAccessModuleCollectionExtensions
         ILogger logger,
         IEventBus? eventBus = null)
     {
-        // TODO: move map setup to separate class
         var domainNotificationsMap = new BiDictionary<string, Type>();
         
         domainNotificationsMap.Add(nameof(UserCreatedDomainEvent), typeof(UserCreatedNotification));

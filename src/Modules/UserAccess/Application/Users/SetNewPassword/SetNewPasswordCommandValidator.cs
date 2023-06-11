@@ -12,10 +12,14 @@ internal class SetNewPasswordCommandValidator : Validator<SetNewPasswordCommand>
             .NotEmpty()
             .WithMessage("Please provide user ID");
 
-        // TODO: add more validations for strong password
         RuleFor(c => c.Password)
             .NotNull()
             .NotEmpty()
-            .WithMessage("Please provide Your password");
+            .WithMessage("Please provide Your password")
+            .MinimumLength(8).WithMessage("Your password must contain at least 8 characters")
+            .Matches(@"[A-Z]+").WithMessage("Your password must contain at least one uppercase letter")
+            .Matches(@"[a-z]+").WithMessage("Your password must contain at least one lowercase letter")
+            .Matches(@"[0-9]+").WithMessage("Your password must contain at least one number")
+            .Matches(@"[\!\?\*\.]+").WithMessage("Your password must contain at least one special character (!? *.)");
     }
 }
