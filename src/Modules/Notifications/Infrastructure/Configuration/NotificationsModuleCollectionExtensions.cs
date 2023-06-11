@@ -1,4 +1,3 @@
-using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Integration;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
@@ -9,7 +8,6 @@ using App.Modules.Notifications.Infrastructure.Configuration.EventBus;
 using App.Modules.Notifications.Infrastructure.Configuration.Logging;
 using App.Modules.Notifications.Infrastructure.Configuration.Mediation;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing;
-using App.Modules.Notifications.Infrastructure.Configuration.Processing.Outbox;
 using App.Modules.Notifications.Infrastructure.Configuration.Quartz;
 using App.Modules.Notifications.Infrastructure.Emails;
 using Microsoft.Extensions.Configuration;
@@ -50,12 +48,6 @@ public static class NotificationsModuleCollectionExtensions
         IEmailMessageFactory? emailMessageFactory = null,
         IEventBus? eventBus = null)
     {
-        // TODO: move map setup to separate class
-        var domainNotificationsMap = new BiDictionary<string, Type>();
-        
-        // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
-        
-        OutboxModule.Configure(services, domainNotificationsMap);
         DataAccessModule.Configure(services, connectionString);
         DomainModule.Configure(services);
         EmailModule.Configure(services, emailConfiguration, emailSender, emailMessageFactory);

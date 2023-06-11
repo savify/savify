@@ -27,7 +27,7 @@ internal static class ProcessingModule
         {
             return new DomainEventsAccessor(provider.GetRequiredService<NotificationsContext>());
         });
-        services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
+        services.AddScoped<IDomainEventsDispatcher, App.Modules.Notifications.Infrastructure.DomainEventsDispatching.DomainEventsDispatcher>();
         services.AddScoped<IUnitOfWork>(provider =>
         {
             return new UnitOfWork(
