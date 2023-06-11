@@ -4,5 +4,5 @@ namespace App.Modules.Accounts.Domain.Accounts;
 
 public class Account : Entity, IAggregateRoot
 {
-    
+    private Account() {}
 }

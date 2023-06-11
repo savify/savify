@@ -4,7 +4,7 @@ using Dapper;
 
 namespace App.Modules.Notifications.Application.UserNotificationSettings.GetUserNotificationSettings;
 
-public class GetUserNotificationSettingsQueryHandler : IQueryHandler<GetUserNotificationSettingsQuery, UserNotificationSettingsDto>
+internal class GetUserNotificationSettingsQueryHandler : IQueryHandler<GetUserNotificationSettingsQuery, UserNotificationSettingsDto>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
