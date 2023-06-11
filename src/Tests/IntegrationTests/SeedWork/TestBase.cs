@@ -67,7 +67,6 @@ public class TestBase
                            "DELETE FROM user_access.user_registrations; " +
                            "DELETE FROM user_access.password_reset_requests; " +
                            "DELETE FROM user_access.refresh_tokens; " +
-                           "DELETE FROM notifications.outbox_messages; " +
                            "DELETE FROM notifications.inbox_messages; " +
                            "DELETE FROM notifications.internal_commands; " +
                            "DELETE FROM notifications.user_notification_settings; ";
