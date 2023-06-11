@@ -25,5 +25,10 @@
   "Preferred language field is required": "Поле 'Preferred language' є обов'язковим",
   "Please provide user registration ID": "Будь ласка, вкажіть ідентифікатор реєстрації користувача",
   "Please provide confirmation code": "Будь ласка, вкажіть код підтвердження",
-  "Please provide password reset request ID": "Будь ласка, вкажіть ідентифікатор запиту на скидання пароля"
+  "Please provide password reset request ID": "Будь ласка, вкажіть ідентифікатор запиту на скидання пароля",
+  "Your password must contain at least 8 characters": "Ваш пароль повинен містити щонайменше 8 символів",
+  "Your password must contain at least one uppercase letter": "Ваш пароль повинен містити щонайменше одну велику літеру",
+  "Your password must contain at least one lowercase letter": "Ваш пароль повинен містити щонайменше одну маленьку літеру",
+  "Your password must contain at least one number": "Ваш пароль повинен містити щонайменше одну цифру",
+  "Your password must contain at least one special character (!? *.)": "Ваш пароль повинен містити щонайменше один спеціальний символ (!? *.)"
 }
