@@ -35,7 +35,8 @@ public class UsersController : ControllerBase
             request.Email,
             request.Password,
             request.Name,
-            request.Role));
+            request.Role,
+            request.Country));
         
         return Created("",new
         {

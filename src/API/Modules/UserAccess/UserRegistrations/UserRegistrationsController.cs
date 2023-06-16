@@ -32,6 +32,7 @@ public class UserRegistrationsController : ControllerBase
             request.Email,
             request.Password,
             request.Name,
+            request.Country,
             CultureInfo.CurrentCulture.Name));
 
         return Created("", new
