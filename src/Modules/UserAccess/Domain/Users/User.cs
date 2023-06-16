@@ -16,6 +16,8 @@ public class User : Entity, IAggregateRoot
     private string _name;
 
     private List<UserRole> _roles;
+
+    private Country _country;
     
     private Language _preferredLanguage;
 
@@ -28,16 +30,17 @@ public class User : Entity, IAggregateRoot
         string password,
         string name,
         UserRole role,
+        Country country,
         IUsersCounter usersCounter)
     {
         CheckRules(new UserEmailMustBeUniqueRule(usersCounter, email));
         
-        return new User(new UserId(Guid.NewGuid()), email, password, name, role, Language.From("en"));
+        return new User(new UserId(Guid.NewGuid()), email, password, name, role, country, Language.From("en"));
     }
 
-    internal static User CreateFromUserRegistration(UserRegistrationId id, string email, string password, string name, Language preferredLanguage)
+    internal static User CreateFromUserRegistration(UserRegistrationId id, string email, string password, string name, Country country, Language preferredLanguage)
     {
-        return new User(new UserId(id.Value), email, password, name, UserRole.User, preferredLanguage);
+        return new User(new UserId(id.Value), email, password, name, UserRole.User, country, preferredLanguage);
     }
 
     public void SetNewPassword(string password)
@@ -47,12 +50,13 @@ public class User : Entity, IAggregateRoot
         AddDomainEvent(new NewPasswordWasSetDomainEvent(Id, _email, _name, _preferredLanguage));
     }
 
-    private User(UserId id, string email, string password, string name, UserRole role, Language preferredLanguage)
+    private User(UserId id, string email, string password, string name, UserRole role, Country country, Language preferredLanguage)
     {
         Id = id;
         _email = email;
         _password = password;
         _name = name;
+        _country = country;
         _preferredLanguage = preferredLanguage;
         _isActive = true;
         _createdAt = DateTime.UtcNow;
@@ -60,7 +64,7 @@ public class User : Entity, IAggregateRoot
         _roles = new List<UserRole>();
         _roles.Add(role);
 
-        AddDomainEvent(new UserCreatedDomainEvent(Id, _email, _name, role, _preferredLanguage));
+        AddDomainEvent(new UserCreatedDomainEvent(Id, _email, _name, role, country, _preferredLanguage));
     }
     
     private User() {}

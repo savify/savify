@@ -17,7 +17,8 @@ public class RequestPasswordResetTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
         
         var passwordResetRequestId = await UserAccessModule.ExecuteCommandAsync(

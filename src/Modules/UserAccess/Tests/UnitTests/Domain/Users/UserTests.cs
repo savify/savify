@@ -18,6 +18,7 @@ public class UserTests : UnitTestBase
             "hashed_password",
             "Test",
             UserRole.User, 
+            Country.From("PL"),
             usersCounter);
         
         var userCreatedDomainEvent = AssertPublishedDomainEvent<UserCreatedDomainEvent>(user);
@@ -25,6 +26,7 @@ public class UserTests : UnitTestBase
         Assert.That(userCreatedDomainEvent.Email, Is.EqualTo("test@email.com"));
         Assert.That(userCreatedDomainEvent.Name, Is.EqualTo("Test"));
         Assert.That(userCreatedDomainEvent.UserRole, Is.EqualTo(UserRole.User));
+        Assert.That(userCreatedDomainEvent.Country, Is.EqualTo(Country.From("PL")));
         Assert.That(userCreatedDomainEvent.PreferredLanguage, Is.EqualTo(Language.From("en")));
     }
 
@@ -39,6 +41,7 @@ public class UserTests : UnitTestBase
             "hashed_password",
             "Test",
             UserRole.User, 
+            Country.From("PL"),
             usersCounter));
     }
     
@@ -53,6 +56,7 @@ public class UserTests : UnitTestBase
             "hashed_password",
             "Test",
             UserRole.User, 
+            Country.From("PL"),
             usersCounter);
         
         user.SetNewPassword("hashed_password");

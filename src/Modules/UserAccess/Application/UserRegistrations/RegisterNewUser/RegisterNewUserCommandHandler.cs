@@ -24,6 +24,7 @@ internal class RegisterNewUserCommandHandler : ICommandHandler<RegisterNewUserCo
             command.Email,
             PasswordHasher.HashPassword(command.Password),
             command.Name,
+            Country.From(command.Country),
             Language.From(command.PreferredLanguage),
             ConfirmationCode.Generate(),
             _usersCounter);

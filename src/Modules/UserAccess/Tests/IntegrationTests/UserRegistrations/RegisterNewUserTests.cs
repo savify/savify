@@ -14,6 +14,7 @@ public class RegisterNewUserTests : TestBase
             UserRegistrationSampleData.Email,
             UserRegistrationSampleData.PlainPassword,
             UserRegistrationSampleData.Name,
+            UserRegistrationSampleData.Country.Value,
             UserRegistrationSampleData.PreferredLanguage.Value));
 
         var userRegistration = await UserAccessModule.ExecuteQueryAsync(new GetUserRegistrationQuery(userRegistrationId));

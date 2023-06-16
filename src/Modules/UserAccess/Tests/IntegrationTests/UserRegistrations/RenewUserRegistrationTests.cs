@@ -13,6 +13,7 @@ public class RenewUserRegistrationTests : TestBase
             UserRegistrationSampleData.Email,
             UserRegistrationSampleData.PlainPassword,
             UserRegistrationSampleData.Name,
+            UserRegistrationSampleData.Country.Value,
             UserRegistrationSampleData.PreferredLanguage.Value));
         
         var newUserRegisteredNotification = await GetLastOutboxMessage<NewUserRegisteredNotification>();

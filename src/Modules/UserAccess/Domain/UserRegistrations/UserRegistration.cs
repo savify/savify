@@ -21,6 +21,8 @@ public class UserRegistration : Entity, IAggregateRoot
     private ConfirmationCode _confirmationCode;
     
     private UserRegistrationStatus _status;
+
+    private Country _country;
     
     private Language _preferredLanguage;
 
@@ -34,6 +36,7 @@ public class UserRegistration : Entity, IAggregateRoot
         string email,
         string password,
         string name,
+        Country country,
         Language preferredLanguage,
         ConfirmationCode confirmationCode,
         IUsersCounter usersCounter
@@ -41,14 +44,14 @@ public class UserRegistration : Entity, IAggregateRoot
     {
         CheckRules(new UserEmailMustBeUniqueRule(usersCounter, email));
 
-        return new UserRegistration(email, password, name, preferredLanguage, confirmationCode);
+        return new UserRegistration(email, password, name, country, preferredLanguage, confirmationCode);
     }
 
     public User CreateUser()
     {
         CheckRules(new UserRegistrationMustBeConfirmedRule(_status));
         
-        return User.CreateFromUserRegistration(Id, _email, _password, _name, _preferredLanguage);
+        return User.CreateFromUserRegistration(Id, _email, _password, _name, _country, _preferredLanguage);
     }
     
     public void Confirm(ConfirmationCode confirmationCode)
@@ -85,6 +88,7 @@ public class UserRegistration : Entity, IAggregateRoot
         string email,
         string password,
         string name,
+        Country country,
         Language preferredLanguage,
         ConfirmationCode confirmationCode)
     {
@@ -92,13 +96,14 @@ public class UserRegistration : Entity, IAggregateRoot
         _email = email;
         _password = password;
         _name = name;
+        _country = country;
         _preferredLanguage = preferredLanguage;
         _confirmationCode = confirmationCode;
         _status = UserRegistrationStatus.WaitingForConfirmation;
         _createdAt = DateTime.UtcNow;
         _validTill = DateTime.UtcNow.Add(ValidTimeSpan);
         
-        AddDomainEvent(new NewUserRegisteredDomainEvent(Id, _email, _name, preferredLanguage, _confirmationCode));
+        AddDomainEvent(new NewUserRegisteredDomainEvent(Id, _email, _name, country, preferredLanguage, _confirmationCode));
     }
 
     private UserRegistration() {}

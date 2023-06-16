@@ -28,10 +28,19 @@ internal class RegisterNewUserCommandValidator : Validator<RegisterNewUserComman
             .NotNull()
             .NotEmpty()
             .WithMessage("Please provide Your name");
+
+        RuleFor(c => c.Country)
+            .NotNull()
+            .NotEmpty()
+            .WithMessage("Country field is required")
+            .Matches(@"^[A-Z]{2}$")
+            .WithMessage("Country should contain exactly 2 uppercase letters");
         
         RuleFor(c => c.PreferredLanguage)
             .NotNull()
             .NotEmpty()
-            .WithMessage("Preferred language field is required");
+            .WithMessage("Preferred language field is required")
+            .Matches(@"^[a-z]{2}$")
+            .WithMessage("Preferred language should contain exactly 2 lowercase letters");
     }
 }

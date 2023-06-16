@@ -24,7 +24,8 @@ public class AuthenticateUserCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
 
         var tokens = await UserAccessModule.ExecuteCommandAsync(
@@ -55,7 +56,8 @@ public class AuthenticateUserCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
         
         Assert.That(async () =>
@@ -71,7 +73,8 @@ public class AuthenticateUserCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
         await DeactivateUser(userId);
         

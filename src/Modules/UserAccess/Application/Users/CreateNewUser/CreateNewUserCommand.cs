@@ -15,12 +15,15 @@ public class CreateNewUserCommand : CommandBase<Guid>
     public string Name { get; }
     
     public string Role { get; }
+    
+    public string Country { get; }
 
-    public CreateNewUserCommand(string email, string password, string name, string role)
+    public CreateNewUserCommand(string email, string password, string name, string role, string country)
     {
         Email = email;
         Password = password;
         Name = name;
         Role = role;
+        Country = country;
     }
 }
