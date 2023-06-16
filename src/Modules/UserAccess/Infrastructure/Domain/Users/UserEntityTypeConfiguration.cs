@@ -28,6 +28,11 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             b.HasKey("UserId", "Value");
         });
         
+        builder.OwnsOne<Country>("_country", b =>
+        {
+            b.Property(x => x.Value).HasColumnName("country");
+        });
+        
         builder.OwnsOne<Language>("_preferredLanguage", b =>
         {
             b.Property(x => x.Value).HasColumnName("preferred_language");
