@@ -30,6 +30,7 @@ public class UserRegistrationsTests : UnitTestBase
         Assert.That(newUserRegisteredDomainEvent.UserRegistrationId, Is.EqualTo(userRegistration.Id));
         Assert.That(newUserRegisteredDomainEvent.Email, Is.EqualTo("test@email.com"));
         Assert.That(newUserRegisteredDomainEvent.Name, Is.EqualTo("Name"));
+        Assert.That(newUserRegisteredDomainEvent.Country, Is.EqualTo(Country.From("PL")));
         Assert.That(newUserRegisteredDomainEvent.PreferredLanguage, Is.EqualTo(Language.From("en")));
         Assert.That(newUserRegisteredDomainEvent.ConfirmationCode, Is.EqualTo(ConfirmationCode.From("ABC123")));
     }
