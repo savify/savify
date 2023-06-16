@@ -16,8 +16,9 @@ public class ConfirmUserRegistrationTests : TestBase
     {
         var userRegistrationId = await UserAccessModule.ExecuteCommandAsync(new RegisterNewUserCommand(
             "test@email.com",
-            "test",
+            "Test1234!",
             "Name",
+            "PL",
             "en"
             ));
         string confirmationCode = await GetUserRegistrationConfirmationCode(userRegistrationId);

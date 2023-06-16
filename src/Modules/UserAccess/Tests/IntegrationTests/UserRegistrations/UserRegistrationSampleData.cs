@@ -8,7 +8,9 @@ public class UserRegistrationSampleData
 
     public static string Name = "Test";
     
-    public static string PlainPassword = "password";
+    public static string PlainPassword = "Test1234!";
 
+    public static Country Country = Country.From("PL");
+    
     public static Language PreferredLanguage = Language.From("en");
 }

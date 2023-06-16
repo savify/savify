@@ -24,7 +24,8 @@ public class AuthenticateUserByUserIdCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
 
         var tokens = await UserAccessModule.ExecuteCommandAsync(new AuthenticateUserByUserIdCommand(userId));
@@ -51,7 +52,8 @@ public class AuthenticateUserByUserIdCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
         await DeactivateUser(userId);
         

@@ -18,6 +18,7 @@ public class UserTests : UnitTestBase
             "hashed_password",
             "Test",
             UserRole.User, 
+            Country.From("PL"),
             usersCounter);
         
         var userCreatedDomainEvent = AssertPublishedDomainEvent<UserCreatedDomainEvent>(user);
@@ -39,6 +40,7 @@ public class UserTests : UnitTestBase
             "hashed_password",
             "Test",
             UserRole.User, 
+            Country.From("PL"),
             usersCounter));
     }
     
@@ -53,6 +55,7 @@ public class UserTests : UnitTestBase
             "hashed_password",
             "Test",
             UserRole.User, 
+            Country.From("PL"),
             usersCounter);
         
         user.SetNewPassword("hashed_password");

@@ -21,6 +21,7 @@ public class UserRegistrationsTests : UnitTestBase
             "test@email.com",
             "password",
             "Name",
+            Country.From("PL"),
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
@@ -45,6 +46,7 @@ public class UserRegistrationsTests : UnitTestBase
                 "test@email.com",
                 "password",
                 "Name",
+                Country.From("PL"),
                 Language.From("en"),
                 ConfirmationCode.From("ABC123"),
                 usersCounter); 
@@ -61,6 +63,7 @@ public class UserRegistrationsTests : UnitTestBase
             "test@email.com",
             "password",
             "Name",
+            Country.From("PL"),
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
@@ -84,6 +87,7 @@ public class UserRegistrationsTests : UnitTestBase
             "test@email.com",
             "password",
             "Name",
+            Country.From("PL"),
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
@@ -106,6 +110,7 @@ public class UserRegistrationsTests : UnitTestBase
             "test@email.com",
             "password",
             "Name",
+            Country.From("PL"),
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
@@ -126,6 +131,7 @@ public class UserRegistrationsTests : UnitTestBase
             "test@email.com",
             "password",
             "Name",
+            Country.From("PL"),
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
@@ -150,6 +156,7 @@ public class UserRegistrationsTests : UnitTestBase
             "test@email.com",
             "password",
             "Name",
+            Country.From("PL"),
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
@@ -172,6 +179,7 @@ public class UserRegistrationsTests : UnitTestBase
             "test@email.com",
             "password",
             "Name",
+            Country.From("PL"),
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
@@ -198,6 +206,7 @@ public class UserRegistrationsTests : UnitTestBase
             "test@email.com",
             "password",
             "Name",
+            Country.From("PL"),
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);

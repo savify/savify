@@ -17,7 +17,8 @@ public class GetUserPermissionsTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
 
         var permissions = await UserAccessModule.ExecuteQueryAsync(new GetUserPermissionsQuery(userId));

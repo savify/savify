@@ -22,7 +22,8 @@ public class RefreshTokensCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
         
         var tokens = await UserAccessModule.ExecuteCommandAsync(
@@ -43,7 +44,8 @@ public class RefreshTokensCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
 
         Assert.That(async () => await UserAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(userId, "token")), 
@@ -57,7 +59,8 @@ public class RefreshTokensCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
         
         await UserAccessModule.ExecuteCommandAsync(new AuthenticateUserCommand(UserSampleData.Email, UserSampleData.PlainPassword));
@@ -73,7 +76,8 @@ public class RefreshTokensCommandTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
         
         var tokens = await UserAccessModule.ExecuteCommandAsync(new AuthenticateUserCommand(UserSampleData.Email, UserSampleData.PlainPassword));

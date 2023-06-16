@@ -17,7 +17,8 @@ public class UsersCounterTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
 
         var count = usersCounter.CountUsersWithEmail(UserSampleData.Email);

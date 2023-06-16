@@ -18,7 +18,8 @@ public class UserDetailsProviderTests : TestBase
             UserSampleData.Email,
             UserSampleData.PlainPassword,
             UserSampleData.Name,
-            UserSampleData.Role.Value
+            UserSampleData.Role.Value,
+            UserSampleData.Country.Value
         ));
 
         var providedUserId = userDetailsProvider.ProvideUserIdByEmail(UserSampleData.Email);
