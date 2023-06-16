@@ -25,6 +25,7 @@ internal class CreateNewUserCommandHandler : ICommandHandler<CreateNewUserComman
             password,
             command.Name,
             UserRole.From(command.Role),
+            Country.From(command.Country),
             _usersCounter);
 
         await _userRepository.AddAsync(user);
