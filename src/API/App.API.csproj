@@ -28,4 +28,19 @@
       <ProjectReference Include="..\Modules\UserAccess\Infrastructure\App.Modules.UserAccess.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="Resources\Modules\Notifications\Templates\Emails\password_reset.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="Resources\Modules\Notifications\Templates\Emails\registration_confirmation.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="Resources\Modules\Notifications\Templates\Emails\registration_confirmed.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="Resources\Modules\Notifications\Templates\Emails\registration_renewal.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
