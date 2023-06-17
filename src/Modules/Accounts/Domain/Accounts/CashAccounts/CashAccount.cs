@@ -32,7 +32,7 @@ public class CashAccount : Entity, IAggregateRoot
         _balance = balance;
         _createdAt = DateTime.UtcNow;
         
-        AddDomainEvent(new CashAccountAddedDomainEvent(Id, _currency));
+        AddDomainEvent(new CashAccountAddedDomainEvent(Id, UserId, _currency));
     }
 
     private CashAccount() {}
