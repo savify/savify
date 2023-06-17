@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Domain;
+using App.Modules.Accounts.Domain.Accounts.CashAccounts.Events;
 using App.Modules.Accounts.Domain.Users;
 
 namespace App.Modules.Accounts.Domain.Accounts.CashAccounts;
@@ -30,6 +31,8 @@ public class CashAccount : Entity, IAggregateRoot
         _currency = currency;
         _balance = balance;
         _createdAt = DateTime.UtcNow;
+        
+        AddDomainEvent(new CashAccountAddedDomainEvent(Id, _currency));
     }
 
     private CashAccount() {}
