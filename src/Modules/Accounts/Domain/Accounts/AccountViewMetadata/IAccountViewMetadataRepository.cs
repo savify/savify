@@ -4,5 +4,5 @@ public interface IAccountViewMetadataRepository
 {
     Task AddAsync(AccountViewMetadata accountViewMetadata);
 
-    Task<AccountViewMetadata> GetByAccountIdAsync(AccountId id);
+    Task<AccountViewMetadata> GetByAccountIdAsync(AccountId accountId);
 }
