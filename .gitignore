@@ -9,3 +9,12 @@ docs/C4/plantuml-icon-font-sprites
 src/API/tempkey.jwk
 .env
 .vs/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln.DotSettings
+*.csproj.DotSettings

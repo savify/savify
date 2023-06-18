@@ -3,6 +3,7 @@ using System;
 using App.Modules.Accounts.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.Accounts.Infrastructure.Migrations
 {
     [DbContext(typeof(AccountsContext))]
-    partial class AccountsContextModelSnapshot : ModelSnapshot
+    [Migration("20230618125110_AddDebitAccounts")]
+    partial class AddDebitAccounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,40 +143,8 @@ namespace App.Modules.Accounts.Infrastructure.Migrations
 
                     b.ToTable("cash_accounts", "accounts");
                 });
-                
-            modelBuilder.Entity("App.Modules.Accounts.Domain.Accounts.CreditAccounts.CreditAccount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.Property<int>("_availableBalance")
-                        .HasColumnType("integer")
-                        .HasColumnName("available_balance");
-                        
-                    b.Property<int>("_creditLimit")
-                        .HasColumnType("integer")
-                        .HasColumnName("credit_limit");
-
-                    b.Property<DateTime>("_createdAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("_title")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("title");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("credit_accounts", "accounts");
-                });
-                
-          modelBuilder.Entity("App.Modules.Accounts.Domain.Accounts.DebitAccounts.DebitAccount", b =>
+            modelBuilder.Entity("App.Modules.Accounts.Domain.Accounts.DebitAccounts.DebitAccount", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -223,31 +194,8 @@ namespace App.Modules.Accounts.Infrastructure.Migrations
 
                     b.Navigation("_currency");
                 });
-                
-          modelBuilder.Entity("App.Modules.Accounts.Domain.Accounts.CreditAccounts.CreditAccount", b =>
-                {
-                    b.OwnsOne("App.Modules.Accounts.Domain.Accounts.Currency", "_currency", b1 =>
-                        {
-                            b1.Property<Guid>("CreditAccountId")
-                                .HasColumnType("uuid");
 
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("currency");
-
-                            b1.HasKey("CreditAccountId");
-
-                            b1.ToTable("credit_accounts", "accounts");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CreditAccountId");
-                        });
-
-                    b.Navigation("_currency");
-                });
-                
-          modelBuilder.Entity("App.Modules.Accounts.Domain.Accounts.DebitAccounts.DebitAccount", b =>
+            modelBuilder.Entity("App.Modules.Accounts.Domain.Accounts.DebitAccounts.DebitAccount", b =>
                 {
                     b.OwnsOne("App.Modules.Accounts.Domain.Accounts.Currency", "_currency", b1 =>
                         {
