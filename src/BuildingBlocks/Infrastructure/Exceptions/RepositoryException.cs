@@ -8,18 +8,18 @@ public class RepositoryException : Exception
     
     public object[] MessageArguments;
     
-    public RepositoryException(string messageTemplate, Type objectType, Guid objectId)
+    public RepositoryException(string messageTemplate, Type objectType)
     {
         MessageTemplate = messageTemplate;
-        MessageArguments = new object[] { objectType, objectId };
+        MessageArguments = new object[] { objectType };
     }
 }
 
 public class RepositoryException<T> : RepositoryException
 {
-    public RepositoryException(string messageTemplate, Guid objectId) : base(messageTemplate, typeof(T), objectId)
+    public RepositoryException(string messageTemplate) : base(messageTemplate, typeof(T))
     {
         MessageTemplate = messageTemplate;
-        MessageArguments = new object[] { typeof(T), objectId };
+        MessageArguments = new object[] { typeof(T) };
     }
 }

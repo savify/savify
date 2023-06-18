@@ -32,6 +32,15 @@ public class UserNotificationSettingsRepository : IUserNotificationSettingsRepos
 
     public async Task<Notifications.Domain.UserNotificationSettings.UserNotificationSettings> GetByUserEmailAsync(string email)
     {
-        return await _notificationsContext.UserNotificationSettings.FirstOrDefaultAsync(x => x.Email == email);
+        var userNotificationSettings = await _notificationsContext.UserNotificationSettings.FirstOrDefaultAsync(x => x.Email == email);
+        
+        if (userNotificationSettings == null)
+        {
+            throw new NotFoundRepositoryException<Notifications.Domain.UserNotificationSettings.UserNotificationSettings>(
+                "UserNotificationSettings for user with email '{0}' was not found", 
+                new object[]{ email });
+        }
+
+        return userNotificationSettings;
     }
 }
