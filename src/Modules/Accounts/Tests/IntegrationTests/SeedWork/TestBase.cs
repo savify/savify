@@ -54,8 +54,9 @@ public class TestBase
     {
         const string sql = "DELETE FROM accounts.internal_commands; " +
                            "DELETE FROM accounts.outbox_messages; " +
+                           "DELETE FROM accounts.inbox_messages; " +
                            "DELETE FROM accounts.cash_accounts; " +
-                           "DELETE FROM accounts.inbox_messages; ";
+                           "DELETE FROM accounts.debit_accounts;";
 
         await connection.ExecuteScalarAsync(sql);
     }
