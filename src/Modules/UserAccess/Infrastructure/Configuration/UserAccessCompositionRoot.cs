@@ -6,7 +6,7 @@ public class UserAccessCompositionRoot
 {
     private static IServiceProvider _serviceProvider;
     
-    internal static void SetServiceProvider(IServiceProvider serviceProvider)
+    public static void SetServiceProvider(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
