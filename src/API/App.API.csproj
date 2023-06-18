@@ -28,4 +28,10 @@
       <ProjectReference Include="..\Modules\UserAccess\Infrastructure\App.Modules.UserAccess.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="Resources\Modules\Notifications\Templates\Emails\*">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

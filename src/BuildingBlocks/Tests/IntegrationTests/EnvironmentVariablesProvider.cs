@@ -1,3 +1,5 @@
+using NUnit.Framework;
+
 namespace App.BuildingBlocks.Tests.IntegrationTests;
 
 public class EnvironmentVariablesProvider
@@ -18,6 +20,13 @@ public class EnvironmentVariablesProvider
             return environmentVariable;
         }
 
-        return Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
+        environmentVariable = Environment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.Machine);
+
+        if (!string.IsNullOrEmpty(environmentVariable))
+        {
+            return environmentVariable;
+        }
+
+        return TestContext.Parameters.Get(variableName);
     }
 }

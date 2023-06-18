@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<TestRunParameters>
+		<Parameter name="ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING" value="host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass" />
+		<Parameter name="ASPNETCORE_ENVIRONMENT" value="Testing" />
+	</TestRunParameters>
+</RunSettings>

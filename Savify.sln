@@ -67,6 +67,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{29792374
 		Makefile = Makefile
 		README.md = README.md
 		Savify.sln.DotSettings.user = Savify.sln.DotSettings.user
+		TestSettings.runsettings = TestSettings.runsettings
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{EA2D5034-E5D8-4660-ADAC-52599317D4AB}"

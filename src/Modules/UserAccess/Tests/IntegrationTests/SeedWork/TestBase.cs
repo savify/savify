@@ -1,6 +1,8 @@
 using System.Data;
 using App.API;
+using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Infrastructure.Configuration;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
 using Dapper;
 using MediatR;
@@ -20,11 +22,20 @@ public class TestBase
     [OneTimeSetUp]
     public void Init()
     {
+        const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
+        ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
+        
+        if (ConnectionString == null)
+        {
+            throw new ApplicationException(
+                $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
+        }
+        
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
         
         using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
-        ConnectionString = WebApplicationFactory.ConnectionString;
+        UserAccessCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
     }
 
     [SetUp]

@@ -26,10 +26,4 @@
         <ProjectReference Include="..\..\Infrastructure\App.Modules.Notifications.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="..\..\..\..\API\Resources\Modules\Notifications\Templates\**\*">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
 </Project>
