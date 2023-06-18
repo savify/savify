@@ -1,15 +1,10 @@
 ﻿using App.BuildingBlocks.Domain;
 using App.Modules.Accounts.Domain.Accounts.DebitAccounts.Events;
 using App.Modules.Accounts.Domain.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Modules.Accounts.Domain.Accounts.DebitAccounts
 {
-    internal class DebitAccount : Entity, IAggregateRoot
+    public class DebitAccount : Entity, IAggregateRoot
     {
         public AccountId Id { get; private set; }
 
