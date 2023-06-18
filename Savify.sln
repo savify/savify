@@ -1,60 +1,87 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BuildingBlocks.Domain", "src\BuildingBlocks\Domain\App.BuildingBlocks.Domain.csproj", "{42E66F17-FB61-4558-938E-7835E9BDB0F1}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.BuildingBlocks.Domain", "src\BuildingBlocks\Domain\App.BuildingBlocks.Domain.csproj", "{42E66F17-FB61-4558-938E-7835E9BDB0F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BuildingBlocks.Application", "src\BuildingBlocks\Application\App.BuildingBlocks.Application.csproj", "{CEEDAE42-D972-47A0-911A-9755898CA368}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.BuildingBlocks.Application", "src\BuildingBlocks\Application\App.BuildingBlocks.Application.csproj", "{CEEDAE42-D972-47A0-911A-9755898CA368}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BuildingBlocks.Infrastructure", "src\BuildingBlocks\Infrastructure\App.BuildingBlocks.Infrastructure.csproj", "{B66FDADC-7420-412A-A3B5-44AAD89F1245}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.BuildingBlocks.Infrastructure", "src\BuildingBlocks\Infrastructure\App.BuildingBlocks.Infrastructure.csproj", "{B66FDADC-7420-412A-A3B5-44AAD89F1245}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BuildingBlocks.Integration", "src\BuildingBlocks\Integration\App.BuildingBlocks.Integration.csproj", "{3254F9ED-B4B6-48AD-B523-E45B16BBD778}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.BuildingBlocks.Integration", "src\BuildingBlocks\Integration\App.BuildingBlocks.Integration.csproj", "{3254F9ED-B4B6-48AD-B523-E45B16BBD778}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BuildingBlocks.Tests", "src\BuildingBlocks\Tests\App.BuildingBlocks.Tests.csproj", "{F5B7C9AD-90DA-469E-8C93-2F93DFB521B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.BuildingBlocks.Tests", "src\BuildingBlocks\Tests\App.BuildingBlocks.Tests.csproj", "{F5B7C9AD-90DA-469E-8C93-2F93DFB521B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.API", "src\API\App.API.csproj", "{BA87C69C-C08D-467F-BE00-13D92A518C33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.API", "src\API\App.API.csproj", "{BA87C69C-C08D-467F-BE00-13D92A518C33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.Domain", "src\Modules\UserAccess\Domain\App.Modules.UserAccess.Domain.csproj", "{B7C754A4-EAAC-479F-888A-690311C40DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.UserAccess.Domain", "src\Modules\UserAccess\Domain\App.Modules.UserAccess.Domain.csproj", "{B7C754A4-EAAC-479F-888A-690311C40DC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.Application", "src\Modules\UserAccess\Application\App.Modules.UserAccess.Application.csproj", "{18AE7BFC-A7F7-4EEC-ABB6-C4E1D43849F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.UserAccess.Application", "src\Modules\UserAccess\Application\App.Modules.UserAccess.Application.csproj", "{18AE7BFC-A7F7-4EEC-ABB6-C4E1D43849F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.Infrastructure", "src\Modules\UserAccess\Infrastructure\App.Modules.UserAccess.Infrastructure.csproj", "{CA101363-2177-4B85-9DC8-C6F7CC85931E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.UserAccess.Infrastructure", "src\Modules\UserAccess\Infrastructure\App.Modules.UserAccess.Infrastructure.csproj", "{CA101363-2177-4B85-9DC8-C6F7CC85931E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.IntegrationEvents", "src\Modules\UserAccess\IntegrationEvents\App.Modules.UserAccess.IntegrationEvents.csproj", "{A2703147-DB6F-44EA-A84F-AF6433C7EE64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.UserAccess.IntegrationEvents", "src\Modules\UserAccess\IntegrationEvents\App.Modules.UserAccess.IntegrationEvents.csproj", "{A2703147-DB6F-44EA-A84F-AF6433C7EE64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.ArchTests", "src\Modules\UserAccess\Tests\ArchTests\App.Modules.UserAccess.ArchTests.csproj", "{6EB89093-D1D6-4930-ABF2-3C5530338FC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.UserAccess.ArchTests", "src\Modules\UserAccess\Tests\ArchTests\App.Modules.UserAccess.ArchTests.csproj", "{6EB89093-D1D6-4930-ABF2-3C5530338FC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.UnitTests", "src\Modules\UserAccess\Tests\UnitTests\App.Modules.UserAccess.UnitTests.csproj", "{A0CC105C-2927-43B7-AA71-52636709BD3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.UserAccess.UnitTests", "src\Modules\UserAccess\Tests\UnitTests\App.Modules.UserAccess.UnitTests.csproj", "{A0CC105C-2927-43B7-AA71-52636709BD3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.UserAccess.IntegrationTests", "src\Modules\UserAccess\Tests\IntegrationTests\App.Modules.UserAccess.IntegrationTests.csproj", "{1F452E65-B0F6-4C60-BCDD-F6EB36179C8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.UserAccess.IntegrationTests", "src\Modules\UserAccess\Tests\IntegrationTests\App.Modules.UserAccess.IntegrationTests.csproj", "{1F452E65-B0F6-4C60-BCDD-F6EB36179C8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Notifications.Domain", "src\Modules\Notifications\Domain\App.Modules.Notifications.Domain.csproj", "{93BC766A-7E65-4AE2-9BD2-95BAD035C8CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Notifications.Domain", "src\Modules\Notifications\Domain\App.Modules.Notifications.Domain.csproj", "{93BC766A-7E65-4AE2-9BD2-95BAD035C8CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Notifications.Application", "src\Modules\Notifications\Application\App.Modules.Notifications.Application.csproj", "{E4DC4E19-7E75-48A5-A71B-6211AC8F555F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Notifications.Application", "src\Modules\Notifications\Application\App.Modules.Notifications.Application.csproj", "{E4DC4E19-7E75-48A5-A71B-6211AC8F555F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Notifications.Infrastructure", "src\Modules\Notifications\Infrastructure\App.Modules.Notifications.Infrastructure.csproj", "{C4459062-36E6-46D1-A862-371D619036A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Notifications.Infrastructure", "src\Modules\Notifications\Infrastructure\App.Modules.Notifications.Infrastructure.csproj", "{C4459062-36E6-46D1-A862-371D619036A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Notifications.ArchTests", "src\Modules\Notifications\Tests\ArchTests\App.Modules.Notifications.ArchTests.csproj", "{F8A6100E-849A-48CB-9163-5F6784E03FCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Notifications.ArchTests", "src\Modules\Notifications\Tests\ArchTests\App.Modules.Notifications.ArchTests.csproj", "{F8A6100E-849A-48CB-9163-5F6784E03FCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Notifications.UnitTests", "src\Modules\Notifications\Tests\UnitTests\App.Modules.Notifications.UnitTests.csproj", "{E7CD8FD6-299E-4E59-8FAB-1DBC6BB40E85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Notifications.UnitTests", "src\Modules\Notifications\Tests\UnitTests\App.Modules.Notifications.UnitTests.csproj", "{E7CD8FD6-299E-4E59-8FAB-1DBC6BB40E85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Notifications.IntegrationTests", "src\Modules\Notifications\Tests\IntegrationTests\App.Modules.Notifications.IntegrationTests.csproj", "{0D46C2F2-F49C-468E-8369-DA790387891B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Notifications.IntegrationTests", "src\Modules\Notifications\Tests\IntegrationTests\App.Modules.Notifications.IntegrationTests.csproj", "{0D46C2F2-F49C-468E-8369-DA790387891B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.IntegrationTests", "src\Tests\IntegrationTests\App.IntegrationTests.csproj", "{C868F983-CD9F-47F5-B70F-EF12DA50901B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.IntegrationTests", "src\Tests\IntegrationTests\App.IntegrationTests.csproj", "{C868F983-CD9F-47F5-B70F-EF12DA50901B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.ArchTests", "src\Tests\ArchTests\App.ArchTests.csproj", "{204158C0-0EAE-4149-B51C-E260DD32600A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ArchTests", "src\Tests\ArchTests\App.ArchTests.csproj", "{204158C0-0EAE-4149-B51C-E260DD32600A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Accounts.Domain", "src\Modules\Accounts\Domain\App.Modules.Accounts.Domain.csproj", "{1989E0F4-4E90-4FD1-AF5A-8DBE28CF8D70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.Domain", "src\Modules\Accounts\Domain\App.Modules.Accounts.Domain.csproj", "{1989E0F4-4E90-4FD1-AF5A-8DBE28CF8D70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Accounts.Application", "src\Modules\Accounts\Application\App.Modules.Accounts.Application.csproj", "{EA90608A-407B-408B-A389-0A0723B51C36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.Application", "src\Modules\Accounts\Application\App.Modules.Accounts.Application.csproj", "{EA90608A-407B-408B-A389-0A0723B51C36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Accounts.Infrastructure", "src\Modules\Accounts\Infrastructure\App.Modules.Accounts.Infrastructure.csproj", "{9F0E7C77-9CFE-40C5-A07A-2014CFFD20D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.Infrastructure", "src\Modules\Accounts\Infrastructure\App.Modules.Accounts.Infrastructure.csproj", "{9F0E7C77-9CFE-40C5-A07A-2014CFFD20D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Accounts.UnitTests", "src\Modules\Accounts\Tests\UnitTests\App.Modules.Accounts.UnitTests.csproj", "{F205E861-02F5-4646-8330-0B413BA3DDA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.UnitTests", "src\Modules\Accounts\Tests\UnitTests\App.Modules.Accounts.UnitTests.csproj", "{F205E861-02F5-4646-8330-0B413BA3DDA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Accounts.IntegrationTests", "src\Modules\Accounts\Tests\IntegrationTests\App.Modules.Accounts.IntegrationTests.csproj", "{8CEE6006-A35D-4526-8357-237A095B852F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.IntegrationTests", "src\Modules\Accounts\Tests\IntegrationTests\App.Modules.Accounts.IntegrationTests.csproj", "{8CEE6006-A35D-4526-8357-237A095B852F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Accounts.ArchTests", "src\Modules\Accounts\Tests\ArchTests\App.Modules.Accounts.ArchTests.csproj", "{31E123CF-41B0-4892-938E-00B63EF1562F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.ArchTests", "src\Modules\Accounts\Tests\ArchTests\App.Modules.Accounts.ArchTests.csproj", "{31E123CF-41B0-4892-938E-00B63EF1562F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Accounts.IntegrationEvents", "src\Modules\Accounts\IntegrationEvents\App.Modules.Accounts.IntegrationEvents.csproj", "{3BB7A987-7C3C-4356-9394-982A0BE0E606}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.IntegrationEvents", "src\Modules\Accounts\IntegrationEvents\App.Modules.Accounts.IntegrationEvents.csproj", "{3BB7A987-7C3C-4356-9394-982A0BE0E606}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{29792374-3E5F-485C-90CD-773DAA420286}"
+	ProjectSection(SolutionItems) = preProject
+		.env.test = .env.test
+		.gitignore = .gitignore
+		docker-compose.yaml = docker-compose.yaml
+		Makefile = Makefile
+		README.md = README.md
+		Savify.sln.DotSettings.user = Savify.sln.DotSettings.user
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{EA2D5034-E5D8-4660-ADAC-52599317D4AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{A61200F0-9CB5-493E-80A0-42D181829F3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Accounts", "Accounts", "{9CF68908-D6CC-4AC7-9AB9-676E8632FF56}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{614AA553-EB57-47CC-BBCF-E94373C917DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserAccess", "UserAccess", "{F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E7279069-FA67-42DC-B1AA-02F963BAA432}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,5 +201,44 @@ Global
 		{3BB7A987-7C3C-4356-9394-982A0BE0E606}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BB7A987-7C3C-4356-9394-982A0BE0E606}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BB7A987-7C3C-4356-9394-982A0BE0E606}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{42E66F17-FB61-4558-938E-7835E9BDB0F1} = {A61200F0-9CB5-493E-80A0-42D181829F3A}
+		{CEEDAE42-D972-47A0-911A-9755898CA368} = {A61200F0-9CB5-493E-80A0-42D181829F3A}
+		{B66FDADC-7420-412A-A3B5-44AAD89F1245} = {A61200F0-9CB5-493E-80A0-42D181829F3A}
+		{3254F9ED-B4B6-48AD-B523-E45B16BBD778} = {A61200F0-9CB5-493E-80A0-42D181829F3A}
+		{F5B7C9AD-90DA-469E-8C93-2F93DFB521B7} = {A61200F0-9CB5-493E-80A0-42D181829F3A}
+		{BA87C69C-C08D-467F-BE00-13D92A518C33} = {EA2D5034-E5D8-4660-ADAC-52599317D4AB}
+		{B7C754A4-EAAC-479F-888A-690311C40DC4} = {F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}
+		{18AE7BFC-A7F7-4EEC-ABB6-C4E1D43849F9} = {F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}
+		{CA101363-2177-4B85-9DC8-C6F7CC85931E} = {F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}
+		{A2703147-DB6F-44EA-A84F-AF6433C7EE64} = {F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}
+		{6EB89093-D1D6-4930-ABF2-3C5530338FC8} = {F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}
+		{A0CC105C-2927-43B7-AA71-52636709BD3D} = {F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}
+		{1F452E65-B0F6-4C60-BCDD-F6EB36179C8F} = {F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}
+		{93BC766A-7E65-4AE2-9BD2-95BAD035C8CF} = {614AA553-EB57-47CC-BBCF-E94373C917DA}
+		{E4DC4E19-7E75-48A5-A71B-6211AC8F555F} = {614AA553-EB57-47CC-BBCF-E94373C917DA}
+		{C4459062-36E6-46D1-A862-371D619036A5} = {614AA553-EB57-47CC-BBCF-E94373C917DA}
+		{F8A6100E-849A-48CB-9163-5F6784E03FCA} = {614AA553-EB57-47CC-BBCF-E94373C917DA}
+		{E7CD8FD6-299E-4E59-8FAB-1DBC6BB40E85} = {614AA553-EB57-47CC-BBCF-E94373C917DA}
+		{0D46C2F2-F49C-468E-8369-DA790387891B} = {614AA553-EB57-47CC-BBCF-E94373C917DA}
+		{C868F983-CD9F-47F5-B70F-EF12DA50901B} = {E7279069-FA67-42DC-B1AA-02F963BAA432}
+		{204158C0-0EAE-4149-B51C-E260DD32600A} = {E7279069-FA67-42DC-B1AA-02F963BAA432}
+		{1989E0F4-4E90-4FD1-AF5A-8DBE28CF8D70} = {9CF68908-D6CC-4AC7-9AB9-676E8632FF56}
+		{EA90608A-407B-408B-A389-0A0723B51C36} = {9CF68908-D6CC-4AC7-9AB9-676E8632FF56}
+		{9F0E7C77-9CFE-40C5-A07A-2014CFFD20D3} = {9CF68908-D6CC-4AC7-9AB9-676E8632FF56}
+		{F205E861-02F5-4646-8330-0B413BA3DDA8} = {9CF68908-D6CC-4AC7-9AB9-676E8632FF56}
+		{8CEE6006-A35D-4526-8357-237A095B852F} = {9CF68908-D6CC-4AC7-9AB9-676E8632FF56}
+		{31E123CF-41B0-4892-938E-00B63EF1562F} = {9CF68908-D6CC-4AC7-9AB9-676E8632FF56}
+		{3BB7A987-7C3C-4356-9394-982A0BE0E606} = {9CF68908-D6CC-4AC7-9AB9-676E8632FF56}
+		{9CF68908-D6CC-4AC7-9AB9-676E8632FF56} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
+		{614AA553-EB57-47CC-BBCF-E94373C917DA} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
+		{F1A35675-89C9-4F73-AAA3-FAF5B1212FCB} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F51F7F7A-D302-4F30-97E8-A4EBC860CF6F}
 	EndGlobalSection
 EndGlobal
