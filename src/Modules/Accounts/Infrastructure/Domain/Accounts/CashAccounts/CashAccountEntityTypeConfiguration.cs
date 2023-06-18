@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Modules.Accounts.Infrastructure.Domain.Accounts.CashAccounts;
 
-public class CashAccountEntityTypeConfiguration : IEntityTypeConfiguration<CashAccount>
+internal class CashAccountEntityTypeConfiguration : IEntityTypeConfiguration<CashAccount>
 {
     public void Configure(EntityTypeBuilder<CashAccount> builder)
     {
