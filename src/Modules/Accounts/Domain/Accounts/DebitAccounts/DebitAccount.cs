@@ -18,6 +18,11 @@ namespace App.Modules.Accounts.Domain.Accounts.DebitAccounts
 
         private DateTime _createdAt;
 
+        public static DebitAccount AddNew(UserId userId, string title, Currency currency, int balance = 0)
+        {
+            return new DebitAccount(userId, title, currency, balance);
+        }
+
         private DebitAccount(UserId userId, string title, Currency currency, int balance)
         {
             Id = new AccountId(Guid.NewGuid());
