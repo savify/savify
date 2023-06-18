@@ -34,5 +34,8 @@ namespace App.Modules.Accounts.Domain.Accounts.DebitAccounts
 
             AddDomainEvent(new DebitAccountAddedDomainEvent(Id, userId, _currency));
         }
+
+        private DebitAccount()
+        { }
     }
 }
