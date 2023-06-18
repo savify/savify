@@ -1,9 +1,13 @@
 using System.Data;
 using App.API;
+using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Modules.Notifications.Application.Contracts;
+using App.Modules.Notifications.Application.Emails;
+using App.Modules.Notifications.Infrastructure.Configuration;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using NSubstitute;
 
 namespace App.Modules.Notifications.IntegrationTests.SeedWork;
 
@@ -15,14 +19,26 @@ public class TestBase
     
     protected string ConnectionString { get; private set; }
 
+    protected IEmailSender EmailSender { get; private set; }
+
     [OneTimeSetUp]
     public void Init()
     {
-        WebApplicationFactory = new CustomWebApplicationFactory<Program>();
+        const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
+        ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
+        
+        if (ConnectionString == null)
+        {
+            throw new ApplicationException(
+                $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
+        }
+        
+        EmailSender = Substitute.For<IEmailSender>();
+        WebApplicationFactory = new CustomWebApplicationFactory<Program>(EmailSender);
         
         using var scope = WebApplicationFactory.Services.CreateScope();
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
-        ConnectionString = WebApplicationFactory.ConnectionString;
+        NotificationsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
     }
 
     [SetUp]

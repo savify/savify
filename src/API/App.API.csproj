@@ -29,16 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Resources\Modules\Notifications\Templates\Emails\password_reset.cshtml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="Resources\Modules\Notifications\Templates\Emails\registration_confirmation.cshtml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="Resources\Modules\Notifications\Templates\Emails\registration_confirmed.cshtml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="Resources\Modules\Notifications\Templates\Emails\registration_renewal.cshtml">
+      <Content Update="Resources\Modules\Notifications\Templates\Emails\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
