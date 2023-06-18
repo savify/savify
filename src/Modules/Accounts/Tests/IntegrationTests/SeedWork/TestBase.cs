@@ -67,6 +67,7 @@ public class TestBase
                            "DELETE FROM accounts.outbox_messages; " +
                            "DELETE FROM accounts.inbox_messages; " +
                            "DELETE FROM accounts.cash_accounts; " +
+                           "DELETE FROM accounts.credit_accounts; " +
                            "DELETE FROM accounts.debit_accounts;";
 
         await connection.ExecuteScalarAsync(sql);
