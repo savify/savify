@@ -3,7 +3,7 @@ using App.Modules.Accounts.Domain.Users;
 
 namespace App.Modules.Accounts.Domain.Accounts.DebitAccounts.Events
 {
-    internal class DebitAccountAddedDomainEvent : DomainEventBase
+    public class DebitAccountAddedDomainEvent : DomainEventBase
     {
         public AccountId AccountId { get; }
 
