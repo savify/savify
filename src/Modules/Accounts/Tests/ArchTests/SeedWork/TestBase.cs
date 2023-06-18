@@ -1,13 +1,13 @@
 using System.Reflection;
 using App.Modules.Accounts.Application.Contracts;
-using App.Modules.Accounts.Domain.Accounts;
+using App.Modules.Accounts.Domain.Accounts.CashAccounts;
 using App.Modules.Accounts.Infrastructure;
 
 namespace App.Modules.Accounts.ArchTests.SeedWork;
 
 public abstract class TestBase
 {
-    protected static Assembly DomainAssembly => typeof(Account).Assembly;
+    protected static Assembly DomainAssembly => typeof(CashAccount).Assembly;
 
     protected static Assembly ApplicationAssembly => typeof(CommandBase).Assembly;
     

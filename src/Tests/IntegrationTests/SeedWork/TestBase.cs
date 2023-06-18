@@ -66,6 +66,7 @@ public class TestBase
     
     private static async Task ClearDatabase(IDbConnection connection)
     {
+        // TODO: move to some external class/sql file
         const string sql = "DELETE FROM user_access.outbox_messages; " +
                            "DELETE FROM user_access.roles_permissions; " +
                            "DELETE FROM user_access.users; " +
@@ -78,7 +79,11 @@ public class TestBase
                            "DELETE FROM user_access.refresh_tokens; " +
                            "DELETE FROM notifications.inbox_messages; " +
                            "DELETE FROM notifications.internal_commands; " +
-                           "DELETE FROM notifications.user_notification_settings; ";
+                           "DELETE FROM notifications.user_notification_settings; " +
+                           "DELETE FROM accounts.internal_commands; " +
+                           "DELETE FROM accounts.outbox_messages; " +
+                           "DELETE FROM accounts.cash_accounts; " +
+                           "DELETE FROM accounts.inbox_messages; ";
 
         await connection.ExecuteScalarAsync(sql);
     }
