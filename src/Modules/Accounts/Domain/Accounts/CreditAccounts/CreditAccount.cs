@@ -20,12 +20,12 @@ public class CreditAccount : Entity, IAggregateRoot
 
     private DateTime _createdAt;
 
-    public static CreditAccount AddNew(UserId userId, string title, int availableBalance, int creditLimit, Currency currency)
+    public static CreditAccount AddNew(UserId userId, string title, Currency currency, int creditLimit, int availableBalance)
     {
-        return new CreditAccount(userId, title, availableBalance, creditLimit, currency);
+        return new CreditAccount(userId, title, currency, creditLimit, availableBalance);
     }
 
-    private CreditAccount(UserId userId, string title, int availableBalance, int creditLimit, Currency currency)
+    private CreditAccount(UserId userId, string title, Currency currency, int creditLimit, int availableBalance)
     {
         Id = new AccountId(Guid.NewGuid());
         UserId = userId;
