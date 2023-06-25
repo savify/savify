@@ -12,10 +12,14 @@ public class AccountViewMetadata : Entity
     
     public bool IsConsideredInTotalBalance { get; private set; }
 
-    public static AccountViewMetadata CreateForAccount(AccountId accountId, string? color = null, string? icon = null,
-        bool isConsideredInTotalBalance = true)
+    public static AccountViewMetadata CreateForAccount(AccountId accountId, string color, string icon, bool isConsideredInTotalBalance)
     {
         return new AccountViewMetadata(accountId, color, icon, isConsideredInTotalBalance);
+    }
+
+    public static AccountViewMetadata CreateDefaultForAccount(AccountId accountId)
+    {
+        return CreateForAccount(accountId, color: null, icon: null, isConsideredInTotalBalance: true);
     }
     
     private AccountViewMetadata(AccountId accountId, string? color, string? icon, bool isConsideredInTotalBalance)

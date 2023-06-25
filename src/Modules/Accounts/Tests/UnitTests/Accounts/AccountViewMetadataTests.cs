@@ -10,7 +10,7 @@ public class AccountViewMetadataTests : UnitTestBase
     public void AddingAccountViewMetadata_WithDefaultValues_IsSuccessful()
     {
         var accountId = new AccountId(Guid.NewGuid());  
-        var accountViewMetadata = AccountViewMetadata.CreateForAccount(accountId);
+        var accountViewMetadata = AccountViewMetadata.CreateDefaultForAccount(accountId);
         
         Assert.That(accountViewMetadata.AccountId, Is.EqualTo(accountId));
         Assert.That(accountViewMetadata.Icon, Is.Null);
