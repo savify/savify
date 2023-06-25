@@ -1,9 +1,9 @@
 ﻿using App.BuildingBlocks.Domain;
 
 namespace App.Modules.Accounts.Domain.Investments;
-public class InvestmentId : TypedIdValueBase
+public class PortfolioId : TypedIdValueBase
 {
-    public InvestmentId(Guid value) : base(value)
+    public PortfolioId(Guid value) : base(value)
     {
     }
 }

@@ -10,8 +10,4 @@
       <ProjectReference Include="..\..\..\BuildingBlocks\Domain\App.BuildingBlocks.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Investments\InvestmentPortfolio\" />
-    </ItemGroup>
-
 </Project>
