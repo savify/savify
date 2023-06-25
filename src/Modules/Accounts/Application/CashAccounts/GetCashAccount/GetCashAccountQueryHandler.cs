@@ -16,7 +16,7 @@ internal class GetCashAccountQueryHandler : IQueryHandler<GetCashAccountQuery, C
     {
         using var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        string sql = "SELECT id, user_id As userId, title, currency, balance, created_at AS createdAt" +
+        string sql = "SELECT id, user_id As userId, title, currency, balance, created_at AS createdAt " +
                      "FROM accounts.cash_accounts " +
                      "WHERE id = @AccountId";
 
