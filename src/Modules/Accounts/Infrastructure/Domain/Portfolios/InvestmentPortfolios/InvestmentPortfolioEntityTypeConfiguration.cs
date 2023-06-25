@@ -22,6 +22,6 @@ internal class InvestmentPortfolioEntityTypeConfiguration : IEntityTypeConfigura
         builder.OwnsOne<Currency>("_currency", b =>
         {
             b.Property(currency => currency.Value).HasColumnName("currency");
-        })
+        });
     }
 }

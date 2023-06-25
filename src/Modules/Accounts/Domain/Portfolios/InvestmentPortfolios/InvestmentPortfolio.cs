@@ -33,4 +33,7 @@ public class InvestmentPortfolio : Entity, IAggregateRoot
 
         AddDomainEvent(new InvestmentPortfolioCreatedDomainEvent(Id, UserId, _currency));
     }
+
+    private InvestmentPortfolio()
+    { }
 }
