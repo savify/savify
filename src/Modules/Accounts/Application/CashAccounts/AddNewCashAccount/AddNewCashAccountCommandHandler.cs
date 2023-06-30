@@ -1,5 +1,6 @@
 ﻿using App.Modules.Accounts.Application.Configuration.Commands;
 using App.Modules.Accounts.Domain.Accounts;
+using App.Modules.Accounts.Domain.Accounts.AccountViewMetadata;
 using App.Modules.Accounts.Domain.Accounts.CashAccounts;
 using App.Modules.Accounts.Domain.Users;
 
@@ -7,11 +8,13 @@ namespace App.Modules.Accounts.Application.CashAccounts.AddNewCashAccount;
 
 internal class AddNewCashAccountCommandHandler : ICommandHandler<AddNewCashAccountCommand, Guid>
 {
-    private readonly ICashAccountRepository _repository;
+    private readonly ICashAccountRepository _cashAccountRepository;
+    private readonly IAccountViewMetadataRepository _accountViewMetadataRepository;
 
-    public AddNewCashAccountCommandHandler(ICashAccountRepository repository)
+    public AddNewCashAccountCommandHandler(ICashAccountRepository cashAccountRepository, IAccountViewMetadataRepository accountViewMetadataRepository)
     {
-        _repository = repository;
+        _cashAccountRepository = cashAccountRepository;
+        _accountViewMetadataRepository = accountViewMetadataRepository;
     }
 
     public async Task<Guid> Handle(AddNewCashAccountCommand request, CancellationToken cancellationToken)
@@ -22,7 +25,10 @@ internal class AddNewCashAccountCommandHandler : ICommandHandler<AddNewCashAccou
             Currency.From(request.Currency),
             request.Balance);
 
-        await _repository.AddAsync(cashAccount);
+        await _cashAccountRepository.AddAsync(cashAccount);
+
+        var viewMetadata = AccountViewMetadata.CreateDefaultForAccount(cashAccount.Id);
+        await _accountViewMetadataRepository.AddAsync(viewMetadata);
 
         return cashAccount.Id.Value;
     }
