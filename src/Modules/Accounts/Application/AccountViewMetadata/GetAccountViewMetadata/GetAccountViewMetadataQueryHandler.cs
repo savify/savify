@@ -17,7 +17,7 @@ internal class GetAccountViewMetadataQueryHandler : IQueryHandler<GetAccountView
     {
         using var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT account_id, color, icon, is_considered_in_total_balance " +
+        const string sql = "SELECT account_id as accountId, color, icon, is_considered_in_total_balance as isConsideredInTotalBalance " +
                            "FROM accounts.account_view_metadata " +
                            "WHERE account_id = @AccountId";
 
