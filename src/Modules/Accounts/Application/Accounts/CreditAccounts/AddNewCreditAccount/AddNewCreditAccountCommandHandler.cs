@@ -6,7 +6,7 @@ using App.Modules.Accounts.Domain.Users;
 
 namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
 
-public class AddNewCreditAccountCommandHandler : ICommandHandler<AddNewCreditAccountCommand, Guid>
+internal class AddNewCreditAccountCommandHandler : ICommandHandler<AddNewCreditAccountCommand, Guid>
 {
     private readonly ICreditAccountsRepository _creditAccountRepository;
     private readonly IAccountViewMetadataRepository _accountViewMetadataRepository;

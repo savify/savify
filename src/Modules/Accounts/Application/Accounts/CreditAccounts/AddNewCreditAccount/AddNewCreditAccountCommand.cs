@@ -4,9 +4,13 @@ namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditA
 public class AddNewCreditAccountCommand : CommandBase<Guid>
 {
     public Guid UserId { get; }
+
     public string Title { get; }
+
     public string Currency { get; }
+
     public int AvailableBalance { get; }
+
     public int CreditLimit { get; }
 
     public AddNewCreditAccountCommand(Guid userId, string title, string currency, int availableBalance, int creditLimit)

@@ -5,8 +5,11 @@ namespace App.Modules.Accounts.Application.Accounts.DebitAccounts.AddNewDebitAcc
 public class AddNewDebitAccountCommand : CommandBase<Guid>
 {
     public Guid UserId { get; }
+
     public string Title { get; }
+
     public string Currency { get; }
+
     public int Balance { get; }
 
     public AddNewDebitAccountCommand(Guid userId, string title, string currency, int balance)
