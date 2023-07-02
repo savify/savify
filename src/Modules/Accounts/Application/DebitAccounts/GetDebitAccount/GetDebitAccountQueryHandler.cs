@@ -18,11 +18,11 @@ internal class GetDebitAccountQueryHandler : IQueryHandler<GetDebitAccountQuery,
     {
         using var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT d.id, d.title, d.currency, d.balance, d.created_at AS createdAt" +
-                           "v.account_id AS accountId, v.color, v.image, v.is_considered_in_total_balance AS isConsideredInTotalBalance " +
-                           "FROM accounts.debit_accounts " +
-                           "INNER JOIN accounts.account_view_metadata v ON c.id = v.account_id " +
-                           "WHERE c.id = @AccountId";
+        const string sql = "SELECT d.id, d.user_id AS userId, d.title, d.currency, d.balance, d.created_at AS createdAt, " +
+                           "v.account_id AS accountId, v.color, v.icon, v.is_considered_in_total_balance AS isConsideredInTotalBalance " +
+                           "FROM accounts.debit_accounts d " +
+                           "INNER JOIN accounts.account_view_metadata v ON d.id = v.account_id " +
+                           "WHERE d.id = @AccountId";
 
         var debitAccounts = await connection.QueryAsync<DebitAccountDto, AccountViewMetadataDto, DebitAccountDto>(sql, (debitAccount, viewMetadata) =>
         {
