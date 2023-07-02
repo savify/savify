@@ -13,9 +13,9 @@ public class AddNewCreditAccountTests : TestBase
         var command = new AddNewCreditAccountCommand(
             userId: Guid.NewGuid(),
             title: "Credit account",
+            currency: "PLN",
             availableBalance: 500,
-            creditLimit: 1000,
-            currency: "PLN");
+            creditLimit: 1000);
         var accountId = await AccountsModule.ExecuteCommandAsync(command);
 
         var addedCreditAccount = await AccountsModule.ExecuteQueryAsync(new GetCreditAccountQuery(accountId));
