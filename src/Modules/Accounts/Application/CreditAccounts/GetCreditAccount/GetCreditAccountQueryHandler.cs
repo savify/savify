@@ -18,10 +18,10 @@ public class GetCreditAccountQueryHandler : IQueryHandler<GetCreditAccountQuery,
     {
         using var connection = _connectionFactory.CreateNewConnection();
 
-        const string sql = "SELECT c.id, c.title, c.available_balance AS availableBalance, c.credit_limit AS creditLimit, c.created_at AS createdAt, " +
-                           "v.account_id as accountId, v.color, v.icon, v.is_considered_in_total_balance AS isConsideredInTotalBalance" +
-                           "FROM cretid_accounts c " +
-                           "INNER JOIN account_view_metadata v ON c.Id = v.AccountId" +
+        const string sql = "SELECT c.id, c.title, c.available_balance AS availableBalance, c.credit_limit AS creditLimit, c.currency, c.created_at AS createdAt, " +
+                           "v.account_id as accountId, v.color, v.icon, v.is_considered_in_total_balance AS isConsideredInTotalBalance " +
+                           "FROM accounts.credit_accounts c " +
+                           "INNER JOIN accounts.account_view_metadata v ON c.id = v.account_id " +
                            "WHERE c.id = @AccountId";
 
         var creditAccounts = await connection.QueryAsync<CreditAccountDto, AccountViewMetadataDto, CreditAccountDto>(sql, (creditAccount, viewMetadata) =>
