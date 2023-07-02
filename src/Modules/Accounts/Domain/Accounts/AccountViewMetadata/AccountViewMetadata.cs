@@ -2,7 +2,7 @@ using App.BuildingBlocks.Domain;
 
 namespace App.Modules.Accounts.Domain.Accounts.AccountViewMetadata;
 
-public class AccountViewMetadata : Entity
+public class AccountViewMetadata : Entity, IAggregateRoot
 {
     public AccountId AccountId { get; private set; }
     

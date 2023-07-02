@@ -1,5 +1,5 @@
-﻿using App.Modules.Accounts.Application.DebitAccounts.AddNewDebitAccount;
-using App.Modules.Accounts.Application.DebitAccounts.GetDebitAccount;
+﻿using App.Modules.Accounts.Application.Accounts.DebitAccounts.AddNewDebitAccount;
+using App.Modules.Accounts.Application.Accounts.DebitAccounts.GetDebitAccount;
 using App.Modules.Accounts.IntegrationTests.SeedWork;
 
 namespace App.Modules.Accounts.IntegrationTests.DebitAccounts;

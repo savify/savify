@@ -1,5 +1,5 @@
-﻿using App.Modules.Accounts.Application.CreditAccounts.AddNewCreditAccount;
-using App.Modules.Accounts.Application.CreditAccounts.GetCreditAccount;
+﻿using App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
+using App.Modules.Accounts.Application.Accounts.CreditAccounts.GetCreditAccount;
 using App.Modules.Accounts.IntegrationTests.SeedWork;
 
 namespace App.Modules.Accounts.IntegrationTests.CreditAccounts;

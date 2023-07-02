@@ -1,7 +1,7 @@
 ﻿using App.API.Configuration.Authorization;
 using App.BuildingBlocks.Application;
+using App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
 using App.Modules.Accounts.Application.Contracts;
-using App.Modules.Accounts.Application.CreditAccounts.AddNewCreditAccount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

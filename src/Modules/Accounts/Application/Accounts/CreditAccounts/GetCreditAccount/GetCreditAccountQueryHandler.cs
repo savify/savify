@@ -5,7 +5,7 @@ using Dapper;
 
 namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.GetCreditAccount;
 
-public class GetCreditAccountQueryHandler : IQueryHandler<GetCreditAccountQuery, CreditAccountDto>
+internal class GetCreditAccountQueryHandler : IQueryHandler<GetCreditAccountQuery, CreditAccountDto>
 {
     private readonly ISqlConnectionFactory _connectionFactory;
 
