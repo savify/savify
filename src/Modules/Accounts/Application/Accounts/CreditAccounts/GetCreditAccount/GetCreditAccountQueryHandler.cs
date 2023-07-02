@@ -1,9 +1,9 @@
 ﻿using App.BuildingBlocks.Application.Data;
-using App.Modules.Accounts.Application.AccountsViewMetadata;
+using App.Modules.Accounts.Application.Accounts.AccountsViewMetadata;
 using App.Modules.Accounts.Application.Configuration.Queries;
 using Dapper;
 
-namespace App.Modules.Accounts.Application.CreditAccounts.GetCreditAccount;
+namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.GetCreditAccount;
 
 public class GetCreditAccountQueryHandler : IQueryHandler<GetCreditAccountQuery, CreditAccountDto>
 {

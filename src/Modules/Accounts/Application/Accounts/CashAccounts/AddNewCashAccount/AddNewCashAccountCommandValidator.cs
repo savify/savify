@@ -1,7 +1,8 @@
 ﻿using App.BuildingBlocks.Application.Validators;
+using App.Modules.Accounts.Application.Validation.Currency;
 using FluentValidation;
 
-namespace App.Modules.Accounts.Application.CashAccounts.AddNewCashAccount;
+namespace App.Modules.Accounts.Application.Accounts.CashAccounts.AddNewCashAccount;
 internal class AddNewCashAccountCommandValidator : Validator<AddNewCashAccountCommand>
 {
     public AddNewCashAccountCommandValidator()
@@ -13,7 +14,6 @@ internal class AddNewCashAccountCommandValidator : Validator<AddNewCashAccountCo
         RuleFor(c => c.Currency)
             .NotEmpty()
             .WithMessage("Please provide the new cash account currenty")
-            .Length(3)
-            .WithMessage("Currency should be provided in currency code format (ISO 4217)");
+            .CurrencyCodeFormatISO();
     }
 }

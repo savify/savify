@@ -1,6 +1,6 @@
 ﻿using App.Modules.Accounts.Application.Contracts;
 
-namespace App.Modules.Accounts.Application.CreditAccounts.AddNewCreditAccount;
+namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
 public class AddNewCreditAccountCommand : CommandBase<Guid>
 {
     public Guid UserId { get; }

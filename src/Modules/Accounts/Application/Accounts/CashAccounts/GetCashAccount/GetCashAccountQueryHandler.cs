@@ -1,9 +1,9 @@
 ﻿using App.BuildingBlocks.Application.Data;
-using App.Modules.Accounts.Application.AccountsViewMetadata;
+using App.Modules.Accounts.Application.Accounts.AccountsViewMetadata;
 using App.Modules.Accounts.Application.Configuration.Queries;
 using Dapper;
 
-namespace App.Modules.Accounts.Application.CashAccounts.GetCashAccount;
+namespace App.Modules.Accounts.Application.Accounts.CashAccounts.GetCashAccount;
 internal class GetCashAccountQueryHandler : IQueryHandler<GetCashAccountQuery, CashAccountDto>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;

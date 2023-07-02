@@ -1,6 +1,6 @@
 ﻿using App.Modules.Accounts.Application.Contracts;
 
-namespace App.Modules.Accounts.Application.DebitAccounts.GetDebitAccount;
+namespace App.Modules.Accounts.Application.Accounts.DebitAccounts.GetDebitAccount;
 
 public class GetDebitAccountQuery : QueryBase<DebitAccountDto>
 {

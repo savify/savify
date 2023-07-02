@@ -1,6 +1,6 @@
 ﻿using App.Modules.Accounts.Application.Contracts;
 
-namespace App.Modules.Accounts.Application.DebitAccounts.AddNewDebitAccount;
+namespace App.Modules.Accounts.Application.Accounts.DebitAccounts.AddNewDebitAccount;
 
 public class AddNewDebitAccountCommand : CommandBase<Guid>
 {

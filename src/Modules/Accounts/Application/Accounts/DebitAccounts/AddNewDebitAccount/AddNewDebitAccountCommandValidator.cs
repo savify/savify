@@ -1,7 +1,8 @@
 ﻿using App.BuildingBlocks.Application.Validators;
+using App.Modules.Accounts.Application.Validation.Currency;
 using FluentValidation;
 
-namespace App.Modules.Accounts.Application.DebitAccounts.AddNewDebitAccount;
+namespace App.Modules.Accounts.Application.Accounts.DebitAccounts.AddNewDebitAccount;
 
 internal class AddNewDebitAccountCommandValidator : Validator<AddNewDebitAccountCommand>
 {
@@ -14,7 +15,6 @@ internal class AddNewDebitAccountCommandValidator : Validator<AddNewDebitAccount
         RuleFor(c => c.Currency)
             .NotEmpty()
             .WithMessage("Please provide the new debit account currenty")
-            .Length(3)
-            .WithMessage("Currency should be provided in currency code format (ISO 4217)");
+            .CurrencyCodeFormatISO();
     }
 }

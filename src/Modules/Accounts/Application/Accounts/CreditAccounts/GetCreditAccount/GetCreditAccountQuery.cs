@@ -1,6 +1,6 @@
 ﻿using App.Modules.Accounts.Application.Contracts;
 
-namespace App.Modules.Accounts.Application.CreditAccounts.GetCreditAccount;
+namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.GetCreditAccount;
 public class GetCreditAccountQuery : QueryBase<CreditAccountDto>
 {
     public Guid AccountId { get; }

@@ -3,7 +3,7 @@ using App.Modules.Accounts.Domain.Accounts;
 using App.Modules.Accounts.Domain.Accounts.AccountViewMetadata;
 using App.Modules.Accounts.Domain.Accounts.DebitAccounts;
 
-namespace App.Modules.Accounts.Application.DebitAccounts.AddNewDebitAccount;
+namespace App.Modules.Accounts.Application.Accounts.DebitAccounts.AddNewDebitAccount;
 
 internal class AddNewDebitAccountCommandHandler : ICommandHandler<AddNewDebitAccountCommand, Guid>
 {

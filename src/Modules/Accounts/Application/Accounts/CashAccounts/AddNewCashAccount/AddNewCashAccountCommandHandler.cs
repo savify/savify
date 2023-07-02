@@ -4,7 +4,7 @@ using App.Modules.Accounts.Domain.Accounts.AccountViewMetadata;
 using App.Modules.Accounts.Domain.Accounts.CashAccounts;
 using App.Modules.Accounts.Domain.Users;
 
-namespace App.Modules.Accounts.Application.CashAccounts.AddNewCashAccount;
+namespace App.Modules.Accounts.Application.Accounts.CashAccounts.AddNewCashAccount;
 
 internal class AddNewCashAccountCommandHandler : ICommandHandler<AddNewCashAccountCommand, Guid>
 {

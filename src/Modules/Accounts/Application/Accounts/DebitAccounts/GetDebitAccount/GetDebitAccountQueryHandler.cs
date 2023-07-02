@@ -1,9 +1,9 @@
 ﻿using App.BuildingBlocks.Application.Data;
-using App.Modules.Accounts.Application.AccountsViewMetadata;
+using App.Modules.Accounts.Application.Accounts.AccountsViewMetadata;
 using App.Modules.Accounts.Application.Configuration.Queries;
 using Dapper;
 
-namespace App.Modules.Accounts.Application.DebitAccounts.GetDebitAccount;
+namespace App.Modules.Accounts.Application.Accounts.DebitAccounts.GetDebitAccount;
 
 internal class GetDebitAccountQueryHandler : IQueryHandler<GetDebitAccountQuery, DebitAccountDto>
 {

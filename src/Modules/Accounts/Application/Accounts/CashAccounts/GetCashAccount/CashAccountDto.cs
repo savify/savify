@@ -1,6 +1,6 @@
-﻿using App.Modules.Accounts.Application.AccountsViewMetadata;
+﻿using App.Modules.Accounts.Application.Accounts.AccountsViewMetadata;
 
-namespace App.Modules.Accounts.Application.CashAccounts.GetCashAccount;
+namespace App.Modules.Accounts.Application.Accounts.CashAccounts.GetCashAccount;
 public class CashAccountDto
 {
     public Guid Id { get; set; }

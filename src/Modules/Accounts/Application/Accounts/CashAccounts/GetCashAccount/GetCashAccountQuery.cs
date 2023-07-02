@@ -1,6 +1,6 @@
 ﻿using App.Modules.Accounts.Application.Contracts;
 
-namespace App.Modules.Accounts.Application.CashAccounts.GetCashAccount;
+namespace App.Modules.Accounts.Application.Accounts.CashAccounts.GetCashAccount;
 public class GetCashAccountQuery : QueryBase<CashAccountDto>
 {
     public Guid AccountId { get; }

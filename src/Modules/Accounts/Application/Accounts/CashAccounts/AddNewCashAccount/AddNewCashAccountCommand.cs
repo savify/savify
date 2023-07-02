@@ -1,6 +1,6 @@
 ﻿using App.Modules.Accounts.Application.Contracts;
 
-namespace App.Modules.Accounts.Application.CashAccounts.AddNewCashAccount;
+namespace App.Modules.Accounts.Application.Accounts.CashAccounts.AddNewCashAccount;
 
 public class AddNewCashAccountCommand : CommandBase<Guid>
 {

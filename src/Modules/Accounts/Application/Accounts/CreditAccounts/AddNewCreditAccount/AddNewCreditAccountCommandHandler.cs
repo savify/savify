@@ -4,7 +4,7 @@ using App.Modules.Accounts.Domain.Accounts.AccountViewMetadata;
 using App.Modules.Accounts.Domain.Accounts.CreditAccounts;
 using App.Modules.Accounts.Domain.Users;
 
-namespace App.Modules.Accounts.Application.CreditAccounts.AddNewCreditAccount;
+namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
 
 public class AddNewCreditAccountCommandHandler : ICommandHandler<AddNewCreditAccountCommand, Guid>
 {

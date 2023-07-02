@@ -1,7 +1,8 @@
 ﻿using App.BuildingBlocks.Application.Validators;
+using App.Modules.Accounts.Application.Validation.Currency;
 using FluentValidation;
 
-namespace App.Modules.Accounts.Application.CreditAccounts.AddNewCreditAccount;
+namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
 
 internal class AddNewCreditAccountCommandValidator : Validator<AddNewCreditAccountCommand>
 {
@@ -20,7 +21,6 @@ internal class AddNewCreditAccountCommandValidator : Validator<AddNewCreditAccou
         RuleFor(c => c.Currency)
             .NotEmpty()
             .WithMessage("Please provide the new credit account currenty")
-            .Length(3)
-            .WithMessage("Currency should be provided in currency code format (ISO 4217)");
+            .CurrencyCodeFormatISO();
     }
 }

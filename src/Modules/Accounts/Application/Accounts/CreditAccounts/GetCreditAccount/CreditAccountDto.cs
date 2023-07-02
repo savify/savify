@@ -1,6 +1,6 @@
-﻿using App.Modules.Accounts.Application.AccountsViewMetadata;
+﻿using App.Modules.Accounts.Application.Accounts.AccountsViewMetadata;
 
-namespace App.Modules.Accounts.Application.CreditAccounts.GetCreditAccount;
+namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.GetCreditAccount;
 
 public class CreditAccountDto
 {
