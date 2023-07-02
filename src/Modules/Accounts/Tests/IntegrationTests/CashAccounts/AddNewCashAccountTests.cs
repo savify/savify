@@ -1,6 +1,5 @@
 ﻿using App.Modules.Accounts.Application.CashAccounts.AddNewCashAccount;
 using App.Modules.Accounts.Application.CashAccounts.GetCashAccount;
-using App.Modules.Accounts.Application.ViewMetadata.GetViewMetadata;
 using App.Modules.Accounts.IntegrationTests.SeedWork;
 
 namespace App.Modules.Accounts.IntegrationTests.CashAccounts;
@@ -9,7 +8,7 @@ namespace App.Modules.Accounts.IntegrationTests.CashAccounts;
 public class AddNewCashAccountTests : TestBase
 {
     [Test]
-    public async Task AddNewCashAccountCommand_AddsNewCashAccount()
+    public async Task AddNewCashAccountCommand_Tests()
     {
         var command = new AddNewCashAccountCommand(
             Guid.NewGuid(),
@@ -18,27 +17,14 @@ public class AddNewCashAccountTests : TestBase
             1000);
         var accountId = await AccountsModule.ExecuteCommandAsync(command);
 
-        var createdCashAccount = await AccountsModule.ExecuteQueryAsync(new GetCashAccountQuery(accountId));
+        var addedCashAccount = await AccountsModule.ExecuteQueryAsync(new GetCashAccountQuery(accountId));
 
-        Assert.IsNotNull(createdCashAccount);
-        Assert.That(createdCashAccount.UserId, Is.EqualTo(command.UserId));
-        Assert.That(createdCashAccount.Title, Is.EqualTo(command.Title));
-        Assert.That(createdCashAccount.Balance, Is.EqualTo(command.Balance));
-    }
+        Assert.IsNotNull(addedCashAccount);
+        Assert.That(addedCashAccount.UserId, Is.EqualTo(command.UserId));
+        Assert.That(addedCashAccount.Title, Is.EqualTo(command.Title));
+        Assert.That(addedCashAccount.Balance, Is.EqualTo(command.Balance));
 
-    [Test]
-    public async Task AddNewCashAccountCommand_AddsViewMetadata()
-    {
-        var command = new AddNewCashAccountCommand(
-            Guid.NewGuid(),
-            "Cash account",
-            "PLN",
-            1000);
-        var accountId = await AccountsModule.ExecuteCommandAsync(command);
-
-        var createdViewMetadata = await AccountsModule.ExecuteQueryAsync(new GetAccountViewMetadataQuery(accountId));
-
-        Assert.IsNotNull(createdViewMetadata);
-        Assert.That(createdViewMetadata.AccountId, Is.EqualTo(accountId));
+        Assert.IsNotNull(addedCashAccount.ViewMetadata);
+        Assert.That(addedCashAccount.ViewMetadata.AccountId, Is.EqualTo(accountId));
     }
 }

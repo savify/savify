@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Accounts.Application.ViewMetadata.GetViewMetadata;
+﻿namespace App.Modules.Accounts.Application.AccountsViewMetadata;
 
 public class AccountViewMetadataDto
 {
