@@ -1,4 +1,5 @@
 ﻿namespace App.Modules.Accounts.Application.AccountsViewMetadata;
+
 public class AccountViewMetadataDto
 {
     public Guid AccountId { get; set; }
