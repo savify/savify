@@ -1,7 +1,7 @@
 ﻿using App.API.Configuration.Authorization;
 using App.BuildingBlocks.Application;
+using App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
 using App.Modules.Accounts.Application.Contracts;
-using App.Modules.Accounts.Application.CreditAccounts.AddNewCreditAccount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +22,7 @@ public class CreditAccountsController : ControllerBase
     }
 
     [HttpPost("")]
-    [HasPermission(AccountsPermissions.AddNewCreditAccount)]
+    [HasPermission(AccountsPermissions.AddNewAccount)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewCreditAccountRequest request)
     {

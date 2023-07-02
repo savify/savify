@@ -1,5 +1,5 @@
-﻿using App.Modules.Accounts.Application.CashAccounts.AddNewCashAccount;
-using App.Modules.Accounts.Application.CashAccounts.GetCashAccount;
+﻿using App.Modules.Accounts.Application.Accounts.CashAccounts.AddNewCashAccount;
+using App.Modules.Accounts.Application.Accounts.CashAccounts.GetCashAccount;
 using App.Modules.Accounts.IntegrationTests.SeedWork;
 
 namespace App.Modules.Accounts.IntegrationTests.CashAccounts;

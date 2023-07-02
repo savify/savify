@@ -1,6 +1,6 @@
 ﻿using App.API.Configuration.Authorization;
 using App.BuildingBlocks.Application;
-using App.Modules.Accounts.Application.CashAccounts.AddNewCashAccount;
+using App.Modules.Accounts.Application.Accounts.CashAccounts.AddNewCashAccount;
 using App.Modules.Accounts.Application.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ public class CashAccountsController : ControllerBase
     }
 
     [HttpPost("")]
-    [HasPermission(AccountsPermissions.AddNewCashAccount)]
+    [HasPermission(AccountsPermissions.AddNewAccount)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewCashAccountRequest request)
     {
