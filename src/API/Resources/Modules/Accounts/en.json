@@ -3,5 +3,9 @@
   "Please provide the new cash account currenty": "Please provide the new cash account currenty",
   "Currency should be provided in currency code format (ISO 4217)": "Currency should be provided in currency code format (ISO 4217)",
   "Please provide the new debit account title": "Please provide the new debit account title",
-  "Please provide the new debit account currenty": "Please provide the new debit account currenty"
+  "Please provide the new debit account currenty": "Please provide the new debit account currenty",
+  "Please provide the new credit account title": "Please provide the new credit account title",
+  "Credit limit should be greated or equal to zero": "Credit limit should be greated or equal to zero",
+  "Credit limit should be greater or equal to available balance": "Credit limit should be greater or equal to available balance",
+  "Please provide the new credit account currenty": "Please provide the new credit account currenty"
 }

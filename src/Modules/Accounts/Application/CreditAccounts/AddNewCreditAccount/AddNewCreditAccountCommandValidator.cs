@@ -11,10 +11,6 @@ internal class AddNewCreditAccountCommandValidator : Validator<AddNewCreditAccou
             .NotEmpty()
             .WithMessage("Please provide the new credit account title");
 
-        RuleFor(c => c.AvailableBalance)
-            .GreaterThanOrEqualTo(0)
-            .WithMessage("AvailableBalance should be greater or equal to zero");
-
         RuleFor(c => c.CreditLimit)
             .GreaterThanOrEqualTo(0)
             .WithMessage("CreditLimit should be greated or equal to zero")
@@ -23,8 +19,8 @@ internal class AddNewCreditAccountCommandValidator : Validator<AddNewCreditAccou
 
         RuleFor(c => c.Currency)
             .NotEmpty()
-            .WithMessage("Please provide the new cash account currenty")
+            .WithMessage("Please provide the new credit account currenty")
             .Length(3)
-            .WithMessage("Currency should be provided in currency code format (ISO 4217).");
+            .WithMessage("Currency should be provided in currency code format (ISO 4217)");
     }
 }
