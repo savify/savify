@@ -1,2 +1,5 @@
 {
+  "Please provide the new cash account title": "Будь ласка, вкажіть назву нового готівкового рахунку",
+  "Please provide the new cash account currenty": "Будь ласка, вкажіть валюту для нового готівкового рахунку",
+  "Currency should be provided in currency code format (ISO 4217)": "Валюта повинна бути у форматі класифікації валют (ISO 4217)"
 }
