@@ -1,7 +1,6 @@
 using App.API.Configuration.Authorization;
 using App.API.Modules.UserAccess.Users.Requests;
 using App.BuildingBlocks.Application;
-using App.Modules.UserAccess.Application.Authorization;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.Application.Users.GetUsers;

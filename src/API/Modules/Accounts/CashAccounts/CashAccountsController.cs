@@ -22,7 +22,7 @@ public class CashAccountsController : ControllerBase
     }
 
     [HttpPost("")]
-    [HasPermission(AccountsPermissions.AddNewCashAccount)]
+    [HasPermission(AccountsPermissions.AddNewAccount)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewCashAccountRequest request)
     {

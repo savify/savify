@@ -22,7 +22,7 @@ public class CreditAccountsController : ControllerBase
     }
 
     [HttpPost("")]
-    [HasPermission(AccountsPermissions.AddNewCreditAccount)]
+    [HasPermission(AccountsPermissions.AddNewAccount)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewCreditAccountRequest request)
     {

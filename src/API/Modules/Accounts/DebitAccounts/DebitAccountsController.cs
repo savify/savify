@@ -22,7 +22,7 @@ public class DebitAccountsController : ControllerBase
     }
 
     [HttpPost("")]
-    [HasPermission(AccountsPermissions.AddNewDebitAccount)]
+    [HasPermission(AccountsPermissions.AddNewAccount)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewDebitAccountRequest request)
     {

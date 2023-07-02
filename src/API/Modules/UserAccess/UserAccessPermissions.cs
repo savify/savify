@@ -1,4 +1,4 @@
-namespace App.Modules.UserAccess.Application.Authorization;
+namespace App.API.Modules.UserAccess;
 
 public class UserAccessPermissions
 {
