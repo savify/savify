@@ -16,7 +16,7 @@ internal class AddNewCreditAccountCommandValidator : Validator<AddNewCreditAccou
             .GreaterThanOrEqualTo(0)
             .WithMessage("CreditLimit should be greated or equal to zero")
             .GreaterThanOrEqualTo(cc => cc.AvailableBalance)
-            .WithMessage("Credit limit should be greater or equal to AvailableBalance");
+            .WithMessage("Credit limit should be greater or equal to available balance");
 
         RuleFor(c => c.Currency)
             .NotEmpty()
