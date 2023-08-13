@@ -1,20 +1,20 @@
 ﻿using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Domain.Accounts;
-using App.Modules.Accounts.Domain.Accounts.AccountViewMetadata;
-using App.Modules.Accounts.Domain.Accounts.CreditAccounts;
-using App.Modules.Accounts.Domain.Users;
+using App.Modules.Wallets.Domain.Accounts;
+using App.Modules.Wallets.Domain.Accounts.AccountViewMetadata;
+using App.Modules.Wallets.Domain.Accounts.CreditAccounts;
+using App.Modules.Wallets.Domain.Users;
 
 namespace App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
 
 internal class AddNewCreditAccountCommandHandler : ICommandHandler<AddNewCreditAccountCommand, Guid>
 {
     private readonly ICreditAccountsRepository _creditAccountRepository;
-    private readonly IAccountViewMetadataRepository _accountViewMetadataRepository;
+    private readonly IWalletViewMetadataRepository _walletViewMetadataRepository;
 
-    public AddNewCreditAccountCommandHandler(ICreditAccountsRepository creditAccountRepository, IAccountViewMetadataRepository accountViewMetadataRepository)
+    public AddNewCreditAccountCommandHandler(ICreditAccountsRepository creditAccountRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
     {
         _creditAccountRepository = creditAccountRepository;
-        _accountViewMetadataRepository = accountViewMetadataRepository;
+        _walletViewMetadataRepository = walletViewMetadataRepository;
     }
 
     public async Task<Guid> Handle(AddNewCreditAccountCommand command, CancellationToken cancellationToken)
@@ -28,8 +28,8 @@ internal class AddNewCreditAccountCommandHandler : ICommandHandler<AddNewCreditA
 
         await _creditAccountRepository.AddAsync(account);
 
-        var viewMetadata = AccountViewMetadata.CreateDefaultForAccount(account.Id);
-        await _accountViewMetadataRepository.AddAsync(viewMetadata);
+        var viewMetadata = WalletViewMetadata.CreateDefaultForAccount(account.Id);
+        await _walletViewMetadataRepository.AddAsync(viewMetadata);
 
         return account.Id.Value;
     }

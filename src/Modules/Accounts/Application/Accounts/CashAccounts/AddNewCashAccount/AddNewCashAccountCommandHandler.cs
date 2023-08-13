@@ -1,20 +1,20 @@
 ﻿using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Domain.Accounts;
-using App.Modules.Accounts.Domain.Accounts.AccountViewMetadata;
-using App.Modules.Accounts.Domain.Accounts.CashAccounts;
-using App.Modules.Accounts.Domain.Users;
+using App.Modules.Wallets.Domain.Accounts;
+using App.Modules.Wallets.Domain.Accounts.AccountViewMetadata;
+using App.Modules.Wallets.Domain.Accounts.CashAccounts;
+using App.Modules.Wallets.Domain.Users;
 
 namespace App.Modules.Accounts.Application.Accounts.CashAccounts.AddNewCashAccount;
 
 internal class AddNewCashAccountCommandHandler : ICommandHandler<AddNewCashAccountCommand, Guid>
 {
     private readonly ICashAccountRepository _cashAccountRepository;
-    private readonly IAccountViewMetadataRepository _accountViewMetadataRepository;
+    private readonly IWalletViewMetadataRepository _walletViewMetadataRepository;
 
-    public AddNewCashAccountCommandHandler(ICashAccountRepository cashAccountRepository, IAccountViewMetadataRepository accountViewMetadataRepository)
+    public AddNewCashAccountCommandHandler(ICashAccountRepository cashAccountRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
     {
         _cashAccountRepository = cashAccountRepository;
-        _accountViewMetadataRepository = accountViewMetadataRepository;
+        _walletViewMetadataRepository = walletViewMetadataRepository;
     }
 
     public async Task<Guid> Handle(AddNewCashAccountCommand command, CancellationToken cancellationToken)
@@ -27,8 +27,8 @@ internal class AddNewCashAccountCommandHandler : ICommandHandler<AddNewCashAccou
 
         await _cashAccountRepository.AddAsync(cashAccount);
 
-        var viewMetadata = AccountViewMetadata.CreateDefaultForAccount(cashAccount.Id);
-        await _accountViewMetadataRepository.AddAsync(viewMetadata);
+        var viewMetadata = WalletViewMetadata.CreateDefaultForAccount(cashAccount.Id);
+        await _walletViewMetadataRepository.AddAsync(viewMetadata);
 
         return cashAccount.Id.Value;
     }

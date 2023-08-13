@@ -1,6 +1,6 @@
 using App.BuildingBlocks.Domain;
 
-namespace App.Modules.Accounts.Domain.Users;
+namespace App.Modules.Wallets.Domain.Users;
 
 public class UserId : TypedIdValueBase
 {

@@ -1,33 +1,33 @@
 ﻿using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Domain.Accounts;
-using App.Modules.Accounts.Domain.Accounts.AccountViewMetadata;
-using App.Modules.Accounts.Domain.Accounts.DebitAccounts;
+using App.Modules.Wallets.Domain.Accounts;
+using App.Modules.Wallets.Domain.Accounts.AccountViewMetadata;
+using App.Modules.Wallets.Domain.Accounts.DebitAccounts;
 
 namespace App.Modules.Accounts.Application.Accounts.DebitAccounts.AddNewDebitAccount;
 
 internal class AddNewDebitAccountCommandHandler : ICommandHandler<AddNewDebitAccountCommand, Guid>
 {
-    private readonly IDebitAccountRepository _debitAccountRepository;
-    private readonly IAccountViewMetadataRepository _accountViewMetadataRepository;
+    private readonly IDebitWalletRepository _debitWalletRepository;
+    private readonly IWalletViewMetadataRepository _walletViewMetadataRepository;
 
-    public AddNewDebitAccountCommandHandler(IDebitAccountRepository debitAccountRepository, IAccountViewMetadataRepository accountViewMetadataRepository)
+    public AddNewDebitAccountCommandHandler(IDebitWalletRepository debitWalletRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
     {
-        _debitAccountRepository = debitAccountRepository;
-        _accountViewMetadataRepository = accountViewMetadataRepository;
+        _debitWalletRepository = debitWalletRepository;
+        _walletViewMetadataRepository = walletViewMetadataRepository;
     }
 
     public async Task<Guid> Handle(AddNewDebitAccountCommand command, CancellationToken cancellationToken)
     {
-        var debitAccount = DebitAccount.AddNew(
-            new Domain.Users.UserId(command.UserId),
+        var debitAccount = DebitWallet.AddNew(
+            new Wallets.Domain.Users.UserId(command.UserId),
             command.Title,
             Currency.From(command.Currency),
             command.Balance);
 
-        await _debitAccountRepository.AddAsync(debitAccount);
+        await _debitWalletRepository.AddAsync(debitAccount);
 
-        var viewMetadata = AccountViewMetadata.CreateDefaultForAccount(debitAccount.Id);
-        await _accountViewMetadataRepository.AddAsync(viewMetadata);
+        var viewMetadata = WalletViewMetadata.CreateDefaultForAccount(debitAccount.Id);
+        await _walletViewMetadataRepository.AddAsync(viewMetadata);
 
         return debitAccount.Id.Value;
     }

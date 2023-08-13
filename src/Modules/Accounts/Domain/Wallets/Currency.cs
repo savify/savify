@@ -1,4 +1,4 @@
-namespace App.Modules.Accounts.Domain.Accounts;
+namespace App.Modules.Wallets.Domain.Wallets;
 
 public record Currency(string Value)
 {

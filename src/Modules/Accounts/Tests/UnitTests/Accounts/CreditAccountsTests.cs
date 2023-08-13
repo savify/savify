@@ -1,7 +1,7 @@
-﻿using App.Modules.Accounts.Domain.Accounts;
-using App.Modules.Accounts.Domain.Accounts.CreditAccounts;
-using App.Modules.Accounts.Domain.Accounts.CreditAccounts.Events;
-using App.Modules.Accounts.Domain.Users;
+﻿using App.Modules.Wallets.Domain.Accounts;
+using App.Modules.Wallets.Domain.Accounts.CreditAccounts;
+using App.Modules.Wallets.Domain.Accounts.CreditAccounts.Events;
+using App.Modules.Wallets.Domain.Users;
 
 namespace App.Modules.Accounts.UnitTests.Accounts;
 
@@ -16,7 +16,7 @@ public class CreditAccountsTests : UnitTestBase
 
         var accountAddedDomainEvent = AssertPublishedDomainEvent<CreditAccountAddedDomainEvent>(account);
 
-        Assert.That(accountAddedDomainEvent.AccountId, Is.EqualTo(account.Id));
+        Assert.That(accountAddedDomainEvent.WalletId, Is.EqualTo(account.Id));
         Assert.That(accountAddedDomainEvent.UserId, Is.EqualTo(userId));
         Assert.That(accountAddedDomainEvent.Currency, Is.EqualTo(Currency.From("PLN")));
     }
