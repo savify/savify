@@ -1,11 +1,12 @@
 {
   "Please provide the new cash wallet title": "Будь ласка, вкажіть назву нового готівкового гаманця",
-  "Please provide the new cash wallet currency": "Будь ласка, вкажіть валюту для нового готівкового гаманця",
-  "Currency should be provided in currency code format (ISO 4217)": "Валюта повинна бути у форматі класифікації валют (ISO 4217)",
+  "Please provide the new cash wallet currency": "Будь ласка, вкажіть валюту нового готівкового гаманця",
   "Please provide the new debit wallet title": "Будь ласка, вкажіть назву нового дебетового гаманця",
-  "Please provide the new debit wallet currency": "Будь ласка, вкажіть валюту для нового дебетового гаманця",
+  "Please provide the new debit wallet currency": "Будь ласка, вкажіть валюту нового дебетового гаманця",
   "Please provide the new credit wallet title": "Будь ласка, вкажіть назву нового кредитного гаманця",
-  "Credit limit should be greated or equal to zero": "Кредитний ліміт повинен бути більший або рівний нулю",
-  "Credit limit should be greater or equal to available balance": "Кредитний ліміт повинен бути більший або рівний доступному балансу",
-  "Please provide the new credit wallet currency": "Будь ласка вкажіть валюту гового кредитного гаманця"
+  "Please provide the new credit wallet currency": "Будь ласка, вкажіть валюту нового кредитного гаманця",
+  "Credit limit should be greater or equal to zero": "Кредитний ліміт повинен бути більший або дорівнювати нулю",
+  "Available balance should be greater or equal to zero": "Доступний баланс повинен бути більший або дорівнювати нулю",
+  "Available balance should be less than or equal to credit limit": "Доступний баланс не повинен перевищувати кредитний ліміт",
+  "Currency should be provided in currency code format (ISO 4217)": "Валюту слід вказувати у форматі коду валюти (ISO 4217)"
 }

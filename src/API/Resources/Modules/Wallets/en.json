@@ -1,11 +1,12 @@
 {
-  "Please probide the new cash wallet title": "Please probide the new cash wallet title",
+  "Please provide the new cash wallet title": "Please provide the new cash wallet title",
   "Please provide the new cash wallet currency": "Please provide the new cash wallet currency",
   "Currency should be provided in currency code format (ISO 4217)": "Currency should be provided in currency code format (ISO 4217)",
   "Please provide the new debit wallet title": "Please provide the new debit wallet title",
   "Please provide the new debit wallet currency": "Please provide the new debit wallet currency",
   "Please provide the new credit wallet title": "Please provide the new credit wallet title",
-  "Credit limit should be greated or equal to zero": "Credit limit should be greated or equal to zero",
-  "Credit limit should be greater or equal to available balance": "Credit limit should be greater or equal to available balance",
+  "Credit limit should be greater or equal to zero": "Credit limit should be greater or equal to zero",
+  "Available balance should be greater or equal to zero": "Available balance should be greater or equal to zero",
+  "Available balance should be less than or equal to credit limit": "Available balance should be less than or equal to credit limit",
   "Please provide the new credit wallet currency": "Please provide the new credit wallet currency"
 }
