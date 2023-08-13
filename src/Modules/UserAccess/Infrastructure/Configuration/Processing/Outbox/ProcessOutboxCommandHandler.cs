@@ -31,7 +31,7 @@ public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
         _logger = logger;
     }
 
-    public async Task Handle(ProcessOutboxCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ProcessOutboxCommand command, CancellationToken cancellationToken)
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 

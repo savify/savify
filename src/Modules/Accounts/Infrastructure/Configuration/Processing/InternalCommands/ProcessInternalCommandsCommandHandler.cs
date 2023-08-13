@@ -15,7 +15,7 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
         _sqlConnectionFactory = sqlConnectionFactory;
     }
 
-    public async Task Handle(ProcessInternalCommandsCommand request, CancellationToken cancellationToken)
+    public async Task Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 

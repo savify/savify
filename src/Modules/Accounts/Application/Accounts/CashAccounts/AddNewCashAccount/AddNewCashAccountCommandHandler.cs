@@ -17,13 +17,13 @@ internal class AddNewCashAccountCommandHandler : ICommandHandler<AddNewCashAccou
         _accountViewMetadataRepository = accountViewMetadataRepository;
     }
 
-    public async Task<Guid> Handle(AddNewCashAccountCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(AddNewCashAccountCommand command, CancellationToken cancellationToken)
     {
         var cashAccount = CashAccount.AddNew(
-            new UserId(request.UserId),
-            request.Title,
-            Currency.From(request.Currency),
-            request.Balance);
+            new UserId(command.UserId),
+            command.Title,
+            Currency.From(command.Currency),
+            command.Balance);
 
         await _cashAccountRepository.AddAsync(cashAccount);
 

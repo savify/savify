@@ -17,14 +17,14 @@ internal class AddNewCreditAccountCommandHandler : ICommandHandler<AddNewCreditA
         _accountViewMetadataRepository = accountViewMetadataRepository;
     }
 
-    public async Task<Guid> Handle(AddNewCreditAccountCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(AddNewCreditAccountCommand command, CancellationToken cancellationToken)
     {
         var account = CreditAccount.AddNew(
-            new UserId(request.UserId),
-            request.Title,
-            Currency.From(request.Currency),
-            request.CreditLimit,
-            request.AvailableBalance);
+            new UserId(command.UserId),
+            command.Title,
+            Currency.From(command.Currency),
+            command.CreditLimit,
+            command.AvailableBalance);
 
         await _creditAccountRepository.AddAsync(account);
 

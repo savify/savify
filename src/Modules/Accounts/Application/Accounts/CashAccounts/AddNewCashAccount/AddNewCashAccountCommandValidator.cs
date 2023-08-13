@@ -13,7 +13,7 @@ internal class AddNewCashAccountCommandValidator : Validator<AddNewCashAccountCo
 
         RuleFor(c => c.Currency)
             .NotEmpty()
-            .WithMessage("Please provide the new cash account currenty")
+            .WithMessage("Please provide the new cash account currency")
             .CurrencyCodeFormatISO();
     }
 }

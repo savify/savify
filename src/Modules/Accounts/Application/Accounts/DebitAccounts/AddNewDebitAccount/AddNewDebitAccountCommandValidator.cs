@@ -14,7 +14,7 @@ internal class AddNewDebitAccountCommandValidator : Validator<AddNewDebitAccount
 
         RuleFor(c => c.Currency)
             .NotEmpty()
-            .WithMessage("Please provide the new debit account currenty")
+            .WithMessage("Please provide the new debit account currency")
             .CurrencyCodeFormatISO();
     }
 }

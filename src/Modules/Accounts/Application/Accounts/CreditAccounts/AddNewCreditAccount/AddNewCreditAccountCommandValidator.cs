@@ -20,7 +20,7 @@ internal class AddNewCreditAccountCommandValidator : Validator<AddNewCreditAccou
 
         RuleFor(c => c.Currency)
             .NotEmpty()
-            .WithMessage("Please provide the new credit account currenty")
+            .WithMessage("Please provide the new credit account currency")
             .CurrencyCodeFormatISO();
     }
 }

@@ -17,5 +17,9 @@
         <PackageReference Include="Destructurama.Attributed" Version="3.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Accounts\AddAccount\" />
+    </ItemGroup>
 
 </Project>

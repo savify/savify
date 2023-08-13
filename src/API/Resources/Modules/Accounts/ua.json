@@ -1,11 +1,11 @@
 {
   "Please provide the new cash account title": "Будь ласка, вкажіть назву нового готівкового рахунку",
-  "Please provide the new cash account currenty": "Будь ласка, вкажіть валюту для нового готівкового рахунку",
+  "Please provide the new cash account currency": "Будь ласка, вкажіть валюту для нового готівкового рахунку",
   "Currency should be provided in currency code format (ISO 4217)": "Валюта повинна бути у форматі класифікації валют (ISO 4217)",
   "Please provide the new debit account title": "Будь ласка, вкажіть назву нового дебетового рахунку",
-  "Please provide the new debit account currenty": "Будь ласка, вкажіть валюту для нового дебетового рахунку",
+  "Please provide the new debit account currency": "Будь ласка, вкажіть валюту для нового дебетового рахунку",
   "Please provide the new credit account title": "Будь ласка, вкажіть назву нового кредитного рахунку",
   "Credit limit should be greated or equal to zero": "Кредитний ліміт повинен бути більший або рівний нулю",
   "Credit limit should be greater or equal to available balance": "Кредитний ліміт повинен бути більший або рівний доступному балансу",
-  "Please provide the new credit account currenty": "Будь ласка вкажіть валюту гового кредитного рахунку"
+  "Please provide the new credit account currency": "Будь ласка вкажіть валюту гового кредитного рахунку"
 }

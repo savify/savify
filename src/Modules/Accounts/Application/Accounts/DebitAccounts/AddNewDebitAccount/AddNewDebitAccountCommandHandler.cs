@@ -16,13 +16,13 @@ internal class AddNewDebitAccountCommandHandler : ICommandHandler<AddNewDebitAcc
         _accountViewMetadataRepository = accountViewMetadataRepository;
     }
 
-    public async Task<Guid> Handle(AddNewDebitAccountCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(AddNewDebitAccountCommand command, CancellationToken cancellationToken)
     {
         var debitAccount = DebitAccount.AddNew(
-            new Domain.Users.UserId(request.UserId),
-            request.Title,
-            Currency.From(request.Currency),
-            request.Balance);
+            new Domain.Users.UserId(command.UserId),
+            command.Title,
+            Currency.From(command.Currency),
+            command.Balance);
 
         await _debitAccountRepository.AddAsync(debitAccount);
 
