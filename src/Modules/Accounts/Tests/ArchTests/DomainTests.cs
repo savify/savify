@@ -1,8 +1,8 @@
 using System.Reflection;
 using App.BuildingBlocks.Domain;
-using App.Modules.Accounts.ArchTests.SeedWork;
+using App.Modules.Wallets.ArchTests.SeedWork;
 
-namespace App.Modules.Accounts.ArchTests;
+namespace App.Modules.Wallets.ArchTests;
 
 [TestFixture]
 public class DomainTests : TestBase

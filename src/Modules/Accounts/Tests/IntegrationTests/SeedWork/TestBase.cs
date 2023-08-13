@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
-namespace App.Modules.Accounts.IntegrationTests.SeedWork;
+namespace App.Modules.Wallets.IntegrationTests.SeedWork;
 
 public class TestBase
 {
@@ -63,12 +63,12 @@ public class TestBase
     
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM accounts.internal_commands; " +
-                           "DELETE FROM accounts.outbox_messages; " +
-                           "DELETE FROM accounts.inbox_messages; " +
-                           "DELETE FROM accounts.cash_accounts; " +
-                           "DELETE FROM accounts.credit_accounts; " +
-                           "DELETE FROM accounts.debit_accounts;";
+        const string sql = "DELETE FROM wallets.internal_commands; " +
+                           "DELETE FROM wallets.outbox_messages; " +
+                           "DELETE FROM wallets.inbox_messages; " +
+                           "DELETE FROM wallets.cash_wallets; " +
+                           "DELETE FROM wallets.credit_wallets; " +
+                           "DELETE FROM wallets.debit_wallets;";
 
         await connection.ExecuteScalarAsync(sql);
     }

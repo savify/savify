@@ -6,7 +6,7 @@ using App.Modules.Wallets.Application.Contracts;
 using MediatR;
 using Newtonsoft.Json;
 
-namespace App.Modules.Accounts.IntegrationTests.SeedWork;
+namespace App.Modules.Wallets.IntegrationTests.SeedWork;
 
 public class OutboxMessagesAccessor
 {
@@ -16,7 +16,7 @@ public class OutboxMessagesAccessor
                      $"message.id as {nameof(OutboxMessageDto.Id)}, " +
                      $"message.type as {nameof(OutboxMessageDto.Type)}, " +
                      $"message.data as {nameof(OutboxMessageDto.Data)} " +
-                     "FROM accounts.outbox_messages AS message " +
+                     "FROM wallets.outbox_messages AS message " +
                      "ORDER BY message.occurred_on";
 
         var messages = await connection.QueryAsync<OutboxMessageDto>(sql);

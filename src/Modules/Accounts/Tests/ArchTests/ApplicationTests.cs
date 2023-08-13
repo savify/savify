@@ -3,11 +3,11 @@ using App.BuildingBlocks.Application.Validators;
 using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Wallets.Application.Configuration.Queries;
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Accounts.ArchTests.SeedWork;
+using App.Modules.Wallets.ArchTests.SeedWork;
 using MediatR;
 using Newtonsoft.Json;
 
-namespace App.Modules.Accounts.ArchTests;
+namespace App.Modules.Wallets.ArchTests;
 
 [TestFixture]
 public class ApplicationTests : TestBase

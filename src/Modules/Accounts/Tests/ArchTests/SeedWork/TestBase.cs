@@ -1,13 +1,13 @@
 using System.Reflection;
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Wallets.Domain.Accounts.CashAccounts;
+using App.Modules.Wallets.Domain.Wallets.CashWallets;
 using App.Modules.Wallets.Infrastructure;
 
-namespace App.Modules.Accounts.ArchTests.SeedWork;
+namespace App.Modules.Wallets.ArchTests.SeedWork;
 
 public abstract class TestBase
 {
-    protected static Assembly DomainAssembly => typeof(CashAccount).Assembly;
+    protected static Assembly DomainAssembly => typeof(CashWallet).Assembly;
 
     protected static Assembly ApplicationAssembly => typeof(CommandBase).Assembly;
     
