@@ -29,8 +29,8 @@ public static class WalletsModuleCollectionExtensions
             configuration.GetConnectionString("Savify"),
             moduleLogger);
         
-        // QuartzInitialization.Initialize(moduleLogger);
-        // EventBusInitialization.Initialize(moduleLogger);
+        QuartzInitialization.Initialize(moduleLogger);
+        EventBusInitialization.Initialize(moduleLogger);
         
         services.AddScoped<IWalletsModule, WalletsModule>();
 

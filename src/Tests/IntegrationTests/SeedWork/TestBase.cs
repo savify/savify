@@ -80,10 +80,13 @@ public class TestBase
                            "DELETE FROM notifications.inbox_messages; " +
                            "DELETE FROM notifications.internal_commands; " +
                            "DELETE FROM notifications.user_notification_settings; " +
-                           "DELETE FROM accounts.internal_commands; " +
-                           "DELETE FROM accounts.outbox_messages; " +
-                           "DELETE FROM accounts.cash_accounts; " +
-                           "DELETE FROM accounts.inbox_messages; ";
+                           "DELETE FROM wallets.internal_commands; " +
+                           "DELETE FROM wallets.outbox_messages; " +
+                           "DELETE FROM wallets.cash_wallets; " +
+                           "DELETE FROM wallets.debit_wallets; " +
+                           "DELETE FROM wallets.credit_wallets; " +
+                           "DELETE FROM wallets.wallet_view_metadata; " +
+                           "DELETE FROM wallets.inbox_messages; ";
 
         await connection.ExecuteScalarAsync(sql);
     }
