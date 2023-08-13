@@ -69,7 +69,7 @@ public class Program
  
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);
-        builder.Services.AddAccountsModule(builder.Configuration, _logger);
+        builder.Services.AddWalletsModule(builder.Configuration, _logger);
 
         var app = builder.Build();
 
