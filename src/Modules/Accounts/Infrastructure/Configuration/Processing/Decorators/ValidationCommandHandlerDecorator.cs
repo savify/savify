@@ -1,6 +1,6 @@
 using App.BuildingBlocks.Application.Exceptions;
-using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Contracts;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 

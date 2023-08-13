@@ -1,4 +1,4 @@
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
 

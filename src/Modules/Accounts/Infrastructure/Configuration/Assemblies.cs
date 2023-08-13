@@ -1,6 +1,6 @@
 using System.Reflection;
-using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Accounts.Infrastructure.Configuration;
 

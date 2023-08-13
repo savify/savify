@@ -1,6 +1,6 @@
 using Dapper;
 using App.BuildingBlocks.Application.Data;
-using App.Modules.Accounts.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Configuration.Commands;
 using Newtonsoft.Json;
 using Polly;
 

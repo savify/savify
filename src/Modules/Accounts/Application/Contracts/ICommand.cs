@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace App.Modules.Accounts.Application.Contracts;
+namespace App.Modules.Wallets.Application.Contracts;
 
 public interface ICommand<out TResult> : IRequest<TResult>
 {

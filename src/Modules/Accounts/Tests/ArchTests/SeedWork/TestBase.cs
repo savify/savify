@@ -1,5 +1,5 @@
 using System.Reflection;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Domain.Accounts.CashAccounts;
 using App.Modules.Accounts.Infrastructure;
 

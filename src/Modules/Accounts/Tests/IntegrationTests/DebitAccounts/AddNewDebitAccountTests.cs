@@ -1,5 +1,5 @@
-﻿using App.Modules.Accounts.Application.Accounts.DebitAccounts.AddNewDebitAccount;
-using App.Modules.Accounts.Application.Accounts.DebitAccounts.GetDebitAccount;
+﻿using App.Modules.Wallets.Application.Accounts.DebitAccounts.AddNewDebitAccount;
+using App.Modules.Wallets.Application.Accounts.DebitAccounts.GetDebitAccount;
 using App.Modules.Accounts.IntegrationTests.SeedWork;
 
 namespace App.Modules.Accounts.IntegrationTests.DebitAccounts;
@@ -15,9 +15,9 @@ public class AddNewDebitAccountTests : TestBase
             title: "Debit account",
             currency: "PLN",
             balance: 1000);
-        var accountId = await AccountsModule.ExecuteCommandAsync(command);
+        var accountId = await WalletsModule.ExecuteCommandAsync(command);
 
-        var addedDebitAccount = await AccountsModule.ExecuteQueryAsync(new GetDebitAccountQuery(accountId));
+        var addedDebitAccount = await WalletsModule.ExecuteQueryAsync(new GetDebitAccountQuery(accountId));
 
         Assert.IsNotNull(addedDebitAccount);
         Assert.That(addedDebitAccount.Id, Is.EqualTo(accountId));

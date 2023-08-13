@@ -1,7 +1,7 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Tests.IntegrationTests;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Accounts.Infrastructure.Configuration;
 using App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
 using Dapper;
@@ -15,7 +15,7 @@ public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
     
-    protected IAccountsModule AccountsModule { get; private set; }
+    protected IWalletsModule WalletsModule { get; private set; }
     
     protected string ConnectionString { get; private set; }
 
@@ -34,7 +34,7 @@ public class TestBase
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
         
         using var scope = WebApplicationFactory.Services.CreateScope();
-        AccountsModule = scope.ServiceProvider.GetRequiredService<IAccountsModule>();
+        WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
         AccountsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
     }
 

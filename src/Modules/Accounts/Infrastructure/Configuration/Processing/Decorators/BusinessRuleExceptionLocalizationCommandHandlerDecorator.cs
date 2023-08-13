@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Exceptions;
-using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Contracts;
 using Microsoft.Extensions.Localization;
 
 namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Decorators;

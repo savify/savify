@@ -1,6 +1,6 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Integration;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Accounts.Infrastructure.Configuration.DataAccess;
 using App.Modules.Accounts.Infrastructure.Configuration.Domain;
 using App.Modules.Accounts.Infrastructure.Configuration.EventBus;
@@ -32,7 +32,7 @@ public static class AccountsModuleCollectionExtensions
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
         
-        services.AddScoped<IAccountsModule, AccountsModule>();
+        services.AddScoped<IWalletsModule, WalletsModule>();
 
         return services;
     }

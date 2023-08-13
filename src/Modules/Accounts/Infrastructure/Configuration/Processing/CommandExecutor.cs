@@ -1,4 +1,4 @@
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

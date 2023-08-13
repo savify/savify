@@ -22,7 +22,7 @@
         <ProjectReference Include="..\..\..\..\API\App.API.csproj" />
         <ProjectReference Include="..\..\..\..\BuildingBlocks\Application\App.BuildingBlocks.Application.csproj" />
         <ProjectReference Include="..\..\..\..\BuildingBlocks\Tests\App.BuildingBlocks.Tests.csproj" />
-        <ProjectReference Include="..\..\Application\App.Modules.Accounts.Application.csproj" />
+        <ProjectReference Include="..\..\Application\App.Modules.Wallets.Application.csproj" />
         <ProjectReference Include="..\..\Infrastructure\App.Modules.Accounts.Infrastructure.csproj" />
     </ItemGroup>
 

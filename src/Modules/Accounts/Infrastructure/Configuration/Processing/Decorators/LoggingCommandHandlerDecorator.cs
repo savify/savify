@@ -1,6 +1,6 @@
 using App.BuildingBlocks.Application;
-using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Contracts;
 using Serilog;
 using Serilog.Context;
 using Serilog.Core;

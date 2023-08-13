@@ -2,7 +2,7 @@ using System.Data;
 using System.Reflection;
 using Dapper;
 using App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 using MediatR;
 using Newtonsoft.Json;
 

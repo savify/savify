@@ -1,6 +1,6 @@
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 
-namespace App.Modules.Accounts.Application.Configuration.Commands;
+namespace App.Modules.Wallets.Application.Configuration.Commands;
 
 public abstract class InternalCommandBase<TResult> : ICommand<TResult>
 {

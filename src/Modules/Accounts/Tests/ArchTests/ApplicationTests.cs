@@ -1,8 +1,8 @@
 using System.Reflection;
 using App.BuildingBlocks.Application.Validators;
-using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Application.Configuration.Queries;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Configuration.Queries;
+using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Accounts.ArchTests.SeedWork;
 using MediatR;
 using Newtonsoft.Json;

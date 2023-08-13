@@ -47,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ArchTests", "src\Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.Domain", "src\Modules\Accounts\Domain\App.Modules.Wallets.Domain.csproj", "{1989E0F4-4E90-4FD1-AF5A-8DBE28CF8D70}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.Application", "src\Modules\Accounts\Application\App.Modules.Accounts.Application.csproj", "{EA90608A-407B-408B-A389-0A0723B51C36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.Application", "src\Modules\Accounts\Application\App.Modules.Wallets.Application.csproj", "{EA90608A-407B-408B-A389-0A0723B51C36}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Accounts.Infrastructure", "src\Modules\Accounts\Infrastructure\App.Modules.Accounts.Infrastructure.csproj", "{9F0E7C77-9CFE-40C5-A07A-2014CFFD20D3}"
 EndProject

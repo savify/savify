@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.BuildingBlocks.Infrastructure.Localization;
-using App.Modules.Accounts.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Accounts.Infrastructure.Configuration.Localization;
 using App.Modules.Accounts.Infrastructure.Configuration.Processing.Decorators;
 using App.Modules.Accounts.Infrastructure.Configuration.Processing.InternalCommands;

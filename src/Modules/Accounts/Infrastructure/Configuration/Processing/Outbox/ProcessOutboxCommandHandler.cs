@@ -2,7 +2,7 @@ using Dapper;
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Application.Events;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
-using App.Modules.Accounts.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Configuration.Commands;
 using MediatR;
 using Newtonsoft.Json;
 using Serilog;

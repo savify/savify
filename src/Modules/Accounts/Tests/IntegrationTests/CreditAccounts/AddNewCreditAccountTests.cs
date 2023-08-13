@@ -1,5 +1,5 @@
-﻿using App.Modules.Accounts.Application.Accounts.CreditAccounts.AddNewCreditAccount;
-using App.Modules.Accounts.Application.Accounts.CreditAccounts.GetCreditAccount;
+﻿using App.Modules.Wallets.Application.Accounts.CreditAccounts.AddNewCreditAccount;
+using App.Modules.Wallets.Application.Accounts.CreditAccounts.GetCreditAccount;
 using App.Modules.Accounts.IntegrationTests.SeedWork;
 
 namespace App.Modules.Accounts.IntegrationTests.CreditAccounts;
@@ -16,9 +16,9 @@ public class AddNewCreditAccountTests : TestBase
             currency: "PLN",
             availableBalance: 500,
             creditLimit: 1000);
-        var accountId = await AccountsModule.ExecuteCommandAsync(command);
+        var accountId = await WalletsModule.ExecuteCommandAsync(command);
 
-        var addedCreditAccount = await AccountsModule.ExecuteQueryAsync(new GetCreditAccountQuery(accountId));
+        var addedCreditAccount = await WalletsModule.ExecuteQueryAsync(new GetCreditWalletQuery(accountId));
 
         Assert.IsNotNull(addedCreditAccount);
         Assert.That(addedCreditAccount.Id, Is.EqualTo(accountId));

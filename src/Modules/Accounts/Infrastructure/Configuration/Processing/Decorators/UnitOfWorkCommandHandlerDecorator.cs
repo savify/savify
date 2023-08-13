@@ -1,6 +1,6 @@
 using App.BuildingBlocks.Infrastructure;
-using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Decorators;

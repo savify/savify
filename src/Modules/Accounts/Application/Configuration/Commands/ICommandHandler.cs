@@ -1,7 +1,7 @@
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 using MediatR;
 
-namespace App.Modules.Accounts.Application.Configuration.Commands;
+namespace App.Modules.Wallets.Application.Configuration.Commands;
 
 public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand> where TCommand : ICommand { }
 

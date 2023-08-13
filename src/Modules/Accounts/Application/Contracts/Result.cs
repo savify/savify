@@ -1,4 +1,4 @@
-namespace App.Modules.Accounts.Application.Contracts;
+namespace App.Modules.Wallets.Application.Contracts;
 
 public class Result
 {

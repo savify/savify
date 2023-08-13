@@ -1,5 +1,5 @@
-﻿using App.Modules.Accounts.Application.Accounts.CashAccounts.AddNewCashAccount;
-using App.Modules.Accounts.Application.Accounts.CashAccounts.GetCashAccount;
+﻿using App.Modules.Wallets.Application.Accounts.CashAccounts.AddNewCashAccount;
+using App.Modules.Wallets.Application.Accounts.CashAccounts.GetCashAccount;
 using App.Modules.Accounts.IntegrationTests.SeedWork;
 
 namespace App.Modules.Accounts.IntegrationTests.CashAccounts;
@@ -15,9 +15,9 @@ public class AddNewCashAccountTests : TestBase
             "Cash account",
             "PLN",
             1000);
-        var accountId = await AccountsModule.ExecuteCommandAsync(command);
+        var accountId = await WalletsModule.ExecuteCommandAsync(command);
 
-        var addedCashAccount = await AccountsModule.ExecuteQueryAsync(new GetCashAccountQuery(accountId));
+        var addedCashAccount = await WalletsModule.ExecuteQueryAsync(new GetCashAccountQuery(accountId));
 
         Assert.IsNotNull(addedCashAccount);
         Assert.That(addedCashAccount.UserId, Is.EqualTo(command.UserId));

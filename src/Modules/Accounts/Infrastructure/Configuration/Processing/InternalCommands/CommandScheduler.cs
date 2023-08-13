@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.BuildingBlocks.Infrastructure.Serialization;
-using App.Modules.Accounts.Application.Configuration.Commands;
-using App.Modules.Accounts.Application.Contracts;
+using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Contracts;
 using Newtonsoft.Json;
 
 namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.InternalCommands;
