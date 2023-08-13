@@ -7,7 +7,7 @@ using MediatR;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
 
 public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
 {
@@ -39,14 +39,14 @@ public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
                   $"message.id as {nameof(OutboxMessageDto.Id)}, " +
                   $"message.type as {nameof(OutboxMessageDto.Type)}, " +
                   $"message.data as {nameof(OutboxMessageDto.Data)} " +
-                  "FROM accounts.outbox_messages AS message " +
+                  "FROM wallets.outbox_messages AS message " +
                   "WHERE message.processed_date IS NULL " +
                   "ORDER BY message.occurred_on";
         
         var messages = await connection.QueryAsync<OutboxMessageDto>(sql);
         var messagesList = messages.AsList();
         
-        const string sqlUpdateProcessedDate = "UPDATE accounts.outbox_messages " +
+        const string sqlUpdateProcessedDate = "UPDATE wallets.outbox_messages " +
                                               "SET processed_date = @Date " +
                                               "WHERE id = @Id";
         

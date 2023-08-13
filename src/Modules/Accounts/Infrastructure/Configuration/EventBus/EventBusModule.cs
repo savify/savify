@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Integration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.EventBus;
+namespace App.Modules.Wallets.Infrastructure.Configuration.EventBus;
 
 internal static class EventBusModule
 {

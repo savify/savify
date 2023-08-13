@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Logging;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Logging;
 
 internal static class LoggingModule
 {

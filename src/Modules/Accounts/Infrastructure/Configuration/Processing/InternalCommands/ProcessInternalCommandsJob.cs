@@ -1,6 +1,6 @@
 using Quartz;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.InternalCommands;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.InternalCommands;
 
 [DisallowConcurrentExecution]
 public class ProcessInternalCommandsJob: IJob

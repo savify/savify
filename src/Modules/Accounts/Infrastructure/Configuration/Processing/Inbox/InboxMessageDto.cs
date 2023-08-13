@@ -1,4 +1,4 @@
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Inbox;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Inbox;
 
 public class InboxMessageDto
 {

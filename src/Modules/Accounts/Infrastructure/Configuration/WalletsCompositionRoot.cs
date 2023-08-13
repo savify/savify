@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration;
+namespace App.Modules.Wallets.Infrastructure.Configuration;
 
-public class AccountsCompositionRoot
+public class WalletsCompositionRoot
 {
     private static IServiceProvider _serviceProvider;
     

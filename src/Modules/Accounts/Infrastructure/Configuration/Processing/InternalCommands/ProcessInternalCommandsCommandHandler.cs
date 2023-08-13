@@ -4,7 +4,7 @@ using App.Modules.Wallets.Application.Configuration.Commands;
 using Newtonsoft.Json;
 using Polly;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.InternalCommands;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.InternalCommands;
 
 internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
 {
@@ -23,7 +23,7 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
                      $"command.id AS {nameof(InternalCommandDto.Id)}, " +
                      $"command.type AS {nameof(InternalCommandDto.Type)}, " +
                      $"command.data AS {nameof(InternalCommandDto.Data)} " +
-                     "FROM accounts.internal_commands AS command " +
+                     "FROM wallets.internal_commands AS command " +
                      "WHERE command.processed_date IS NULL " +
                      "ORDER BY command.enqueue_date";
         
@@ -46,7 +46,7 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
             if (result.Outcome == OutcomeType.Failure)
             {
                 await connection.ExecuteScalarAsync(
-                    "UPDATE accounts.internal_commands " +
+                    "UPDATE wallets.internal_commands " +
                     "SET processed_date = @NowDate, " +
                     "error = @Error " +
                     "WHERE id = @Id",

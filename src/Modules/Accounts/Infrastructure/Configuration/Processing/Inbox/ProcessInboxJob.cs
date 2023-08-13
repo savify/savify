@@ -1,6 +1,6 @@
 using Quartz;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Inbox;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Inbox;
 
 [DisallowConcurrentExecution]
 public class ProcessInboxJob : IJob

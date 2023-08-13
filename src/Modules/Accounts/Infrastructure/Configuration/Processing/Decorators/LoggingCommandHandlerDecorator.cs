@@ -6,7 +6,7 @@ using Serilog.Context;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Decorators;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Decorators;
 
 internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {

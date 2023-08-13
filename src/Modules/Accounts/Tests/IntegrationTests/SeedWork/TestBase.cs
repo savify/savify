@@ -2,8 +2,8 @@ using System.Data;
 using App.API;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Accounts.Infrastructure.Configuration;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Wallets.Infrastructure.Configuration;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +35,7 @@ public class TestBase
         
         using var scope = WebApplicationFactory.Services.CreateScope();
         WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
-        AccountsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+        WalletsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
     }
 
     [SetUp]

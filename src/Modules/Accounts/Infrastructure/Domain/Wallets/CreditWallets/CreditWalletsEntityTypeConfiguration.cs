@@ -1,19 +1,19 @@
-﻿using App.Modules.Accounts.Domain.Accounts;
-using App.Modules.Accounts.Domain.Accounts.CreditAccounts;
-using App.Modules.Accounts.Domain.Users;
+﻿using App.Modules.Wallets.Domain.Wallets;
+using App.Modules.Wallets.Domain.Wallets.CreditWallets;
+using App.Modules.Wallets.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.Accounts.Infrastructure.Domain.Accounts.CreditAccounts;
+namespace App.Modules.Wallets.Infrastructure.Domain.Wallets.CreditWallets;
 
-internal class CreditAccountsEntityTypeConfiguration : IEntityTypeConfiguration<CreditAccount>
+internal class CreditWalletsEntityTypeConfiguration : IEntityTypeConfiguration<CreditWallet>
 {
-    public void Configure(EntityTypeBuilder<CreditAccount> builder)
+    public void Configure(EntityTypeBuilder<CreditWallet> builder)
     {
-        builder.ToTable("credit_accounts", "accounts");
+        builder.ToTable("credit_wallets", "wallets");
 
-        builder.HasKey(account => account.Id);
-        builder.Property(account => account.Id).HasColumnName("id");
+        builder.HasKey(wallet => wallet.Id);
+        builder.Property(wallet => wallet.Id).HasColumnName("id");
 
         builder.Property<UserId>("UserId").HasColumnName("user_id");
         builder.Property<string>("_title").HasColumnName("title");

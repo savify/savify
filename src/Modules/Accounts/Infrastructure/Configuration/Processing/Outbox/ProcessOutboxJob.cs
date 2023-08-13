@@ -1,6 +1,6 @@
 using Quartz;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
 
 public class ProcessOutboxJob : IJob
 {

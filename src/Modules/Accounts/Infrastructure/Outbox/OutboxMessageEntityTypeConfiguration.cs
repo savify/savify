@@ -2,13 +2,13 @@ using App.BuildingBlocks.Application.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.Accounts.Infrastructure.Outbox;
+namespace App.Modules.Wallets.Infrastructure.Outbox;
 
 public class OutboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<OutboxMessage>
 {
     public void Configure(EntityTypeBuilder<OutboxMessage> builder)
     {
-        builder.ToTable("outbox_messages", "accounts");
+        builder.ToTable("outbox_messages", "wallets");
         
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");

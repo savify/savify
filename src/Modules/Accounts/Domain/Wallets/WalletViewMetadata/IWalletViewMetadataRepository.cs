@@ -4,5 +4,5 @@ public interface IWalletViewMetadataRepository
 {
     Task AddAsync(WalletViewMetadata walletViewMetadata);
 
-    Task<WalletViewMetadata> GetByAccountIdAsync(WalletId walletId);
+    Task<WalletViewMetadata> GetByWalletIdAsync(WalletId walletId);
 }

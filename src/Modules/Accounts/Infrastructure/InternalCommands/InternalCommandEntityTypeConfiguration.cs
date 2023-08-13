@@ -2,13 +2,13 @@ using App.BuildingBlocks.Infrastructure.InternalCommands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.Accounts.Infrastructure.InternalCommands;
+namespace App.Modules.Wallets.Infrastructure.InternalCommands;
 
 public class InternalCommandEntityTypeConfiguration : IEntityTypeConfiguration<InternalCommand>
 {
     public void Configure(EntityTypeBuilder<InternalCommand> builder)
     {
-        builder.ToTable("internal_commands", "accounts");
+        builder.ToTable("internal_commands", "wallets");
         
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");

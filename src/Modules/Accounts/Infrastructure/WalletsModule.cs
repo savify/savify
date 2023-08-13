@@ -1,7 +1,7 @@
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing;
 
-namespace App.Modules.Accounts.Infrastructure;
+namespace App.Modules.Wallets.Infrastructure;
 
 public class WalletsModule : IWalletsModule
 {

@@ -1,4 +1,4 @@
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing;
 
 public interface IRecurringCommand
 {

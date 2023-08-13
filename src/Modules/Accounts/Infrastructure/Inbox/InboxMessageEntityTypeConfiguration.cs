@@ -2,13 +2,13 @@ using App.BuildingBlocks.Infrastructure.Inbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.Accounts.Infrastructure.Inbox;
+namespace App.Modules.Wallets.Infrastructure.Inbox;
 
 public class InboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<InboxMessage>
 {
     public void Configure(EntityTypeBuilder<InboxMessage> builder)
     {
-        builder.ToTable("inbox_messages", "accounts");
+        builder.ToTable("inbox_messages", "wallets");
         
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");

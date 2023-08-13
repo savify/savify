@@ -4,7 +4,7 @@ using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Wallets.Application.Contracts;
 using Microsoft.Extensions.Localization;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Decorators;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Decorators;
 
 internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {

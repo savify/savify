@@ -4,7 +4,7 @@ using App.Modules.Wallets.Application.Contracts;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Decorators;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Decorators;
 
 internal class ValidationCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {

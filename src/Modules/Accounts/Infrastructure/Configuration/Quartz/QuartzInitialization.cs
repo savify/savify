@@ -1,13 +1,13 @@
 using System.Collections.Specialized;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing.Inbox;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing.InternalCommands;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.Inbox;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.InternalCommands;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Logging;
 using Serilog;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Quartz;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Quartz;
 
 internal static class QuartzInitialization
 {

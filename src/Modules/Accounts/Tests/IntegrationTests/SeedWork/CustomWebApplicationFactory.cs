@@ -2,8 +2,8 @@ using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
-using App.Modules.Accounts.Infrastructure;
-using App.Modules.Accounts.Infrastructure.Outbox;
+using App.Modules.Wallets.Infrastructure;
+using App.Modules.Wallets.Infrastructure.Outbox;
 using App.Modules.UserAccess.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -22,7 +22,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
             services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
             
             services.Replace(ServiceDescriptor.Scoped<IUnitOfWork>(provider => new UnitOfWork(
-                provider.GetRequiredService<AccountsContext>(),
+                provider.GetRequiredService<WalletsContext>(),
                 provider.GetRequiredService<IDomainEventsDispatcher>())));
 
             services.Replace(ServiceDescriptor.Scoped<IDomainEventsAccessor>(provider => new DomainEventsAccessor(
@@ -34,7 +34,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
             // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
             
             services.Replace(ServiceDescriptor.Scoped<IDomainNotificationsMapper>(_ => new DomainNotificationsMapper(domainNotificationsMap)));
-            services.Replace(ServiceDescriptor.Scoped<IOutbox>(provider => new Outbox(provider.GetRequiredService<AccountsContext>())));
+            services.Replace(ServiceDescriptor.Scoped<IOutbox>(provider => new Outbox(provider.GetRequiredService<WalletsContext>())));
         });
     }
 }

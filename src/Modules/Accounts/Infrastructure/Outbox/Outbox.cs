@@ -1,18 +1,18 @@
 using App.BuildingBlocks.Application.Outbox;
 
-namespace App.Modules.Accounts.Infrastructure.Outbox;
+namespace App.Modules.Wallets.Infrastructure.Outbox;
 
 public class Outbox : IOutbox
 {
-    private readonly AccountsContext _accountsContext;
+    private readonly WalletsContext _walletsContext;
 
-    public Outbox(AccountsContext accountsContext)
+    public Outbox(WalletsContext walletsContext)
     {
-        _accountsContext = accountsContext;
+        _walletsContext = walletsContext;
     }
 
     public void Add(OutboxMessage message)
     {
-        _accountsContext.OutboxMessages?.Add(message);
+        _walletsContext.OutboxMessages?.Add(message);
     }
 }

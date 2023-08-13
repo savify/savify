@@ -1,16 +1,16 @@
-using App.Modules.Accounts.Domain.Accounts;
-using App.Modules.Accounts.Domain.Accounts.CashAccounts;
-using App.Modules.Accounts.Domain.Users;
+using App.Modules.Wallets.Domain.Wallets;
+using App.Modules.Wallets.Domain.Wallets.CashWallets;
+using App.Modules.Wallets.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.Accounts.Infrastructure.Domain.Accounts.CashAccounts;
+namespace App.Modules.Wallets.Infrastructure.Domain.Wallets.CashWallets;
 
-internal class CashAccountEntityTypeConfiguration : IEntityTypeConfiguration<CashAccount>
+internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<CashWallet>
 {
-    public void Configure(EntityTypeBuilder<CashAccount> builder)
+    public void Configure(EntityTypeBuilder<CashWallet> builder)
     {
-        builder.ToTable("cash_accounts", "accounts");
+        builder.ToTable("cash_wallets", "wallets");
         
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");

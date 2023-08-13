@@ -1,28 +1,28 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Integration;
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Accounts.Infrastructure.Configuration.DataAccess;
-using App.Modules.Accounts.Infrastructure.Configuration.Domain;
-using App.Modules.Accounts.Infrastructure.Configuration.EventBus;
-using App.Modules.Accounts.Infrastructure.Configuration.Logging;
-using App.Modules.Accounts.Infrastructure.Configuration.Mediation;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
-using App.Modules.Accounts.Infrastructure.Configuration.Quartz;
+using App.Modules.Wallets.Infrastructure.Configuration.DataAccess;
+using App.Modules.Wallets.Infrastructure.Configuration.Domain;
+using App.Modules.Wallets.Infrastructure.Configuration.EventBus;
+using App.Modules.Wallets.Infrastructure.Configuration.Logging;
+using App.Modules.Wallets.Infrastructure.Configuration.Mediation;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Wallets.Infrastructure.Configuration.Quartz;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration;
+namespace App.Modules.Wallets.Infrastructure.Configuration;
 
-public static class AccountsModuleCollectionExtensions
+public static class WalletsModuleCollectionExtensions
 {
-    public static IServiceCollection AddAccountsModule(
+    public static IServiceCollection AddWalletsModule(
         this IServiceCollection services,
         IConfiguration configuration,
         ILogger logger)
     {
-        var moduleLogger = logger.ForContext("Module", "Accounts");
+        var moduleLogger = logger.ForContext("Module", "Wallets");
 
         ConfigureCompositionRoot(
             services,
@@ -56,6 +56,6 @@ public static class AccountsModuleCollectionExtensions
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
 
-        AccountsCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        WalletsCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
 }

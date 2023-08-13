@@ -5,13 +5,13 @@ using App.BuildingBlocks.Integration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.EventBus;
+namespace App.Modules.Wallets.Infrastructure.Configuration.EventBus;
 
 internal class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> where T : IntegrationEvent
 {
     public async Task Handle(T @event)
     {
-        using var scope = AccountsCompositionRoot.BeginScope();
+        using var scope = WalletsCompositionRoot.BeginScope();
         using var connection = scope.ServiceProvider.GetRequiredService<ISqlConnectionFactory>().GetOpenConnection();
         
         string type = @event.GetType().FullName;
@@ -20,7 +20,7 @@ internal class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> w
             ContractResolver = new AllPropertiesContractResolver()
         });
 
-        var sql = "INSERT INTO accounts.inbox_messages (id, occurred_on, type, data) " +
+        var sql = "INSERT INTO wallets.inbox_messages (id, occurred_on, type, data) " +
                   "VALUES (@Id, @OccurredOn, @Type, @Data)";
 
         await connection.ExecuteScalarAsync(sql, new

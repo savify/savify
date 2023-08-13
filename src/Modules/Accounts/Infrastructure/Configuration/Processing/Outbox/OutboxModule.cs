@@ -4,7 +4,7 @@ using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
 
 internal static class OutboxModule
 {

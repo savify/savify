@@ -5,7 +5,7 @@ using MediatR;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.Inbox;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Inbox;
 
 public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
 {
@@ -29,14 +29,14 @@ public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
                      $"message.id as {nameof(InboxMessageDto.Id)}, " +
                      $"message.type as {nameof(InboxMessageDto.Type)}, " +
                      $"message.data as {nameof(InboxMessageDto.Data)} " +
-                     "FROM accounts.inbox_messages AS message " +
+                     "FROM wallets.inbox_messages AS message " +
                      "WHERE message.processed_date IS NULL " +
                      "ORDER BY message.occurred_on";
         
         var messages = await connection.QueryAsync<InboxMessageDto>(sql);
         var messagesList = messages.AsList();
         
-        const string sqlUpdateProcessedDate = "UPDATE accounts.inbox_messages " +
+        const string sqlUpdateProcessedDate = "UPDATE wallets.inbox_messages " +
                                               "SET processed_date = @Date " +
                                               "WHERE id = @Id";
         

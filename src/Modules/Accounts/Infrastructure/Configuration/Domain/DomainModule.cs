@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Domain;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Domain;
 
 internal static class DomainModule
 {

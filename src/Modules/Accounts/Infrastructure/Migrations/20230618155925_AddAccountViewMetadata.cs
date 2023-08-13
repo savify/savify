@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace App.Modules.Accounts.Infrastructure.Migrations
+namespace App.Modules.Wallets.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class AddAccountViewMetadata : Migration

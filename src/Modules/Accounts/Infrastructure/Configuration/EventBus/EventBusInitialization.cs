@@ -2,7 +2,7 @@ using App.BuildingBlocks.Integration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.EventBus;
+namespace App.Modules.Wallets.Infrastructure.Configuration.EventBus;
 
 public static class EventBusInitialization
 {
@@ -13,7 +13,7 @@ public static class EventBusInitialization
     
     private static void SubscribeToIntegrationEvents(ILogger logger)
     {
-        var eventBus = AccountsCompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
+        var eventBus = WalletsCompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
 
         // SubscribeToIntegrationEvent<SomeIntegrationEvent>(eventBus, logger);
     }

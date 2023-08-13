@@ -1,10 +1,10 @@
-using App.Modules.Accounts.Infrastructure.Configuration.Processing.Inbox;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing.InternalCommands;
-using App.Modules.Accounts.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.Inbox;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.InternalCommands;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Quartz;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Quartz;
 
 internal static class QuartzModule
 {

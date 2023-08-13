@@ -3,7 +3,7 @@ using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Mediation;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Mediation;
 
 internal static class MediatorModule
 {

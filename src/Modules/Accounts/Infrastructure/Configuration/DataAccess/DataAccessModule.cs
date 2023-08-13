@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.DataAccess;
+namespace App.Modules.Wallets.Infrastructure.Configuration.DataAccess;
 
 internal static class DataAccessModule
 {
@@ -15,13 +15,13 @@ internal static class DataAccessModule
             return new SqlConnectionFactory(databaseConnectionString);
         });
         
-        services.AddDbContext<AccountsContext>(options =>
+        services.AddDbContext<WalletsContext>(options =>
         {
             options.UseNpgsql(databaseConnectionString);
             options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
         });
 
-        services.AddScoped<DbContext, AccountsContext>();
+        services.AddScoped<DbContext, WalletsContext>();
 
         services.Scan(scan =>
         {

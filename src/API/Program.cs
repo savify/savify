@@ -8,7 +8,7 @@ using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
-using App.Modules.Accounts.Infrastructure.Configuration;
+using App.Modules.Wallets.Infrastructure.Configuration;
 using App.Modules.Notifications.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;

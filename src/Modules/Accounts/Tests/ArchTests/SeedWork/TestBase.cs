@@ -1,7 +1,7 @@
 using System.Reflection;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Domain.Accounts.CashAccounts;
-using App.Modules.Accounts.Infrastructure;
+using App.Modules.Wallets.Infrastructure;
 
 namespace App.Modules.Accounts.ArchTests.SeedWork;
 
@@ -11,7 +11,7 @@ public abstract class TestBase
 
     protected static Assembly ApplicationAssembly => typeof(CommandBase).Assembly;
     
-    protected static Assembly InfrastructureAssembly => typeof(AccountsContext).Assembly;
+    protected static Assembly InfrastructureAssembly => typeof(WalletsContext).Assembly;
     
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {

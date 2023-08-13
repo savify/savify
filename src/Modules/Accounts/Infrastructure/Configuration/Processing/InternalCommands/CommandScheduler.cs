@@ -4,21 +4,21 @@ using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Wallets.Application.Contracts;
 using Newtonsoft.Json;
 
-namespace App.Modules.Accounts.Infrastructure.Configuration.Processing.InternalCommands;
+namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.InternalCommands;
 
 public class CommandScheduler : ICommandScheduler
 {
-    private readonly AccountsContext _accountsContext;
+    private readonly WalletsContext _walletsContext;
 
-    public CommandScheduler(AccountsContext accountsContext)
+    public CommandScheduler(WalletsContext walletsContext)
     {
-        _accountsContext = accountsContext;
+        _walletsContext = walletsContext;
     }
 
     public async Task EnqueueAsync<T>(ICommand<T> command)
     {
-        await _accountsContext.AddAsync(CreateInternalCommandFrom(command));
-        await _accountsContext.SaveChangesAsync();
+        await _walletsContext.AddAsync(CreateInternalCommandFrom(command));
+        await _walletsContext.SaveChangesAsync();
     }
 
     private InternalCommand CreateInternalCommandFrom<T>(ICommand<T> command)
