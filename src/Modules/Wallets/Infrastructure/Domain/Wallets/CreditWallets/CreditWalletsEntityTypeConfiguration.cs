@@ -1,0 +1,29 @@
+﻿using App.Modules.Wallets.Domain.Wallets;
+using App.Modules.Wallets.Domain.Wallets.CreditWallets;
+using App.Modules.Wallets.Domain.Users;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace App.Modules.Wallets.Infrastructure.Domain.Wallets.CreditWallets;
+
+internal class CreditWalletsEntityTypeConfiguration : IEntityTypeConfiguration<CreditWallet>
+{
+    public void Configure(EntityTypeBuilder<CreditWallet> builder)
+    {
+        builder.ToTable("credit_wallets", "wallets");
+
+        builder.HasKey(wallet => wallet.Id);
+        builder.Property(wallet => wallet.Id).HasColumnName("id");
+
+        builder.Property<UserId>("UserId").HasColumnName("user_id");
+        builder.Property<string>("_title").HasColumnName("title");
+        builder.Property<int>("_availableBalance").HasColumnName("available_balance");
+        builder.Property<int>("_creditLimit").HasColumnName("credit_limit");
+        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
+
+        builder.OwnsOne<Currency>("_currency", b =>
+        {
+            b.Property(currency => currency.Value).HasColumnName("currency");
+        });
+    }
+}

@@ -12,11 +12,11 @@ user-access-migrations:
 notifications-migrations:
 	dotnet ef migrations add $(name) --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext
 
-# make accounts-migrations name=MigrationName
-accounts-migrations:
-	dotnet ef migrations add $(name) --project src/Modules/Accounts/Infrastructure --startup-project src/API --context AccountsContext
+# make wallets-migrations name=MigrationName
+wallets-migrations:
+	dotnet ef migrations add $(name) --project src/Modules/Wallets/Infrastructure --startup-project src/API --context WalletsContext
 	
-db-update: user-access-db-update notifications-db-update accounts-db-update
+db-update: user-access-db-update notifications-db-update wallets-db-update
 
 user-access-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext
@@ -24,10 +24,10 @@ user-access-db-update:
 notifications-db-update:
 	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext
 
-accounts-db-update:
-	dotnet ef database update --project src/Modules/Accounts/Infrastructure --startup-project src/API --context AccountsContext
+wallets-db-update:
+	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context WalletsContext
 
-test-db-update: user-access-test-db-update notifications-test-db-update accounts-test-db-update
+test-db-update: user-access-test-db-update notifications-test-db-update wallets-test-db-update
 
 user-access-test-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext -- --environment Testing
@@ -35,5 +35,5 @@ user-access-test-db-update:
 notifications-test-db-update:
 	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext -- --environment Testing
 
-accounts-test-db-update:
-	dotnet ef database update --project src/Modules/Accounts/Infrastructure --startup-project src/API --context AccountsContext -- --environment Testing
+wallets-test-db-update:
+	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context WalletsContext -- --environment Testing

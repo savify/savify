@@ -3,22 +3,21 @@ using App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmati
 using NSubstitute.ReceivedExtensions;
 using NSubstitute;
 
-namespace App.Modules.Notifications.IntegrationTests.Users
+namespace App.Modules.Notifications.IntegrationTests.Users;
+
+[TestFixture]
+public class SendUserRegistrationConfirmationEmailTests : TestBase
 {
-    [TestFixture]
-    public class SendUserRegistrationConfirmationEmailTests : TestBase
+    [Test]
+    public async Task SendUserRegistrationConfirmationEmailCommand_Test()
     {
-        [Test]
-        public async Task SendUserRegistrationConfirmationEmailCommand_Test()
-        {
-            await NotificationsModule.ExecuteCommandAsync(new SendUserRegistrationConfirmationEmailCommand(
-                Guid.NewGuid(),
-                "Name",
-                "test@email.com",
-                "en",
-                "ABC123"));
+        await NotificationsModule.ExecuteCommandAsync(new SendUserRegistrationConfirmationEmailCommand(
+            Guid.NewGuid(),
+            "Name",
+            "test@email.com",
+            "en",
+            "ABC123"));
             
-            await EmailSender.Received(Quantity.Exactly(1)).SendEmailAsync(Arg.Is<EmailMessage>(e => e.To.Contains("test@email.com")));
-        }
+        await EmailSender.Received(Quantity.Exactly(1)).SendEmailAsync(Arg.Is<EmailMessage>(e => e.To.Contains("test@email.com")));
     }
 }
