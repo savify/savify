@@ -18,7 +18,7 @@ internal class GetCreditWalletQueryHandler : IQueryHandler<GetCreditWalletQuery,
     {
         using var connection = _connectionFactory.CreateNewConnection();
 
-        const string sql = "SELECT c.id, c.title, c.available_balance AS availableBalance, c.credit_limit AS creditLimit, c.currency, c.created_at AS createdAt, " +
+        const string sql = "SELECT c.id, c.user_id as userId, c.title, c.available_balance AS availableBalance, c.credit_limit AS creditLimit, c.currency, c.created_at AS createdAt, " +
                            "v.wallet_id as walletId, v.color, v.icon, v.is_considered_in_total_balance AS isConsideredInTotalBalance " +
                            "FROM wallets.credit_wallets c " +
                            "INNER JOIN wallets.wallet_view_metadata v ON c.id = v.wallet_id " +

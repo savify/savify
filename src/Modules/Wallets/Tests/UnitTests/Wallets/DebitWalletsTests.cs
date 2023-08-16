@@ -20,13 +20,13 @@ public class DebitWalletsTests : UnitTestBase
         Assert.That(walletAddedDomainEvent.UserId, Is.EqualTo(userId));
         Assert.That(walletAddedDomainEvent.Currency, Is.EqualTo(Currency.From("PLN")));
     }
-    
+
     [Test]
     public void EditingDebitWallet_IsSuccessful()
     {
         var userId = new UserId(Guid.NewGuid());
         var wallet = DebitWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
-        
+
         wallet.Edit("New cash", new Currency("GBP"), 2000);
 
         var walletEditedDomainEvent = AssertPublishedDomainEvent<DebitWalletEditedDomainEvent>(wallet);

@@ -27,6 +27,7 @@ public class AddNewCashWalletTests : TestBase
         Assert.That(wallet.UserId, Is.EqualTo(command.UserId));
         Assert.That(wallet.Title, Is.EqualTo(command.Title));
         Assert.That(wallet.Balance, Is.EqualTo(command.Balance));
+        Assert.That(wallet.Currency, Is.EqualTo(command.Currency));
 
         Assert.IsNotNull(wallet.ViewMetadata);
         Assert.That(wallet.ViewMetadata.WalletId, Is.EqualTo(walletId));

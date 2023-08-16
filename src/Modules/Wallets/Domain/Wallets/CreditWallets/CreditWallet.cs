@@ -35,7 +35,7 @@ public class CreditWallet : Entity, IAggregateRoot
         _availableBalance = newAvailableBalance ?? _availableBalance;
         _creditLimit = newCreditLimit ?? _creditLimit;
         _updatedAt = DateTime.UtcNow;
-        
+
         AddDomainEvent(new CreditWalletEditedDomainEvent(Id, UserId, newCurrency, newAvailableBalance, newCreditLimit));
     }
 

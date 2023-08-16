@@ -26,7 +26,7 @@ public class CashWalletsTests : UnitTestBase
     {
         var userId = new UserId(Guid.NewGuid());
         var wallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
-        
+
         wallet.Edit("New cash", new Currency("GBP"), 2000);
 
         var walletEditedDomainEvent = AssertPublishedDomainEvent<CashWalletEditedDomainEvent>(wallet);
