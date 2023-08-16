@@ -32,6 +32,8 @@ public class DebitWallet : Entity, IAggregateRoot
         _currency = newCurrency ?? _currency;
         _balance = newBalance ?? _balance;
         _updatedAt = DateTime.UtcNow;
+        
+        AddDomainEvent(new DebitWalletEditedDomainEvent(Id, UserId));
     }
 
     private DebitWallet(UserId userId, string title, Currency currency, int balance)
