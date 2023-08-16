@@ -22,6 +22,13 @@ public class WalletViewMetadata : Entity, IAggregateRoot
         return CreateForWallet(walletId, color: null, icon: null, isConsideredInTotalBalance: true);
     }
 
+    public void Edit(string? newColor, string? newIcon, bool? isConsideredInTotalBalance)
+    {
+        Color = newColor ?? Color;
+        Icon = newIcon ?? Icon;
+        IsConsideredInTotalBalance = isConsideredInTotalBalance ?? IsConsideredInTotalBalance;
+    }
+
     private WalletViewMetadata(WalletId walletId, string? color, string? icon, bool isConsideredInTotalBalance)
     {
         WalletId = walletId;
