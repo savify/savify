@@ -28,7 +28,12 @@ internal class AddNewCreditWalletCommandHandler : ICommandHandler<AddNewCreditWa
 
         await _creditWalletRepository.AddAsync(wallet);
 
-        var viewMetadata = WalletViewMetadata.CreateDefaultForWallet(wallet.Id);
+        var viewMetadata = WalletViewMetadata.CreateForWallet(
+            wallet.Id,
+            command.Color,
+            command.Icon,
+            command.ConsiderInTotalBalance);
+
         await _walletViewMetadataRepository.AddAsync(viewMetadata);
 
         return wallet.Id.Value;

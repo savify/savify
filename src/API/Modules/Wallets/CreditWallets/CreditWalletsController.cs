@@ -32,7 +32,10 @@ public class CreditWalletsController : ControllerBase
             request.Title,
             request.Currency,
             request.AvailableBalance,
-            request.CreditLimit));
+            request.CreditLimit,
+            request.Color,
+            request.Icon,
+            request.ConsiderInTotalBalance));
 
         return Created("", new
         {

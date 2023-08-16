@@ -9,4 +9,10 @@ public class AddNewCreditWalletRequest
     public int AvailableBalance { get; set; }
 
     public int CreditLimit { get; set; }
+
+    public string Color { get; set; }
+    
+    public string Icon { get; set; }
+    
+    public bool ConsiderInTotalBalance { get; set; }
 }
