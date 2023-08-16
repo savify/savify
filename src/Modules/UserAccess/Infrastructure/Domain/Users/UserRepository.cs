@@ -12,7 +12,7 @@ public class UserRepository : IUserRepository
     {
         _userAccessContext = userAccessContext;
     }
-    
+
     public async Task AddAsync(User user)
     {
         await _userAccessContext.AddAsync(user);

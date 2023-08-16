@@ -1,4 +1,4 @@
-﻿namespace App.BuildingBlocks.Application.Queries;
+namespace App.BuildingBlocks.Application.Queries;
 
 public interface IPagedQuery
 {

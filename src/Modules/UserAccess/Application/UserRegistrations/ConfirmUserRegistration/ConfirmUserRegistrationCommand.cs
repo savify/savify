@@ -6,7 +6,7 @@ namespace App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegist
 public class ConfirmUserRegistrationCommand : CommandBase<Result>
 {
     public Guid UserRegistrationId { get; }
-    
+
     [LogMasked]
     public string ConfirmationCode { get; }
 

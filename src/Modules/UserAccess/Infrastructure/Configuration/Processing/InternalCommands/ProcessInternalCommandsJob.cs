@@ -3,7 +3,7 @@ using Quartz;
 namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing.InternalCommands;
 
 [DisallowConcurrentExecution]
-public class ProcessInternalCommandsJob: IJob
+public class ProcessInternalCommandsJob : IJob
 {
     public async Task Execute(IJobExecutionContext context)
     {

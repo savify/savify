@@ -9,7 +9,7 @@ internal class CreateNewUserCommandHandler : ICommandHandler<CreateNewUserComman
     private readonly IUserRepository _userRepository;
 
     private readonly IUsersCounter _usersCounter;
-    
+
     public CreateNewUserCommandHandler(IUserRepository userRepository, IUsersCounter usersCounter)
     {
         _userRepository = userRepository;

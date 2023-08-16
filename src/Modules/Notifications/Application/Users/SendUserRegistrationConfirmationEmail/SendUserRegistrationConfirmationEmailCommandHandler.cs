@@ -7,7 +7,7 @@ namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfir
 internal class SendUserRegistrationConfirmationEmailCommandHandler : ICommandHandler<SendUserRegistrationConfirmationEmailCommand, Result>
 {
     private readonly IEmailMessageFactory _emailMessageFactory;
-    
+
     private readonly IEmailSender _emailSender;
 
     public SendUserRegistrationConfirmationEmailCommandHandler(IEmailMessageFactory emailMessageFactory, IEmailSender emailSender)
@@ -25,7 +25,7 @@ internal class SendUserRegistrationConfirmationEmailCommandHandler : ICommandHan
             command.Language);
 
         await _emailSender.SendEmailAsync(emailMessage);
-        
+
         return Result.Success;
     }
 }

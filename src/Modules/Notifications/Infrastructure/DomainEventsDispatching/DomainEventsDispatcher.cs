@@ -18,13 +18,13 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
     public async Task DispatchEventsAsync()
     {
         var domainEvents = _domainEventsAccessor.GetAllDomainEvents();
-        
+
         _domainEventsAccessor.ClearAllDomainEvents();
-        
+
         foreach (var domainEvent in domainEvents)
         {
             await _mediator.Publish(domainEvent);
         }
-        
+
     }
 }

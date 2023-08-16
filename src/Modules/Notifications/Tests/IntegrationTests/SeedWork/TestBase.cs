@@ -14,9 +14,9 @@ namespace App.Modules.Notifications.IntegrationTests.SeedWork;
 public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
-    
+
     protected INotificationsModule NotificationsModule { get; private set; }
-    
+
     protected string ConnectionString { get; private set; }
 
     protected IEmailSender EmailSender { get; private set; }
@@ -26,16 +26,16 @@ public class TestBase
     {
         const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
         ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
-        
+
         if (ConnectionString == null)
         {
             throw new ApplicationException(
                 $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
         }
-        
+
         EmailSender = Substitute.For<IEmailSender>();
         WebApplicationFactory = new CustomWebApplicationFactory<Program>(EmailSender);
-        
+
         using var scope = WebApplicationFactory.Services.CreateScope();
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
         NotificationsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);

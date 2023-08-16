@@ -9,14 +9,14 @@ namespace App.Modules.Notifications.Infrastructure.Configuration.Processing.Deco
 internal class ValidationCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {
     private readonly ICommandHandler<T, TResult> _decorated;
-    
+
     private readonly IEnumerable<IValidator<T>> _validators;
-    
+
     private readonly IStringLocalizer _localizer;
 
     public ValidationCommandHandlerDecorator(
-        ICommandHandler<T, TResult> decorated, 
-        IEnumerable<IValidator<T>> validators, 
+        ICommandHandler<T, TResult> decorated,
+        IEnumerable<IValidator<T>> validators,
         IStringLocalizer localizer)
     {
         _decorated = decorated;
@@ -31,7 +31,7 @@ internal class ValidationCommandHandlerDecorator<T, TResult> : ICommandHandler<T
             .SelectMany(result => result.Errors)
             .Where(error => error != null)
             .ToList();
-        
+
         if (errors.Any())
         {
             var errorList = new Dictionary<string, List<string>>();
@@ -39,16 +39,16 @@ internal class ValidationCommandHandlerDecorator<T, TResult> : ICommandHandler<T
             foreach (var error in errors)
             {
                 var fieldErrors = new List<string>();
-                
+
                 if (errorList.ContainsKey(error.PropertyName))
                 {
                     fieldErrors = errorList[error.PropertyName];
                 }
-                
+
                 fieldErrors.Add(_localizer[error.ErrorMessage]);
                 errorList[error.PropertyName] = fieldErrors;
             }
-            
+
             throw new InvalidCommandException(errorList);
         }
 

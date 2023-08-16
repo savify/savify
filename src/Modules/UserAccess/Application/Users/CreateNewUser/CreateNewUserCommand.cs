@@ -7,15 +7,15 @@ public class CreateNewUserCommand : CommandBase<Guid>
 {
     [LogMasked]
     public string Email { get; }
-    
+
     [LogMasked]
     public string Password { get; }
-    
+
     [LogMasked]
     public string Name { get; }
-    
+
     public string Role { get; }
-    
+
     public string Country { get; }
 
     public CreateNewUserCommand(string email, string password, string name, string role, string country)

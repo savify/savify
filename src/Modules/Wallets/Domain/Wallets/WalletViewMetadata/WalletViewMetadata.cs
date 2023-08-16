@@ -5,11 +5,11 @@ namespace App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 public class WalletViewMetadata : Entity, IAggregateRoot
 {
     public WalletId WalletId { get; private set; }
-    
+
     public string? Color { get; private set; }
-    
+
     public string? Icon { get; private set; }
-    
+
     public bool IsConsideredInTotalBalance { get; private set; }
 
     public static WalletViewMetadata CreateForWallet(WalletId walletId, string? color, string? icon, bool isConsideredInTotalBalance)
@@ -21,7 +21,7 @@ public class WalletViewMetadata : Entity, IAggregateRoot
     {
         return CreateForWallet(walletId, color: null, icon: null, isConsideredInTotalBalance: true);
     }
-    
+
     private WalletViewMetadata(WalletId walletId, string? color, string? icon, bool isConsideredInTotalBalance)
     {
         WalletId = walletId;

@@ -11,9 +11,9 @@ namespace App.Modules.Notifications.Infrastructure.Configuration.Processing.Deco
 internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {
     private readonly ICommandHandler<T, TResult> _decorated;
-    
+
     private readonly ILogger _logger;
-    
+
     private readonly IExecutionContextAccessor _executionContextAccessor;
 
     public LoggingCommandHandlerDecorator(
@@ -29,17 +29,17 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
         using (LogContext.Push(
-                   new RequestLogEnricher(_executionContextAccessor), 
+                   new RequestLogEnricher(_executionContextAccessor),
                    new CommandLogEnricher(command)))
         {
             try
             {
                 _logger.Information("Executing command {@Command}", command);
-                
+
                 var result = await _decorated.Handle(command, cancellationToken);
-                
+
                 _logger.Information("Command processed successful, result {Result}", result);
-                
+
                 return result;
             }
             catch (Exception exception)
@@ -49,7 +49,7 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
             }
         }
     }
-    
+
     private class CommandLogEnricher : ILogEventEnricher
     {
         private readonly ICommand<TResult> _command;
@@ -64,7 +64,7 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
             logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{_command.Id.ToString()}")));
         }
     }
-    
+
     private class RequestLogEnricher : ILogEventEnricher
     {
         private readonly IExecutionContextAccessor _executionContextAccessor;

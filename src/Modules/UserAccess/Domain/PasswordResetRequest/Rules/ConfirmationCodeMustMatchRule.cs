@@ -17,6 +17,6 @@ public class ConfirmationCodeMustMatchRule : IBusinessRule
     public bool IsBroken() => _providedConfirmationCode != _expectedConfirmationCode;
 
     public string MessageTemplate => "Provided confirmation code '{0}' is invalid";
-    
-    public object[] MessageArguments => new object[] {_providedConfirmationCode.Value};
+
+    public object[] MessageArguments => new object[] { _providedConfirmationCode.Value };
 }

@@ -20,6 +20,6 @@ internal class GetUserNotificationSettingsQueryHandler : IQueryHandler<GetUserNo
         string sql = "SELECT user_id AS userId, email, name, preferred_language AS preferredLanguage " +
                      "FROM notifications.user_notification_settings WHERE user_id = @UserId";
 
-        return  await connection.QuerySingleOrDefaultAsync<UserNotificationSettingsDto>(sql, new { query.UserId });
+        return await connection.QuerySingleOrDefaultAsync<UserNotificationSettingsDto>(sql, new { query.UserId });
     }
 }

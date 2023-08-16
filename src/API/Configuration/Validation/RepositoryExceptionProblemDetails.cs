@@ -12,7 +12,7 @@ public class RepositoryExceptionProblemDetails : ProblemDetails
 
         if (exception.GetType().GetGenericTypeDefinition() == typeof(NotFoundRepositoryException<>))
         {
-            Status = StatusCodes.Status404NotFound;   
+            Status = StatusCodes.Status404NotFound;
         }
     }
 }

@@ -9,10 +9,10 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("users", "user_access");
-        
+
         builder.HasKey(x => x.Id);
         builder.Property(b => b.Id).HasColumnName("id");
-        
+
         builder.Property<string>("_email").HasColumnName("email");
         builder.Property<string>("_password").HasColumnName("password");
         builder.Property<string>("_name").HasColumnName("name");
@@ -27,12 +27,12 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             b.Property<string>("Value").HasColumnName("role_code");
             b.HasKey("UserId", "Value");
         });
-        
+
         builder.OwnsOne<Country>("_country", b =>
         {
             b.Property(x => x.Value).HasColumnName("country");
         });
-        
+
         builder.OwnsOne<Language>("_preferredLanguage", b =>
         {
             b.Property(x => x.Value).HasColumnName("preferred_language");

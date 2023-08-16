@@ -10,7 +10,7 @@ public static class EventBusInitialization
     {
         SubscribeToIntegrationEvents(logger);
     }
-    
+
     private static void SubscribeToIntegrationEvents(ILogger logger)
     {
         var eventBus = WalletsCompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();

@@ -15,8 +15,8 @@ public class UserEmailMustBeUniqueRule : IBusinessRule
     }
 
     public bool IsBroken() => _usersCounter.CountUsersWithEmail(_email) > 0;
-    
+
     public string MessageTemplate => "User with email '{0}' already exists";
-    
-    public object[] MessageArguments => new object[] {_email};
+
+    public object[] MessageArguments => new object[] { _email };
 }

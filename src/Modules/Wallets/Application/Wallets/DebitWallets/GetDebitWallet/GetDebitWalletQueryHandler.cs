@@ -1,6 +1,6 @@
-﻿using App.BuildingBlocks.Application.Data;
-using App.Modules.Wallets.Application.Wallets.WalletsViewMetadata;
+using App.BuildingBlocks.Application.Data;
 using App.Modules.Wallets.Application.Configuration.Queries;
+using App.Modules.Wallets.Application.Wallets.WalletsViewMetadata;
 using Dapper;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.GetDebitWallet;
@@ -27,12 +27,12 @@ internal class GetDebitWalletQueryHandler : IQueryHandler<GetDebitWalletQuery, D
         var debitWallets = await connection.QueryAsync<DebitWalletDto, WalletViewMetadataDto, DebitWalletDto>(sql, (debitWallet, viewMetadata) =>
         {
             debitWallet.ViewMetadata = viewMetadata;
-            
+
             return debitWallet;
         },
         new { query.WalletId },
         splitOn: "walletId");
-        
+
         return debitWallets.SingleOrDefault();
     }
 }

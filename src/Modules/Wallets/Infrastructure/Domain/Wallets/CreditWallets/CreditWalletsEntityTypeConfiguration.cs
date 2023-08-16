@@ -1,6 +1,6 @@
-﻿using App.Modules.Wallets.Domain.Wallets;
-using App.Modules.Wallets.Domain.Wallets.CreditWallets;
 using App.Modules.Wallets.Domain.Users;
+using App.Modules.Wallets.Domain.Wallets;
+using App.Modules.Wallets.Domain.Wallets.CreditWallets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

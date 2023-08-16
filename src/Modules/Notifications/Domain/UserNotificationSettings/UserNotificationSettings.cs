@@ -6,13 +6,13 @@ namespace App.Modules.Notifications.Domain.UserNotificationSettings;
 public class UserNotificationSettings : Entity
 {
     public UserNotificationSettingsId Id { get; private set; }
-    
+
     public UserId UserId { get; private set; }
-    
+
     public string Email { get; private set; }
-    
+
     public string Name { get; private set; }
-    
+
     public Language PreferredLanguage { get; private set; }
 
     public static UserNotificationSettings Create(
@@ -23,10 +23,10 @@ public class UserNotificationSettings : Entity
         IUserNotificationSettingsCounter userNotificationSettingsCounter)
     {
         CheckRules(new NotificationSettingsMustBeUniquePerUserIdRule(userId, userNotificationSettingsCounter));
-        
+
         return new UserNotificationSettings(userId, email, name, preferredLanguage);
     }
-    
+
     private UserNotificationSettings(UserId userId, string email, string name, Language preferredLanguage)
     {
         Id = new UserNotificationSettingsId(Guid.NewGuid());

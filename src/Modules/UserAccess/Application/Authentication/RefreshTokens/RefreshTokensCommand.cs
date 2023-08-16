@@ -7,7 +7,7 @@ public class RefreshTokensCommand : CommandBase<TokensResult>
 {
     [LogMasked]
     public Guid UserId { get; }
-    
+
     [LogMasked]
     public string RefreshToken { get; }
 

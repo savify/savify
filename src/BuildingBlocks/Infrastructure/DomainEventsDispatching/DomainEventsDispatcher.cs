@@ -32,19 +32,19 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
     public async Task DispatchEventsAsync()
     {
         var domainEvents = _domainEventsAccessor.GetAllDomainEvents();
-        
+
         var domainEventNotifications = new List<IDomainEventNotification<IDomainEvent>>();
         foreach (var domainEvent in domainEvents)
         {
             Type? domainNotificationType = _domainNotificationsMapper.GetType(domainEvent.GetType().Name);
             object? domainNotification = null;
-            
+
             if (domainNotificationType != null)
             {
                 domainNotification = Activator.CreateInstance(
                     domainNotificationType,
                     domainEvent.Id,
-                    domainEvent);   
+                    domainEvent);
             }
 
             if (domainNotification != null)
@@ -52,14 +52,14 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
                 domainEventNotifications.Add(domainNotification as IDomainEventNotification<IDomainEvent> ?? throw new InvalidOperationException());
             }
         }
-        
+
         _domainEventsAccessor.ClearAllDomainEvents();
 
         foreach (var domainEvent in domainEvents)
         {
             await _mediator.Publish(domainEvent);
         }
-        
+
         foreach (var domainEventNotification in domainEventNotifications)
         {
             var type = _domainNotificationsMapper.GetName(domainEventNotification.GetType());

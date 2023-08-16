@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -23,7 +23,7 @@ namespace App.Modules.UserAccess.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_permissions", x => x.code);
                 });
-            
+
             migrationBuilder.CreateTable(
                 name: "roles_permissions",
                 schema: "user_access",

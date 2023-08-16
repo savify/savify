@@ -1,5 +1,5 @@
-﻿using App.Modules.Wallets.Domain.Wallets;
 using App.Modules.Wallets.Domain.Users;
+using App.Modules.Wallets.Domain.Wallets;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

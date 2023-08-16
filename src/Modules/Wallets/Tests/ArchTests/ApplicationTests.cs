@@ -41,7 +41,7 @@ public class ApplicationTests : TestBase
 
         AssertAreImmutable(types);
     }
-    
+
     [Test]
     public void CommandHandler_ShouldHaveName_EndingWithCommandHandler()
     {
@@ -57,7 +57,7 @@ public class ApplicationTests : TestBase
 
         AssertArchTestResult(result);
     }
-    
+
     [Test]
     public void QueryHandler_ShouldHaveName_EndingWithQueryHandler()
     {

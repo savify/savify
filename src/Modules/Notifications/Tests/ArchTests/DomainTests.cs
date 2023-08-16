@@ -63,7 +63,7 @@ public class DomainTests : TestBase
 
         AssertFailingTypes(failingTypes);
     }
-    
+
     [Test]
     public void Entity_ShouldHaveParameterlessPrivateConstructor()
     {
@@ -106,7 +106,7 @@ public class DomainTests : TestBase
 
         AssertArchTestResult(result);
     }
-    
+
     [Test]
     public void BusinessRule_ShouldHaveRulePostfix()
     {

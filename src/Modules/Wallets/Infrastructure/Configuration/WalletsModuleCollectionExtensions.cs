@@ -28,10 +28,10 @@ public static class WalletsModuleCollectionExtensions
             services,
             configuration.GetConnectionString("Savify"),
             moduleLogger);
-        
+
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
-        
+
         services.AddScoped<IWalletsModule, WalletsModule>();
 
         return services;
@@ -44,9 +44,9 @@ public static class WalletsModuleCollectionExtensions
         IEventBus? eventBus = null)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
-        
+
         // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
-        
+
         OutboxModule.Configure(services, domainNotificationsMap);
         DataAccessModule.Configure(services, connectionString);
         DomainModule.Configure(services);

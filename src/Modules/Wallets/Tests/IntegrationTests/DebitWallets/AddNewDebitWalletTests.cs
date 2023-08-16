@@ -1,4 +1,4 @@
-﻿using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
+using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.Wallets.IntegrationTests.SeedWork;
 
@@ -16,7 +16,7 @@ public class AddNewDebitWalletTests : TestBase
             "PLN",
             1000,
             "#ffffff",
-            "https://cdn.savify.localhost/icons/wallet.png", 
+            "https://cdn.savify.localhost/icons/wallet.png",
             true);
         var walletId = await WalletsModule.ExecuteCommandAsync(command);
 

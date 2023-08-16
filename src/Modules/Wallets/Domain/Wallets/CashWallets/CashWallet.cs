@@ -1,6 +1,6 @@
 using App.BuildingBlocks.Domain;
-using App.Modules.Wallets.Domain.Wallets.CashWallets.Events;
 using App.Modules.Wallets.Domain.Users;
+using App.Modules.Wallets.Domain.Wallets.CashWallets.Events;
 
 namespace App.Modules.Wallets.Domain.Wallets.CashWallets;
 
@@ -13,7 +13,7 @@ public class CashWallet : Entity, IAggregateRoot
     private string _title;
 
     private Currency _currency;
-    
+
     private int _balance;
 
     private DateTime _createdAt;
@@ -22,7 +22,7 @@ public class CashWallet : Entity, IAggregateRoot
     {
         return new CashWallet(userId, title, currency, balance);
     }
-    
+
     private CashWallet(UserId userId, string title, Currency currency, int balance)
     {
         Id = new WalletId(Guid.NewGuid());
@@ -31,9 +31,9 @@ public class CashWallet : Entity, IAggregateRoot
         _currency = currency;
         _balance = balance;
         _createdAt = DateTime.UtcNow;
-        
+
         AddDomainEvent(new CashWalletAddedDomainEvent(Id, UserId, _currency));
     }
 
-    private CashWallet() {}
+    private CashWallet() { }
 }

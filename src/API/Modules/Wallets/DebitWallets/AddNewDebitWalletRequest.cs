@@ -1,4 +1,4 @@
-﻿namespace App.API.Modules.Wallets.DebitWallets;
+namespace App.API.Modules.Wallets.DebitWallets;
 
 public class AddNewDebitWalletRequest
 {
@@ -7,10 +7,10 @@ public class AddNewDebitWalletRequest
     public string Currency { get; set; }
 
     public int Balance { get; set; }
-    
+
     public string Color { get; set; }
-    
+
     public string Icon { get; set; }
-    
+
     public bool ConsiderInTotalBalance { get; set; }
 }

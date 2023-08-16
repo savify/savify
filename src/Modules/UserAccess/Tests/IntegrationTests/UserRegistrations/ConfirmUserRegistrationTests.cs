@@ -17,17 +17,17 @@ public class ConfirmUserRegistrationTests : TestBase
             UserRegistrationSampleData.Name,
             UserRegistrationSampleData.Country.Value,
             UserRegistrationSampleData.PreferredLanguage.Value));
-        
+
         var newUserRegisteredNotification = await GetLastOutboxMessage<NewUserRegisteredNotification>();
         var confirmationCode = newUserRegisteredNotification.DomainEvent.ConfirmationCode;
-        
+
         await UserAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(
             userRegistrationId,
             confirmationCode.Value));
 
         var userRegistration = await UserAccessModule.ExecuteQueryAsync(new GetUserRegistrationQuery(userRegistrationId));
         var userRegistrationConfirmedNotification = await GetLastOutboxMessage<UserRegistrationConfirmedNotification>();
-        
+
         Assert.That(userRegistration.Status, Is.EqualTo(UserRegistrationStatus.Confirmed.Value));
         Assert.That(userRegistrationConfirmedNotification.DomainEvent.UserRegistrationId.Value, Is.EqualTo(userRegistrationId));
         Assert.That(userRegistrationConfirmedNotification.DomainEvent.Email, Is.EqualTo(UserRegistrationSampleData.Email));

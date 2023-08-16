@@ -15,7 +15,7 @@ public class JsonStringLocalizer : IStringLocalizer
         _cache = cache;
         _serializer = serializer;
     }
-    
+
     public JsonStringLocalizer(IDistributedCache cache, JsonSerializer serializer, string module)
     {
         _cache = cache;
@@ -32,7 +32,7 @@ public class JsonStringLocalizer : IStringLocalizer
             return new LocalizedString(name, value ?? name, value == null);
         }
     }
-    
+
     public LocalizedString this[string name, params object[] arguments]
     {
         get
@@ -55,16 +55,16 @@ public class JsonStringLocalizer : IStringLocalizer
         using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
         using var streamReader = new StreamReader(stream);
         using var reader = new JsonTextReader(streamReader);
-        
+
         while (reader.Read())
         {
             if (reader.TokenType != JsonToken.PropertyName) continue;
 
             var key = reader.Value as string;
             reader.Read();
-            
+
             var value = _serializer.Deserialize<string>(reader);
-            
+
             yield return new LocalizedString(key, value, false);
         }
     }
@@ -75,7 +75,7 @@ public class JsonStringLocalizer : IStringLocalizer
 
         var filePath = ResolveFilePath();
         if (!File.Exists(filePath)) return default;
-        
+
         var cacheKey = $"locale_{currentCulture}_{key}";
         var cacheValue = _cache.GetString(cacheKey);
 
@@ -83,34 +83,34 @@ public class JsonStringLocalizer : IStringLocalizer
         {
             return cacheValue;
         }
-            
+
         var result = GetValueFromJson(key, filePath);
 
         if (!string.IsNullOrEmpty(result))
         {
             _cache.SetString(cacheKey, result);
         }
-            
+
         return result;
 
     }
-    
+
     private string? GetValueFromJson(string propertyName, string filePath)
     {
         using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
         using var streamReader = new StreamReader(stream);
         using var reader = new JsonTextReader(streamReader);
-        
+
         while (reader.Read())
         {
             if (reader.TokenType == JsonToken.PropertyName && reader.Value as string == propertyName)
             {
                 reader.Read();
-                
+
                 return _serializer.Deserialize<string>(reader);
             }
         }
-        
+
         return default;
     }
 
@@ -118,7 +118,7 @@ public class JsonStringLocalizer : IStringLocalizer
     {
         var currentCulture = Thread.CurrentThread.CurrentCulture.Name;
         var relativeFilePath = $"Resources/{currentCulture}.json";
-        
+
         if (_module != null)
         {
             relativeFilePath = $"Resources/Modules/{_module}/{currentCulture}.json";

@@ -11,25 +11,25 @@ namespace App.Modules.Wallets.Infrastructure.Configuration.Quartz;
 
 internal static class QuartzInitialization
 {
-    private static IScheduler _scheduler;   
-    
+    private static IScheduler _scheduler;
+
     internal static void Initialize(ILogger logger)
     {
         logger.Information("Quartz starting...");
-        
+
         _scheduler = CreateScheduler();
-        
+
         LogProvider.SetCurrentLogProvider(new SerilogLogProvider(logger));
-        
+
         _scheduler.Start().GetAwaiter().GetResult();
 
         ScheduleProcessOutboxJob(_scheduler);
         ScheduleProcessInboxJob(_scheduler);
         ScheduleProcessInternalCommandJob(_scheduler);
-        
+
         logger.Information("Quartz started");
     }
-    
+
     internal static void StopQuartz()
     {
         _scheduler.Shutdown();
@@ -39,10 +39,10 @@ internal static class QuartzInitialization
     {
         var schedulerConfiguration = new NameValueCollection();
         schedulerConfiguration.Add("quartz.scheduler.instanceName", "Savify");
-        
+
         ISchedulerFactory schedulerFactory = new StdSchedulerFactory(schedulerConfiguration);
         var scheduler = schedulerFactory.GetScheduler().GetAwaiter().GetResult();
-        
+
         return scheduler;
     }
 
@@ -57,7 +57,7 @@ internal static class QuartzInitialization
 
         scheduler.ScheduleJob(processOutboxJob, outboxProcessingTrigger).GetAwaiter().GetResult();
     }
-    
+
     private static void ScheduleProcessInboxJob(IScheduler scheduler)
     {
         var processInboxJob = JobBuilder.Create<ProcessInboxJob>().Build();

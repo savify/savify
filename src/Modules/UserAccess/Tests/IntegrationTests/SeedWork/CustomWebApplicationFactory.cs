@@ -27,23 +27,23 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         builder.ConfigureTestServices(services =>
         {
             services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
-            
+
             services.Replace(ServiceDescriptor.Scoped<IUnitOfWork>(provider => new UnitOfWork(
                 provider.GetRequiredService<UserAccessContext>(),
                 provider.GetRequiredService<IDomainEventsDispatcher>())));
 
             services.Replace(ServiceDescriptor.Scoped<IDomainEventsAccessor>(provider => new DomainEventsAccessor(
                 provider.GetRequiredService<UserAccessContext>())));
-            
+
             // TODO: find some solution to work with domain notifications maps without duplication in tests!
             var domainNotificationsMap = new BiDictionary<string, Type>();
-        
+
             domainNotificationsMap.Add(nameof(UserCreatedDomainEvent), typeof(UserCreatedNotification));
             domainNotificationsMap.Add(nameof(NewUserRegisteredDomainEvent), typeof(NewUserRegisteredNotification));
             domainNotificationsMap.Add(nameof(UserRegistrationConfirmedDomainEvent), typeof(UserRegistrationConfirmedNotification));
             domainNotificationsMap.Add(nameof(UserRegistrationRenewedDomainEvent), typeof(UserRegistrationRenewedNotification));
             domainNotificationsMap.Add(nameof(PasswordResetRequestedDomainEvent), typeof(PasswordResetRequestedNotification));
-            
+
             services.Replace(ServiceDescriptor.Scoped<IDomainNotificationsMapper>(_ => new DomainNotificationsMapper(domainNotificationsMap)));
             services.Replace(ServiceDescriptor.Scoped<IOutbox>(provider => new Outbox(provider.GetRequiredService<UserAccessContext>())));
         });

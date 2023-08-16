@@ -7,7 +7,7 @@ public class EnvironmentVariablesProvider
     public static string? GetVariable(string variableName)
     {
         var environmentVariable = Environment.GetEnvironmentVariable(variableName);
-        
+
         if (!string.IsNullOrEmpty(environmentVariable))
         {
             return environmentVariable;

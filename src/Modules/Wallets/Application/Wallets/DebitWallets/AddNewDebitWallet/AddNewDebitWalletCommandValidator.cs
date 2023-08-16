@@ -1,4 +1,4 @@
-﻿using App.BuildingBlocks.Application.Validators;
+using App.BuildingBlocks.Application.Validators;
 using App.Modules.Wallets.Application.Validation;
 using FluentValidation;
 
@@ -16,7 +16,7 @@ internal class AddNewDebitWalletCommandValidator : Validator<AddNewDebitWalletCo
             .NotEmpty()
             .WithMessage("Please provide wallet currency")
             .MustMatchCurrencyCodeIsoFormat();
-        
+
         RuleFor(c => c.Color)
             .NotEmpty()
             .WithMessage("Please provide wallet color")

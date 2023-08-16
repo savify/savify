@@ -13,16 +13,16 @@ public class CreateUserNotificationSettingsTests : TestBase
         using var scope = WebApplicationFactory.Services.CreateScope();
         var userNotificationSettingsRepository = scope.ServiceProvider.GetRequiredService<IUserNotificationSettingsRepository>();
         var userId = Guid.NewGuid();
-        
+
         await NotificationsModule.ExecuteCommandAsync(new CreateNotificationSettingsCommand(
-            Guid.NewGuid(), 
+            Guid.NewGuid(),
             userId,
             "Name",
             "test@email.com",
             "en"));
 
         var notificationSettings = await userNotificationSettingsRepository.GetByUserEmailAsync("test@email.com");
-        
+
         Assert.That(notificationSettings.UserId.Value, Is.EqualTo(userId));
         Assert.That(notificationSettings.Name, Is.EqualTo("Name"));
         Assert.That(notificationSettings.Email, Is.EqualTo("test@email.com"));

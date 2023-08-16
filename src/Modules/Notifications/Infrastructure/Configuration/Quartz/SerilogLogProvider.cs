@@ -11,7 +11,7 @@ public class SerilogLogProvider : ILogProvider
     {
         _logger = logger;
     }
-    
+
     public Logger GetLogger(string name)
     {
         return (level, func, exception, parameters) =>

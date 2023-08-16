@@ -12,7 +12,7 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
     private readonly NotificationsContext _notificationsContext;
 
     public UnitOfWorkCommandHandlerDecorator(
-        ICommandHandler<T, TResult> decorated, 
+        ICommandHandler<T, TResult> decorated,
         IUnitOfWork unitOfWork,
         NotificationsContext notificationsContext)
     {
@@ -29,15 +29,15 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
         {
             var internalCommand = await _notificationsContext.InternalCommands.FirstOrDefaultAsync(
                 x => x.Id == command.Id, cancellationToken: cancellationToken);
-        
+
             if (internalCommand != null)
             {
                 internalCommand.ProcessedDate = DateTime.UtcNow;
             }
         }
-        
+
         await _unitOfWork.CommitAsync(cancellationToken);
-        
+
         return result;
     }
 }

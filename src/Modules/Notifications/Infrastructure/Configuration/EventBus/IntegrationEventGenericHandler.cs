@@ -1,7 +1,7 @@
-using Dapper;
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Serialization;
 using App.BuildingBlocks.Integration;
+using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -13,7 +13,7 @@ internal class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> w
     {
         using var scope = NotificationsCompositionRoot.BeginScope();
         using var connection = scope.ServiceProvider.GetRequiredService<ISqlConnectionFactory>().GetOpenConnection();
-        
+
         string type = @event.GetType().FullName;
         var data = JsonConvert.SerializeObject(@event, new JsonSerializerSettings
         {

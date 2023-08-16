@@ -1,4 +1,4 @@
-﻿using App.Modules.Wallets.Application.Wallets.WalletsViewMetadata;
+using App.Modules.Wallets.Application.Wallets.WalletsViewMetadata;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.GetDebitWallet;
 

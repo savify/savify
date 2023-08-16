@@ -1,6 +1,6 @@
-using Dapper;
 using App.BuildingBlocks.Application.Data;
 using App.Modules.UserAccess.Domain.Users;
+using Dapper;
 
 namespace App.Modules.UserAccess.Infrastructure.Domain.Users;
 
@@ -19,6 +19,6 @@ public class UsersCounter : IUsersCounter
 
         const string sql = "SELECT COUNT(*) FROM user_access.users WHERE email = @email";
 
-        return connection.QuerySingle<int>(sql, new {email});
+        return connection.QuerySingle<int>(sql, new { email });
     }
 }

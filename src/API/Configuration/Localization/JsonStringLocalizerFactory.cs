@@ -16,7 +16,7 @@ public class JsonStringLocalizerFactory : ILocalizerFactory
         _serializer = new JsonSerializer();
     }
 
-    public IStringLocalizer Create<TResource>() where TResource : ILocalizationResource, new ()
+    public IStringLocalizer Create<TResource>() where TResource : ILocalizationResource, new()
     {
         var resource = new TResource();
 

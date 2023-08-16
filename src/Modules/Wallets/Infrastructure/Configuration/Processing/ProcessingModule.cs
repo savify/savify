@@ -22,7 +22,7 @@ internal static class ProcessingModule
 
             return localizerFactory.Create<WalletsLocalizationResource>();
         });
-        
+
         services.AddScoped<IDomainEventsAccessor>(provider =>
         {
             return new DomainEventsAccessor(provider.GetRequiredService<WalletsContext>());

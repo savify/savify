@@ -11,12 +11,12 @@ internal static class OutboxModule
     internal static void Configure(IServiceCollection services, BiDictionary<string, Type> domainNotificationsMap)
     {
         services.AddScoped<IOutbox, Infrastructure.Outbox.Outbox>();
-        
+
         CheckMappings(domainNotificationsMap);
 
         services.AddSingleton<IDomainNotificationsMapper>(_ => new DomainNotificationsMapper(domainNotificationsMap));
     }
-    
+
     private static void CheckMappings(BiDictionary<string, Type> domainNotificationsMap)
     {
         var domainEventNotifications = Assemblies.Application

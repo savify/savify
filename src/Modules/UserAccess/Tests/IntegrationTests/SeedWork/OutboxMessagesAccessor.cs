@@ -1,8 +1,8 @@
 using System.Data;
 using System.Reflection;
-using Dapper;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
+using Dapper;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -27,7 +27,7 @@ public class OutboxMessagesAccessor
     public static T Deserialize<T>(OutboxMessageDto message) where T : class, INotification
     {
         Type type = Assembly.GetAssembly(typeof(UserCreatedNotification))?.GetType(typeof(T).FullName);
-        
+
         return JsonConvert.DeserializeObject(message.Data, type) as T;
     }
 }

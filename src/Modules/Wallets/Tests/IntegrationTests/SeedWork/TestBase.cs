@@ -14,9 +14,9 @@ namespace App.Modules.Wallets.IntegrationTests.SeedWork;
 public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
-    
+
     protected IWalletsModule WalletsModule { get; private set; }
-    
+
     protected string ConnectionString { get; private set; }
 
     [OneTimeSetUp]
@@ -24,15 +24,15 @@ public class TestBase
     {
         const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
         ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
-        
+
         if (ConnectionString == null)
         {
             throw new ApplicationException(
                 $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
         }
-        
+
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
-        
+
         using var scope = WebApplicationFactory.Services.CreateScope();
         WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
         WalletsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
@@ -44,7 +44,7 @@ public class TestBase
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
         await ClearDatabase(sqlConnection);
     }
-    
+
     protected async Task<List<OutboxMessageDto>> GetOutboxMessages()
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
@@ -52,7 +52,7 @@ public class TestBase
 
         return messages;
     }
-    
+
     protected async Task<T> GetLastOutboxMessage<T>() where T : class, INotification
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
@@ -60,7 +60,7 @@ public class TestBase
 
         return OutboxMessagesAccessor.Deserialize<T>(messages.Last());
     }
-    
+
     private static async Task ClearDatabase(IDbConnection connection)
     {
         const string sql = "DELETE FROM wallets.internal_commands; " +

@@ -5,7 +5,7 @@ public sealed class InMemoryEventBus
     public static InMemoryEventBus Instance { get; } = new InMemoryEventBus();
 
     private readonly IDictionary<string, List<IIntegrationEventHandler>> _handlersDictionary;
-    
+
     static InMemoryEventBus()
     {
     }
@@ -14,7 +14,7 @@ public sealed class InMemoryEventBus
     {
         _handlersDictionary = new Dictionary<string, List<IIntegrationEventHandler>>();
     }
-    
+
     public void Subscribe<T>(IIntegrationEventHandler<T> handler) where T : IntegrationEvent
     {
         var eventType = typeof(T).FullName;

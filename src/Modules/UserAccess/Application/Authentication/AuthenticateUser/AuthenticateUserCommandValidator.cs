@@ -11,7 +11,7 @@ internal class AuthenticateUserCommandValidator : Validator<AuthenticateUserComm
             .NotNull()
             .NotEmpty()
             .WithMessage("Email address is required to authenticate");
-        
+
         RuleFor(c => c.Password)
             .NotNull()
             .NotEmpty()

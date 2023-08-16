@@ -5,7 +5,7 @@ namespace App.Modules.UserAccess.IntegrationEvents;
 public class PasswordResetRequestedIntegrationEvent : IntegrationEvent
 {
     public string Email { get; }
-    
+
     public string ConfirmationCode { get; }
 
     public PasswordResetRequestedIntegrationEvent(

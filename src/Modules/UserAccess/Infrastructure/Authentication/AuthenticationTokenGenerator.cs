@@ -20,7 +20,7 @@ public class AuthenticationTokenGenerator : IAuthenticationTokenGenerator
     {
         return GenerateAccessToken(userId, DateTime.UtcNow.AddSeconds(_configuration.AccessTokenTtl));
     }
-    
+
     public Token GenerateAccessToken(Guid userId, DateTime expires)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.IssuerSigningKey));

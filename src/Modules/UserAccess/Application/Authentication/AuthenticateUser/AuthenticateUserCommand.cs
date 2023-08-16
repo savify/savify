@@ -7,7 +7,7 @@ public class AuthenticateUserCommand : CommandBase<TokensResult>
 {
     [LogMasked]
     public string Email { get; }
-    
+
     [LogMasked]
     public string Password { get; }
 

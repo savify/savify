@@ -1,4 +1,4 @@
-﻿using App.Modules.Wallets.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.Wallets.CreditWallets.AddNewCreditWallet;
 public class AddNewCreditWalletCommand : CommandBase<Guid>
@@ -12,11 +12,11 @@ public class AddNewCreditWalletCommand : CommandBase<Guid>
     public int AvailableBalance { get; }
 
     public int CreditLimit { get; }
-    
+
     public string Color { get; }
-    
+
     public string Icon { get; }
-    
+
     public bool ConsiderInTotalBalance { get; }
 
     public AddNewCreditWalletCommand(Guid userId, string title, string currency, int availableBalance, int creditLimit, string color, string icon, bool considerInTotalBalance)

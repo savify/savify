@@ -11,7 +11,7 @@ internal class ConfirmPasswordResetCommandHandler : ICommandHandler<ConfirmPassw
     private readonly IPasswordResetRequestRepository _passwordResetRequestRepository;
 
     private readonly IUserDetailsProvider _userDetailsProvider;
-    
+
     private readonly IAuthenticationTokenGenerator _authenticationTokenGenerator;
 
     public ConfirmPasswordResetCommandHandler(
@@ -28,7 +28,7 @@ internal class ConfirmPasswordResetCommandHandler : ICommandHandler<ConfirmPassw
     {
         var passwordResetRequest = await _passwordResetRequestRepository.GetByIdAsync(
             new PasswordResetRequestId(command.PasswordResetRequestId));
-        
+
         passwordResetRequest.Confirm(ConfirmationCode.From(command.ConfirmationCode));
 
         var token = _authenticationTokenGenerator.GenerateAccessToken(

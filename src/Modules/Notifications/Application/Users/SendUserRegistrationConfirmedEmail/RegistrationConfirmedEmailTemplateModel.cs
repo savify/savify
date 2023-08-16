@@ -5,7 +5,7 @@ namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfir
 public class RegistrationConfirmedEmailTemplateModel : EmailTemplateModelBase
 {
     public override string TemplateName => "registration_confirmed";
-    
+
     public string Name { get; }
 
     public RegistrationConfirmedEmailTemplateModel(string name)

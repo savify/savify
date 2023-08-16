@@ -27,7 +27,7 @@ public class UsersController : ControllerBase
     [Authorize]
     [HasPermission(UserAccessPermissions.ManageUsers)]
     [HttpPost("")]
-    [ProducesResponseType( StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateNew(CreateNewUserRequest request)
     {
         var userId = await _userAccessModule.ExecuteCommandAsync(new CreateNewUserCommand(
@@ -36,8 +36,8 @@ public class UsersController : ControllerBase
             request.Name,
             request.Role,
             request.Country));
-        
-        return Created("",new
+
+        return Created("", new
         {
             Id = userId
         });
@@ -46,7 +46,7 @@ public class UsersController : ControllerBase
     [Authorize]
     [NoPermissionRequired]
     [HttpPatch("passwords")]
-    [ProducesResponseType( StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SetNewPassword(SetNewPasswordRequest request)
     {
         await _userAccessModule.ExecuteCommandAsync(new SetNewPasswordCommand(_executionContextAccessor.UserId, request.Password));

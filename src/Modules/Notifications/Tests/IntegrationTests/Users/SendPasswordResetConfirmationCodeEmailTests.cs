@@ -2,8 +2,8 @@ using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Application.UserNotificationSettings.CreateUserNotificationSettings;
 using App.Modules.Notifications.Application.Users.SendPasswordResetConfirmationCodeEmail;
-using NSubstitute.ReceivedExtensions;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 
 namespace App.Modules.Notifications.IntegrationTests.Users;
 
@@ -19,15 +19,15 @@ public class SendPasswordResetConfirmationCodeEmailTests : TestBase
             "Name",
             "test@email.com",
             "en"));
-        
+
         await NotificationsModule.ExecuteCommandAsync(new SendPasswordResetConfirmationCodeEmailCommand(
             Guid.NewGuid(),
-            "test@email.com", 
+            "test@email.com",
             "ABC123"));
-        
+
         await EmailSender.Received(Quantity.Exactly(1)).SendEmailAsync(Arg.Is<EmailMessage>(e => e.To.Contains("test@email.com")));
     }
-    
+
     [Test]
     public async Task SendUserRegistrationConfirmationEmailCommand_WhenNotificationSettingsNotExist_Fails()
     {
@@ -36,12 +36,12 @@ public class SendPasswordResetConfirmationCodeEmailTests : TestBase
             {
                 await NotificationsModule.ExecuteCommandAsync(new SendPasswordResetConfirmationCodeEmailCommand(
                     Guid.NewGuid(),
-                    "test@email.com", 
-                    "ABC123"));                
+                    "test@email.com",
+                    "ABC123"));
             });
-        
+
         Assert.That(exception.Message, Is.EqualTo(string.Format(
             "UserNotificationSettings for user with email '{0}' was not found",
-            new object[]{"test@email.com"})));
+            new object[] { "test@email.com" })));
     }
 }

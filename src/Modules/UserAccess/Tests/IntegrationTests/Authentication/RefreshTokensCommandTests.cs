@@ -17,7 +17,7 @@ public class RefreshTokensCommandTests : TestBase
     {
         using var scope = WebApplicationFactory.Services.CreateScope();
         var refreshTokenRepository = scope.ServiceProvider.GetRequiredService<IRefreshTokenRepository>();
-        
+
         var userId = await UserAccessModule.ExecuteCommandAsync(new CreateNewUserCommand(
             UserSampleData.Email,
             UserSampleData.PlainPassword,
@@ -25,7 +25,7 @@ public class RefreshTokensCommandTests : TestBase
             UserSampleData.Role.Value,
             UserSampleData.Country.Value
         ));
-        
+
         var tokens = await UserAccessModule.ExecuteCommandAsync(
             new AuthenticateUserCommand(UserSampleData.Email, UserSampleData.PlainPassword));
         var refreshToken = await refreshTokenRepository.GetByUserIdAsync(userId);
@@ -36,7 +36,7 @@ public class RefreshTokensCommandTests : TestBase
         Assert.That(tokens.RefreshToken, Is.EqualTo(newTokens.RefreshToken));
         Assert.That(newRefreshToken.ExpiresAt, Is.GreaterThan(refreshToken.ExpiresAt));
     }
-    
+
     [Test]
     public async Task RefreshTokensCommand_ForNonExistingRefreshToken_WillFail()
     {
@@ -48,10 +48,10 @@ public class RefreshTokensCommandTests : TestBase
             UserSampleData.Country.Value
         ));
 
-        Assert.That(async () => await UserAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(userId, "token")), 
+        Assert.That(async () => await UserAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(userId, "token")),
             Throws.TypeOf<AuthenticationException>().With.Message.EqualTo("Invalid refresh token"));
     }
-    
+
     [Test]
     public async Task RefreshTokensCommand_ForInvalidRefreshToken_WillFail()
     {
@@ -62,13 +62,13 @@ public class RefreshTokensCommandTests : TestBase
             UserSampleData.Role.Value,
             UserSampleData.Country.Value
         ));
-        
+
         await UserAccessModule.ExecuteCommandAsync(new AuthenticateUserCommand(UserSampleData.Email, UserSampleData.PlainPassword));
 
-        Assert.That(async () => await UserAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(userId, "invalid")), 
+        Assert.That(async () => await UserAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(userId, "invalid")),
             Throws.TypeOf<AuthenticationException>().With.Message.EqualTo("Invalid refresh token"));
     }
-    
+
     [Test]
     public async Task RefreshTokensCommand_ForExpiredRefreshToken_WillFail()
     {
@@ -79,12 +79,12 @@ public class RefreshTokensCommandTests : TestBase
             UserSampleData.Role.Value,
             UserSampleData.Country.Value
         ));
-        
+
         var tokens = await UserAccessModule.ExecuteCommandAsync(new AuthenticateUserCommand(UserSampleData.Email, UserSampleData.PlainPassword));
 
         await ExpireRefreshTokenForUser(userId);
-        
-        Assert.That(async () => await UserAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(userId, tokens.RefreshToken)), 
+
+        Assert.That(async () => await UserAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(userId, tokens.RefreshToken)),
             Throws.TypeOf<AuthenticationException>().With.Message.EqualTo("Refresh token expired"));
     }
 

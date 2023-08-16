@@ -25,7 +25,7 @@ internal static class EmailModule
             {
                 return new EmailMessageMapper(configuration);
             });
-            
+
             services.AddScoped<IEmailSender>(provider =>
             {
                 return new EmailSender(

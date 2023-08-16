@@ -15,14 +15,14 @@ public class RenewUserRegistrationTests : TestBase
             UserRegistrationSampleData.Name,
             UserRegistrationSampleData.Country.Value,
             UserRegistrationSampleData.PreferredLanguage.Value));
-        
+
         var newUserRegisteredNotification = await GetLastOutboxMessage<NewUserRegisteredNotification>();
         var confirmationCode = newUserRegisteredNotification.DomainEvent.ConfirmationCode;
 
         await UserAccessModule.ExecuteCommandAsync(new RenewUserRegistrationCommand(userRegistrationId));
         var userRegistrationRenewedNotification = await GetLastOutboxMessage<UserRegistrationRenewedNotification>();
         var renewedConfirmationCode = userRegistrationRenewedNotification.DomainEvent.ConfirmationCode;
-        
+
         Assert.That(renewedConfirmationCode, Is.Not.EqualTo(confirmationCode));
     }
 }

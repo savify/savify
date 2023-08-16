@@ -1,8 +1,8 @@
 using App.Modules.UserAccess.Application.Authentication;
 using App.Modules.UserAccess.Application.Configuration.Commands;
+using App.Modules.UserAccess.Domain;
 using App.Modules.UserAccess.Domain.UserRegistrations;
 using App.Modules.UserAccess.Domain.Users;
-using App.Modules.UserAccess.Domain;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 

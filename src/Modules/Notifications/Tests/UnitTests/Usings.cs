@@ -1,3 +1,3 @@
-global using NUnit.Framework;
-global using NSubstitute;
 global using App.BuildingBlocks.Tests.UnitTests;
+global using NSubstitute;
+global using NUnit.Framework;

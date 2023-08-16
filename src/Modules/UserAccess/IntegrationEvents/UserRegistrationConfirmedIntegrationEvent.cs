@@ -5,13 +5,13 @@ namespace App.Modules.UserAccess.IntegrationEvents;
 public class UserRegistrationConfirmedIntegrationEvent : IntegrationEvent
 {
     public Guid UserId { get; }
-    
+
     public string Email { get; }
-    
+
     public string Name { get; }
 
     public string PreferredLanguage { get; }
-    
+
     public UserRegistrationConfirmedIntegrationEvent(
         Guid id,
         DateTime occurredOn,

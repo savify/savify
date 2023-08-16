@@ -28,8 +28,8 @@ public class ConfirmUserRegistrationTests : TestBase
         await AssertEventually(
             new GetCreatedUserNotificationSettingsFromNotificationsProbe(userRegistrationId, NotificationsModule), 20000);
     }
-    
-    private class GetCreatedUserNotificationSettingsFromNotificationsProbe: IProbe
+
+    private class GetCreatedUserNotificationSettingsFromNotificationsProbe : IProbe
     {
         private readonly Guid _expectedUserId;
 
@@ -77,6 +77,6 @@ public class ConfirmUserRegistrationTests : TestBase
 
         var sql = "SELECT confirmation_code FROM user_access.user_registrations u WHERE u.id = @userRegistrationId";
 
-        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new {userRegistrationId});
+        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { userRegistrationId });
     }
 }

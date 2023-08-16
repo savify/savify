@@ -19,10 +19,10 @@ public class UserNotificationSettingsTests : UnitTestBase
             "Test",
             Language.From("en"),
             userNotificationSettingsCounter);
-        
+
         Assert.That(notificationSettings.UserId, Is.EqualTo(userId));
     }
-    
+
     [Test]
     public void CreatingUserNotificationSettings_ForUserWithExistingNotificationSettings_BreaksNotificationSettingsMustBeUniquePerUserIdRule()
     {

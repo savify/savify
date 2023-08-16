@@ -14,7 +14,7 @@ public class GetUserRegistrationTests : TestBase
 
         Assert.Null(userRegistration);
     }
-    
+
     [Test]
     public async Task GetUserRegistrationQuery_Test()
     {

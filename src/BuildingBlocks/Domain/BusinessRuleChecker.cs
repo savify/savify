@@ -9,7 +9,7 @@ public static class BusinessRuleChecker
             CheckRule(rule);
         }
     }
-    
+
     private static void CheckRule(IBusinessRule rule)
     {
         if (rule.IsBroken())

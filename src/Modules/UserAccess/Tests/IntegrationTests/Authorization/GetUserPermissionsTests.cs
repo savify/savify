@@ -22,7 +22,7 @@ public class GetUserPermissionsTests : TestBase
         ));
 
         var permissions = await UserAccessModule.ExecuteQueryAsync(new GetUserPermissionsQuery(userId));
-        
+
         Assert.That(permissions.Count, Is.EqualTo(1));
         Assert.That(permissions.FirstOrDefault(p => p.Code == "SomePermission").Code, Is.Not.Null);
     }

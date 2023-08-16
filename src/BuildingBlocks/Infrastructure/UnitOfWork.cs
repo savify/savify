@@ -18,7 +18,7 @@ public class UnitOfWork : IUnitOfWork
     public async Task<int> CommitAsync(CancellationToken cancellationToken = default, Guid? internalCommandId = null)
     {
         await _domainEventsDispatcher.DispatchEventsAsync();
-        
+
         return await _context.SaveChangesAsync(cancellationToken);
     }
 }

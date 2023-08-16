@@ -1,6 +1,6 @@
-﻿using App.BuildingBlocks.Domain;
-using App.Modules.Wallets.Domain.Wallets.DebitWallets.Events;
+using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.Users;
+using App.Modules.Wallets.Domain.Wallets.DebitWallets.Events;
 
 namespace App.Modules.Wallets.Domain.Wallets.DebitWallets;
 

@@ -7,7 +7,7 @@ namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewa
 internal class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<SendUserRegistrationRenewalEmailCommand, Result>
 {
     private readonly IEmailMessageFactory _emailMessageFactory;
-    
+
     private readonly IEmailSender _emailSender;
 
     public SendUserRegistrationRenewalEmailCommandHandler(IEmailMessageFactory emailMessageFactory, IEmailSender emailSender)
@@ -25,7 +25,7 @@ internal class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<
             command.Language);
 
         await _emailSender.SendEmailAsync(emailMessage);
-        
+
         return Result.Success;
     }
 }

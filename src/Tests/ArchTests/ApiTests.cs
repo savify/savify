@@ -21,7 +21,7 @@ public class ApiTests : TestBase
 
         AssertArchTestResult(result);
     }
-    
+
     [Test]
     public void NotificationsApi_DoesNotHaveDependency_ToOtherModules()
     {

@@ -17,13 +17,13 @@ public class EmailMessage
         Subject = subject;
         Content = content;
     }
-    
+
     public EmailMessage(
         string to,
         string subject,
         string content)
     {
-        To = new []{to};
+        To = new[] { to };
         Subject = subject;
         Content = content;
     }

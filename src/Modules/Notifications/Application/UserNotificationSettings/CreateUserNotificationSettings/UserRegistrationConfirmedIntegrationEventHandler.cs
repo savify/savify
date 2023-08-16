@@ -22,7 +22,7 @@ public class UserRegistrationConfirmedIntegrationEventHandler : INotificationHan
             @event.Name,
             @event.Email,
             @event.PreferredLanguage));
-        
+
         await _commandScheduler.EnqueueAsync(new SendUserRegistrationConfirmedEmailCommand(
             Guid.NewGuid(),
             @event.Name,

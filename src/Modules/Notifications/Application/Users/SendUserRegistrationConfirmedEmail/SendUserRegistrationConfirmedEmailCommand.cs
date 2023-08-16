@@ -17,6 +17,6 @@ public class SendUserRegistrationConfirmedEmailCommand : InternalCommandBase<Res
     internal string Name { get; }
 
     internal string Email { get; }
-    
+
     internal string Language { get; }
 }

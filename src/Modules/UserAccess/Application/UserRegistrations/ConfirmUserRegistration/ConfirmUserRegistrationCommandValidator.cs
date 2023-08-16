@@ -11,7 +11,7 @@ internal class ConfirmUserRegistrationCommandValidator : Validator<ConfirmUserRe
             .NotNull()
             .NotEmpty()
             .WithMessage("Please provide user registration ID");
-        
+
         RuleFor(c => c.ConfirmationCode)
             .NotNull()
             .NotEmpty()

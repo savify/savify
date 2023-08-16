@@ -9,10 +9,10 @@ public class UserNotificationSettingsEntityTypeConfiguration : IEntityTypeConfig
     public void Configure(EntityTypeBuilder<Notifications.Domain.UserNotificationSettings.UserNotificationSettings> builder)
     {
         builder.ToTable("user_notification_settings", "notifications");
-        
+
         builder.HasKey(x => x.Id);
         builder.Property(b => b.Id).HasColumnName("id");
-        
+
         builder.Property<UserId>("UserId").HasColumnName("user_id");
         builder.Property<string>("Email").HasColumnName("email");
         builder.Property<string>("Name").HasColumnName("name");

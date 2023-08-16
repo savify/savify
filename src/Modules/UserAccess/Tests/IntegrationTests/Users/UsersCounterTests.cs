@@ -12,7 +12,7 @@ public class UsersCounterTests : TestBase
     {
         using var scope = WebApplicationFactory.Services.CreateScope();
         var usersCounter = scope.ServiceProvider.GetRequiredService<IUsersCounter>();
-        
+
         await UserAccessModule.ExecuteCommandAsync(new CreateNewUserCommand(
             UserSampleData.Email,
             UserSampleData.PlainPassword,
@@ -24,13 +24,13 @@ public class UsersCounterTests : TestBase
         var count = usersCounter.CountUsersWithEmail(UserSampleData.Email);
         Assert.That(count, Is.EqualTo(1));
     }
-    
+
     [Test]
     public void TestThat_ForNonExistingUser_CountIsZero()
     {
         using var scope = WebApplicationFactory.Services.CreateScope();
         var usersCounter = scope.ServiceProvider.GetRequiredService<IUsersCounter>();
-        
+
         var count = usersCounter.CountUsersWithEmail(UserSampleData.Email);
         Assert.That(count, Is.EqualTo(0));
     }

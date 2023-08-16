@@ -39,10 +39,10 @@ public static class UserAccessModuleCollectionExtensions
             configuration.GetConnectionString("Savify"),
             configuration.GetSection("Authentication").Get<AuthenticationConfiguration>(),
             moduleLogger);
-        
+
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
-        
+
         services.AddScoped<IUserAccessModule, UserAccessModule>();
 
         return services;
@@ -56,13 +56,13 @@ public static class UserAccessModuleCollectionExtensions
         IEventBus? eventBus = null)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
-        
+
         domainNotificationsMap.Add(nameof(UserCreatedDomainEvent), typeof(UserCreatedNotification));
         domainNotificationsMap.Add(nameof(NewUserRegisteredDomainEvent), typeof(NewUserRegisteredNotification));
         domainNotificationsMap.Add(nameof(UserRegistrationConfirmedDomainEvent), typeof(UserRegistrationConfirmedNotification));
         domainNotificationsMap.Add(nameof(UserRegistrationRenewedDomainEvent), typeof(UserRegistrationRenewedNotification));
         domainNotificationsMap.Add(nameof(PasswordResetRequestedDomainEvent), typeof(PasswordResetRequestedNotification));
-        
+
         OutboxModule.Configure(services, domainNotificationsMap);
         AuthenticationModule.Configure(services, authenticationConfiguration);
         DataAccessModule.Configure(services, connectionString);

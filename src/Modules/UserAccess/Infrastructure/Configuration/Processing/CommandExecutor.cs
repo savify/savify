@@ -13,9 +13,9 @@ internal static class CommandExecutor
 
         await mediator.Send(command);
     }
-    
+
     internal static async Task<TResult> Execute<TResult>(ICommand<TResult> command)
-    { 
+    {
         using var scope = UserAccessCompositionRoot.BeginScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 

@@ -37,3 +37,10 @@ notifications-test-db-update:
 
 wallets-test-db-update:
 	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context WalletsContext -- --environment Testing
+
+# You should have dotnet-format tool installed; Run dotnet tool install -g dotnet-format --version "7.*" --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json to install it.
+codestyle-fix:
+	dotnet format Savify.sln
+
+codestyle-verify:
+	dotnet format Savify.sln --verify-no-changes

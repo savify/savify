@@ -11,6 +11,6 @@ public class InternalCommand
     public DateTime EnqueueDate { get; set; }
 
     public DateTime? ProcessedDate { get; set; }
-    
+
     public string? Error { get; set; }
 }

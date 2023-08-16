@@ -23,7 +23,7 @@ public class ConfirmPasswordResetTests : TestBase
             UserSampleData.Role.Value,
             UserSampleData.Country.Value
         ));
-        
+
         var passwordResetRequestId = await UserAccessModule.ExecuteCommandAsync(
             new RequestPasswordResetCommand(UserSampleData.Email));
         var notification = await GetLastOutboxMessage<PasswordResetRequestedNotification>();
@@ -32,11 +32,11 @@ public class ConfirmPasswordResetTests : TestBase
             new ConfirmPasswordResetCommand(
                 passwordResetRequestId,
                 notification.DomainEvent.ConfirmationCode.Value));
-        
+
         var decodedToken = DecodeJwtToken(token);
         var userIdFromToken = decodedToken.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
         var passwordResetRequestStatus = await GetPasswordResetRequestStatus(passwordResetRequestId);
-        
+
         Assert.That(Guid.Parse(userIdFromToken), Is.EqualTo(userId));
         Assert.That(passwordResetRequestStatus, Is.EqualTo(PasswordResetRequestStatus.Confirmed.Value));
     }
@@ -54,6 +54,6 @@ public class ConfirmPasswordResetTests : TestBase
 
         var sql = "SELECT status FROM user_access.password_reset_requests p WHERE p.id = @passwordResetRequestId";
 
-        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new {passwordResetRequestId});
+        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { passwordResetRequestId });
     }
 }

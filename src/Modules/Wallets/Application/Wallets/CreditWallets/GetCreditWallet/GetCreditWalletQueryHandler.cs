@@ -1,6 +1,6 @@
-﻿using App.BuildingBlocks.Application.Data;
-using App.Modules.Wallets.Application.Wallets.WalletsViewMetadata;
+using App.BuildingBlocks.Application.Data;
 using App.Modules.Wallets.Application.Configuration.Queries;
+using App.Modules.Wallets.Application.Wallets.WalletsViewMetadata;
 using Dapper;
 
 namespace App.Modules.Wallets.Application.Wallets.CreditWallets.GetCreditWallet;
@@ -27,12 +27,12 @@ internal class GetCreditWalletQueryHandler : IQueryHandler<GetCreditWalletQuery,
         var creditWallets = await connection.QueryAsync<CreditWalletDto, WalletViewMetadataDto, CreditWalletDto>(sql, (creditWallet, viewMetadata) =>
         {
             creditWallet.ViewMetadata = viewMetadata;
-            
+
             return creditWallet;
         },
         new { query.WalletId },
         splitOn: "walletId");
 
-        return creditWallets.SingleOrDefault();;
+        return creditWallets.SingleOrDefault(); ;
     }
 }

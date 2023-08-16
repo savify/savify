@@ -5,9 +5,9 @@ public class RepositoryException : Exception
     public override string Message => string.Format(MessageTemplate, MessageArguments);
 
     public string MessageTemplate;
-    
+
     public object[] MessageArguments;
-    
+
     public RepositoryException(string messageTemplate, Type objectType)
     {
         MessageTemplate = messageTemplate;

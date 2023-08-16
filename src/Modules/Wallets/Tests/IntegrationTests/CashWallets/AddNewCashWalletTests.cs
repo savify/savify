@@ -1,4 +1,4 @@
-﻿using App.Modules.Wallets.Application.Wallets.CashWallets.AddNewCashWallet;
+using App.Modules.Wallets.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.Wallets.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.Wallets.IntegrationTests.SeedWork;
 
@@ -18,7 +18,7 @@ public class AddNewCashWalletTests : TestBase
             "#ffffff",
             "https://cdn.savify.localhost/icons/wallet.png",
             true);
-        
+
         var walletId = await WalletsModule.ExecuteCommandAsync(command);
 
         var wallet = await WalletsModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
