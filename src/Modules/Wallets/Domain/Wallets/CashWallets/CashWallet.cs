@@ -32,7 +32,7 @@ public class CashWallet : Entity, IAggregateRoot
         _balance = newBalance ?? _balance;
         _updatedAt = DateTime.UtcNow;
         
-        AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId));
+        AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
     }
 
     private CashWallet(UserId userId, string title, Currency currency, int balance)
