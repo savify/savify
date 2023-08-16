@@ -16,7 +16,7 @@ public class AddNewDebitWalletTests : TestBase
             "PLN",
             1000,
             "#ffffff",
-            "https://cdn.savify.localhost/icons/wallet.png", 
+            "https://cdn.savify.localhost/icons/wallet.png",
             true);
         var walletId = await WalletsModule.ExecuteCommandAsync(command);
 

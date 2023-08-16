@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace App.Modules.Wallets.Application.Validation;
 

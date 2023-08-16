@@ -33,7 +33,7 @@ internal class AddNewDebitWalletCommandHandler : ICommandHandler<AddNewDebitWall
             command.Color,
             command.Icon,
             command.ConsiderInTotalBalance);
-        
+
         await _walletViewMetadataRepository.AddAsync(viewMetadata);
 
         return wallet.Id.Value;
