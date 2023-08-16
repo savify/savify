@@ -1,4 +1,4 @@
-using App.API.Configuration.Authorization;
+﻿using App.API.Configuration.Authorization;
 using App.BuildingBlocks.Application;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
@@ -13,6 +13,7 @@ namespace App.API.Modules.Wallets.DebitWallets;
 public class DebitWalletsController : ControllerBase
 {
     private readonly IWalletsModule _walletsModule;
+
     private readonly IExecutionContextAccessor _executionContextAccessor;
 
     public DebitWalletsController(IWalletsModule walletsModule, IExecutionContextAccessor executionContextAccessor)
