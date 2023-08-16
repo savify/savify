@@ -18,6 +18,7 @@ public class AddNewCashWalletTests : TestBase
             "#ffffff",
             "https://cdn.savify.localhost/icons/wallet.png",
             true);
+        
         var walletId = await WalletsModule.ExecuteCommandAsync(command);
 
         var addedCashWallet = await WalletsModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));

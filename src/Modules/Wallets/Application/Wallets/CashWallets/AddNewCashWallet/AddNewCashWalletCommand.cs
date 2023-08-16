@@ -11,7 +11,7 @@ public class AddNewCashWalletCommand : CommandBase<Guid>
     public string Currency { get; }
 
     public int Balance { get; }
-    
+
     public string Color { get; }
     
     public string Icon { get; }
