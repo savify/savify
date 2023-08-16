@@ -14,7 +14,10 @@ public class AddNewCashWalletTests : TestBase
             Guid.NewGuid(),
             "Cash wallet",
             "PLN",
-            1000);
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
         var walletId = await WalletsModule.ExecuteCommandAsync(command);
 
         var addedCashWallet = await WalletsModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
@@ -26,5 +29,8 @@ public class AddNewCashWalletTests : TestBase
 
         Assert.IsNotNull(addedCashWallet.ViewMetadata);
         Assert.That(addedCashWallet.ViewMetadata.WalletId, Is.EqualTo(walletId));
+        Assert.That(addedCashWallet.ViewMetadata.Color, Is.EqualTo("#ffffff"));
+        Assert.That(addedCashWallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/wallet.png"));
+        Assert.That(addedCashWallet.ViewMetadata.IsConsideredInTotalBalance, Is.True);
     }
 }

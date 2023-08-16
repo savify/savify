@@ -25,6 +25,6 @@ internal class AddNewCreditWalletCommandValidator : Validator<AddNewCreditWallet
         RuleFor(c => c.Currency)
             .NotEmpty()
             .WithMessage("Please provide the new credit wallet currency")
-            .CurrencyCodeFormatISO();
+            .MustMatchCurrencyCodeISOFormat();
     }
 }

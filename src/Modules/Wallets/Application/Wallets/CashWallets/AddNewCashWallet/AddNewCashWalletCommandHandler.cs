@@ -28,7 +28,12 @@ internal class AddNewCashWalletCommandHandler : ICommandHandler<AddNewCashWallet
 
         await _cashWalletRepository.AddAsync(cashWallet);
 
-        var viewMetadata = WalletViewMetadata.CreateDefaultForWallet(cashWallet.Id);
+        var viewMetadata = WalletViewMetadata.CreateForWallet(
+            cashWallet.Id,
+            command.Color,
+            command.Icon,
+            command.ConsiderInTotalBalance);
+        
         await _walletViewMetadataRepository.AddAsync(viewMetadata);
 
         return cashWallet.Id.Value;

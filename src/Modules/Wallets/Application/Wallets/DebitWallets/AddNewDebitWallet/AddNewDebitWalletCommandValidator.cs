@@ -15,6 +15,6 @@ internal class AddNewDebitWalletCommandValidator : Validator<AddNewDebitWalletCo
         RuleFor(c => c.Currency)
             .NotEmpty()
             .WithMessage("Please provide the new debit wallet currency")
-            .CurrencyCodeFormatISO();
+            .MustMatchCurrencyCodeISOFormat();
     }
 }

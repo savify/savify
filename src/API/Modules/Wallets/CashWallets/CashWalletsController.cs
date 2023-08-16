@@ -13,6 +13,7 @@ namespace App.API.Modules.Wallets.CashWallets;
 public class CashWalletsController : ControllerBase
 {
     private readonly IWalletsModule _walletsModule;
+
     private readonly IExecutionContextAccessor _executionContextAccessor;
 
     public CashWalletsController(IWalletsModule walletsModule, IExecutionContextAccessor executionContextAccessor)
@@ -30,7 +31,10 @@ public class CashWalletsController : ControllerBase
             _executionContextAccessor.UserId,
             request.Title,
             request.Currency,
-            request.Balance));
+            request.Balance,
+            request.Color,
+            request.Icon,
+            request.ConsiderInTotalBalance));
 
         return Created("", new
         {
