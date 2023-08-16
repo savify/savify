@@ -1,6 +1,6 @@
-namespace App.API.Modules.Wallets.CashWallets.Requests;
+namespace App.API.Modules.Wallets.DebitWallets.Requests;
 
-public class EditCashWalletRequest
+public class EditDebitWalletRequest
 {
     public string? Title { get; set; }
 

@@ -8,7 +8,7 @@ public class DebitWallet : Entity, IAggregateRoot
 {
     public WalletId Id { get; private set; }
 
-    internal UserId UserId { get; private set; }
+    public UserId UserId { get; private set; }
 
     private string _title;
 
@@ -18,9 +18,20 @@ public class DebitWallet : Entity, IAggregateRoot
 
     private DateTime _createdAt;
 
+    private DateTime? _updatedAt = null;
+
     public static DebitWallet AddNew(UserId userId, string title, Currency currency, int balance = 0)
     {
         return new DebitWallet(userId, title, currency, balance);
+    }
+
+    public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
+    {
+        // TODO: restrict updating currency and balance for wallets that were connected to bank accounts
+        _title = newTitle ?? _title;
+        _currency = newCurrency ?? _currency;
+        _balance = newBalance ?? _balance;
+        _updatedAt = DateTime.UtcNow;
     }
 
     private DebitWallet(UserId userId, string title, Currency currency, int balance)

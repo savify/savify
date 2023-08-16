@@ -47,11 +47,11 @@ public class CashWalletsController : ControllerBase
     [HttpPatch("{walletId}")]
     [HasPermission(WalletsPermissions.EditWallets)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public async Task<IActionResult> Edit(EditCashWalletRequest request)
+    public async Task<IActionResult> Edit(Guid walletId, EditCashWalletRequest request)
     {
         await _walletsModule.ExecuteCommandAsync(new EditCashWalletCommand(
             _executionContextAccessor.UserId,
-            request.WalletId,
+            walletId,
             request.Title,
             request.Currency,
             request.Balance,
