@@ -12,7 +12,7 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
     private readonly WalletsContext _walletsContext;
 
     public UnitOfWorkCommandHandlerDecorator(
-        ICommandHandler<T, TResult> decorated, 
+        ICommandHandler<T, TResult> decorated,
         IUnitOfWork unitOfWork,
         WalletsContext walletsContext)
     {
@@ -29,15 +29,15 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
         {
             var internalCommand = await _walletsContext.InternalCommands.FirstOrDefaultAsync(
                 x => x.Id == command.Id, cancellationToken: cancellationToken);
-        
+
             if (internalCommand != null)
             {
                 internalCommand.ProcessedDate = DateTime.UtcNow;
             }
         }
-        
+
         await _unitOfWork.CommitAsync(cancellationToken);
-        
+
         return result;
     }
 }

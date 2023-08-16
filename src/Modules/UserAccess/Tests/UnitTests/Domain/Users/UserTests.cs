@@ -17,10 +17,10 @@ public class UserTests : UnitTestBase
             "test@email.com",
             "hashed_password",
             "Test",
-            UserRole.User, 
+            UserRole.User,
             Country.From("PL"),
             usersCounter);
-        
+
         var userCreatedDomainEvent = AssertPublishedDomainEvent<UserCreatedDomainEvent>(user);
         Assert.That(userCreatedDomainEvent.UserId, Is.EqualTo(user.Id));
         Assert.That(userCreatedDomainEvent.Email, Is.EqualTo("test@email.com"));
@@ -40,11 +40,11 @@ public class UserTests : UnitTestBase
             "test@email.com",
             "hashed_password",
             "Test",
-            UserRole.User, 
+            UserRole.User,
             Country.From("PL"),
             usersCounter));
     }
-    
+
     [Test]
     public void SettingNewPassword_IsSuccessful()
     {
@@ -55,12 +55,12 @@ public class UserTests : UnitTestBase
             "test@email.com",
             "hashed_password",
             "Test",
-            UserRole.User, 
+            UserRole.User,
             Country.From("PL"),
             usersCounter);
-        
+
         user.SetNewPassword("hashed_password");
-        
+
         var newPasswordWasSetDomainEvent = AssertPublishedDomainEvent<NewPasswordWasSetDomainEvent>(user);
         Assert.That(newPasswordWasSetDomainEvent.UserId, Is.EqualTo(user.Id));
         Assert.That(newPasswordWasSetDomainEvent.Email, Is.EqualTo("test@email.com"));

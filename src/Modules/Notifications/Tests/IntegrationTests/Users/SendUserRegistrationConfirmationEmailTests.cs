@@ -1,7 +1,7 @@
-﻿using App.Modules.Notifications.Application.Emails;
+using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmationEmail;
-using NSubstitute.ReceivedExtensions;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 
 namespace App.Modules.Notifications.IntegrationTests.Users;
 
@@ -17,7 +17,7 @@ public class SendUserRegistrationConfirmationEmailTests : TestBase
             "test@email.com",
             "en",
             "ABC123"));
-            
+
         await EmailSender.Received(Quantity.Exactly(1)).SendEmailAsync(Arg.Is<EmailMessage>(e => e.To.Contains("test@email.com")));
     }
 }

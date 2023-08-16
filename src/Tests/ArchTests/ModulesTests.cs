@@ -38,7 +38,7 @@ public class ModulesTests : TestBase
 
         AssertArchTestResult(result);
     }
-    
+
     [Test]
     public void NotificationsModule_DoesNotHave_Dependency_On_Other_Modules()
     {

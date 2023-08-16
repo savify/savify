@@ -1,4 +1,4 @@
-﻿using App.BuildingBlocks.Application.Validators;
+using App.BuildingBlocks.Application.Validators;
 using App.Modules.Wallets.Application.Validation.Currency;
 using FluentValidation;
 

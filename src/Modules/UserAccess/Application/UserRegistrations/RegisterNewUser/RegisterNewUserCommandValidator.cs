@@ -23,7 +23,7 @@ internal class RegisterNewUserCommandValidator : Validator<RegisterNewUserComman
             .Matches(@"[a-z]+").WithMessage("Your password must contain at least one lowercase letter")
             .Matches(@"[0-9]+").WithMessage("Your password must contain at least one number")
             .Matches(@"[\!\?\*\.]+").WithMessage("Your password must contain at least one special character (!? *.)");
-        
+
         RuleFor(c => c.Name)
             .NotNull()
             .NotEmpty()
@@ -35,7 +35,7 @@ internal class RegisterNewUserCommandValidator : Validator<RegisterNewUserComman
             .WithMessage("Country field is required")
             .Matches(@"^[A-Z]{2}$")
             .WithMessage("Country should contain exactly 2 uppercase letters");
-        
+
         RuleFor(c => c.PreferredLanguage)
             .NotNull()
             .NotEmpty()

@@ -10,7 +10,7 @@ public class InMemoryEventBusClient : IEventBus
     {
         _logger = logger;
     }
-    
+
     public void Dispose() { }
 
     public async Task Publish<T>(T @event) where T : IntegrationEvent

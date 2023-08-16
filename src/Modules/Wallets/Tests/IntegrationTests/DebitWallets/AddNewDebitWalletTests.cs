@@ -1,4 +1,4 @@
-﻿using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
+using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.Wallets.IntegrationTests.SeedWork;
 

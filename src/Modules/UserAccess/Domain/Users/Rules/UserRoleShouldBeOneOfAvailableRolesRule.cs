@@ -15,5 +15,5 @@ public class UserRoleShouldBeOneOfAvailableRolesRule : IBusinessRule
 
     public string MessageTemplate => "Provided role '{0}' should be one of available roles: {1}";
 
-    public object[] MessageArguments => new object[] {_role.Value, string.Join(", ", UserRole.AvailableRoles.Select(r => r.Value))};
+    public object[] MessageArguments => new object[] { _role.Value, string.Join(", ", UserRole.AvailableRoles.Select(r => r.Value)) };
 }

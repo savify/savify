@@ -9,7 +9,7 @@ public class OutboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<Out
     public void Configure(EntityTypeBuilder<OutboxMessage> builder)
     {
         builder.ToTable("outbox_messages", "wallets");
-        
+
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");
         builder.Property(b => b.Id).ValueGeneratedNever();

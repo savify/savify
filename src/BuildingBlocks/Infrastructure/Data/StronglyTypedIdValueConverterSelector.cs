@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using App.BuildingBlocks.Domain;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -7,7 +7,7 @@ namespace App.BuildingBlocks.Infrastructure.Data;
 public class StronglyTypedIdValueConverterSelector : ValueConverterSelector
 {
     private readonly ConcurrentDictionary<(Type ModelClrType, Type ProviderClrType), ValueConverterInfo> _converters = new();
-    
+
     public StronglyTypedIdValueConverterSelector(ValueConverterSelectorDependencies dependencies) : base(dependencies)
     {
     }
@@ -19,7 +19,7 @@ public class StronglyTypedIdValueConverterSelector : ValueConverterSelector
         {
             yield return converter;
         }
-        
+
         var underlyingModelType = UnwrapNullableType(modelClrType);
         var underlyingProviderType = UnwrapNullableType(providerClrType);
 
@@ -35,12 +35,12 @@ public class StronglyTypedIdValueConverterSelector : ValueConverterSelector
                     return new ValueConverterInfo(
                         modelClrType: modelClrType,
                         providerClrType: typeof(Guid),
-                        factory: valueConverterInfo => (ValueConverter) Activator.CreateInstance(converterType, valueConverterInfo.MappingHints)!);
+                        factory: valueConverterInfo => (ValueConverter)Activator.CreateInstance(converterType, valueConverterInfo.MappingHints)!);
                 });
             }
         }
     }
-    
+
     private static Type? UnwrapNullableType(Type? type)
     {
         if (type is null)

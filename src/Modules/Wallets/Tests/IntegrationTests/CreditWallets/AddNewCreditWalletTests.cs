@@ -1,4 +1,4 @@
-﻿using App.Modules.Wallets.Application.Wallets.CreditWallets.AddNewCreditWallet;
+using App.Modules.Wallets.Application.Wallets.CreditWallets.AddNewCreditWallet;
 using App.Modules.Wallets.Application.Wallets.CreditWallets.GetCreditWallet;
 using App.Modules.Wallets.IntegrationTests.SeedWork;
 

@@ -21,7 +21,7 @@ public class CreateNewUserTests : TestBase
         var notification = await GetLastOutboxMessage<UserCreatedNotification>();
         var users = await UserAccessModule.ExecuteQueryAsync(new GetUsersQuery());
         var user = users.First(u => u.Id == userId);
-        
+
         Assert.That(notifications.Count, Is.EqualTo(1));
         Assert.That(notification.DomainEvent.UserId.Value, Is.EqualTo(userId));
         Assert.That(user.Email, Is.EqualTo(UserSampleData.Email));

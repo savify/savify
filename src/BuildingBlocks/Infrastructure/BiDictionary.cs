@@ -1,4 +1,4 @@
-﻿namespace App.BuildingBlocks.Infrastructure;
+namespace App.BuildingBlocks.Infrastructure;
 
 public class BiDictionary<TFirst, TSecond> where TFirst : notnull where TSecond : notnull
 {

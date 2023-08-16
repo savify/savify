@@ -1,6 +1,6 @@
+using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets;
 using App.Modules.Wallets.Domain.Wallets.CashWallets;
-using App.Modules.Wallets.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,10 +11,10 @@ internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<Cash
     public void Configure(EntityTypeBuilder<CashWallet> builder)
     {
         builder.ToTable("cash_wallets", "wallets");
-        
+
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");
-        
+
         builder.Property<UserId>("UserId").HasColumnName("user_id");
         builder.Property<string>("_title").HasColumnName("title");
         builder.Property<int>("_balance").HasColumnName("balance");

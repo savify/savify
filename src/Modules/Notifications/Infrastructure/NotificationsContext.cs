@@ -13,7 +13,7 @@ public class NotificationsContext : DbContext
     public DbSet<UserNotificationSettings>? UserNotificationSettings { get; set; }
 
     public DbSet<InboxMessage>? InboxMessages { get; set; }
-    
+
     public DbSet<InternalCommand>? InternalCommands { get; set; }
 
     public NotificationsContext(DbContextOptions<NotificationsContext> options) : base(options)

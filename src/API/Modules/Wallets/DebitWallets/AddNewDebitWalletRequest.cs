@@ -1,4 +1,4 @@
-﻿namespace App.API.Modules.Wallets.DebitWallets;
+namespace App.API.Modules.Wallets.DebitWallets;
 
 public class AddNewDebitWalletRequest
 {

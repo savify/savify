@@ -12,13 +12,13 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
     {
         _httpContextAccessor = httpContextAccessor;
     }
-    
+
     public Guid UserId
     {
         get
         {
             var user = _httpContextAccessor.HttpContext?.User;
-            
+
             if (_httpContextAccessor
                     .HttpContext?
                     .User

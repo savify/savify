@@ -7,7 +7,7 @@ namespace App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 internal class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensCommand, TokensResult>
 {
     private readonly IStringLocalizer _localizer;
-    
+
     private readonly IAuthenticationTokenGenerator _tokenGenerator;
 
     private readonly IRefreshTokenRepository _refreshTokenRepository;

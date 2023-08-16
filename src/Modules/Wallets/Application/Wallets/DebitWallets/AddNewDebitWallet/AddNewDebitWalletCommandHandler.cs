@@ -1,15 +1,15 @@
-﻿using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets;
-using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets;
+using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 
 internal class AddNewDebitWalletCommandHandler : ICommandHandler<AddNewDebitWalletCommand, Guid>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
-    
+
     private readonly IWalletViewMetadataRepository _walletViewMetadataRepository;
 
     public AddNewDebitWalletCommandHandler(IDebitWalletRepository debitWalletRepository, IWalletViewMetadataRepository walletViewMetadataRepository)

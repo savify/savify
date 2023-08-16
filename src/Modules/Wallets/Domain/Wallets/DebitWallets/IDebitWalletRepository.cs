@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Wallets.Domain.Wallets.DebitWallets;
+namespace App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
 public interface IDebitWalletRepository
 {

@@ -19,7 +19,7 @@ public class AuthenticateUserByUserIdCommandTests : TestBase
     {
         using var scope = WebApplicationFactory.Services.CreateScope();
         var refreshTokenRepository = scope.ServiceProvider.GetRequiredService<IRefreshTokenRepository>();
-        
+
         var userId = await UserAccessModule.ExecuteCommandAsync(new CreateNewUserCommand(
             UserSampleData.Email,
             UserSampleData.PlainPassword,
@@ -32,12 +32,12 @@ public class AuthenticateUserByUserIdCommandTests : TestBase
 
         var decodedAccessToken = DecodeJwtToken(tokens.AccessToken);
         var refreshToken = await refreshTokenRepository.GetByUserIdAsync(userId);
-        
+
         var userIdFromToken = decodedAccessToken.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
         Assert.That(Guid.Parse(userIdFromToken), Is.EqualTo(userId));
         Assert.That(tokens.RefreshToken, Is.EqualTo(refreshToken?.Value));
     }
-    
+
     [Test]
     public void AuthenticateUserByUserIdCommand_ForNonExistingUser_WillFail()
     {
@@ -56,11 +56,11 @@ public class AuthenticateUserByUserIdCommandTests : TestBase
             UserSampleData.Country.Value
         ));
         await DeactivateUser(userId);
-        
+
         Assert.That(async () => await UserAccessModule.ExecuteCommandAsync(new AuthenticateUserByUserIdCommand(userId)),
             Throws.TypeOf<AuthenticationException>().With.Message.EqualTo("User is not active"));
     }
-    
+
     private JwtSecurityToken DecodeJwtToken(string token)
     {
         var handler = new JwtSecurityTokenHandler();

@@ -13,7 +13,7 @@ internal class CreateNewUserCommandValidator : Validator<CreateNewUserCommand>
             .WithMessage("Please provide Your email address")
             .Must(BeAValidEmail)
             .WithMessage("Provided value is not a valid email address");
-        
+
         RuleFor(c => c.Password)
             .NotNull()
             .NotEmpty()
@@ -23,7 +23,7 @@ internal class CreateNewUserCommandValidator : Validator<CreateNewUserCommand>
             .Matches(@"[a-z]+").WithMessage("Your password must contain at least one lowercase letter")
             .Matches(@"[0-9]+").WithMessage("Your password must contain at least one number")
             .Matches(@"[\!\?\*\.]+").WithMessage("Your password must contain at least one special character (!? *.)");
-        
+
         RuleFor(c => c.Country)
             .NotNull()
             .NotEmpty()

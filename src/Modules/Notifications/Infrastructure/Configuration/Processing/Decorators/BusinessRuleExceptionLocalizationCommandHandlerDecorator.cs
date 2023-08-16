@@ -27,7 +27,7 @@ internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T, TResu
         catch (BusinessRuleValidationException exception)
         {
             var localizedMessage = _localizer[
-                exception.BrokenRule.MessageTemplate, 
+                exception.BrokenRule.MessageTemplate,
                 exception.BrokenRule.MessageArguments ?? Array.Empty<object>()
             ];
 

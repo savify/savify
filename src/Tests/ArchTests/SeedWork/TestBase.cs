@@ -8,9 +8,9 @@ public abstract class TestBase
     protected static Assembly ApiAssembly => typeof(ExecutionContextAccessor).Assembly;
 
     public const string UserAccessNamespace = "App.Modules.UserAccess";
-    
+
     public const string NotificationsNamespace = "App.Modules.Notifications";
-    
+
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {
         IList<Type> failingTypes = new List<Type>();

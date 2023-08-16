@@ -8,9 +8,9 @@ public class UserRegistrationRenewedDomainEvent : DomainEventBase
     public UserRegistrationId UserRegistrationId { get; }
 
     public string Email { get; }
-    
+
     public string Name { get; }
-    
+
     public Language PreferredLanguage { get; }
 
     public ConfirmationCode ConfirmationCode { get; }

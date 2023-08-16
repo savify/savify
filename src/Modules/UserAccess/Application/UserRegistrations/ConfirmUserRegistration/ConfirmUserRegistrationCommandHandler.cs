@@ -18,9 +18,9 @@ internal class ConfirmUserRegistrationCommandHandler : ICommandHandler<ConfirmUs
     {
         var userRegistration = await _userRegistrationRepository.GetByIdAsync(
             new UserRegistrationId(command.UserRegistrationId));
-        
+
         userRegistration.Confirm(ConfirmationCode.From(command.ConfirmationCode));
-        
+
         return Result.Success;
     }
 }

@@ -1,7 +1,7 @@
-﻿using App.API.Configuration.Authorization;
+using App.API.Configuration.Authorization;
 using App.BuildingBlocks.Application;
-using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Contracts;
+using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

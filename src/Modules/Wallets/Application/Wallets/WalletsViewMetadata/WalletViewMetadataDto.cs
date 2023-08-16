@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Wallets.Application.Wallets.WalletsViewMetadata;
+namespace App.Modules.Wallets.Application.Wallets.WalletsViewMetadata;
 
 public class WalletViewMetadataDto
 {

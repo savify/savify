@@ -9,7 +9,7 @@ public class InternalCommandEntityTypeConfiguration : IEntityTypeConfiguration<I
     public void Configure(EntityTypeBuilder<InternalCommand> builder)
     {
         builder.ToTable("internal_commands", "user_access");
-        
+
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");
         builder.Property(b => b.Id).ValueGeneratedNever();

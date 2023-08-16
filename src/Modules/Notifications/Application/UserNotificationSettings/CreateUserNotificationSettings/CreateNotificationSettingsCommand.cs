@@ -16,10 +16,10 @@ public class CreateNotificationSettingsCommand : InternalCommandBase<Result>
     }
 
     internal Guid UserId { get; }
-    
+
     internal string Name { get; }
 
     internal string Email { get; }
-    
+
     internal string PreferredLanguage { get; }
 }

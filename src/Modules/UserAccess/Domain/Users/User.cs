@@ -8,7 +8,7 @@ namespace App.Modules.UserAccess.Domain.Users;
 public class User : Entity, IAggregateRoot
 {
     public UserId Id { get; private set; }
-    
+
     private string _email;
 
     private string _password;
@@ -18,7 +18,7 @@ public class User : Entity, IAggregateRoot
     private List<UserRole> _roles;
 
     private Country _country;
-    
+
     private Language _preferredLanguage;
 
     private bool _isActive;
@@ -34,7 +34,7 @@ public class User : Entity, IAggregateRoot
         IUsersCounter usersCounter)
     {
         CheckRules(new UserEmailMustBeUniqueRule(usersCounter, email));
-        
+
         return new User(new UserId(Guid.NewGuid()), email, password, name, role, country, Language.From("en"));
     }
 
@@ -46,7 +46,7 @@ public class User : Entity, IAggregateRoot
     public void SetNewPassword(string password)
     {
         _password = password;
-        
+
         AddDomainEvent(new NewPasswordWasSetDomainEvent(Id, _email, _name, _preferredLanguage));
     }
 
@@ -66,6 +66,6 @@ public class User : Entity, IAggregateRoot
 
         AddDomainEvent(new UserCreatedDomainEvent(Id, _email, _name, role, country, _preferredLanguage));
     }
-    
-    private User() {}
+
+    private User() { }
 }

@@ -20,23 +20,23 @@ public class RequestPasswordResetTests : TestBase
             UserSampleData.Role.Value,
             UserSampleData.Country.Value
         ));
-        
+
         var passwordResetRequestId = await UserAccessModule.ExecuteCommandAsync(
             new RequestPasswordResetCommand(UserSampleData.Email));
 
         var status = await GetPasswordResetRequestStatus(passwordResetRequestId);
         var notification = await GetLastOutboxMessage<PasswordResetRequestedNotification>();
-        
+
         Assert.That(notification.DomainEvent.UserEmail, Is.EqualTo(UserSampleData.Email));
         Assert.That(status, Is.EqualTo(PasswordResetRequestStatus.WaitingForConfirmation.Value));
     }
-    
+
     private async Task<string> GetPasswordResetRequestStatus(Guid passwordResetRequestId)
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
         var sql = "SELECT status FROM user_access.password_reset_requests p WHERE p.id = @passwordResetRequestId";
 
-        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new {passwordResetRequestId});
+        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { passwordResetRequestId });
     }
 }

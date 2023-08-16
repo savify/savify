@@ -41,7 +41,7 @@ internal class AuthenticateUserByUserIdCommandHandler : ICommandHandler<Authenti
         {
             throw new AuthenticationException(_localizer["User does not exist"]);
         }
-        
+
         if (!user.IsActive)
         {
             throw new AuthenticationException(_localizer["User is not active"]);
@@ -51,7 +51,7 @@ internal class AuthenticateUserByUserIdCommandHandler : ICommandHandler<Authenti
         var refreshToken = _tokenGenerator.GenerateRefreshToken();
 
         await _refreshTokenRepository.UpdateAsync(user.Id, refreshToken.Value, refreshToken.Expires);
-        
-        return new TokensResult(accessToken.Value, refreshToken.Value);;
+
+        return new TokensResult(accessToken.Value, refreshToken.Value); ;
     }
 }

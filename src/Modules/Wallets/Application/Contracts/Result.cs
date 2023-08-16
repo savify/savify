@@ -5,7 +5,7 @@ public class Result
     public static Result Success => new(nameof(Success));
 
     private string _value;
-    
+
     private Result(string value)
     {
         _value = value;

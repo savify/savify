@@ -17,15 +17,15 @@ namespace App.Modules.UserAccess.Infrastructure;
 public class UserAccessContext : DbContext
 {
     public DbSet<User>? Users { get; set; }
-    
+
     public DbSet<UserRegistration>? UserRegistrations { get; set; }
-    
+
     public DbSet<PasswordResetRequest>? PasswordResetRequests { get; set; }
 
     public DbSet<OutboxMessage>? OutboxMessages { get; set; }
-    
+
     public DbSet<InboxMessage>? InboxMessages { get; set; }
-    
+
     public DbSet<InternalCommand>? InternalCommands { get; set; }
 
     public UserAccessContext(DbContextOptions<UserAccessContext> options) : base(options)

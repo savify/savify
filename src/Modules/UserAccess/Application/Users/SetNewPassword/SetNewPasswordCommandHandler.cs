@@ -18,7 +18,7 @@ internal class SetNewPasswordCommandHandler : ICommandHandler<SetNewPasswordComm
     {
         var user = await _userRepository.GetByIdAsync(new UserId(command.UserId));
         var password = PasswordHasher.HashPassword(command.Password);
-        
+
         user.SetNewPassword(password);
 
         return Result.Success;

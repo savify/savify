@@ -18,7 +18,7 @@ public abstract class UnitTestBase
     {
         var message = $"Expected {typeof(TRule).Name} broken rule";
         var businessRuleValidationException = Assert.Catch<BusinessRuleValidationException>(testDelegate, message);
-        
+
         if (businessRuleValidationException != null)
         {
             Assert.That(businessRuleValidationException.BrokenRule, Is.TypeOf<TRule>(), message);

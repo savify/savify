@@ -41,12 +41,12 @@ internal class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUser
         {
             throw new AuthenticationException(_localizer["Incorrect email or password"]);
         }
-        
+
         if (!user.IsActive)
         {
             throw new AuthenticationException(_localizer["User is not active"]);
         }
-        
+
         if (!PasswordHasher.IsPasswordValid(user.Password, command.Password))
         {
             throw new AuthenticationException(_localizer["Incorrect email or password"]);
@@ -56,7 +56,7 @@ internal class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUser
         var refreshToken = _tokenGenerator.GenerateRefreshToken();
 
         await _refreshTokenRepository.UpdateAsync(user.Id, refreshToken.Value, refreshToken.Expires);
-        
-        return new TokensResult(accessToken.Value, refreshToken.Value);;
+
+        return new TokensResult(accessToken.Value, refreshToken.Value); ;
     }
 }

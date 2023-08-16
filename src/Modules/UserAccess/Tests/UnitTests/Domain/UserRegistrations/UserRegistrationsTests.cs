@@ -1,10 +1,10 @@
+using App.Modules.UserAccess.Domain;
 using App.Modules.UserAccess.Domain.UserRegistrations;
 using App.Modules.UserAccess.Domain.UserRegistrations.Events;
 using App.Modules.UserAccess.Domain.UserRegistrations.Rules;
 using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Domain.Users.Rules;
-using App.Modules.UserAccess.Domain;
 
 namespace App.Modules.UserAccess.UnitTests.Domain.UserRegistrations;
 
@@ -34,7 +34,7 @@ public class UserRegistrationsTests : UnitTestBase
         Assert.That(newUserRegisteredDomainEvent.PreferredLanguage, Is.EqualTo(Language.From("en")));
         Assert.That(newUserRegisteredDomainEvent.ConfirmationCode, Is.EqualTo(ConfirmationCode.From("ABC123")));
     }
-    
+
     [Test]
     public void NewUserRegistration_WithExistingEmail_BreaksUserEmailMustBeUniqueRule()
     {
@@ -50,10 +50,10 @@ public class UserRegistrationsTests : UnitTestBase
                 Country.From("PL"),
                 Language.From("en"),
                 ConfirmationCode.From("ABC123"),
-                usersCounter); 
+                usersCounter);
         });
     }
-    
+
     [Test]
     public void ConfirmingUserRegistration_WhenWaitingForConfirmation_IsSuccessful()
     {
@@ -68,7 +68,7 @@ public class UserRegistrationsTests : UnitTestBase
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
-        
+
         userRegistration.Confirm(ConfirmationCode.From("ABC123"));
 
         var userRegistrationConfirmedDomainEvent = AssertPublishedDomainEvent<UserRegistrationConfirmedDomainEvent>(userRegistration);
@@ -77,7 +77,7 @@ public class UserRegistrationsTests : UnitTestBase
         Assert.That(userRegistrationConfirmedDomainEvent.Name, Is.EqualTo("Name"));
         Assert.That(userRegistrationConfirmedDomainEvent.PreferredLanguage, Is.EqualTo(Language.From("en")));
     }
-    
+
     [Test]
     public void UserRegistration_WhenIsConfirmed_CannotBeConfirmedAgain()
     {
@@ -92,7 +92,7 @@ public class UserRegistrationsTests : UnitTestBase
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
-        
+
         userRegistration.Confirm(ConfirmationCode.From("ABC123"));
 
         AssertBrokenRule<UserRegistrationCannotBeConfirmedMoreThanOnceRule>(() =>
@@ -138,7 +138,7 @@ public class UserRegistrationsTests : UnitTestBase
             usersCounter);
 
         userRegistration.Renew(ConfirmationCode.From("NEW123"));
-        
+
         var userRegistrationRenewedDomainEvent = AssertPublishedDomainEvent<UserRegistrationRenewedDomainEvent>(userRegistration);
         Assert.That(userRegistrationRenewedDomainEvent.UserRegistrationId, Is.EqualTo(userRegistration.Id));
         Assert.That(userRegistrationRenewedDomainEvent.Email, Is.EqualTo("test@email.com"));
@@ -146,7 +146,7 @@ public class UserRegistrationsTests : UnitTestBase
         Assert.That(userRegistrationRenewedDomainEvent.PreferredLanguage, Is.EqualTo(Language.From("en")));
         Assert.That(userRegistrationRenewedDomainEvent.ConfirmationCode, Is.EqualTo(ConfirmationCode.From("NEW123")));
     }
-    
+
     [Test]
     public void RenewingUserRegistration_WhenIsConfirmed_CannotBeRenewed()
     {
@@ -161,15 +161,15 @@ public class UserRegistrationsTests : UnitTestBase
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
-        
+
         userRegistration.Confirm(ConfirmationCode.From("ABC123"));
-        
+
         AssertBrokenRule<UserRegistrationCannotBeRenewedWhenAlreadyConfirmedRule>(() =>
         {
             userRegistration.Renew(ConfirmationCode.From("ABC123"));
         });
     }
-    
+
     [Test]
     public void CreatingUser_WhenRegistrationIsConfirmed_WillCreateNewUser()
     {
@@ -184,9 +184,9 @@ public class UserRegistrationsTests : UnitTestBase
             Language.From("en"),
             ConfirmationCode.From("ABC123"),
             usersCounter);
-        
+
         userRegistration.Confirm(ConfirmationCode.From("ABC123"));
-        
+
         var user = userRegistration.CreateUser();
 
         var userCreatedDomainEvent = AssertPublishedDomainEvent<UserCreatedDomainEvent>(user);
@@ -196,7 +196,7 @@ public class UserRegistrationsTests : UnitTestBase
         Assert.That(userCreatedDomainEvent.PreferredLanguage, Is.EqualTo(Language.From("en")));
         Assert.That(userCreatedDomainEvent.UserRole, Is.EqualTo(UserRole.User));
     }
-    
+
     [Test]
     public void CreatingUser_WhenRegistrationIsNotConfirmed_BreaksUserRegistrationShouldBeConfirmedRule()
     {

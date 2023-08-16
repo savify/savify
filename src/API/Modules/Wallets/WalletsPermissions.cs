@@ -1,4 +1,4 @@
-﻿namespace App.API.Modules.Wallets;
+namespace App.API.Modules.Wallets;
 
 public static class WalletsPermissions
 {

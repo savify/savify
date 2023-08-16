@@ -51,7 +51,7 @@ public class UserRegistrationsController : ControllerBase
 
         return Ok(userRegistration);
     }
-    
+
     [AllowAnonymous]
     [HttpPatch("{userRegistrationId}/confirm")]
     [ProducesResponseType(typeof(TokensResult), StatusCodes.Status202Accepted)]
@@ -62,10 +62,10 @@ public class UserRegistrationsController : ControllerBase
             request.ConfirmationCode));
 
         var tokens = await _userAccessModule.ExecuteCommandAsync(new AuthenticateUserByUserIdCommand(userRegistrationId));
-        
+
         return Accepted(tokens);
     }
-    
+
     [AllowAnonymous]
     [HttpPatch("{userRegistrationId}/renew")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]

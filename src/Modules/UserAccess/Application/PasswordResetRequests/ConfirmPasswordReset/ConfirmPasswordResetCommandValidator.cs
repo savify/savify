@@ -11,7 +11,7 @@ internal class ConfirmPasswordResetCommandValidator : Validator<ConfirmPasswordR
             .NotNull()
             .NotEmpty()
             .WithMessage("Please provide password reset request ID");
-        
+
         RuleFor(c => c.ConfirmationCode)
             .NotNull()
             .NotEmpty()

@@ -8,9 +8,9 @@ namespace App.Modules.Notifications.Application.Users.SendPasswordResetConfirmat
 internal class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHandler<SendPasswordResetConfirmationCodeEmailCommand, Result>
 {
     private readonly IUserNotificationSettingsRepository _notificationSettingsRepository;
-    
+
     private readonly IEmailMessageFactory _emailMessageFactory;
-    
+
     private readonly IEmailSender _emailSender;
 
     public SendPasswordResetConfirmationCodeEmailCommandHandler(
@@ -26,7 +26,7 @@ internal class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHa
     public async Task<Result> Handle(SendPasswordResetConfirmationCodeEmailCommand command, CancellationToken cancellationToken)
     {
         var notificationSettings = await _notificationSettingsRepository.GetByUserEmailAsync(command.Email);
-        
+
         var emailMessage = _emailMessageFactory.CreateLocalizedEmailMessage(
             notificationSettings.Email,
             "Password reset request",
@@ -34,7 +34,7 @@ internal class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHa
             notificationSettings.PreferredLanguage.Value);
 
         await _emailSender.SendEmailAsync(emailMessage);
-        
+
         return Result.Success;
     }
 }

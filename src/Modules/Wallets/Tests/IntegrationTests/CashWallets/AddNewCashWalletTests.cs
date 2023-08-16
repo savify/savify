@@ -1,4 +1,4 @@
-﻿using App.Modules.Wallets.Application.Wallets.CashWallets.AddNewCashWallet;
+using App.Modules.Wallets.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.Wallets.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.Wallets.IntegrationTests.SeedWork;
 

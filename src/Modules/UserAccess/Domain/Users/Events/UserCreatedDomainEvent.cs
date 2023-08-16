@@ -11,9 +11,9 @@ public class UserCreatedDomainEvent : DomainEventBase
     public string Name { get; }
 
     public UserRole UserRole { get; }
-    
+
     public Country Country { get; }
-    
+
     public Language PreferredLanguage { get; }
 
     public UserCreatedDomainEvent(

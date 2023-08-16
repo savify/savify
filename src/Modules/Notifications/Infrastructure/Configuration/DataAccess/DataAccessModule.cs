@@ -1,8 +1,8 @@
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Data;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Modules.Notifications.Infrastructure.Configuration.DataAccess;
 
@@ -14,7 +14,7 @@ internal static class DataAccessModule
         {
             return new SqlConnectionFactory(databaseConnectionString);
         });
-        
+
         services.AddDbContext<NotificationsContext>(options =>
         {
             options.UseNpgsql(databaseConnectionString);

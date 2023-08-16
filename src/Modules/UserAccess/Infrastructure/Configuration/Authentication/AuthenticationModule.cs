@@ -10,7 +10,7 @@ internal static class AuthenticationModule
     internal static void Configure(IServiceCollection services, AuthenticationConfiguration configuration)
     {
         services.AddSingleton<IAuthenticationConfigurationProvider>(_ => new AuthenticationConfigurationProvider(configuration));
-        
+
         services.AddScoped<IAuthenticationTokenGenerator, AuthenticationTokenGenerator>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
     }

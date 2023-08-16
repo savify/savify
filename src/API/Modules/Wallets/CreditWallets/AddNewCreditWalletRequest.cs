@@ -1,4 +1,4 @@
-﻿namespace App.API.Modules.Wallets.CreditWallets;
+namespace App.API.Modules.Wallets.CreditWallets;
 
 public class AddNewCreditWalletRequest
 {

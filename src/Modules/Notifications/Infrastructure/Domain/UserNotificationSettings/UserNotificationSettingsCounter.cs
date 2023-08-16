@@ -19,6 +19,6 @@ public class UserNotificationSettingsCounter : IUserNotificationSettingsCounter
 
         const string sql = "SELECT COUNT(*) FROM notifications.user_notification_settings WHERE user_id = @userId";
 
-        return connection.QuerySingle<int>(sql, new {userId = userId.Value});
+        return connection.QuerySingle<int>(sql, new { userId = userId.Value });
     }
 }

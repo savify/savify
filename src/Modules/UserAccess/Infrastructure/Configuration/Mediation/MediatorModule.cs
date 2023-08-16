@@ -25,7 +25,7 @@ internal static class MediatorModule
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
         }
-        
+
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>));
     }

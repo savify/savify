@@ -1,7 +1,7 @@
-﻿using App.Modules.Wallets.Domain.Wallets;
+using App.Modules.Wallets.Domain.Users;
+using App.Modules.Wallets.Domain.Wallets;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets.Events;
-using App.Modules.Wallets.Domain.Users;
 
 namespace App.Modules.Wallets.UnitTests.Wallets;
 

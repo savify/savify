@@ -1,6 +1,6 @@
-using Dapper;
 using App.BuildingBlocks.Application.Data;
 using App.Modules.Wallets.Application.Configuration.Commands;
+using Dapper;
 using Newtonsoft.Json;
 using Polly;
 
@@ -26,10 +26,10 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
                      "FROM wallets.internal_commands AS command " +
                      "WHERE command.processed_date IS NULL " +
                      "ORDER BY command.enqueue_date";
-        
+
         var commands = await connection.QueryAsync<InternalCommandDto>(sql);
         var internalCommandsList = commands.AsList();
-        
+
         var policy = Policy
             .Handle<Exception>()
             .WaitAndRetryAsync(new[]
@@ -38,7 +38,7 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
                 TimeSpan.FromSeconds(2),
                 TimeSpan.FromSeconds(3)
             });
-        
+
         foreach (var internalCommand in internalCommandsList)
         {
             var result = await policy.ExecuteAndCaptureAsync(() => ProcessCommand(internalCommand));
@@ -59,7 +59,7 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
             }
         }
     }
-    
+
     private async Task ProcessCommand(InternalCommandDto internalCommand)
     {
         Type type = Assemblies.Application.GetType(internalCommand.Type);

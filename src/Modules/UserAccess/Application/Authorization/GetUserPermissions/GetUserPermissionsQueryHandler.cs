@@ -1,6 +1,6 @@
-using Dapper;
 using App.BuildingBlocks.Application.Data;
 using App.Modules.UserAccess.Application.Configuration.Queries;
+using Dapper;
 
 namespace App.Modules.UserAccess.Application.Authorization.GetUserPermissions;
 
@@ -12,7 +12,7 @@ internal class GetUserPermissionsQueryHandler : IQueryHandler<GetUserPermissions
     {
         _sqlConnectionFactory = sqlConnectionFactory;
     }
-    
+
     public async Task<List<UserPermissionDto>> Handle(GetUserPermissionsQuery query, CancellationToken cancellationToken)
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();

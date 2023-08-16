@@ -8,15 +8,15 @@ public class RegisterNewUserCommand : CommandBase<Guid>
 {
     [LogMasked]
     public string Email { get; }
-    
+
     [LogMasked]
     public string Password { get; }
-    
+
     [LogMasked]
     public string Name { get; }
-    
+
     public string Country { get; }
-    
+
     public string PreferredLanguage { get; }
 
     public RegisterNewUserCommand(string email, string password, string name, string country, string preferredLanguage)

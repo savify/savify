@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Wallets.Domain.Wallets.CreditWallets;
+namespace App.Modules.Wallets.Domain.Wallets.CreditWallets;
 
 public interface ICreditWalletRepository
 {

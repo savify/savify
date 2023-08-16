@@ -28,7 +28,7 @@ public class AuthenticationController : ControllerBase
 
         return Ok(tokens);
     }
-    
+
     [AllowAnonymous]
     [HttpPost("token/refresh")]
     [ProducesResponseType(typeof(TokensResult), StatusCodes.Status200OK)]

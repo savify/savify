@@ -22,7 +22,7 @@ public class PasswordResetRequestsController : ControllerBase
     [AllowAnonymous]
     [NoPermissionRequired]
     [HttpPost("")]
-    [ProducesResponseType( StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> RequestPasswordReset(RequestPasswordResetRequest request)
     {
         var passwordResetRequestId = await _userAccessModule.ExecuteCommandAsync(
@@ -33,11 +33,11 @@ public class PasswordResetRequestsController : ControllerBase
             Id = passwordResetRequestId
         });
     }
-    
+
     [AllowAnonymous]
     [NoPermissionRequired]
     [HttpPatch("{passwordResetRequestId}/confirm")]
-    [ProducesResponseType( StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> ConfirmPasswordReset(Guid passwordResetRequestId, ConfirmPasswordResetRequest request)
     {
         var token = await _userAccessModule.ExecuteCommandAsync(

@@ -1,4 +1,4 @@
-﻿using App.BuildingBlocks.Application.Validators;
+using App.BuildingBlocks.Application.Validators;
 using App.Modules.Wallets.Application.Validation.Currency;
 using FluentValidation;
 
@@ -15,7 +15,7 @@ internal class AddNewCreditWalletCommandValidator : Validator<AddNewCreditWallet
         RuleFor(c => c.CreditLimit)
             .GreaterThanOrEqualTo(0)
             .WithMessage("Credit limit should be greater or equal to zero");
-        
+
         RuleFor(c => c.AvailableBalance)
             .GreaterThanOrEqualTo(0)
             .WithMessage("Available balance should be greater or equal to zero")

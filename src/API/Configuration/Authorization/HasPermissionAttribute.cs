@@ -8,7 +8,7 @@ internal class HasPermissionAttribute : AuthorizeAttribute
     internal const string HasPermissionPolicyName = "HasPermission";
 
     public string Name { get; }
-    
+
     public HasPermissionAttribute(string name) : base(HasPermissionPolicyName)
     {
         Name = name;

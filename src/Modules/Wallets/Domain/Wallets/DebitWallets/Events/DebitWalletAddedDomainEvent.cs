@@ -1,4 +1,4 @@
-﻿using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.Users;
 
 namespace App.Modules.Wallets.Domain.Wallets.DebitWallets.Events;

@@ -1,4 +1,4 @@
-﻿using App.BuildingBlocks.Infrastructure.Exceptions;
+using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.Wallets.Domain.Wallets;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 using Microsoft.EntityFrameworkCore;

@@ -19,14 +19,14 @@ public class UserDetailsProvider : IUserDetailsProvider
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
         var sql = "SELECT id FROM user_access.users u WHERE u.email = @Email";
-        
+
         var userId = connection.QuerySingleOrDefault<Guid>(sql, new { email });
 
         if (userId.Equals(Guid.Empty))
         {
             throw new DomainException($"User with email '{email}' does not exist");
         }
-        
+
         return new UserId(userId);
     }
 }

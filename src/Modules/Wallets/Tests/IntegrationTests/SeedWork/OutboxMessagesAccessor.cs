@@ -1,8 +1,8 @@
 using System.Data;
 using System.Reflection;
-using Dapper;
-using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
 using App.Modules.Wallets.Application.Contracts;
+using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
+using Dapper;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -28,7 +28,7 @@ public class OutboxMessagesAccessor
     {
         // TODO: change to some notification if there'll be one
         Type type = Assembly.GetAssembly(typeof(CommandBase))?.GetType(typeof(T).FullName);
-        
+
         return JsonConvert.DeserializeObject(message.Data, type) as T;
     }
 }

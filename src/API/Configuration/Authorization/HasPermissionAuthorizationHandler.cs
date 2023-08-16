@@ -17,9 +17,9 @@ internal class HasPermissionAuthorizationHandler : AttributeAuthorizationHandler
         _executionContextAccessor = executionContextAccessor;
         _userAccessModule = userAccessModule;
     }
-    
+
     protected override async Task HandleRequirementAsync(
-        AuthorizationHandlerContext context, 
+        AuthorizationHandlerContext context,
         HasPermissionAuthorizationRequirement requirement,
         HasPermissionAttribute attribute)
     {
@@ -34,7 +34,7 @@ internal class HasPermissionAuthorizationHandler : AttributeAuthorizationHandler
 
         context.Succeed(requirement);
     }
-    
+
     private Task<bool> AuthorizeAsync(string permission, List<UserPermissionDto> permissions)
     {
         return Task.FromResult(permissions.Any(x => x.Code == permission));

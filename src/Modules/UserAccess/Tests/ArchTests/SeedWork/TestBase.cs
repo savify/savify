@@ -10,9 +10,9 @@ public abstract class TestBase
     protected static Assembly DomainAssembly => typeof(User).Assembly;
 
     protected static Assembly ApplicationAssembly => typeof(CommandBase).Assembly;
-    
+
     protected static Assembly InfrastructureAssembly => typeof(UserAccessContext).Assembly;
-    
+
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {
         IList<Type> failingTypes = new List<Type>();
@@ -27,7 +27,7 @@ public abstract class TestBase
 
         AssertFailingTypes(failingTypes);
     }
-    
+
     protected static void AssertFailingTypes(IEnumerable<Type> types)
     {
         Assert.That(types, Is.Null.Or.Empty);

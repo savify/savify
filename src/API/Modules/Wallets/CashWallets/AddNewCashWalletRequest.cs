@@ -1,4 +1,4 @@
-﻿namespace App.API.Modules.Wallets.CashWallets;
+namespace App.API.Modules.Wallets.CashWallets;
 
 public class AddNewCashWalletRequest
 {

@@ -1,4 +1,4 @@
-﻿using App.Modules.Wallets.Application.Contracts;
+using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.Wallets.CashWallets.GetCashWallet;
 

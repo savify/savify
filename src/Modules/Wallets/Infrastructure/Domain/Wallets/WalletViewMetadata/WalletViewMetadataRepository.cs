@@ -27,9 +27,9 @@ public class WalletViewMetadataRepository : IWalletViewMetadataRepository
         {
             throw new NotFoundRepositoryException<Modules.Wallets.Domain.Wallets.WalletViewMetadata.WalletViewMetadata>(
                 "View metadata for Wallet with id '{0}' was not found",
-                new object[]{ walletId.Value });
+                new object[] { walletId.Value });
         }
-        
+
         return walletViewMetadata;
     }
 }

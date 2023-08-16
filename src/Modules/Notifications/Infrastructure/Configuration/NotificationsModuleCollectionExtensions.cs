@@ -30,10 +30,10 @@ public static class NotificationsModuleCollectionExtensions
             configuration.GetConnectionString("Savify"),
             configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>(),
             moduleLogger);
-        
+
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
-        
+
         services.AddScoped<INotificationsModule, NotificationsModule>();
 
         return services;

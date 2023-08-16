@@ -11,7 +11,7 @@ internal class RefreshTokensCommandValidator : Validator<RefreshTokensCommand>
             .NotNull()
             .NotEmpty()
             .WithMessage("Please provide user ID");
-        
+
         RuleFor(c => c.RefreshToken)
             .NotNull()
             .NotEmpty()
