@@ -5,6 +5,7 @@
   "Please provide wallet icon URL": "Please provide wallet icon URL",
   "Icon value is not a valid URL": "Icon value is not a valid URL",
   "Currency should be provided in currency code format (ISO 4217)": "Currency should be provided in currency code format (ISO 4217)",
+  "Color must be provided in HEX color format (e.g. #FFFFFF)": "Color must be provided in HEX color format (e.g. #FFFFFF)",
   "Credit limit should be greater or equal to zero": "Credit limit should be greater or equal to zero",
   "Available balance should be greater or equal to zero": "Available balance should be greater or equal to zero",
   "Available balance should be less than or equal to credit limit": "Available balance should be less than or equal to credit limit"

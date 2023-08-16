@@ -4,8 +4,9 @@
   "Please provide wallet color": "Будь ласка, вкажіть колір гаманця",
   "Please provide wallet icon URL": "Будь ласка, вкажіть посилання на значок гаманця",
   "Icon value is not a valid URL": "Значення значку не є дійсною URL-адресою",
+  "Currency should be provided in currency code format (ISO 4217)": "Валюту слід вказувати у форматі коду валюти (ISO 4217)",
+  "Color must be provided in HEX color format (e.g. #FFFFFF)": "Колір слід вказувати у форматі кольору HEX (наприклад #FFFFFF)",
   "Credit limit should be greater or equal to zero": "Кредитний ліміт повинен бути більший або дорівнювати нулю",
   "Available balance should be greater or equal to zero": "Доступний баланс повинен бути більший або дорівнювати нулю",
-  "Available balance should be less than or equal to credit limit": "Доступний баланс не повинен перевищувати кредитний ліміт",
-  "Currency should be provided in currency code format (ISO 4217)": "Валюту слід вказувати у форматі коду валюти (ISO 4217)"
+  "Available balance should be less than or equal to credit limit": "Доступний баланс не повинен перевищувати кредитний ліміт"
 }
