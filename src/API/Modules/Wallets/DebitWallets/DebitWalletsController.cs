@@ -30,7 +30,10 @@ public class DebitWalletsController : ControllerBase
             _executionContextAccessor.UserId,
             request.Title,
             request.Currency,
-            request.Balance));
+            request.Balance,
+            request.Color,
+            request.Icon,
+            request.ConsiderInTotalBalance));
 
         return Created("", new
         {

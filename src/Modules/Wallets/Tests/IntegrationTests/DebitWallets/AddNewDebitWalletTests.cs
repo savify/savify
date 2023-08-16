@@ -11,10 +11,13 @@ public class AddNewDebitWalletTests : TestBase
     public async Task AddNewDebitWalletCommand_Tests()
     {
         var command = new AddNewDebitWalletCommand(
-            userId: Guid.NewGuid(),
-            title: "Debit wallet",
-            currency: "PLN",
-            balance: 1000);
+            Guid.NewGuid(),
+            "Debit wallet",
+            "PLN",
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png", 
+            true);
         var walletId = await WalletsModule.ExecuteCommandAsync(command);
 
         var addedDebitWallet = await WalletsModule.ExecuteQueryAsync(new GetDebitWalletQuery(walletId));
@@ -28,5 +31,8 @@ public class AddNewDebitWalletTests : TestBase
 
         Assert.IsNotNull(addedDebitWallet.ViewMetadata);
         Assert.That(addedDebitWallet.ViewMetadata.WalletId, Is.EqualTo(walletId));
+        Assert.That(addedDebitWallet.ViewMetadata.Color, Is.EqualTo("#ffffff"));
+        Assert.That(addedDebitWallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/wallet.png"));
+        Assert.That(addedDebitWallet.ViewMetadata.IsConsideredInTotalBalance, Is.True);
     }
 }
