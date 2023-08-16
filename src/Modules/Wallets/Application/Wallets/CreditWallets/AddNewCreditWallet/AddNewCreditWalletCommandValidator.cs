@@ -11,7 +11,7 @@ internal class AddNewCreditWalletCommandValidator : Validator<AddNewCreditWallet
     {
         RuleFor(c => c.Title)
             .NotEmpty()
-            .WithMessage("Please provide the new credit wallet title");
+            .WithMessage("Please provide wallet title");
 
         RuleFor(c => c.CreditLimit)
             .GreaterThanOrEqualTo(0)
@@ -25,17 +25,17 @@ internal class AddNewCreditWalletCommandValidator : Validator<AddNewCreditWallet
 
         RuleFor(c => c.Currency)
             .NotEmpty()
-            .WithMessage("Please provide the new credit wallet currency")
+            .WithMessage("Please provide wallet currency")
             .MustMatchCurrencyCodeISOFormat();
         
         RuleFor(c => c.Color)
             .NotEmpty()
-            .WithMessage("Please provide the new cash wallet color")
+            .WithMessage("Please provide wallet color")
             .MustMatchAColorHexFormat();
 
         RuleFor(c => c.Icon)
             .NotEmpty()
-            .WithMessage("Please provide the new cash wallet icon URL")
+            .WithMessage("Please provide wallet icon URL")
             .Must(BeAValidUrl)
             .WithMessage("Icon value is not a valid URL");
     }
