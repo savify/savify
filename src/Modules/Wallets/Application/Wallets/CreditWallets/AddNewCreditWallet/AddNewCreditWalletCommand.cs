@@ -12,13 +12,22 @@ public class AddNewCreditWalletCommand : CommandBase<Guid>
     public int AvailableBalance { get; }
 
     public int CreditLimit { get; }
+    
+    public string Color { get; }
+    
+    public string Icon { get; }
+    
+    public bool ConsiderInTotalBalance { get; }
 
-    public AddNewCreditWalletCommand(Guid userId, string title, string currency, int availableBalance, int creditLimit)
+    public AddNewCreditWalletCommand(Guid userId, string title, string currency, int availableBalance, int creditLimit, string color, string icon, bool considerInTotalBalance)
     {
         UserId = userId;
         Title = title;
+        Currency = currency;
         AvailableBalance = availableBalance;
         CreditLimit = creditLimit;
-        Currency = currency;
+        Color = color;
+        Icon = icon;
+        ConsiderInTotalBalance = considerInTotalBalance;
     }
 }

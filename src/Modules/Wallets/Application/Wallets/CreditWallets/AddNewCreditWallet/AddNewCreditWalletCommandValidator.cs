@@ -1,4 +1,5 @@
 ﻿using App.BuildingBlocks.Application.Validators;
+using App.Modules.Wallets.Application.Validation;
 using App.Modules.Wallets.Application.Validation.Currency;
 using FluentValidation;
 
@@ -26,5 +27,16 @@ internal class AddNewCreditWalletCommandValidator : Validator<AddNewCreditWallet
             .NotEmpty()
             .WithMessage("Please provide the new credit wallet currency")
             .MustMatchCurrencyCodeISOFormat();
+        
+        RuleFor(c => c.Color)
+            .NotEmpty()
+            .WithMessage("Please provide the new cash wallet color")
+            .MustMatchAColorHexFormat();
+
+        RuleFor(c => c.Icon)
+            .NotEmpty()
+            .WithMessage("Please provide the new cash wallet icon URL")
+            .Must(BeAValidUrl)
+            .WithMessage("Icon value is not a valid URL");
     }
 }
