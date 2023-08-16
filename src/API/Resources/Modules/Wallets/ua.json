@@ -1,12 +1,12 @@
 {
-  "Please provide the new cash wallet title": "Будь ласка, вкажіть назву нового готівкового гаманця",
-  "Please provide the new cash wallet currency": "Будь ласка, вкажіть валюту нового готівкового гаманця",
-  "Please provide the new debit wallet title": "Будь ласка, вкажіть назву нового дебетового гаманця",
-  "Please provide the new debit wallet currency": "Будь ласка, вкажіть валюту нового дебетового гаманця",
-  "Please provide the new credit wallet title": "Будь ласка, вкажіть назву нового кредитного гаманця",
-  "Please provide the new credit wallet currency": "Будь ласка, вкажіть валюту нового кредитного гаманця",
+  "Please provide wallet title": "Будь ласка, вкажіть назву гаманця",
+  "Please provide wallet currency": "Будь ласка, вкажіть валюту гаманця",
+  "Please provide wallet color": "Будь ласка, вкажіть колір гаманця",
+  "Please provide wallet icon URL": "Будь ласка, вкажіть посилання на значок гаманця",
+  "Icon value is not a valid URL": "Значення значку не є дійсною URL-адресою",
+  "Currency should be provided in currency code format (ISO 4217)": "Валюту слід вказувати у форматі коду валюти (ISO 4217)",
+  "Color must be provided in HEX color format (e.g. #FFFFFF)": "Колір слід вказувати у форматі кольору HEX (наприклад #FFFFFF)",
   "Credit limit should be greater or equal to zero": "Кредитний ліміт повинен бути більший або дорівнювати нулю",
   "Available balance should be greater or equal to zero": "Доступний баланс повинен бути більший або дорівнювати нулю",
-  "Available balance should be less than or equal to credit limit": "Доступний баланс не повинен перевищувати кредитний ліміт",
-  "Currency should be provided in currency code format (ISO 4217)": "Валюту слід вказувати у форматі коду валюти (ISO 4217)"
+  "Available balance should be less than or equal to credit limit": "Доступний баланс не повинен перевищувати кредитний ліміт"
 }

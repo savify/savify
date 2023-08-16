@@ -11,23 +11,29 @@ public class AddNewCreditWalletTests : TestBase
     public async Task AddNewCreditWalletCommand_AddsNewCreditWallet()
     {
         var command = new AddNewCreditWalletCommand(
-            userId: Guid.NewGuid(),
-            title: "Credit wallet",
-            currency: "PLN",
-            availableBalance: 500,
-            creditLimit: 1000);
+            Guid.NewGuid(),
+            "Credit wallet",
+            "PLN",
+            500,
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
         var walletId = await WalletsModule.ExecuteCommandAsync(command);
 
-        var addedCreditWallet = await WalletsModule.ExecuteQueryAsync(new GetCreditWalletQuery(walletId));
+        var wallet = await WalletsModule.ExecuteQueryAsync(new GetCreditWalletQuery(walletId));
 
-        Assert.IsNotNull(addedCreditWallet);
-        Assert.That(addedCreditWallet.Id, Is.EqualTo(walletId));
-        Assert.That(addedCreditWallet.Title, Is.EqualTo(command.Title));
-        Assert.That(addedCreditWallet.AvailableBalance, Is.EqualTo(command.AvailableBalance));
-        Assert.That(addedCreditWallet.CreditLimit, Is.EqualTo(command.CreditLimit));
-        Assert.That(addedCreditWallet.Currency, Is.EqualTo(command.Currency));
+        Assert.IsNotNull(wallet);
+        Assert.That(wallet.Id, Is.EqualTo(walletId));
+        Assert.That(wallet.Title, Is.EqualTo(command.Title));
+        Assert.That(wallet.AvailableBalance, Is.EqualTo(command.AvailableBalance));
+        Assert.That(wallet.CreditLimit, Is.EqualTo(command.CreditLimit));
+        Assert.That(wallet.Currency, Is.EqualTo(command.Currency));
 
-        Assert.IsNotNull(addedCreditWallet.ViewMetadata);
-        Assert.That(addedCreditWallet.ViewMetadata.WalletId, Is.EqualTo(walletId));
+        Assert.IsNotNull(wallet.ViewMetadata);
+        Assert.That(wallet.ViewMetadata.WalletId, Is.EqualTo(walletId));
+        Assert.That(wallet.ViewMetadata.Color, Is.EqualTo("#ffffff"));
+        Assert.That(wallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/wallet.png"));
+        Assert.That(wallet.ViewMetadata.IsConsideredInTotalBalance, Is.True);
     }
 }
