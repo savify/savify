@@ -20,22 +20,22 @@ internal class AddNewCashWalletCommandHandler : ICommandHandler<AddNewCashWallet
 
     public async Task<Guid> Handle(AddNewCashWalletCommand command, CancellationToken cancellationToken)
     {
-        var cashWallet = CashWallet.AddNew(
+        var wallet = CashWallet.AddNew(
             new UserId(command.UserId),
             command.Title,
             Currency.From(command.Currency),
             command.Balance);
 
-        await _cashWalletRepository.AddAsync(cashWallet);
+        await _cashWalletRepository.AddAsync(wallet);
 
         var viewMetadata = WalletViewMetadata.CreateForWallet(
-            cashWallet.Id,
+            wallet.Id,
             command.Color,
             command.Icon,
             command.ConsiderInTotalBalance);
 
         await _walletViewMetadataRepository.AddAsync(viewMetadata);
 
-        return cashWallet.Id.Value;
+        return wallet.Id.Value;
     }
 }

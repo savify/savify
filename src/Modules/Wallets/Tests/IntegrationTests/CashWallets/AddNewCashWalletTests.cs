@@ -21,17 +21,17 @@ public class AddNewCashWalletTests : TestBase
         
         var walletId = await WalletsModule.ExecuteCommandAsync(command);
 
-        var addedCashWallet = await WalletsModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
+        var wallet = await WalletsModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
 
-        Assert.IsNotNull(addedCashWallet);
-        Assert.That(addedCashWallet.UserId, Is.EqualTo(command.UserId));
-        Assert.That(addedCashWallet.Title, Is.EqualTo(command.Title));
-        Assert.That(addedCashWallet.Balance, Is.EqualTo(command.Balance));
+        Assert.IsNotNull(wallet);
+        Assert.That(wallet.UserId, Is.EqualTo(command.UserId));
+        Assert.That(wallet.Title, Is.EqualTo(command.Title));
+        Assert.That(wallet.Balance, Is.EqualTo(command.Balance));
 
-        Assert.IsNotNull(addedCashWallet.ViewMetadata);
-        Assert.That(addedCashWallet.ViewMetadata.WalletId, Is.EqualTo(walletId));
-        Assert.That(addedCashWallet.ViewMetadata.Color, Is.EqualTo("#ffffff"));
-        Assert.That(addedCashWallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/wallet.png"));
-        Assert.That(addedCashWallet.ViewMetadata.IsConsideredInTotalBalance, Is.True);
+        Assert.IsNotNull(wallet.ViewMetadata);
+        Assert.That(wallet.ViewMetadata.WalletId, Is.EqualTo(walletId));
+        Assert.That(wallet.ViewMetadata.Color, Is.EqualTo("#ffffff"));
+        Assert.That(wallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/wallet.png"));
+        Assert.That(wallet.ViewMetadata.IsConsideredInTotalBalance, Is.True);
     }
 }
