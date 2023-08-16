@@ -1,7 +1,9 @@
 using App.API.Configuration.Authorization;
+using App.API.Modules.Wallets.CreditWallets.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Application.Wallets.CreditWallets.AddNewCreditWallet;
+using App.Modules.Wallets.Application.Wallets.CreditWallets.EditCreditWallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,5 +43,24 @@ public class CreditWalletsController : ControllerBase
         {
             Id = walletId
         });
+    }
+
+    [HttpPatch("{walletId}")]
+    [HasPermission(WalletsPermissions.EditWallets)]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> Edit(Guid walletId, EditCreditWalletRequest request)
+    {
+        await _walletsModule.ExecuteCommandAsync(new EditCreditWalletCommand(
+            _executionContextAccessor.UserId,
+            walletId,
+            request.Title,
+            request.Currency,
+            request.AvailableBalance,
+            request.CreditLimit,
+            request.Color,
+            request.Icon,
+            request.ConsiderInTotalBalance));
+
+        return Accepted();
     }
 }
