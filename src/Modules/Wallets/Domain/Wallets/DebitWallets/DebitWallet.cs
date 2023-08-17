@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets.Events;
+using App.Modules.Wallets.Domain.Wallets.DebitWallets.Rules;
 
 namespace App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
@@ -32,6 +33,8 @@ public class DebitWallet : Entity, IAggregateRoot
     public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
     {
         // TODO: restrict updating currency and balance for wallets that were connected to bank accounts
+        CheckRules(new DebitWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved));
+
         _title = newTitle ?? _title;
         _currency = newCurrency ?? _currency;
         _balance = newBalance ?? _balance;
@@ -43,6 +46,8 @@ public class DebitWallet : Entity, IAggregateRoot
     public void Remove()
     {
         // TODO: check if there is a need to set some rules on wallet removal
+        CheckRules(new DebitWalletCannotBeRemovedMoreThanOnceRule(Id, _isRemoved));
+
         _isRemoved = true;
         _removedAt = DateTime.UtcNow;
 
