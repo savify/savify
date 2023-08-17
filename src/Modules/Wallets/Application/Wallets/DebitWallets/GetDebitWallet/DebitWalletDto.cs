@@ -17,4 +17,6 @@ public class DebitWalletDto
     public WalletViewMetadataDto ViewMetadata { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    public bool IsRemoved { get; set; }
 }

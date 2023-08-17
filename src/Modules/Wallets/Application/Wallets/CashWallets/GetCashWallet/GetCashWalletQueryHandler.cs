@@ -18,7 +18,7 @@ internal class GetCashWalletQueryHandler : IQueryHandler<GetCashWalletQuery, Cas
     {
         using var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT c.id, c.user_id AS userId, c.title, c.currency, c.balance, c.created_at AS createdAt, " +
+        const string sql = "SELECT c.id, c.user_id AS userId, c.title, c.currency, c.balance, c.created_at AS createdAt, c.is_removed AS isRemoved, " +
                            "v.wallet_id AS walletId, v.color, v.icon, v.is_considered_in_total_balance AS isConsideredInTotalBalance " +
                            "FROM wallets.cash_wallets c " +
                            "INNER JOIN wallets.wallet_view_metadata v ON c.id = v.wallet_id " +

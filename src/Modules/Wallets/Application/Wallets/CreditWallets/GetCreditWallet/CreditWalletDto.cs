@@ -19,4 +19,6 @@ public class CreditWalletDto
     public WalletViewMetadataDto ViewMetadata { get; set; }
 
     public DateTime CreatedAt { get; set; }
+
+    public bool IsRemoved { get; set; }
 }
