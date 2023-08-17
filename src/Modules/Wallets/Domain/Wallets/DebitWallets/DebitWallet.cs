@@ -45,6 +45,8 @@ public class DebitWallet : Entity, IAggregateRoot
         // TODO: check if there is a need to set some rules on wallet removal
         _isRemoved = true;
         _removeddAt = DateTime.UtcNow;
+        
+        AddDomainEvent(new DebitWalletRemovedDomainEvent(Id, UserId));
     }
 
     private DebitWallet(UserId userId, string title, Currency currency, int balance)

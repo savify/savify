@@ -48,6 +48,8 @@ public class CreditWallet : Entity, IAggregateRoot
         // TODO: check if there is a need to set some rules on wallet removal
         _isRemoved = true;
         _removeddAt = DateTime.UtcNow;
+        
+        AddDomainEvent(new CreditWalletRemovedDomainEvent(Id, UserId));
     }
 
     private CreditWallet(UserId userId, string title, Currency currency, int creditLimit, int availableBalance)

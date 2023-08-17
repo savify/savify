@@ -43,6 +43,8 @@ public class CashWallet : Entity, IAggregateRoot
     {
         _isRemoved = true;
         _removeddAt = DateTime.UtcNow;
+        
+        AddDomainEvent(new CashWalletRemovedDomainEvent(Id, UserId));
     }
 
     private CashWallet(UserId userId, string title, Currency currency, int balance)
