@@ -19,7 +19,7 @@ public class DebitWallet : Entity, IAggregateRoot
     private DateTime _createdAt;
 
     private DateTime? _updatedAt = null;
-    
+
     private DateTime? _removedAt = null;
 
     private bool _isRemoved = false;
@@ -39,13 +39,13 @@ public class DebitWallet : Entity, IAggregateRoot
 
         AddDomainEvent(new DebitWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
     }
-    
+
     public void Remove()
     {
         // TODO: check if there is a need to set some rules on wallet removal
         _isRemoved = true;
         _removedAt = DateTime.UtcNow;
-        
+
         AddDomainEvent(new DebitWalletRemovedDomainEvent(Id, UserId));
     }
 

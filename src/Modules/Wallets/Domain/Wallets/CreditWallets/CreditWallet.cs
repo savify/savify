@@ -21,7 +21,7 @@ public class CreditWallet : Entity, IAggregateRoot
     private DateTime _createdAt;
 
     private DateTime? _updatedAt = null;
-    
+
     private DateTime? _removedAt = null;
 
     private bool _isRemoved = false;
@@ -42,13 +42,13 @@ public class CreditWallet : Entity, IAggregateRoot
 
         AddDomainEvent(new CreditWalletEditedDomainEvent(Id, UserId, newCurrency, newAvailableBalance, newCreditLimit));
     }
-    
+
     public void Remove()
     {
         // TODO: check if there is a need to set some rules on wallet removal
         _isRemoved = true;
         _removedAt = DateTime.UtcNow;
-        
+
         AddDomainEvent(new CreditWalletRemovedDomainEvent(Id, UserId));
     }
 

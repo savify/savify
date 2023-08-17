@@ -18,7 +18,7 @@ public class RemoveCashWalletCommandHandler : ICommandHandler<RemoveCashWalletCo
     public async Task<Result> Handle(RemoveCashWalletCommand command, CancellationToken cancellationToken)
     {
         var wallet = await _cashWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
-        
+
         wallet.Remove();
 
         return Result.Success;

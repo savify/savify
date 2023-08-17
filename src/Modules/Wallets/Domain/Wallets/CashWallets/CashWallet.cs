@@ -19,7 +19,7 @@ public class CashWallet : Entity, IAggregateRoot
     private DateTime _createdAt;
 
     private DateTime? _updatedAt = null;
-    
+
     private DateTime? _removedAt = null;
 
     private bool _isRemoved = false;
@@ -43,7 +43,7 @@ public class CashWallet : Entity, IAggregateRoot
     {
         _isRemoved = true;
         _removedAt = DateTime.UtcNow;
-        
+
         AddDomainEvent(new CashWalletRemovedDomainEvent(Id, UserId));
     }
 

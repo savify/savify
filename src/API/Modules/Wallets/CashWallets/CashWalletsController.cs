@@ -62,7 +62,7 @@ public class CashWalletsController : ControllerBase
 
         return Accepted();
     }
-    
+
     [HttpDelete("{walletId}")]
     [HasPermission(WalletsPermissions.RemoveWallets)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

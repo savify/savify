@@ -18,9 +18,9 @@ public class RemoveDebitWalletCommandHandler : ICommandHandler<RemoveDebitWallet
     public async Task<Result> Handle(RemoveDebitWalletCommand command, CancellationToken cancellationToken)
     {
         var wallet = await _debitWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
-        
+
         wallet.Remove();
-        
+
         return Result.Success;
     }
 }
