@@ -18,7 +18,7 @@ internal class GetDebitWalletQueryHandler : IQueryHandler<GetDebitWalletQuery, D
     {
         using var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT d.id, d.user_id AS userId, d.title, d.currency, d.balance, d.created_at AS createdAt, " +
+        const string sql = "SELECT d.id, d.user_id AS userId, d.title, d.currency, d.balance, d.created_at AS createdAt, d.is_removed AS isRemoved, " +
                            "v.wallet_id AS walletId, v.color, v.icon, v.is_considered_in_total_balance AS isConsideredInTotalBalance " +
                            "FROM wallets.debit_wallets d " +
                            "INNER JOIN wallets.wallet_view_metadata v ON d.id = v.wallet_id " +

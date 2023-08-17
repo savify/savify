@@ -21,6 +21,8 @@ internal class CreditWalletsEntityTypeConfiguration : IEntityTypeConfiguration<C
         builder.Property<int>("_creditLimit").HasColumnName("credit_limit");
         builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
         builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
+        builder.Property<DateTime?>("_removedAt").HasColumnName("removed_at");
+        builder.Property<bool>("_isRemoved").HasColumnName("is_removed");
 
         builder.OwnsOne<Currency>("_currency", b =>
         {

@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets.CashWallets.Events;
+using App.Modules.Wallets.Domain.Wallets.CashWallets.Rules;
 
 namespace App.Modules.Wallets.Domain.Wallets.CashWallets;
 
@@ -20,6 +21,10 @@ public class CashWallet : Entity, IAggregateRoot
 
     private DateTime? _updatedAt = null;
 
+    private DateTime? _removedAt = null;
+
+    private bool _isRemoved = false;
+
     public static CashWallet AddNew(UserId userId, string title, Currency currency, int balance = 0)
     {
         return new CashWallet(userId, title, currency, balance);
@@ -27,12 +32,24 @@ public class CashWallet : Entity, IAggregateRoot
 
     public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
     {
+        CheckRules(new CashWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved));
+
         _title = newTitle ?? _title;
         _currency = newCurrency ?? _currency;
         _balance = newBalance ?? _balance;
         _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
+    }
+
+    public void Remove()
+    {
+        CheckRules(new CashWalletCannotBeRemovedMoreThanOnceRule(Id, _isRemoved));
+
+        _isRemoved = true;
+        _removedAt = DateTime.UtcNow;
+
+        AddDomainEvent(new CashWalletRemovedDomainEvent(Id, UserId));
     }
 
     private CashWallet(UserId userId, string title, Currency currency, int balance)

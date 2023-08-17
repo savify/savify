@@ -4,6 +4,7 @@ using App.BuildingBlocks.Application;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.EditDebitWallet;
+using App.Modules.Wallets.Application.Wallets.DebitWallets.RemoveDebitWallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,5 +61,15 @@ public class DebitWalletsController : ControllerBase
             request.ConsiderInTotalBalance));
 
         return Accepted();
+    }
+
+    [HttpDelete("{walletId}")]
+    [HasPermission(WalletsPermissions.RemoveWallets)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Remove(Guid walletId)
+    {
+        await _walletsModule.ExecuteCommandAsync(new RemoveDebitWalletCommand(_executionContextAccessor.UserId, walletId));
+
+        return NoContent();
     }
 }
