@@ -20,8 +20,8 @@ public class Validator<T> : AbstractValidator<T>
         return new Regex(PhoneNumberRegex).IsMatch(phoneNumber);
     }
 
-    protected bool BeAValidUrl(string url)
+    protected bool BeAValidUrl(string? url)
     {
-        return new Regex(UrlRegex).IsMatch(url);
+        return url == null || new Regex(UrlRegex).IsMatch(url);
     }
 }

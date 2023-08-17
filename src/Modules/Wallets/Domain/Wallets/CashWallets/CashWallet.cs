@@ -8,7 +8,7 @@ public class CashWallet : Entity, IAggregateRoot
 {
     public WalletId Id { get; private set; }
 
-    internal UserId UserId { get; private set; }
+    public UserId UserId { get; private set; }
 
     private string _title;
 
@@ -18,9 +18,21 @@ public class CashWallet : Entity, IAggregateRoot
 
     private DateTime _createdAt;
 
+    private DateTime? _updatedAt = null;
+
     public static CashWallet AddNew(UserId userId, string title, Currency currency, int balance = 0)
     {
         return new CashWallet(userId, title, currency, balance);
+    }
+
+    public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
+    {
+        _title = newTitle ?? _title;
+        _currency = newCurrency ?? _currency;
+        _balance = newBalance ?? _balance;
+        _updatedAt = DateTime.UtcNow;
+
+        AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
     }
 
     private CashWallet(UserId userId, string title, Currency currency, int balance)

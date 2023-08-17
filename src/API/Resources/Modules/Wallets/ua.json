@@ -8,5 +8,6 @@
   "Color must be provided in HEX color format (e.g. #FFFFFF)": "Колір слід вказувати у форматі кольору HEX (наприклад #FFFFFF)",
   "Credit limit should be greater or equal to zero": "Кредитний ліміт повинен бути більший або дорівнювати нулю",
   "Available balance should be greater or equal to zero": "Доступний баланс повинен бути більший або дорівнювати нулю",
-  "Available balance should be less than or equal to credit limit": "Доступний баланс не повинен перевищувати кредитний ліміт"
+  "Available balance should be less than or equal to credit limit": "Доступний баланс не повинен перевищувати кредитний ліміт",
+  "Wallet title length should contain minimum 3 characters": "Мінімальна довжина назви гаманця має бути 3 символи"
 }

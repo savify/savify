@@ -1,7 +1,9 @@
 using App.API.Configuration.Authorization;
+using App.API.Modules.Wallets.CashWallets.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Application.Wallets.CashWallets.AddNewCashWallet;
+using App.Modules.Wallets.Application.Wallets.CashWallets.EditCashWallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,5 +42,23 @@ public class CashWalletsController : ControllerBase
         {
             Id = walletId,
         });
+    }
+
+    [HttpPatch("{walletId}")]
+    [HasPermission(WalletsPermissions.EditWallets)]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> Edit(Guid walletId, EditCashWalletRequest request)
+    {
+        await _walletsModule.ExecuteCommandAsync(new EditCashWalletCommand(
+            _executionContextAccessor.UserId,
+            walletId,
+            request.Title,
+            request.Currency,
+            request.Balance,
+            request.Color,
+            request.Icon,
+            request.ConsiderInTotalBalance));
+
+        return Accepted();
     }
 }

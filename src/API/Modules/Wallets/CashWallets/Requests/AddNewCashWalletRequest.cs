@@ -1,14 +1,12 @@
-namespace App.API.Modules.Wallets.CreditWallets;
+namespace App.API.Modules.Wallets.CashWallets.Requests;
 
-public class AddNewCreditWalletRequest
+public class AddNewCashWalletRequest
 {
     public string Title { get; set; }
 
     public string Currency { get; set; }
 
-    public int AvailableBalance { get; set; }
-
-    public int CreditLimit { get; set; }
+    public int Balance { get; set; }
 
     public string Color { get; set; }
 

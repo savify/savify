@@ -19,6 +19,7 @@ internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<Cash
         builder.Property<string>("_title").HasColumnName("title");
         builder.Property<int>("_balance").HasColumnName("balance");
         builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
+        builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
 
         builder.OwnsOne<Currency>("_currency", b =>
         {

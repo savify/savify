@@ -25,6 +25,7 @@ public class AddNewCreditWalletTests : TestBase
 
         Assert.IsNotNull(wallet);
         Assert.That(wallet.Id, Is.EqualTo(walletId));
+        Assert.That(wallet.UserId, Is.EqualTo(command.UserId));
         Assert.That(wallet.Title, Is.EqualTo(command.Title));
         Assert.That(wallet.AvailableBalance, Is.EqualTo(command.AvailableBalance));
         Assert.That(wallet.CreditLimit, Is.EqualTo(command.CreditLimit));
