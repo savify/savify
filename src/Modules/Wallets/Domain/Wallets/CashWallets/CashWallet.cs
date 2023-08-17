@@ -19,6 +19,10 @@ public class CashWallet : Entity, IAggregateRoot
     private DateTime _createdAt;
 
     private DateTime? _updatedAt = null;
+    
+    private DateTime? _removeddAt = null;
+
+    private bool _isRemoved = false;
 
     public static CashWallet AddNew(UserId userId, string title, Currency currency, int balance = 0)
     {
@@ -33,6 +37,12 @@ public class CashWallet : Entity, IAggregateRoot
         _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
+    }
+
+    public void Remove()
+    {
+        _isRemoved = true;
+        _removeddAt = DateTime.UtcNow;
     }
 
     private CashWallet(UserId userId, string title, Currency currency, int balance)

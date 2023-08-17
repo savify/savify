@@ -19,6 +19,10 @@ public class DebitWallet : Entity, IAggregateRoot
     private DateTime _createdAt;
 
     private DateTime? _updatedAt = null;
+    
+    private DateTime? _removeddAt = null;
+
+    private bool _isRemoved = false;
 
     public static DebitWallet AddNew(UserId userId, string title, Currency currency, int balance = 0)
     {
@@ -34,6 +38,13 @@ public class DebitWallet : Entity, IAggregateRoot
         _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new DebitWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
+    }
+    
+    public void Remove()
+    {
+        // TODO: check if there is a need to set some rules on wallet removal
+        _isRemoved = true;
+        _removeddAt = DateTime.UtcNow;
     }
 
     private DebitWallet(UserId userId, string title, Currency currency, int balance)
