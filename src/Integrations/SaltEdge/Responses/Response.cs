@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using App.Integrations.SaltEdge.Exceptions;
 
 namespace App.Integrations.SaltEdge.Responses;
 
@@ -34,7 +35,7 @@ public class SuccessResponse : Response
         var responseContent = await responseMessage.Content.ReadAsStringAsync();
         var data = JsonSerializer.Deserialize<object>(responseContent);
 
-        return new SuccessResponse(responseMessage.StatusCode, data ?? throw new InvalidOperationException());
+        return new SuccessResponse(responseMessage.StatusCode, data ?? throw new InvalidResponseContentException("Response content was not properly deserialized"));
     }
 
     private SuccessResponse(HttpStatusCode statusCode, object data) : base(statusCode)
@@ -52,7 +53,7 @@ public class ErrorResponse : Response
         var responseContent = await responseMessage.Content.ReadAsStringAsync();
         var error = JsonSerializer.Deserialize<ResponseError>(responseContent);
 
-        return new ErrorResponse(responseMessage.StatusCode, error ?? throw new InvalidOperationException());
+        return new ErrorResponse(responseMessage.StatusCode, error ?? throw new InvalidResponseContentException("Response content was not properly deserialized"));
     }
 
     private ErrorResponse(HttpStatusCode statusCode, ResponseError error) : base(statusCode)

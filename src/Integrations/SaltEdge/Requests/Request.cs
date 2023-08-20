@@ -8,33 +8,37 @@ public abstract class Request
 {
     public HttpMethod Method { get; }
 
-    public string Path { get; private set; }
+    private string Path { get; }
 
-    public IDictionary<string, object> QueryParameters = new Dictionary<string, object>();
+    private IDictionary<string, object> _queryParameters = new Dictionary<string, object>();
 
     public HttpContent? Content { get; protected set; }
 
-    public Request(HttpMethod method, string path)
+    protected Request(HttpMethod method, string path)
     {
         Method = method;
         Path = path;
     }
 
-    public void WithQueryParameter(string key, object value)
+    public Request WithQueryParameter(string key, object value)
     {
-        QueryParameters[key] = value;
+        _queryParameters[key] = value;
+
+        return this;
     }
 
-    public void WithQueryParameters(IDictionary<string, object> queryParameters)
+    public Request WithQueryParameters(IDictionary<string, object> queryParameters)
     {
-        QueryParameters = queryParameters;
+        _queryParameters = queryParameters;
+
+        return this;
     }
 
     public string GetFullUrl(string url)
     {
-        if (QueryParameters.Any())
+        if (_queryParameters.Any())
         {
-            var queryParameters = QueryParameters.Select(parameter => $"{parameter.Key}={parameter.Value}");
+            var queryParameters = _queryParameters.Select(parameter => $"{parameter.Key}={parameter.Value}");
 
             return url + Path + "?" + string.Join("&", queryParameters);
         }
@@ -57,7 +61,7 @@ public abstract class Request
         return new PatchRequest(path);
     }
 
-    public static PutRequest Pur(string path)
+    public static PutRequest Put(string path)
     {
         return new PutRequest(path);
     }
@@ -80,12 +84,14 @@ public class PostRequest : Request
     public PostRequest(string path) : base(HttpMethod.Post, path)
     { }
 
-    public void WithContent(object content)
+    public Request WithContent(object content)
     {
         Content = new StringContent(
             JsonSerializer.Serialize(content),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
+
+        return this;
     }
 }
 
@@ -95,12 +101,14 @@ public class PatchRequest : Request
     {
     }
 
-    public void WithContent(object content)
+    public Request WithContent(object content)
     {
         Content = new StringContent(
             JsonSerializer.Serialize(content),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
+
+        return this;
     }
 }
 
@@ -110,12 +118,14 @@ public class PutRequest : Request
     {
     }
 
-    public void WithContent(object content)
+    public Request WithContent(object content)
     {
         Content = new StringContent(
             JsonSerializer.Serialize(content),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
+
+        return this;
     }
 }
 
