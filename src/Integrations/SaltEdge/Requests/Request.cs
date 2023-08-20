@@ -7,7 +7,7 @@ namespace App.Integrations.SaltEdge.Requests;
 public abstract class Request
 {
     public HttpMethod Method { get; }
-    
+
     public string Path { get; private set; }
 
     public IDictionary<string, object> QueryParameters = new Dictionary<string, object>();
@@ -35,28 +35,28 @@ public abstract class Request
         if (QueryParameters.Any())
         {
             var queryParameters = QueryParameters.Select(parameter => $"{parameter.Key}={parameter.Value}");
-        
-            return url + Path + "?" + string.Join("&", queryParameters);   
+
+            return url + Path + "?" + string.Join("&", queryParameters);
         }
 
         return url + Path;
     }
-    
+
     public static GetRequest Get(string path)
     {
         return new GetRequest(path);
     }
-    
+
     public static PostRequest Post(string path)
     {
         return new PostRequest(path);
     }
-    
+
     public static PatchRequest Patch(string path)
     {
         return new PatchRequest(path);
     }
-    
+
     public static PutRequest Pur(string path)
     {
         return new PutRequest(path);
@@ -75,11 +75,11 @@ public class GetRequest : Request
     }
 }
 
-public class PostRequest : Request 
+public class PostRequest : Request
 {
     public PostRequest(string path) : base(HttpMethod.Post, path)
     { }
-    
+
     public void WithContent(object content)
     {
         Content = new StringContent(
@@ -94,7 +94,7 @@ public class PatchRequest : Request
     public PatchRequest(string path) : base(HttpMethod.Patch, path)
     {
     }
-    
+
     public void WithContent(object content)
     {
         Content = new StringContent(
@@ -109,7 +109,7 @@ public class PutRequest : Request
     public PutRequest(string path) : base(HttpMethod.Put, path)
     {
     }
-    
+
     public void WithContent(object content)
     {
         Content = new StringContent(

@@ -8,6 +8,7 @@ using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
+using App.Integrations.SaltEdge;
 using App.Modules.Notifications.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
@@ -65,6 +66,8 @@ public class Program
                 policyBuilder.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
             });
         });
+
+        builder.Services.AddSaltEdgeIntegration(builder.Configuration);
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);
