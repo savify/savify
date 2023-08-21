@@ -6,7 +6,7 @@ namespace App.Integrations.SaltEdge.Responses;
 
 public abstract class Response
 {
-    public HttpStatusCode StatusCode { get; protected set; }
+    public HttpStatusCode StatusCode { get; }
 
     protected Response(HttpStatusCode statusCode)
     {
@@ -23,24 +23,24 @@ public abstract class Response
         return await ErrorResponse.CreateFrom(responseMessage);
     }
 
-    public bool IsSuccessful() => this is SuccessResponse;
+    public bool IsSuccessful() => (int)StatusCode >= 200 && (int)StatusCode <= 299;
 }
 
 public class SuccessResponse : Response
 {
-    public object Data { get; private set; }
+    public ResponseContent Content { get; private set; }
 
     public static async Task<SuccessResponse> CreateFrom(HttpResponseMessage responseMessage)
     {
-        var responseContent = await responseMessage.Content.ReadAsStringAsync();
-        var data = JsonSerializer.Deserialize<object>(responseContent);
+        var serializedResponseContent = await responseMessage.Content.ReadAsStringAsync();
+        var content = ResponseContent.From(serializedResponseContent);
 
-        return new SuccessResponse(responseMessage.StatusCode, data ?? throw new InvalidResponseContentException("Response content was not properly deserialized"));
+        return new SuccessResponse(responseMessage.StatusCode, content);
     }
 
-    private SuccessResponse(HttpStatusCode statusCode, object data) : base(statusCode)
+    private SuccessResponse(HttpStatusCode statusCode, ResponseContent content) : base(statusCode)
     {
-        Data = data;
+        Content = content;
     }
 }
 
@@ -51,7 +51,10 @@ public class ErrorResponse : Response
     public static async Task<ErrorResponse> CreateFrom(HttpResponseMessage responseMessage)
     {
         var responseContent = await responseMessage.Content.ReadAsStringAsync();
-        var error = JsonSerializer.Deserialize<ResponseError>(responseContent);
+        var error = JsonSerializer.Deserialize<ResponseError>(responseContent, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
 
         return new ErrorResponse(responseMessage.StatusCode, error ?? throw new InvalidResponseContentException("Response content was not properly deserialized"));
     }

@@ -7,7 +7,7 @@ using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.Wallets.Application.Wallets.CreditWallets.EditCreditWallet;
 
-public class EditCreditWalletCommandHandler : ICommandHandler<EditCreditWalletCommand, Result>
+internal class EditCreditWalletCommandHandler : ICommandHandler<EditCreditWalletCommand, Result>
 {
     private readonly ICreditWalletRepository _creditWalletRepository;
 

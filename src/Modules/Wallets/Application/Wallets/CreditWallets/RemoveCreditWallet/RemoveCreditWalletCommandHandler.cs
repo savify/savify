@@ -6,7 +6,7 @@ using App.Modules.Wallets.Domain.Wallets.CreditWallets;
 
 namespace App.Modules.Wallets.Application.Wallets.CreditWallets.RemoveCreditWallet;
 
-public class RemoveCreditWalletCommandHandler : ICommandHandler<RemoveCreditWalletCommand, Result>
+internal class RemoveCreditWalletCommandHandler : ICommandHandler<RemoveCreditWalletCommand, Result>
 {
     private readonly ICreditWalletRepository _creditWalletRepository;
 
