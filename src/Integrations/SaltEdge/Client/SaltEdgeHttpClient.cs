@@ -4,7 +4,7 @@ using App.Integrations.SaltEdge.Responses;
 
 namespace App.Integrations.SaltEdge.Client;
 
-internal class SaltEdgeHttpClient : ISaltEdgeHttpClient
+public class SaltEdgeHttpClient : ISaltEdgeHttpClient
 {
     private readonly SaltEdgeClientConfiguration _configuration;
 
