@@ -67,7 +67,7 @@ public class Program
             });
         });
 
-        builder.Services.AddSaltEdgeIntegration(builder.Configuration);
+        builder.Services.AddSaltEdgeIntegration(builder.Configuration, _logger);
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);
@@ -126,7 +126,7 @@ public class Program
             .Enrich.WithSensitiveDataMasking()
             .Destructure.UsingAttributes()
             .Enrich.WithProperty("Environment", environment!)
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
+            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
             .CreateLogger();
 
         _loggerForApi = _logger.ForContext("Module", "API");

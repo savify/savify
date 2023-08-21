@@ -5,6 +5,7 @@ using App.Integrations.SaltEdge.Configuration;
 using App.Integrations.SaltEdge.Requests;
 using App.Integrations.SaltEdge.Responses;
 using App.Integrations.UnitTests.SeedWork;
+using Serilog;
 
 namespace App.Integrations.UnitTests.SaltEdge;
 
@@ -13,6 +14,8 @@ public class SaltEdgeHttpClientTests
 {
     private SaltEdgeClientConfiguration _configuration;
 
+    private ILogger _logger;
+
     [SetUp]
     public void SetUp()
     {
@@ -20,6 +23,8 @@ public class SaltEdgeHttpClientTests
         _configuration.BaseUrl = "https://www.saltedge.com/api/v5";
         _configuration.AppId = "app-id";
         _configuration.AppSecret = "app-secret";
+
+        _logger = Substitute.For<ILogger>();
     }
 
     [Test]
@@ -33,7 +38,7 @@ public class SaltEdgeHttpClientTests
         var httpClientFactory = Substitute.For<IHttpClientFactory>();
         httpClientFactory.CreateClient().Returns(httpClient);
 
-        var client = new SaltEdgeHttpClient(_configuration, httpClientFactory);
+        var client = new SaltEdgeHttpClient(_configuration, httpClientFactory, _logger);
         var request = Request.Get("/some-path");
 
         var response = await client.SendAsync(request);
@@ -59,7 +64,7 @@ public class SaltEdgeHttpClientTests
         var httpClientFactory = Substitute.For<IHttpClientFactory>();
         httpClientFactory.CreateClient().Returns(httpClient);
 
-        var client = new SaltEdgeHttpClient(_configuration, httpClientFactory);
+        var client = new SaltEdgeHttpClient(_configuration, httpClientFactory, _logger);
         var request = Request.Get("/some-path");
 
         var response = await client.SendAsync(request);
