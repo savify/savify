@@ -2,7 +2,7 @@
 
 namespace App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets;
 
-internal class Asset
+public class Asset
 {
     public AssetId Id { get; private set; }
 

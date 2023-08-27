@@ -1,7 +1,7 @@
 ﻿namespace App.Modules.Wallets.Domain.Finance;
 
-internal record Money(decimal amount, Currency currency)
+public record Money(decimal Amount, Currency Currency)
 {
-    public static Money From(decimal amount, Currency currency) => new Money(amount, currency);
-    public static Money From(decimal amount, string currency) => new Money(amount, Currency.From(currency));
+    public static Money From(decimal amount, Currency currency) => new(amount, currency);
+    public static Money From(decimal amount, string currency) => new(amount, Currency.From(currency));
 }
