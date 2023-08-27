@@ -16,14 +16,18 @@ public class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<Con
 
     private readonly IBankConnectionProcessInitiationService _bankConnectionProcessInitiationService;
 
+    private readonly IBankConnectionProcessRedirectionService _bankConnectionProcessRedirectionService;
+
     public ConnectBankAccountToDebitWalletCommandHandler(
         IDebitWalletRepository debitWalletRepository,
         IBankConnectionProcessRepository bankConnectionProcessRepository,
-        IBankConnectionProcessInitiationService bankConnectionProcessInitiationService)
+        IBankConnectionProcessInitiationService bankConnectionProcessInitiationService,
+        IBankConnectionProcessRedirectionService bankConnectionProcessRedirectionService)
     {
         _debitWalletRepository = debitWalletRepository;
         _bankConnectionProcessRepository = bankConnectionProcessRepository;
         _bankConnectionProcessInitiationService = bankConnectionProcessInitiationService;
+        _bankConnectionProcessRedirectionService = bankConnectionProcessRedirectionService;
     }
 
     public async Task<string> Handle(ConnectBankAccountToDebitWalletCommand command, CancellationToken cancellationToken)
@@ -31,9 +35,10 @@ public class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<Con
         var wallet = await _debitWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
 
         var bankConnectionProcess = await wallet.InitiateBankConnectionProcess(new BankId(command.BankId), _bankConnectionProcessInitiationService);
+        var redirectUrl = await bankConnectionProcess.Redirect(_bankConnectionProcessRedirectionService);
 
         await _bankConnectionProcessRepository.AddAsync(bankConnectionProcess);
 
-        return "http://some-redirect-url.com";
+        return redirectUrl;
     }
 }
