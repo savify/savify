@@ -20,8 +20,6 @@ public class BankConnectionProcessEntityTypeConfiguration : IEntityTypeConfigura
         builder.Property<BankId>("BankId").HasColumnName("bank_id");
         builder.Property<WalletId>("WalletId").HasColumnName("wallet_id");
         builder.Property<string>("_redirectUrl").HasColumnName("redirect_url");
-
-
         builder.Property<DateTime>("_initiatedAt").HasColumnName("initiated_at");
         builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
         builder.Property<DateTime?>("_expiresAt").HasColumnName("expires_at");
@@ -29,7 +27,6 @@ public class BankConnectionProcessEntityTypeConfiguration : IEntityTypeConfigura
         builder.OwnsOne<BankConnectionProcessStatus>("_status", b =>
         {
             b.Property(x => x.Value).HasColumnName("status");
-            b.Property(x => x.IsFinal).HasColumnName("status_is_final");
         });
     }
 }

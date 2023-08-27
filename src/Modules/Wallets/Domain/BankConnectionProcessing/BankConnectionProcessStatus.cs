@@ -1,22 +1,24 @@
 namespace App.Modules.Wallets.Domain.BankConnectionProcessing;
 
-public record BankConnectionProcessStatus(string Value, bool IsFinal)
+public record BankConnectionProcessStatus(string Value)
 {
-    public static BankConnectionProcessStatus Initiated => new(nameof(Initiated), false);
+    public static BankConnectionProcessStatus Initiated => new(nameof(Initiated));
 
-    public static BankConnectionProcessStatus Redirected => new(nameof(Redirected), false);
+    public static BankConnectionProcessStatus Redirected => new(nameof(Redirected));
 
-    public static BankConnectionProcessStatus Expired => new(nameof(Expired), true);
+    public static BankConnectionProcessStatus Expired => new(nameof(Expired));
 
-    public static BankConnectionProcessStatus ErrorAtProvider => new(nameof(ErrorAtProvider), true);
+    public static BankConnectionProcessStatus ErrorAtProvider => new(nameof(ErrorAtProvider));
 
-    public static BankConnectionProcessStatus ConsentConfirmed => new(nameof(ConsentConfirmed), false);
+    public static BankConnectionProcessStatus ConsentConfirmed => new(nameof(ConsentConfirmed));
 
-    public static BankConnectionProcessStatus ConsentRefused => new(nameof(ConsentRefused), true);
+    public static BankConnectionProcessStatus ConsentRefused => new(nameof(ConsentRefused));
 
-    public static BankConnectionProcessStatus WaitingForAccountChoosing => new(nameof(WaitingForAccountChoosing), false);
+    public static BankConnectionProcessStatus WaitingForAccountChoosing => new(nameof(WaitingForAccountChoosing));
 
-    public static BankConnectionProcessStatus Completed => new(nameof(Completed), true);
+    public static BankConnectionProcessStatus Completed => new(nameof(Completed));
 
+    public bool IsFinal => FinalStatuses.Contains(this);
 
+    private static readonly BankConnectionProcessStatus[] FinalStatuses = { Expired, ErrorAtProvider, ConsentRefused, Completed };
 }
