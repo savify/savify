@@ -1,5 +1,6 @@
 ﻿using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets;
+using App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Events;
 
 namespace App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios;
 
@@ -15,10 +16,11 @@ public class InvestmentPortfolio : Entity, IAggregateRoot
 
     private InvestmentPortfolio(string title)
     {
-        _title = title;
-
         Id = new PortfolioId(Guid.NewGuid());
+        _title = title;
         _assets = new List<Asset>();
+
+        AddDomainEvent(new InvestmentPortfolioAddedDomainEvent(Id));
     }
 
     private InvestmentPortfolio()
