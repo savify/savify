@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Domain;
+using App.Modules.Wallets.Domain.Finance;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets.Events;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets.Rules;
