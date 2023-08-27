@@ -45,9 +45,8 @@ public class SaltEdgeHttpClientTests
 
         Assert.That(response.IsSuccessful, Is.True);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-        Assert.That(response, Is.InstanceOf<SuccessResponse>());
 
-        var content = (response as SuccessResponse).Content.As<ContentDto>();
+        var content = response.Content.As<ContentDto>();
         Assert.That(content, Is.Not.Null);
         Assert.That(content.Foo, Is.EqualTo(expectedResponseContent.Foo));
         Assert.That(content.Abc, Is.EqualTo(expectedResponseContent.Abc));
@@ -71,9 +70,8 @@ public class SaltEdgeHttpClientTests
 
         Assert.That(response.IsSuccessful, Is.False);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-        Assert.That(response, Is.InstanceOf<ErrorResponse>());
 
-        var error = (response as ErrorResponse).Error;
+        var error = response.Error;
         Assert.That(error, Is.Not.Null);
         Assert.That(error.Class, Is.EqualTo(expectedResponseError.Class));
         Assert.That(error.Message, Is.EqualTo(expectedResponseError.Message));

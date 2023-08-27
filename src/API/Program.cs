@@ -43,6 +43,7 @@ public class Program
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
 
+        builder.Services.AddHttpClient();
         builder.Services.AddLocalization();
         builder.Services.AddDistributedMemoryCache();
         builder.Services.AddSingleton<ILocalizerFactory, JsonStringLocalizerFactory>();

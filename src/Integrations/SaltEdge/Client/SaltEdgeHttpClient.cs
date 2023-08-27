@@ -51,8 +51,8 @@ public class SaltEdgeHttpClient : ISaltEdgeHttpClient
                 request.Method,
                 requestFullUrl,
                 response.StatusCode,
-                (response as ErrorResponse).Error.Message,
-                (response as ErrorResponse).Error);
+                response.Error.Message,
+                response.Error);
         }
 
         return await Response.From(httpResponseMessage);

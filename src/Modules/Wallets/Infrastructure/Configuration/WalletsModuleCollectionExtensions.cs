@@ -4,6 +4,7 @@ using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Infrastructure.Configuration.DataAccess;
 using App.Modules.Wallets.Infrastructure.Configuration.Domain;
 using App.Modules.Wallets.Infrastructure.Configuration.EventBus;
+using App.Modules.Wallets.Infrastructure.Configuration.Integration;
 using App.Modules.Wallets.Infrastructure.Configuration.Logging;
 using App.Modules.Wallets.Infrastructure.Configuration.Mediation;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing;
@@ -55,6 +56,7 @@ public static class WalletsModuleCollectionExtensions
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
+        IntegrationModule.Configure(services);
 
         WalletsCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }

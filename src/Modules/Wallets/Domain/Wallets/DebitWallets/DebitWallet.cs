@@ -1,4 +1,7 @@
 using App.BuildingBlocks.Domain;
+using App.Modules.Wallets.Domain.BankConnectionProcessing;
+using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
+using App.Modules.Wallets.Domain.BankConnections;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets.Events;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets.Rules;
@@ -52,6 +55,11 @@ public class DebitWallet : Entity, IAggregateRoot
         _removedAt = DateTime.UtcNow;
 
         AddDomainEvent(new DebitWalletRemovedDomainEvent(Id, UserId));
+    }
+
+    public async Task<BankConnectionProcess> InitiateBankConnectionProcess(BankId bankId, IBankConnectionProcessInitiationService initiationService)
+    {
+        return await BankConnectionProcess.Initiate(UserId, bankId, Id, initiationService);
     }
 
     private DebitWallet(UserId userId, string title, Currency currency, int balance)

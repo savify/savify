@@ -3,6 +3,7 @@ using App.API.Modules.Wallets.DebitWallets.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
+using App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.EditDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.RemoveDebitWallet;
 using Microsoft.AspNetCore.Authorization;
@@ -71,5 +72,21 @@ public class DebitWalletsController : ControllerBase
         await _walletsModule.ExecuteCommandAsync(new RemoveDebitWalletCommand(_executionContextAccessor.UserId, walletId));
 
         return NoContent();
+    }
+
+    [HttpPost("{walletId}/bank-connection")]
+    [HasPermission(WalletsPermissions.ConnectBankAccountsToWallets)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<IActionResult> ConnectBankAccount(Guid walletId, ConnectBankAccountToDebitWalletRequest request)
+    {
+        var redirectUrl = await _walletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
+            _executionContextAccessor.UserId,
+            walletId,
+            request.BankId));
+
+        return Created("", new
+        {
+            RedirectUrl = redirectUrl
+        });
     }
 }

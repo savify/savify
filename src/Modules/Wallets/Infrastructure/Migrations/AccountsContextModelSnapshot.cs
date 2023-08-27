@@ -113,6 +113,45 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                     b.ToTable("internal_commands", "wallets");
                 });
 
+            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("BankId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("bank_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("wallet_id");
+
+                    b.Property<DateTime?>("_expiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<DateTime>("_initiatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("initiated_at");
+
+                    b.Property<string>("_redirectUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("redirect_url");
+
+                    b.Property<DateTime?>("_updatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("bank_connection_processes", "wallets");
+                });
+
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CashWallets.CashWallet", b =>
                 {
                     b.Property<Guid>("Id")
@@ -258,6 +297,48 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                     b.HasKey("WalletId");
 
                     b.ToTable("wallet_view_metadata", "wallets");
+                });
+
+            modelBuilder.Entity("App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Customers.SaltEdgeCustomer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("Identifier")
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("salt_edge_customers", "wallets");
+                });
+
+            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
+                {
+                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcessStatus", "_status", b1 =>
+                        {
+                            b1.Property<Guid>("BankConnectionProcessId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<bool>("IsFinal")
+                                .HasColumnType("boolean")
+                                .HasColumnName("status_is_final");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("status");
+
+                            b1.HasKey("BankConnectionProcessId");
+
+                            b1.ToTable("bank_connection_processes", "wallets");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BankConnectionProcessId");
+                        });
+
+                    b.Navigation("_status");
                 });
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CashWallets.CashWallet", b =>

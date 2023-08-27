@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+using App.Integrations.SaltEdge.Json;
 
 namespace App.Integrations.SaltEdge.Requests;
 
@@ -87,7 +88,10 @@ public class PostRequest : Request
     public Request WithContent(object content)
     {
         Content = new StringContent(
-            JsonSerializer.Serialize(content),
+            JsonSerializer.Serialize(new Dictionary<string, object> { { "data", content } }, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
+            }),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
 
@@ -104,7 +108,10 @@ public class PatchRequest : Request
     public Request WithContent(object content)
     {
         Content = new StringContent(
-            JsonSerializer.Serialize(content),
+            JsonSerializer.Serialize(new Dictionary<string, object> { { "data", content } }, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
+            }),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
 
@@ -121,7 +128,10 @@ public class PutRequest : Request
     public Request WithContent(object content)
     {
         Content = new StringContent(
-            JsonSerializer.Serialize(content),
+            JsonSerializer.Serialize(new Dictionary<string, object> { { "data", content } }, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
+            }),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
 

@@ -15,7 +15,7 @@ public class ResponseTests
         var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
         httpResponseMessage.Content = new StringContent(JsonSerializer.Serialize(expectedResponseContent));
 
-        var response = await Response.From(httpResponseMessage) as SuccessResponse;
+        var response = await Response.From(httpResponseMessage);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         Assert.That(response.IsSuccessful, Is.True);
 
@@ -34,7 +34,7 @@ public class ResponseTests
         var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
         httpResponseMessage.Content = new StringContent(JsonSerializer.Serialize(expectedResponseError));
 
-        var response = await Response.From(httpResponseMessage) as ErrorResponse;
+        var response = await Response.From(httpResponseMessage);
         var error = response.Error;
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));

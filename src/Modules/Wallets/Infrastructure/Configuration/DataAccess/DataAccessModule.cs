@@ -30,5 +30,13 @@ internal static class DataAccessModule
                 .AsImplementedInterfaces()
                 .WithScopedLifetime();
         });
+
+        services.Scan(scan =>
+        {
+            scan.FromAssemblies(Assemblies.Infrastructure)
+                .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
+                .AsSelf()
+                .WithScopedLifetime();
+        });
     }
 }
