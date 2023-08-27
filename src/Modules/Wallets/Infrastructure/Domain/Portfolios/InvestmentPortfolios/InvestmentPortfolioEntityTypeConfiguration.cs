@@ -26,7 +26,7 @@ internal class InvestmentPortfolioEntityTypeConfiguration : IEntityTypeConfigura
             y.Property(x => x.Id).HasColumnName("id");
 
             y.Property<string>("_title").HasColumnName("title");
-            y.Property<string>("_amount").HasColumnName("amount");
+            y.Property<decimal>("_amount").HasColumnName("amount");
             y.Property<string>("_tickerSymbol").HasColumnName("ticker_symbol");
             y.Property<string>("_exchange").HasColumnName("exchange");
             y.Property<string>("_country").HasColumnName("country");
@@ -34,7 +34,7 @@ internal class InvestmentPortfolioEntityTypeConfiguration : IEntityTypeConfigura
 
             y.OwnsOne<Money>("_purchasePrice", m =>
             {
-                m.Property(x => x.Amount).HasColumnName("purchase_price_amount");
+                m.Property(x => x.Amount).HasColumnName("purchase_price_amount").HasColumnType("money");
                 m.OwnsOne(x => x.Currency, c =>
                 {
                     c.Property(x => x.Value).HasColumnName("purchase_price_currency");
