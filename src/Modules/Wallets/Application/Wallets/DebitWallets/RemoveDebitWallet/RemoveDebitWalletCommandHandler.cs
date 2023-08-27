@@ -6,7 +6,7 @@ using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.RemoveDebitWallet;
 
-public class RemoveDebitWalletCommandHandler : ICommandHandler<RemoveDebitWalletCommand, Result>
+internal class RemoveDebitWalletCommandHandler : ICommandHandler<RemoveDebitWalletCommand, Result>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 

@@ -8,7 +8,7 @@ using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.EditDebitWallet;
 
-public class EditDebitWalletCommandHandler : ICommandHandler<EditDebitWalletCommand, Result>
+internal class EditDebitWalletCommandHandler : ICommandHandler<EditDebitWalletCommand, Result>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 

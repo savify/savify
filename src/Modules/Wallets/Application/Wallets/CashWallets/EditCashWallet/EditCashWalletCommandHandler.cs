@@ -8,7 +8,7 @@ using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.Wallets.Application.Wallets.CashWallets.EditCashWallet;
 
-public class EditCashWalletCommandHandler : ICommandHandler<EditCashWalletCommand, Result>
+internal class EditCashWalletCommandHandler : ICommandHandler<EditCashWalletCommand, Result>
 {
     private readonly ICashWalletRepository _cashWalletRepository;
 

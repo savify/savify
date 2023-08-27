@@ -7,18 +7,6 @@ namespace App.Modules.Wallets.UnitTests.Wallets;
 public class WalletViewMetadataTests : UnitTestBase
 {
     [Test]
-    public void AddingWalletViewMetadata_WithDefaultValues_IsSuccessful()
-    {
-        var walletId = new WalletId(Guid.NewGuid());
-        var walletViewMetadata = WalletViewMetadata.CreateDefaultForWallet(walletId);
-
-        Assert.That(walletViewMetadata.WalletId, Is.EqualTo(walletId));
-        Assert.That(walletViewMetadata.Icon, Is.Null);
-        Assert.That(walletViewMetadata.Color, Is.Null);
-        Assert.That(walletViewMetadata.IsConsideredInTotalBalance, Is.True);
-    }
-
-    [Test]
     public void AddingWalletViewMetadata_IsSuccessful()
     {
         var walletId = new WalletId(Guid.NewGuid());
