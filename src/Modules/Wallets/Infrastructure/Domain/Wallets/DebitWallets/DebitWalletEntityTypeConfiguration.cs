@@ -28,7 +28,7 @@ internal class DebitWalletEntityTypeConfiguration : IEntityTypeConfiguration<Deb
         {
             b.Property(currency => currency.Value).HasColumnName("currency");
         });
-        
+
         builder.OwnsOne<BankAccountConnection?>("_bankAccountConnection", b =>
         {
             b.Property(connection => connection.Id).HasColumnName("bank_connection_id");
