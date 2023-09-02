@@ -5,7 +5,7 @@ namespace App.Modules.Wallets.Application.BankConnectionProcessing.CreateBankCon
 public class CreateBankConnectionCommand : CommandBase<Result>
 {
     public Guid BankConnectionProcessId { get; }
-    
+
     public string ExternalBankConnectionId { get; }
 
     public CreateBankConnectionCommand(Guid bankConnectionProcessId, string externalBankConnectionId)

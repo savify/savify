@@ -15,26 +15,30 @@ public class BankConnection : Entity, IAggregateRoot
 
     private Consent _consent;
 
-    private List<BankAccount> _accounts;
+    private List<BankAccount> _accounts = new();
 
     private DateTime _createdAt;
 
     private DateTime? _refreshedAt = null;
 
-    public static BankConnection CreateFromBankConnectionProcess(BankConnectionProcessId id, BankId bankId, UserId userId, Consent consent, List<BankAccount> accounts)
+    public static BankConnection CreateFromBankConnectionProcess(BankConnectionProcessId id, BankId bankId, UserId userId, Consent consent)
     {
-        return new BankConnection(id.Value, bankId, userId, consent, accounts);
+        return new BankConnection(id.Value, bankId, userId, consent);
+    }
+
+    public void AddBankAccount(string externalId, string name, int amount, Currency currency)
+    {
+        _accounts.Add(BankAccount.CreateNew(Id, externalId, name, amount, currency));
     }
 
     public bool HasMultipleBankAccounts() => _accounts.Count > 1;
 
-    private BankConnection(Guid id, BankId bankId, UserId userId, Consent consent, List<BankAccount> accounts)
+    private BankConnection(Guid id, BankId bankId, UserId userId, Consent consent)
     {
         Id = new BankConnectionId(id);
         _bankId = bankId;
         _userId = userId;
         _consent = consent;
-        _accounts = accounts;
         _createdAt = DateTime.UtcNow;
     }
 

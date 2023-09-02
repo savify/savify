@@ -25,11 +25,11 @@ public class BankConnectionEntityTypeConfiguration : IEntityTypeConfiguration<Ba
         {
             b.WithOwner().HasForeignKey("BankConnectionId");
             b.ToTable("bank_accounts", "wallets");
-            
+
             b.Property<BankAccountId>("Id").HasColumnName("id");
             b.Property<BankConnectionId>("BankConnectionId").HasColumnName("bank_connection_id");
             b.HasKey("Id", "BankConnectionId");
-            
+
             b.Property<string>("_externalId").HasColumnName("external_id");
             b.Property<string>("_name").HasColumnName("name");
             b.Property<int>("_amount").HasColumnName("amount");

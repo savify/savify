@@ -22,14 +22,14 @@ public static class ApiCollectionExtensions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = authenticationConfiguration.Issuer,
+                    ValidIssuer = authenticationConfiguration!.Issuer,
                     ValidAudience = authenticationConfiguration.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationConfiguration.IssuerSigningKey))
                 };
             });
 
         services.AddSingleton<IAuthenticationConfigurationProvider>(
-            _ => new AuthenticationConfigurationProvider(authenticationConfiguration));
+            _ => new AuthenticationConfigurationProvider(authenticationConfiguration!));
 
         return services;
     }

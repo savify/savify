@@ -7,4 +7,6 @@ public class User : Entity, IAggregateRoot
     public UserId UserId { get; private set; }
 
     private string _email;
+
+    private User() { }
 }

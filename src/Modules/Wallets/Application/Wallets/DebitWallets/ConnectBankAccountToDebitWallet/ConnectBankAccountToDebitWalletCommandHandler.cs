@@ -8,7 +8,7 @@ using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 
-public class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<ConnectBankAccountToDebitWalletCommand, string>
+internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<ConnectBankAccountToDebitWalletCommand, string>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 

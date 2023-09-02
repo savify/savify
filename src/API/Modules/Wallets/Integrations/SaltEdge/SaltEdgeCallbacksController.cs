@@ -36,7 +36,7 @@ public class SaltEdgeCallbacksController : ControllerBase
                 request.Data.CustomFields.BankConnectionProcessId,
                 request.Data.ConnectionId));
         }
-        
+
         return Accepted();
     }
 }

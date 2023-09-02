@@ -3,6 +3,6 @@ namespace App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.ResponseConte
 public class Consent
 {
     public string Id { get; set; }
-    
+
     public DateTime? ExpiresAt { get; set; }
 }

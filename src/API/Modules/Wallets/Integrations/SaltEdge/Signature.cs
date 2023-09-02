@@ -3,11 +3,11 @@ namespace App.API.Modules.Wallets.Integrations.SaltEdge;
 public class Signature
 {
     public string Value { get; }
-    
+
     public string KeyVersion { get; }
 
     private const string SignatureHeaderKey = "signature";
-    
+
     private const string SignatureKeyVersionHeaderKey = "signature-key-version";
 
     public static Signature CreateFromHttpContext(HttpContext? context)
@@ -21,7 +21,7 @@ public class Signature
 
             return new Signature(value, keyVersion);
         }
-        
+
         throw new ApplicationException("Http context and signature is not available");
     }
 

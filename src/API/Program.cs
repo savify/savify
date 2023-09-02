@@ -120,7 +120,7 @@ public class Program
 
     private static void ConfigureLogger()
     {
-        string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
 
         _logger = new LoggerConfiguration()
             .Enrich.FromLogContext()

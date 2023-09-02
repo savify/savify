@@ -3,13 +3,13 @@ namespace App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections;
 public class SaltEdgeConnection
 {
     public string Id { get; }
-    
+
     public Guid InternalConnectionId { get; set; }
 
     public string ProviderCode { get; }
-    
+
     public string CountryCode { get; }
-    
+
     public string LastConsentId { get; }
 
     public string CustomerId { get; }

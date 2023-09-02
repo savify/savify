@@ -39,11 +39,11 @@ public class WalletsContext : DbContext
     public DbSet<InternalCommand>? InternalCommands { get; set; }
 
     public DbSet<BankConnectionProcess>? BankConnectionProcesses { get; set; }
-    
+
     public DbSet<BankConnection>? BankConnections { get; set; }
 
     public DbSet<SaltEdgeCustomer>? SaltEdgeCustomers { get; set; }
-    
+
     public DbSet<SaltEdgeConnection>? SaltEdgeConnections { get; set; }
 
     public WalletsContext(DbContextOptions<WalletsContext> options) : base(options)

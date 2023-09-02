@@ -70,7 +70,7 @@ public class SaltEdgeIntegrationService
 
         return connection;
     }
-    
+
     public async Task<Consent> FetchConsent(string consentId, string connectionId)
     {
         var request = Request.Get($"/consents/{consentId}").WithQueryParameter("connection_id", connectionId);
@@ -91,7 +91,7 @@ public class SaltEdgeIntegrationService
 
         return consent;
     }
-    
+
     public async Task<List<SaltEdgeAccount>> FetchAccounts(string connectionId)
     {
         var request = Request.Get("/accounts").WithQueryParameter("connection_id", connectionId);
@@ -104,7 +104,7 @@ public class SaltEdgeIntegrationService
         }
 
         var accounts = response.Content?.As<List<SaltEdgeAccount>>();
-        
+
         if (accounts is null)
         {
             throw new SaltEdgeIntegrationException($"Accounts for connection ID '{connectionId}' were not found");

@@ -6,7 +6,7 @@ using App.Modules.Wallets.Domain.BankConnections;
 
 namespace App.Modules.Wallets.Application.BankConnectionProcessing.CreateBankConnection;
 
-public class CreateBankConnectionCommandHandler : ICommandHandler<CreateBankConnectionCommand, Result>
+internal class CreateBankConnectionCommandHandler : ICommandHandler<CreateBankConnectionCommand, Result>
 {
     private readonly IBankConnectionProcessRepository _bankConnectionProcessRepository;
 
@@ -30,7 +30,7 @@ public class CreateBankConnectionCommandHandler : ICommandHandler<CreateBankConn
 
         var connection = await bankConnectionProcess.CreateConnection(command.ExternalBankConnectionId, _connectionCreationService);
         await _bankConnectionRepository.AddAsync(connection);
-        
+
         return Result.Success;
     }
 }

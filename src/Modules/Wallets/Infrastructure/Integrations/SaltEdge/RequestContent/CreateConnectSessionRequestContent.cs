@@ -44,7 +44,7 @@ public class Attempt
     public string Locale { get; }
 
     public bool FetchedAccountsNotify { get; }
-    
+
     public CustomFields CustomFields { get; }
 
     public Attempt(Guid bankConnectionProcessId, string returnTo, string locale = "en", bool fetchedAccountsNotify = true)
