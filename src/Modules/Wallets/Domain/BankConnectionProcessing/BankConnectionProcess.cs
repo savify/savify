@@ -38,9 +38,10 @@ public class BankConnectionProcess : Entity, IAggregateRoot
     public async Task<string> Redirect(IBankConnectionProcessRedirectionService redirectionService)
     {
         // TODO: check status transition rule
+        // TODO: check expiration rule
         CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
-        var redirection = await redirectionService.Redirect(UserId, BankId);
+        var redirection = await redirectionService.Redirect(Id, UserId, BankId);
 
         _redirectUrl = redirection.Url;
         _expiresAt = redirection.ExpiresAt;
@@ -50,6 +51,28 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         AddDomainEvent(new UserRedirectedDomainEvent(Id, (DateTime)_expiresAt));
 
         return _redirectUrl;
+    }
+
+    public async Task<BankConnection> CreateConnection(string externalConnectionId, IBankConnectionProcessConnectionCreationService connectionCreationService)
+    {
+        // TODO: check status transition rule
+        // TODO: check expiration rule
+        CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
+
+        var connection = await connectionCreationService.CreateConnection(Id, UserId, BankId, externalConnectionId);
+
+        if (connection.HasMultipleBankAccounts())
+        {
+            _status = BankConnectionProcessStatus.WaitingForAccountChoosing;
+        }
+        else
+        {
+            // TODO: connect bank account to given wallet
+        }
+
+        _updatedAt = DateTime.UtcNow;
+
+        return connection;
     }
 
     private BankConnectionProcess(UserId userId, BankId bankId, WalletId walletId)

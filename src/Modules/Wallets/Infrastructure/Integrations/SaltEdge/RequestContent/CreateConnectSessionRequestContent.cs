@@ -44,11 +44,24 @@ public class Attempt
     public string Locale { get; }
 
     public bool FetchedAccountsNotify { get; }
+    
+    public CustomFields CustomFields { get; }
 
-    public Attempt(string returnTo, string locale = "en", bool fetchedAccountsNotify = true)
+    public Attempt(Guid bankConnectionProcessId, string returnTo, string locale = "en", bool fetchedAccountsNotify = true)
     {
         ReturnTo = returnTo;
         Locale = locale;
         FetchedAccountsNotify = fetchedAccountsNotify;
+        CustomFields = new CustomFields(bankConnectionProcessId);
+    }
+}
+
+public class CustomFields
+{
+    public Guid BankConnectionProcessId { get; }
+
+    public CustomFields(Guid bankConnectionProcessId)
+    {
+        BankConnectionProcessId = bankConnectionProcessId;
     }
 }

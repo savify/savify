@@ -6,5 +6,5 @@ public interface IBankConnectionRepository
 
     Task<BankConnection> GetByIdAsync(BankConnectionId id);
 
-    Task RemoveByIdAsync(BankConnectionId id);
+    void Remove(BankConnection bankConnection);
 }

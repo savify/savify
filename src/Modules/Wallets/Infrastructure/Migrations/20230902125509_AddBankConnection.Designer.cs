@@ -3,6 +3,7 @@ using System;
 using App.Modules.Wallets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.Wallets.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletsContext))]
-    partial class AccountsContextModelSnapshot : ModelSnapshot
+    [Migration("20230902125509_AddBankConnection")]
+    partial class AddBankConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,9 +161,13 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("_bankId")
+                    b.Property<Guid?>("BankId")
                         .HasColumnType("uuid")
                         .HasColumnName("bank_id");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
                     b.Property<DateTime>("_createdAt")
                         .HasColumnType("timestamp with time zone")
@@ -169,10 +176,6 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                     b.Property<DateTime?>("_refreshedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("refreshed_at");
-
-                    b.Property<Guid>("_userId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 

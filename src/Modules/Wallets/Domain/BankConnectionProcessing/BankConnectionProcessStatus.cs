@@ -10,8 +10,6 @@ public record BankConnectionProcessStatus(string Value)
 
     public static BankConnectionProcessStatus ErrorAtProvider => new(nameof(ErrorAtProvider));
 
-    public static BankConnectionProcessStatus ConsentConfirmed => new(nameof(ConsentConfirmed));
-
     public static BankConnectionProcessStatus ConsentRefused => new(nameof(ConsentRefused));
 
     public static BankConnectionProcessStatus WaitingForAccountChoosing => new(nameof(WaitingForAccountChoosing));
