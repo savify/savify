@@ -19,7 +19,7 @@ internal class InvestmentPortfolioRepository : IInvestmentPortfolioRepository
         await _walletsContext.AddAsync(portfolio);
     }
 
-    public async Task<InvestmentPortfolio> GetAsync(PortfolioId id)
+    public async Task<InvestmentPortfolio> GetByIdAsync(PortfolioId id)
     {
         var investmentPortfolio = await _walletsContext.InvestmentPortfolios.SingleOrDefaultAsync(x => x.Id == id);
 

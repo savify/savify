@@ -3,5 +3,5 @@
 public interface IInvestmentPortfolioRepository
 {
     Task AddAsync(InvestmentPortfolio portfolio);
-    Task<InvestmentPortfolio> GetAsync(PortfolioId id);
+    Task<InvestmentPortfolio> GetByIdAsync(PortfolioId id);
 }

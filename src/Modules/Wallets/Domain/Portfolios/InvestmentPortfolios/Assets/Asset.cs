@@ -1,8 +1,9 @@
-﻿using App.Modules.Wallets.Domain.Finance;
+﻿using App.BuildingBlocks.Domain;
+using App.Modules.Wallets.Domain.Finance;
 
 namespace App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets;
 
-public class Asset
+public class Asset : Entity
 {
     public AssetId Id { get; private set; }
 
@@ -20,7 +21,7 @@ public class Asset
 
     private DateTime? _purchasedAt;
 
-    public static Asset AddNew(string title, decimal amount, string tickerSymbol, string exchange, string country, Money purchasePrice, DateTime? purchasedAt)
+    internal static Asset AddNew(string title, decimal amount, string tickerSymbol, string exchange, string country, Money purchasePrice, DateTime? purchasedAt)
     {
         return new Asset(title, amount, tickerSymbol, exchange, country, purchasePrice, purchasedAt);
     }

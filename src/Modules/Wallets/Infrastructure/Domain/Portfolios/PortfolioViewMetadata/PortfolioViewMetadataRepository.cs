@@ -19,7 +19,7 @@ internal class PortfolioViewMetadataRepository : IPortfolioViewMetadataRepositor
         await _walletsContext.AddAsync(viewMetadata);
     }
 
-    public async Task<Modules.Wallets.Domain.Portfolios.PortfolioViewMetadata.PortfolioViewMetadata> GetAsync(PortfolioId portfolioId)
+    public async Task<Modules.Wallets.Domain.Portfolios.PortfolioViewMetadata.PortfolioViewMetadata> GetByIdAsync(PortfolioId portfolioId)
     {
         var viewMetadata = await _walletsContext.PortfoliosViewMetadata.SingleOrDefaultAsync(x => x.PortfolioId == portfolioId);
 
