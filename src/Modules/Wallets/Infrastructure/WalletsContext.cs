@@ -1,10 +1,14 @@
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios;
+using App.Modules.Wallets.Domain.Portfolios.PortfolioViewMetadata;
 using App.Modules.Wallets.Domain.Wallets.CashWallets;
 using App.Modules.Wallets.Domain.Wallets.CreditWallets;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
+using App.Modules.Wallets.Infrastructure.Domain.Portfolios.InvestmentPortfolios;
+using App.Modules.Wallets.Infrastructure.Domain.Portfolios.PortfolioViewMetadata;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.CashWallets;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.CreditWallets;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.DebitWallets;
@@ -26,6 +30,10 @@ public class WalletsContext : DbContext
 
     public DbSet<WalletViewMetadata>? WalletsViewMetadata { get; set; }
 
+    public DbSet<InvestmentPortfolio>? InvestmentPortfolios { get; set; }
+
+    public DbSet<PortfolioViewMetadata> PortfoliosViewMetadata { get; set; }
+
     public DbSet<OutboxMessage>? OutboxMessages { get; set; }
 
     public DbSet<InboxMessage>? InboxMessages { get; set; }
@@ -42,6 +50,8 @@ public class WalletsContext : DbContext
         modelBuilder.ApplyConfiguration(new CreditWalletsEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new DebitWalletEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new WalletViewMetadataEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InvestmentPortfolioEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new PortfolioViewMetadataEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());

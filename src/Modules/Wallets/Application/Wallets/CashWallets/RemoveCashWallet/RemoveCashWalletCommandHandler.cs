@@ -6,7 +6,7 @@ using App.Modules.Wallets.Domain.Wallets.CashWallets;
 
 namespace App.Modules.Wallets.Application.Wallets.CashWallets.RemoveCashWallet;
 
-public class RemoveCashWalletCommandHandler : ICommandHandler<RemoveCashWalletCommand, Result>
+internal class RemoveCashWalletCommandHandler : ICommandHandler<RemoveCashWalletCommand, Result>
 {
     private readonly ICashWalletRepository _cashWalletRepository;
 

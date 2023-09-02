@@ -1,6 +1,6 @@
 using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Domain.Finance;
 using App.Modules.Wallets.Domain.Users;
-using App.Modules.Wallets.Domain.Wallets;
 using App.Modules.Wallets.Domain.Wallets.CreditWallets;
 using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 
