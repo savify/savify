@@ -3,8 +3,10 @@ using App.Modules.Wallets.Domain.BankConnectionProcessing.Events;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Rules;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
+using App.Modules.Wallets.Domain.BankConnections.BankAccounts;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets;
+using App.Modules.Wallets.Domain.Wallets.BankAccountConnection;
 
 namespace App.Modules.Wallets.Domain.BankConnectionProcessing;
 
@@ -12,11 +14,13 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 {
     public BankConnectionProcessId Id { get; private set; }
 
-    internal UserId UserId { get; set; }
+    public UserId UserId { get; set; }
 
     internal BankId BankId { get; set; }
 
     internal WalletId WalletId { get; set; }
+
+    private WalletType _walletType;
 
     private BankConnectionProcessStatus _status;
 
@@ -24,15 +28,16 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
     private DateTime _initiatedAt;
 
+    // TODO: rename to _redirectUrlExpiresAt
     private DateTime? _expiresAt = null;
 
     private DateTime? _updatedAt = null;
 
-    public static async Task<BankConnectionProcess> Initiate(UserId userId, BankId bankId, WalletId walletId, IBankConnectionProcessInitiationService initiationService)
+    public static async Task<BankConnectionProcess> Initiate(UserId userId, BankId bankId, WalletId walletId, WalletType walletType, IBankConnectionProcessInitiationService initiationService)
     {
         await initiationService.InitiateForAsync(userId);
 
-        return new BankConnectionProcess(userId, bankId, walletId);
+        return new BankConnectionProcess(userId, bankId, walletId, walletType);
     }
 
     public async Task<string> Redirect(IBankConnectionProcessRedirectionService redirectionService)
@@ -53,10 +58,12 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         return _redirectUrl;
     }
 
-    public async Task<BankConnection> CreateConnection(string externalConnectionId, IBankConnectionProcessConnectionCreationService connectionCreationService)
+    public async Task<BankConnection> CreateConnection(
+        string externalConnectionId,
+        IBankConnectionProcessConnectionCreationService connectionCreationService,
+        BankAccountConnector bankAccountConnector)
     {
         // TODO: check status transition rule
-        // TODO: check expiration rule
         CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
         var connection = await connectionCreationService.CreateConnection(Id, UserId, BankId, externalConnectionId);
@@ -67,7 +74,10 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         }
         else
         {
-            // TODO: connect bank account to given wallet
+            var bankAccountId = connection.GetSingleBankAccount().Id;
+            await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
+
+            _status = BankConnectionProcessStatus.Completed;
         }
 
         _updatedAt = DateTime.UtcNow;
@@ -75,12 +85,24 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         return connection;
     }
 
-    private BankConnectionProcess(UserId userId, BankId bankId, WalletId walletId)
+    public async Task ChooseBankAccount(BankAccountId bankAccountId, BankAccountConnector bankAccountConnector)
+    {
+        // TODO: check status transition rule
+        CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
+
+        await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
+
+        _status = BankConnectionProcessStatus.Completed;
+        _updatedAt = DateTime.UtcNow;
+    }
+
+    private BankConnectionProcess(UserId userId, BankId bankId, WalletId walletId, WalletType walletType)
     {
         Id = new BankConnectionProcessId(Guid.NewGuid());
         UserId = userId;
         BankId = bankId;
         WalletId = walletId;
+        _walletType = walletType;
         _status = BankConnectionProcessStatus.Initiated;
         _initiatedAt = DateTime.UtcNow;
 

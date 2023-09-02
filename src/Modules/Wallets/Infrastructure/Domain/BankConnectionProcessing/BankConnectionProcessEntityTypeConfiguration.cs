@@ -24,6 +24,11 @@ public class BankConnectionProcessEntityTypeConfiguration : IEntityTypeConfigura
         builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
         builder.Property<DateTime?>("_expiresAt").HasColumnName("expires_at");
 
+        builder.OwnsOne<WalletType>("_walletType", b =>
+        {
+            b.Property(x => x.Value).HasColumnName("wallet_type");
+        });
+
         builder.OwnsOne<BankConnectionProcessStatus>("_status", b =>
         {
             b.Property(x => x.Value).HasColumnName("status");

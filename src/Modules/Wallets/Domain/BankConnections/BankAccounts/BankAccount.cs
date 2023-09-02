@@ -8,13 +8,13 @@ public class BankAccount : Entity
 
     internal BankConnectionId BankConnectionId { get; private set; }
 
+    internal int Amount { get; }
+
+    internal Currency Currency { get; }
+
     private string _externalId;
 
     private string _name;
-
-    private int _amount;
-
-    private Currency _currency;
 
     internal static BankAccount CreateNew(BankConnectionId bankConnectionId, string externalId, string name, int amount, Currency currency)
     {
@@ -27,8 +27,8 @@ public class BankAccount : Entity
         BankConnectionId = bankConnectionId;
         _externalId = externalId;
         _name = name;
-        _amount = amount;
-        _currency = currency;
+        Amount = amount;
+        Currency = currency;
     }
 
     private BankAccount() { }

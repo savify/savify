@@ -3,6 +3,7 @@ using System;
 using App.Modules.Wallets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.Wallets.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletsContext))]
-    partial class AccountsContextModelSnapshot : ModelSnapshot
+    [Migration("20230902171440_AdjustBankConnectionAndBankAccountFields")]
+    partial class AdjustBankConnectionAndBankAccountFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -554,27 +557,6 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.DebitWallets.DebitWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.BankAccountConnection.BankAccountConnection", "_bankAccountConnection", b1 =>
-                        {
-                            b1.Property<Guid>("DebitWalletId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("BankAccountId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("bank_account_id");
-
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("bank_connection_id");
-
-                            b1.HasKey("DebitWalletId");
-
-                            b1.ToTable("debit_wallets", "wallets");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DebitWalletId");
-                        });
-
                     b.OwnsOne("App.Modules.Wallets.Domain.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("DebitWalletId")
@@ -592,8 +574,6 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("DebitWalletId");
                         });
-
-                    b.Navigation("_bankAccountConnection");
 
                     b.Navigation("_currency");
                 });

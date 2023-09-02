@@ -32,9 +32,9 @@ public class BankConnectionEntityTypeConfiguration : IEntityTypeConfiguration<Ba
 
             b.Property<string>("_externalId").HasColumnName("external_id");
             b.Property<string>("_name").HasColumnName("name");
-            b.Property<int>("_amount").HasColumnName("amount");
+            b.Property<int>("Amount").HasColumnName("amount");
 
-            b.OwnsOne<Currency>("_currency", c =>
+            b.OwnsOne<Currency>("Currency", c =>
             {
                 c.Property(x => x.Value).HasColumnName("currency");
             });
