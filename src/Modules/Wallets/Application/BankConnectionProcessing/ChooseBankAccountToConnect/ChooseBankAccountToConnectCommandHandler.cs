@@ -7,7 +7,7 @@ using App.Modules.Wallets.Domain.Wallets.BankAccountConnection;
 
 namespace App.Modules.Wallets.Application.BankConnectionProcessing.ChooseBankAccountToConnect;
 
-public class ChooseBankAccountToConnectCommandHandler : ICommandHandler<ChooseBankAccountToConnectCommand, Result>
+internal class ChooseBankAccountToConnectCommandHandler : ICommandHandler<ChooseBankAccountToConnectCommand, Result>
 {
     private readonly IBankConnectionProcessRepository _bankConnectionProcessRepository;
 
