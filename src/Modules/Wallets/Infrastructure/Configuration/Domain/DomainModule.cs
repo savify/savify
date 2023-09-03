@@ -12,6 +12,6 @@ internal static class DomainModule
         services.AddScoped<IBankConnectionProcessInitiationService, BankConnectionProcessInitiationService>();
         services.AddScoped<IBankConnectionProcessRedirectionService, BankConnectionProcessRedirectionService>();
         services.AddScoped<IBankConnectionProcessConnectionCreationService, BankConnectionProcessConnectionCreationService>();
-        services.AddScoped<BankAccountConnector>();
+        services.AddScoped<IBankAccountConnector, BankAccountConnector>();
     }
 }

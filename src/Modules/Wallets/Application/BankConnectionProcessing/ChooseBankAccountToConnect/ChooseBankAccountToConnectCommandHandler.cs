@@ -11,9 +11,9 @@ internal class ChooseBankAccountToConnectCommandHandler : ICommandHandler<Choose
 {
     private readonly IBankConnectionProcessRepository _bankConnectionProcessRepository;
 
-    private readonly BankAccountConnector _bankAccountConnector;
+    private readonly IBankAccountConnector _bankAccountConnector;
 
-    public ChooseBankAccountToConnectCommandHandler(IBankConnectionProcessRepository bankConnectionProcessRepository, BankAccountConnector bankAccountConnector)
+    public ChooseBankAccountToConnectCommandHandler(IBankConnectionProcessRepository bankConnectionProcessRepository, IBankAccountConnector bankAccountConnector)
     {
         _bankConnectionProcessRepository = bankConnectionProcessRepository;
         _bankAccountConnector = bankAccountConnector;

@@ -15,13 +15,13 @@ internal class CreateBankConnectionCommandHandler : ICommandHandler<CreateBankCo
 
     private readonly IBankConnectionProcessConnectionCreationService _connectionCreationService;
 
-    private readonly BankAccountConnector _bankAccountConnector;
+    private readonly IBankAccountConnector _bankAccountConnector;
 
     public CreateBankConnectionCommandHandler(
         IBankConnectionProcessRepository bankConnectionProcessRepository,
         IBankConnectionRepository bankConnectionRepository,
         IBankConnectionProcessConnectionCreationService connectionCreationService,
-        BankAccountConnector bankAccountConnector)
+        IBankAccountConnector bankAccountConnector)
     {
         _bankConnectionProcessRepository = bankConnectionProcessRepository;
         _bankConnectionRepository = bankConnectionRepository;

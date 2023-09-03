@@ -5,7 +5,7 @@ using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.Wallets.Domain.Wallets.BankAccountConnections;
 
-public class BankAccountConnector
+public class BankAccountConnector : IBankAccountConnector
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 

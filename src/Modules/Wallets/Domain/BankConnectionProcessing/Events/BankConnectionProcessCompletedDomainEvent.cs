@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.BankConnections.BankAccounts;
 
-namespace App.Modules.Wallets.Domain.BankConnectionProcessing.Rules;
+namespace App.Modules.Wallets.Domain.BankConnectionProcessing.Events;
 
 public class BankConnectionProcessCompletedDomainEvent : DomainEventBase
 {

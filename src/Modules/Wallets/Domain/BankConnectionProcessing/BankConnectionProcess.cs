@@ -60,7 +60,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
     public async Task<BankConnection> CreateConnection(
         string externalConnectionId,
         IBankConnectionProcessConnectionCreationService connectionCreationService,
-        BankAccountConnector bankAccountConnector)
+        IBankAccountConnector bankAccountConnector)
     {
         CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
@@ -88,7 +88,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         return connection;
     }
 
-    public async Task ChooseBankAccount(BankAccountId bankAccountId, BankAccountConnector bankAccountConnector)
+    public async Task ChooseBankAccount(BankAccountId bankAccountId, IBankAccountConnector bankAccountConnector)
     {
         CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
             new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
@@ -97,16 +97,19 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
         _status = BankConnectionProcessStatus.Completed;
         _updatedAt = DateTime.UtcNow;
+
+        AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
     }
 
     public void Expire()
     {
-        CheckRules(new BankConnectionProcessMustHaveRedirectedStatusRule(_status),
-            new RedirectUrlShouldBeExpiredRule(_redirectUrlExpiresAt),
+        CheckRules(new RedirectUrlShouldBeExpiredRule(_redirectUrlExpiresAt),
             new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.RedirectUrlExpired));
 
         _status = BankConnectionProcessStatus.RedirectUrlExpired;
         _updatedAt = DateTime.UtcNow;
+
+        AddDomainEvent(new BankConnectionProcessExpiredDomainEvent(Id));
     }
 
     private BankConnectionProcess(UserId userId, BankId bankId, WalletId walletId, WalletType walletType)
