@@ -40,5 +40,11 @@ public class BankConnectionProcessRedirectionServiceTests : UnitTestBase
 
         Assert.That(redirection.Url, Is.EqualTo(responseContent.ConnectUrl));
         Assert.That(redirection.ExpiresAt, Is.EqualTo(responseContent.ExpiresAt));
+
+        await customerRepository.Received(1).GetSaltEdgeCustomerForAsync(userId.Value);
+        await integrationService.Received(1).CreateConnectSessionAsync(bankConnectionProcessId.Value,
+            "123456",
+            "fakebank_interactive_xf",
+            "https://display-parameters.com/");
     }
 }
