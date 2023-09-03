@@ -22,7 +22,7 @@ public class BankConnectionProcessEntityTypeConfiguration : IEntityTypeConfigura
         builder.Property<string>("_redirectUrl").HasColumnName("redirect_url");
         builder.Property<DateTime>("_initiatedAt").HasColumnName("initiated_at");
         builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
-        builder.Property<DateTime?>("_expiresAt").HasColumnName("expires_at");
+        builder.Property<DateTime?>("_redirectUrlExpiresAt").HasColumnName("redirect_url_expires_at");
 
         builder.OwnsOne<WalletType>("_walletType", b =>
         {

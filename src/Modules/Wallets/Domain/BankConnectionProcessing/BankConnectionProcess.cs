@@ -28,8 +28,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
     private DateTime _initiatedAt;
 
-    // TODO: rename to _redirectUrlExpiresAt
-    private DateTime? _expiresAt = null;
+    private DateTime? _redirectUrlExpiresAt = null;
 
     private DateTime? _updatedAt = null;
 
@@ -49,11 +48,11 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         var redirection = await redirectionService.Redirect(Id, UserId, BankId);
 
         _redirectUrl = redirection.Url;
-        _expiresAt = redirection.ExpiresAt;
+        _redirectUrlExpiresAt = redirection.ExpiresAt;
         _status = BankConnectionProcessStatus.Redirected;
         _updatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new UserRedirectedDomainEvent(Id, (DateTime)_expiresAt));
+        AddDomainEvent(new UserRedirectedDomainEvent(Id, (DateTime)_redirectUrlExpiresAt));
 
         return _redirectUrl;
     }
