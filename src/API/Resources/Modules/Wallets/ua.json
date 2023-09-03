@@ -11,5 +11,14 @@
   "Available balance should be less than or equal to credit limit": "Доступний баланс не повинен перевищувати кредитний ліміт",
   "Wallet title length should contain minimum 3 characters": "Мінімальна довжина назви гаманця має бути 3 символи",
   "Wallet with id '{0}' was already removed and cannot be edited": "Гаманець з id '{0}' було видалено і не може бути змінено",
-  "Wallet with id '{0}' was already removed": "Гаманець з id '{0}' вже було видалено"
+  "Wallet with id '{0}' was already removed": "Гаманець з id '{0}' вже було видалено",
+  "This wallet has a bank account already connected": "До цього гаманця вже підключено банківський рахунок",
+  "Wallet has a bank account already connected": "До гаманця вже підключено банківський рахунок",
+  "Wallet finance details cannot be changed when a bank account is connected to the wallet": "Деталі фінансів гаманця не можна змінювати, коли до нього підключено банківський рахунок",
+  "Bank connection has no bank accounts or more than one bank account": "Підключення до банку не має банківських рахунків або їх більше одного",
+  "Bank connection does not have an account with ID '{0}'": "Підключення до банку не має рахунку з ID '{0}'",
+  "Redirect URL was expired": "У URL-адреси перенаправлення закінчився термін дії",
+  "Status transition from '{0}' to '{1}' is not valid": "Перехід статусу з '{0}' на '{1}' є неправильним",
+  "Bank connection process was already finished": "Процес підключення до банку вже завершено",
+  "Redirect URL has not expired yet": "У URL-адреси перенаправлення ще не закінчилася термін дії"
 }

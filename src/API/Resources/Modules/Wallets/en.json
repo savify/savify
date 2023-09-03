@@ -11,5 +11,14 @@
   "Available balance should be less than or equal to credit limit": "Available balance should be less than or equal to credit limit",
   "Wallet title length should contain minimum 3 characters": "Wallet title length should contain minimum 3 characters",
   "Wallet with id '{0}' was already removed and cannot be edited": "Wallet with id '{0}' was already removed and cannot be edited",
-  "Wallet with id '{0}' was already removed": "Wallet with id '{0}' was already removed"
+  "Wallet with id '{0}' was already removed": "Wallet with id '{0}' was already removed",
+  "This wallet has bank account already connected": "This wallet has bank account already connected",
+  "Wallet has bank account already connected": "Wallet has bank account already connected",
+  "Wallet finance details cannot be changed when bank account is connected to wallet": "Wallet finance details cannot be changed when bank account is connected to wallet",
+  "Bank connection has no bank accounts or more than one bank account": "Bank connection has no bank accounts or more than one bank account",
+  "Bank connection does not have account with ID '{0}'": "Bank connection does not have account with ID '{0}'",
+  "Redirect URL was expired": "Redirect URL was expired",
+  "Status transition from '{0}' to '{1}' is not valid": "Status transition from '{0}' to '{1}' is not valid",
+  "Bank connection process was already finished": "Bank connection process was already finished",
+  "Redirect URL has not expired yet": "Redirect URL has not expired yet"
 }
