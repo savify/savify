@@ -24,4 +24,15 @@ public abstract class UnitTestBase
             Assert.That(businessRuleValidationException.BrokenRule, Is.TypeOf<TRule>(), message);
         }
     }
+    
+    public void AssertBrokenRuleAsync<TRule>(AsyncTestDelegate testDelegate) where TRule : class, IBusinessRule
+    {
+        var message = $"Expected {typeof(TRule).Name} broken rule";
+        var businessRuleValidationException = Assert.CatchAsync<BusinessRuleValidationException>(testDelegate, message);
+
+        if (businessRuleValidationException != null)
+        {
+            Assert.That(businessRuleValidationException.BrokenRule, Is.TypeOf<TRule>(), message);
+        }
+    }
 }

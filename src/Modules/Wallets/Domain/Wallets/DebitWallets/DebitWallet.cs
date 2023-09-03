@@ -4,6 +4,7 @@ using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
 using App.Modules.Wallets.Domain.BankConnections.BankAccounts;
 using App.Modules.Wallets.Domain.Users;
+using App.Modules.Wallets.Domain.Wallets.BankAccountConnections;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets.Events;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets.Rules;
 
@@ -21,7 +22,7 @@ public class DebitWallet : Entity, IAggregateRoot
 
     private int _balance;
 
-    private BankAccountConnection.BankAccountConnection? _bankAccountConnection = null;
+    private BankAccountConnection? _bankAccountConnection = null;
 
     private DateTime _createdAt;
 
@@ -38,8 +39,8 @@ public class DebitWallet : Entity, IAggregateRoot
 
     public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
     {
-        // TODO: restrict updating currency and balance for wallets that were connected to bank accounts
-        CheckRules(new DebitWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new DebitWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved), 
+            new WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule(newBalance, newCurrency, HasConnectedBankAccount));
 
         _title = newTitle ?? _title;
         _currency = newCurrency ?? _currency;
@@ -51,7 +52,6 @@ public class DebitWallet : Entity, IAggregateRoot
 
     public void Remove()
     {
-        // TODO: check if there is a need to set some rules on wallet removal
         CheckRules(new DebitWalletCannotBeRemovedMoreThanOnceRule(Id, _isRemoved));
 
         _isRemoved = true;
@@ -62,15 +62,21 @@ public class DebitWallet : Entity, IAggregateRoot
 
     public async Task<BankConnectionProcess> InitiateBankConnectionProcess(BankId bankId, IBankConnectionProcessInitiationService initiationService)
     {
+        CheckRules(new BankConnectionProcessCannotBeInitiatedIfBankAccountIsAlreadyConnectedRule(HasConnectedBankAccount));
+        
         return await BankConnectionProcess.Initiate(UserId, bankId, Id, WalletType.Debit, initiationService);
     }
 
     public void ConnectBankAccount(BankConnectionId bankConnectionId, BankAccountId bankAccountId, int balance, Currency currency)
     {
-        _bankAccountConnection = new BankAccountConnection.BankAccountConnection(bankConnectionId, bankAccountId);
+        CheckRules(new BankAccountCannotBeConnectedToWalletIfItAlreadyHasBankAccountConnectedRule(HasConnectedBankAccount));
+        
+        _bankAccountConnection = new BankAccountConnection(bankConnectionId, bankAccountId);
         _balance = balance;
         _currency = currency;
         _updatedAt = DateTime.UtcNow;
+        
+        AddDomainEvent(new BankAccountWasConnectedToDebitWalletDomainEvent(Id, UserId, bankConnectionId, bankAccountId));
     }
 
     public bool HasConnectedBankAccount => _bankAccountConnection is not null;

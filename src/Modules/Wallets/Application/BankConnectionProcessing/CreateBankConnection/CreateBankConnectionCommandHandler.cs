@@ -3,7 +3,7 @@ using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
-using App.Modules.Wallets.Domain.Wallets.BankAccountConnection;
+using App.Modules.Wallets.Domain.Wallets.BankAccountConnections;
 
 namespace App.Modules.Wallets.Application.BankConnectionProcessing.CreateBankConnection;
 

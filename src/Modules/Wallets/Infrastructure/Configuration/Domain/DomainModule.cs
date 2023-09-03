@@ -1,5 +1,5 @@
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
-using App.Modules.Wallets.Domain.Wallets.BankAccountConnection;
+using App.Modules.Wallets.Domain.Wallets.BankAccountConnections;
 using App.Modules.Wallets.Infrastructure.Domain.BankConnectionProcessing.Services;
 using Microsoft.Extensions.DependencyInjection;
 

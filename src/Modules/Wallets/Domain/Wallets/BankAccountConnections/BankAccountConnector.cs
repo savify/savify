@@ -3,7 +3,7 @@ using App.Modules.Wallets.Domain.BankConnections.BankAccounts;
 using App.Modules.Wallets.Domain.Wallets.CreditWallets;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
-namespace App.Modules.Wallets.Domain.Wallets.BankAccountConnection;
+namespace App.Modules.Wallets.Domain.Wallets.BankAccountConnections;
 
 public class BankAccountConnector
 {

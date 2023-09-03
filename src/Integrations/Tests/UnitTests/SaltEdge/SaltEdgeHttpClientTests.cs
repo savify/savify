@@ -32,7 +32,10 @@ public class SaltEdgeHttpClientTests
     {
         var expectedResponseContent = new ContentDto("bar", 123);
 
-        var httpMessageHandler = new MockHttpMessageHandler(HttpStatusCode.OK, JsonSerializer.Serialize(expectedResponseContent));
+        var httpMessageHandler = new MockHttpMessageHandler(HttpStatusCode.OK, JsonSerializer.Serialize(new Dictionary<string, object>
+        {
+            {"data", expectedResponseContent}
+        }));
         var httpClient = new HttpClient(httpMessageHandler);
 
         var httpClientFactory = Substitute.For<IHttpClientFactory>();
@@ -55,9 +58,16 @@ public class SaltEdgeHttpClientTests
     [Test]
     public async Task SendsRequest_And_ReceivesErrorResponse()
     {
-        var expectedResponseError = new ResponseError("Error", "Some external error", "https://some-url.com", Guid.NewGuid());
+        var requestId = Guid.NewGuid();
+        var expectedResponse = new Dictionary<string, object> { { "error", new Dictionary<string, object>
+        {
+            {"class", "Error"},
+            {"message", "Some external error"},
+            {"documentation_url", "https://some-url.com"},
+            {"request_id", requestId}
+        } } };
 
-        var httpMessageHandler = new MockHttpMessageHandler(HttpStatusCode.BadRequest, JsonSerializer.Serialize(expectedResponseError));
+        var httpMessageHandler = new MockHttpMessageHandler(HttpStatusCode.BadRequest, JsonSerializer.Serialize(expectedResponse));
         var httpClient = new HttpClient(httpMessageHandler);
 
         var httpClientFactory = Substitute.For<IHttpClientFactory>();
@@ -73,10 +83,10 @@ public class SaltEdgeHttpClientTests
 
         var error = response.Error;
         Assert.That(error, Is.Not.Null);
-        Assert.That(error.Class, Is.EqualTo(expectedResponseError.Class));
-        Assert.That(error.Message, Is.EqualTo(expectedResponseError.Message));
-        Assert.That(error.DocumentationUrl, Is.EqualTo(expectedResponseError.DocumentationUrl));
-        Assert.That(error.RequestId, Is.EqualTo(expectedResponseError.RequestId));
+        Assert.That(error.Class, Is.EqualTo("Error"));
+        Assert.That(error.Message, Is.EqualTo("Some external error"));
+        Assert.That(error.DocumentationUrl, Is.EqualTo("https://some-url.com"));
+        Assert.That(error.RequestId, Is.EqualTo(requestId));
     }
 
     class ContentDto

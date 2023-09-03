@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using App.Integrations.SaltEdge.Responses;
 
 namespace App.Integrations.UnitTests.SaltEdge;
@@ -13,7 +14,10 @@ public class ResponseTests
         var expectedResponseContent = new ContentDto("bar", 123);
 
         var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-        httpResponseMessage.Content = new StringContent(JsonSerializer.Serialize(expectedResponseContent));
+        httpResponseMessage.Content = new StringContent(JsonSerializer.Serialize(new Dictionary<string, object>
+        {
+            {"data", expectedResponseContent}
+        }));
 
         var response = await Response.From(httpResponseMessage);
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -29,10 +33,17 @@ public class ResponseTests
     [Test]
     public async Task CreatingResponse_FromHttpResponseMessage_WithNotSuccessStatusCode_CreatesErrorResponse()
     {
-        var expectedResponseError = new ResponseError("Error", "Some external error", "https://some-url.com", Guid.NewGuid());
+        var requestId = Guid.NewGuid();
+        var expectedResponse = new Dictionary<string, object> { { "error", new Dictionary<string, object>
+        {
+            {"class", "Error"},
+            {"message", "Some external error"},
+            {"documentation_url", "https://some-url.com"},
+            {"request_id", requestId}
+        } } };
 
         var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
-        httpResponseMessage.Content = new StringContent(JsonSerializer.Serialize(expectedResponseError));
+        httpResponseMessage.Content = new StringContent(JsonSerializer.Serialize(expectedResponse));
 
         var response = await Response.From(httpResponseMessage);
         var error = response.Error;
@@ -41,10 +52,10 @@ public class ResponseTests
         Assert.That(response.IsSuccessful, Is.False);
 
         Assert.That(error, Is.Not.Null);
-        Assert.That(error.Class, Is.EqualTo(expectedResponseError.Class));
-        Assert.That(error.Message, Is.EqualTo(expectedResponseError.Message));
-        Assert.That(error.DocumentationUrl, Is.EqualTo(expectedResponseError.DocumentationUrl));
-        Assert.That(error.RequestId, Is.EqualTo(expectedResponseError.RequestId));
+        Assert.That(error.Class, Is.EqualTo("Error"));
+        Assert.That(error.Message, Is.EqualTo("Some external error"));
+        Assert.That(error.DocumentationUrl, Is.EqualTo("https://some-url.com"));
+        Assert.That(error.RequestId, Is.EqualTo(requestId));
 
     }
 

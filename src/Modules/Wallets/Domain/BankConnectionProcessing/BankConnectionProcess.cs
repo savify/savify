@@ -6,7 +6,7 @@ using App.Modules.Wallets.Domain.BankConnections;
 using App.Modules.Wallets.Domain.BankConnections.BankAccounts;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets;
-using App.Modules.Wallets.Domain.Wallets.BankAccountConnection;
+using App.Modules.Wallets.Domain.Wallets.BankAccountConnections;
 
 namespace App.Modules.Wallets.Domain.BankConnectionProcessing;
 
@@ -106,7 +106,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         _status = BankConnectionProcessStatus.Initiated;
         _initiatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new BankConnectionProcessInitiatedDomainEvent(Id, UserId, BankId));
+        AddDomainEvent(new BankConnectionProcessInitiatedDomainEvent(Id, UserId, BankId, WalletId));
     }
 
     private BankConnectionProcess() { }
