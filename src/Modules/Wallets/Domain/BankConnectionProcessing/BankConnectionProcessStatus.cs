@@ -6,7 +6,7 @@ public record BankConnectionProcessStatus(string Value)
 
     public static BankConnectionProcessStatus Redirected => new(nameof(Redirected));
 
-    public static BankConnectionProcessStatus Expired => new(nameof(Expired));
+    public static BankConnectionProcessStatus RedirectUrlExpired => new(nameof(RedirectUrlExpired));
 
     public static BankConnectionProcessStatus ErrorAtProvider => new(nameof(ErrorAtProvider));
 
@@ -16,7 +16,18 @@ public record BankConnectionProcessStatus(string Value)
 
     public static BankConnectionProcessStatus Completed => new(nameof(Completed));
 
+    public static BankConnectionProcessStatus Cancelled => new(nameof(Cancelled));
+
     public bool IsFinal => FinalStatuses.Contains(this);
 
-    private static readonly BankConnectionProcessStatus[] FinalStatuses = { Expired, ErrorAtProvider, ConsentRefused, Completed };
+    public bool IsStatusTransitionValid(BankConnectionProcessStatus newStatus) => ValidStatusTransitions[this].Contains(newStatus);
+
+    private static readonly BankConnectionProcessStatus[] FinalStatuses = { RedirectUrlExpired, ErrorAtProvider, ConsentRefused, Completed, Cancelled };
+
+    private static readonly IDictionary<BankConnectionProcessStatus, BankConnectionProcessStatus[]> ValidStatusTransitions = new Dictionary<BankConnectionProcessStatus, BankConnectionProcessStatus[]>
+        {
+            {Initiated, new []{Redirected, Cancelled}},
+            {Redirected, new []{RedirectUrlExpired, ErrorAtProvider, ConsentRefused, WaitingForAccountChoosing, Completed, Cancelled}},
+            {WaitingForAccountChoosing, new []{Completed, Cancelled}}
+        };
 }
