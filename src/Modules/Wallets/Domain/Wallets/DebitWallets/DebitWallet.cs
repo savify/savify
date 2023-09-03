@@ -39,7 +39,7 @@ public class DebitWallet : Entity, IAggregateRoot
 
     public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
     {
-        CheckRules(new DebitWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved), 
+        CheckRules(new DebitWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved),
             new WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule(newBalance, newCurrency, HasConnectedBankAccount));
 
         _title = newTitle ?? _title;
@@ -63,19 +63,19 @@ public class DebitWallet : Entity, IAggregateRoot
     public async Task<BankConnectionProcess> InitiateBankConnectionProcess(BankId bankId, IBankConnectionProcessInitiationService initiationService)
     {
         CheckRules(new BankConnectionProcessCannotBeInitiatedIfBankAccountIsAlreadyConnectedRule(HasConnectedBankAccount));
-        
+
         return await BankConnectionProcess.Initiate(UserId, bankId, Id, WalletType.Debit, initiationService);
     }
 
     public void ConnectBankAccount(BankConnectionId bankConnectionId, BankAccountId bankAccountId, int balance, Currency currency)
     {
         CheckRules(new BankAccountCannotBeConnectedToWalletIfItAlreadyHasBankAccountConnectedRule(HasConnectedBankAccount));
-        
+
         _bankAccountConnection = new BankAccountConnection(bankConnectionId, bankAccountId);
         _balance = balance;
         _currency = currency;
         _updatedAt = DateTime.UtcNow;
-        
+
         AddDomainEvent(new BankAccountWasConnectedToDebitWalletDomainEvent(Id, UserId, bankConnectionId, bankAccountId));
     }
 

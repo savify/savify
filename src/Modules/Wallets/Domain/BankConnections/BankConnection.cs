@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnections.BankAccounts;
+using App.Modules.Wallets.Domain.BankConnections.Events;
 using App.Modules.Wallets.Domain.BankConnections.Rules;
 using App.Modules.Wallets.Domain.Users;
 
@@ -41,7 +42,7 @@ public class BankConnection : Entity, IAggregateRoot
 
     public BankAccount GetSingleBankAccount()
     {
-        CheckRules(new BankConnectionMustNotHaveMultipleAccountsRule(HasMultipleBankAccounts()));
+        CheckRules(new BankConnectionMustHaveOnlyOneAccountRule(_accounts));
 
         return _accounts.First();
     }
@@ -55,6 +56,8 @@ public class BankConnection : Entity, IAggregateRoot
         _userId = userId;
         _consent = consent;
         _createdAt = DateTime.UtcNow;
+
+        AddDomainEvent(new BankConnectionCreatedDomainEvent(Id, _bankId, _userId));
     }
 
     private BankConnection() { }

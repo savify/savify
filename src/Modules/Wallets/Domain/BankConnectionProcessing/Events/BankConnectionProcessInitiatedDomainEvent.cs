@@ -12,7 +12,7 @@ public class BankConnectionProcessInitiatedDomainEvent : DomainEventBase
     public UserId UserId { get; }
 
     public BankId BankId { get; }
-    
+
     public WalletId WalletId { get; }
 
     public BankConnectionProcessInitiatedDomainEvent(BankConnectionProcessId bankConnectionProcessId, UserId userId, BankId bankId, WalletId walletId)

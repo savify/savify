@@ -5,7 +5,7 @@ namespace App.Modules.Wallets.Domain.Wallets.DebitWallets.Rules;
 public class WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule : IBusinessRule
 {
     private readonly int? _newBalance;
-    
+
     private readonly Currency? _newCurrency;
 
     private readonly bool _hasBankAccountConnected;

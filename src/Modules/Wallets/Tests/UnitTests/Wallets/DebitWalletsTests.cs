@@ -54,7 +54,7 @@ public class DebitWalletsTests : UnitTestBase
             wallet.Edit("New debit", new Currency("GBP"), 2000);
         });
     }
-    
+
     [Test]
     public void EditingDebitWalletsCurrency_WhenBankAccountIsConnectedToWallet_BreaksWalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule()
     {
@@ -67,7 +67,7 @@ public class DebitWalletsTests : UnitTestBase
             wallet.Edit(null, new Currency("GBP"), null);
         });
     }
-    
+
     [Test]
     public void EditingDebitWalletsBalance_WhenBankAccountIsConnectedToWallet_BreaksWalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule()
     {
@@ -89,7 +89,7 @@ public class DebitWalletsTests : UnitTestBase
 
         var bankId = new BankId(Guid.NewGuid());
         var initiationService = Substitute.For<IBankConnectionProcessInitiationService>();
-        
+
         var bankConnectionProcess = await wallet.InitiateBankConnectionProcess(bankId, initiationService);
 
         var domainEvent = AssertPublishedDomainEvent<BankConnectionProcessInitiatedDomainEvent>(bankConnectionProcess);
@@ -98,7 +98,7 @@ public class DebitWalletsTests : UnitTestBase
         Assert.That(domainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(domainEvent.BankId, Is.EqualTo(bankId));
     }
-    
+
     [Test]
     public void InitiatingBankAccountProcess_WhenBankAccountIsAlreadyConnectedToWallet_BreaksBankConnectionProcessCannotBeInitiatedIfBankAccountIsAlreadyConnectedRule()
     {
@@ -110,30 +110,30 @@ public class DebitWalletsTests : UnitTestBase
         {
             var bankId = new BankId(Guid.NewGuid());
             var initiationService = Substitute.For<IBankConnectionProcessInitiationService>();
-        
+
             await wallet.InitiateBankConnectionProcess(bankId, initiationService);
         });
     }
-    
+
     [Test]
     public void ConnectingBankAccount_IsSuccessful()
     {
         var userId = new UserId(Guid.NewGuid());
         var wallet = DebitWallet.AddNew(userId, "Debit", Currency.From("PLN"), 1000);
-        
+
         var bankConnectionId = new BankConnectionId(Guid.NewGuid());
         var bankAccountId = new BankAccountId(Guid.NewGuid());
-        
+
         wallet.ConnectBankAccount(bankConnectionId, bankAccountId, 10595, Currency.From("PLN"));
         var domainEvent = AssertPublishedDomainEvent<BankAccountWasConnectedToDebitWalletDomainEvent>(wallet);
-        
+
         Assert.That(wallet.HasConnectedBankAccount, Is.True);
         Assert.That(domainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(domainEvent.UserId, Is.EqualTo(wallet.UserId));
         Assert.That(domainEvent.BankConnectionId, Is.EqualTo(bankConnectionId));
         Assert.That(domainEvent.BankAccountId, Is.EqualTo(bankAccountId));
     }
-    
+
     [Test]
     public void ConnectingBankAccount_WhenBankAccountIsAlreadyConnectedToWallet_BreaksBankAccountCannotBeConnectedToWalletIfItAlreadyHasBankAccountConnectedRule()
     {
