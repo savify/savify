@@ -55,7 +55,7 @@ public class RequestTests
         var requestContent = await request.Content.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Post));
-        Assert.That(requestContent, Is.EqualTo("{\"data\":{\"foo\":\"bar\",\"abc\":123}}"));
+        Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
     }
 
     [Test]
@@ -73,7 +73,7 @@ public class RequestTests
         var requestContent = await request.Content.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Put));
-        Assert.That(requestContent, Is.EqualTo("{\"data\":{\"foo\":\"bar\",\"abc\":123}}"));
+        Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
     }
 
     [Test]
@@ -91,7 +91,7 @@ public class RequestTests
         var requestContent = await request.Content.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Patch));
-        Assert.That(requestContent, Is.EqualTo("{\"data\":{\"foo\":\"bar\",\"abc\":123}}"));
+        Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
     }
 
     [Test]

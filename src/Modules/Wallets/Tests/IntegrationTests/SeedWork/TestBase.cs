@@ -68,7 +68,13 @@ public class TestBase
                            "DELETE FROM wallets.inbox_messages; " +
                            "DELETE FROM wallets.cash_wallets; " +
                            "DELETE FROM wallets.credit_wallets; " +
-                           "DELETE FROM wallets.debit_wallets;";
+                           "DELETE FROM wallets.debit_wallets;" +
+                           "DELETE FROM wallets.wallet_view_metadata;" +
+                           "DELETE FROM wallets.bank_accounts;" +
+                           "DELETE FROM wallets.bank_connection_processes;" +
+                           "DELETE FROM wallets.bank_connections;" +
+                           "DELETE FROM wallets.salt_edge_connections;" +
+                           "DELETE FROM wallets.salt_edge_customers;";
 
         await connection.ExecuteScalarAsync(sql);
     }

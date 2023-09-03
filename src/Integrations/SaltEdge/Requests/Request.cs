@@ -30,7 +30,10 @@ public abstract class Request
 
     public Request WithQueryParameters(IDictionary<string, object> queryParameters)
     {
-        _queryParameters = queryParameters;
+        foreach (var queryParameter in queryParameters)
+        {
+            _queryParameters[queryParameter.Key] = queryParameter.Value;
+        }
 
         return this;
     }

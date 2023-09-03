@@ -3,7 +3,6 @@ using System.Text.Json;
 using App.Integrations.SaltEdge.Client;
 using App.Integrations.SaltEdge.Configuration;
 using App.Integrations.SaltEdge.Requests;
-using App.Integrations.SaltEdge.Responses;
 using App.Integrations.UnitTests.SeedWork;
 using Serilog;
 
@@ -89,7 +88,7 @@ public class SaltEdgeHttpClientTests
         Assert.That(error.RequestId, Is.EqualTo(requestId));
     }
 
-    class ContentDto
+    private class ContentDto
     {
         public string Foo { get; }
 

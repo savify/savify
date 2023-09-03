@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using App.Integrations.SaltEdge.Responses;
 
 namespace App.Integrations.UnitTests.SaltEdge;
@@ -59,7 +58,7 @@ public class ResponseTests
 
     }
 
-    class ContentDto
+    private class ContentDto
     {
         public string Foo { get; }
 
