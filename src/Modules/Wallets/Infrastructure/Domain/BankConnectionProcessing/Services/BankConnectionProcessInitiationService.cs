@@ -7,11 +7,11 @@ namespace App.Modules.Wallets.Infrastructure.Domain.BankConnectionProcessing.Ser
 
 public class BankConnectionProcessInitiationService : IBankConnectionProcessInitiationService
 {
-    private readonly SaltEdgeCustomerRepository _customerRepository;
+    private readonly ISaltEdgeCustomerRepository _customerRepository;
 
-    private readonly SaltEdgeIntegrationService _saltEdgeIntegrationService;
+    private readonly ISaltEdgeIntegrationService _saltEdgeIntegrationService;
 
-    public BankConnectionProcessInitiationService(SaltEdgeCustomerRepository customerRepository, SaltEdgeIntegrationService saltEdgeIntegrationService)
+    public BankConnectionProcessInitiationService(ISaltEdgeCustomerRepository customerRepository, ISaltEdgeIntegrationService saltEdgeIntegrationService)
     {
         _customerRepository = customerRepository;
         _saltEdgeIntegrationService = saltEdgeIntegrationService;
@@ -23,7 +23,7 @@ public class BankConnectionProcessInitiationService : IBankConnectionProcessInit
 
         if (customer is null)
         {
-            var responseContent = await _saltEdgeIntegrationService.CreateCustomer(userId.Value);
+            var responseContent = await _saltEdgeIntegrationService.CreateCustomerAsync(userId.Value);
             await _customerRepository.AddAsync(new SaltEdgeCustomer(
                 responseContent.Id,
                 Guid.Parse(responseContent.Identifier)));

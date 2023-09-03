@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections;
 
-public class SaltEdgeConnectionRepository
+public class SaltEdgeConnectionRepository : ISaltEdgeConnectionRepository
 {
     private readonly WalletsContext _walletsContext;
 

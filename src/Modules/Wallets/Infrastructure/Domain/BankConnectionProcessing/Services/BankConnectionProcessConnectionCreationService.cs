@@ -10,11 +10,11 @@ namespace App.Modules.Wallets.Infrastructure.Domain.BankConnectionProcessing.Ser
 
 public class BankConnectionProcessConnectionCreationService : IBankConnectionProcessConnectionCreationService
 {
-    private readonly SaltEdgeConnectionRepository _connectionRepository;
+    private readonly ISaltEdgeConnectionRepository _connectionRepository;
 
-    private readonly SaltEdgeIntegrationService _saltEdgeIntegrationService;
+    private readonly ISaltEdgeIntegrationService _saltEdgeIntegrationService;
 
-    public BankConnectionProcessConnectionCreationService(SaltEdgeConnectionRepository connectionRepository, SaltEdgeIntegrationService saltEdgeIntegrationService)
+    public BankConnectionProcessConnectionCreationService(ISaltEdgeConnectionRepository connectionRepository, ISaltEdgeIntegrationService saltEdgeIntegrationService)
     {
         _connectionRepository = connectionRepository;
         _saltEdgeIntegrationService = saltEdgeIntegrationService;
@@ -22,9 +22,9 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
 
     public async Task<BankConnection> CreateConnection(BankConnectionProcessId id, UserId userId, BankId bankId, string externalConnectionId)
     {
-        var saltEdgeConnection = await _saltEdgeIntegrationService.FetchConnection(externalConnectionId);
-        var saltEdgeConsent = await _saltEdgeIntegrationService.FetchConsent(saltEdgeConnection.LastConsentId, saltEdgeConnection.Id);
-        var saltEdgeAccounts = await _saltEdgeIntegrationService.FetchAccounts(saltEdgeConnection.Id);
+        var saltEdgeConnection = await _saltEdgeIntegrationService.FetchConnectionAsync(externalConnectionId);
+        var saltEdgeConsent = await _saltEdgeIntegrationService.FetchConsentAsync(saltEdgeConnection.LastConsentId, saltEdgeConnection.Id);
+        var saltEdgeAccounts = await _saltEdgeIntegrationService.FetchAccountsAsync(saltEdgeConnection.Id);
 
         var connection = BankConnection.CreateFromBankConnectionProcess(id, bankId, userId, new Consent(saltEdgeConsent.ExpiresAt ?? DateTime.MaxValue));
 

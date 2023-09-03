@@ -8,7 +8,7 @@ using Consent = App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Respons
 
 namespace App.Modules.Wallets.Infrastructure.Integrations.SaltEdge;
 
-public class SaltEdgeIntegrationService
+public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 {
     private readonly ISaltEdgeHttpClient _client;
 
@@ -17,7 +17,7 @@ public class SaltEdgeIntegrationService
         _client = client;
     }
 
-    public async Task<CreateCustomerResponseContent> CreateCustomer(Guid userId)
+    public async Task<CreateCustomerResponseContent> CreateCustomerAsync(Guid userId)
     {
         var request = Request.Post("/customers")
             .WithContent(new CreateCustomerRequestContent(userId.ToString()));
@@ -31,7 +31,7 @@ public class SaltEdgeIntegrationService
         return response.Content?.As<CreateCustomerResponseContent>()!;
     }
 
-    public async Task<CreateConnectSessionResponseContent> CreateConnectSession(Guid bankConnectionProcessId, string customerId, string providerCode, string returnToUrl)
+    public async Task<CreateConnectSessionResponseContent> CreateConnectSessionAsync(Guid bankConnectionProcessId, string customerId, string providerCode, string returnToUrl)
     {
         var request = Request.Post("/connect_sessions/create")
             .WithContent(new CreateConnectSessionRequestContent(
@@ -50,7 +50,7 @@ public class SaltEdgeIntegrationService
         return response.Content?.As<CreateConnectSessionResponseContent>()!;
     }
 
-    public async Task<SaltEdgeConnection> FetchConnection(string connectionId)
+    public async Task<SaltEdgeConnection> FetchConnectionAsync(string connectionId)
     {
         var request = Request.Get($"/connections/{connectionId}");
 
@@ -71,7 +71,7 @@ public class SaltEdgeIntegrationService
         return connection;
     }
 
-    public async Task<Consent> FetchConsent(string consentId, string connectionId)
+    public async Task<Consent> FetchConsentAsync(string consentId, string connectionId)
     {
         var request = Request.Get($"/consents/{consentId}").WithQueryParameter("connection_id", connectionId);
 
@@ -92,7 +92,7 @@ public class SaltEdgeIntegrationService
         return consent;
     }
 
-    public async Task<List<SaltEdgeAccount>> FetchAccounts(string connectionId)
+    public async Task<List<SaltEdgeAccount>> FetchAccountsAsync(string connectionId)
     {
         var request = Request.Get("/accounts").WithQueryParameter("connection_id", connectionId);
 

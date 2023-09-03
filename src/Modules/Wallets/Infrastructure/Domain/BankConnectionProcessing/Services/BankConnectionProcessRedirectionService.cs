@@ -9,13 +9,13 @@ namespace App.Modules.Wallets.Infrastructure.Domain.BankConnectionProcessing.Ser
 
 public class BankConnectionProcessRedirectionService : IBankConnectionProcessRedirectionService
 {
-    private readonly SaltEdgeCustomerRepository _customerRepository;
+    private readonly ISaltEdgeCustomerRepository _customerRepository;
 
-    private readonly SaltEdgeIntegrationService _saltEdgeIntegrationService;
+    private readonly ISaltEdgeIntegrationService _saltEdgeIntegrationService;
 
     public BankConnectionProcessRedirectionService(
-        SaltEdgeCustomerRepository customerRepository,
-        SaltEdgeIntegrationService saltEdgeIntegrationService)
+        ISaltEdgeCustomerRepository customerRepository,
+        ISaltEdgeIntegrationService saltEdgeIntegrationService)
     {
         _customerRepository = customerRepository;
         _saltEdgeIntegrationService = saltEdgeIntegrationService;
@@ -28,7 +28,7 @@ public class BankConnectionProcessRedirectionService : IBankConnectionProcessRed
         var returnToUrl = "https://display-parameters.com/"; // TODO: get url from configuration
 
         // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
-        var responseContent = await _saltEdgeIntegrationService.CreateConnectSession(id.Value, customer.Id, providerCode, returnToUrl);
+        var responseContent = await _saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl);
 
         // TODO: convert expiresAt to UTC timezone
         return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt);

@@ -7,6 +7,6 @@ public class IntegrationModule
 {
     internal static void Configure(IServiceCollection services)
     {
-        services.AddScoped<SaltEdgeIntegrationService>();
+        services.AddScoped<ISaltEdgeIntegrationService, SaltEdgeIntegrationService>();
     }
 }
