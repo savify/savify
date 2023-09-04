@@ -8,12 +8,15 @@ using Dapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using WireMock.Server;
 
 namespace App.Modules.Wallets.IntegrationTests.SeedWork;
 
 public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
+
+    protected WireMockServer WireMock { get; private set; }
 
     protected IWalletsModule WalletsModule { get; private set; }
 
@@ -36,6 +39,8 @@ public class TestBase
         using var scope = WebApplicationFactory.Services.CreateScope();
         WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
         WalletsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+
+        WireMock = WireMockServer.StartWithAdminInterface(port: 1080, ssl: false);
     }
 
     [SetUp]
