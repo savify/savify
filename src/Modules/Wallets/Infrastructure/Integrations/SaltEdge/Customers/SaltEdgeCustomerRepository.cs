@@ -18,12 +18,7 @@ public class SaltEdgeCustomerRepository : ISaltEdgeCustomerRepository
 
     public async Task<SaltEdgeCustomer?> GetSaltEdgeCustomerForAsync(Guid userId)
     {
-        var localCustomers = _walletsContext.SaltEdgeCustomers.Local;
-        if (localCustomers.Any(x => x.Identifier == userId))
-        {
-            return await Task.FromResult(localCustomers.FirstOrDefault(x => x.Identifier == userId));
-        }
-
-        return await _walletsContext.SaltEdgeCustomers.FirstOrDefaultAsync(x => x.Identifier == userId);
+        return _walletsContext.SaltEdgeCustomers.Local.FirstOrDefault(x => x.Identifier == userId) ??
+               await _walletsContext.SaltEdgeCustomers.FirstOrDefaultAsync(x => x.Identifier == userId);
     }
 }

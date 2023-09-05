@@ -1,9 +1,12 @@
+using App.Modules.Wallets.Application.BankConnectionProcessing.GetBankConnectionProcess;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
+using App.Modules.Wallets.Domain.BankConnectionProcessing;
+using App.Modules.Wallets.Domain.Wallets;
+using App.Modules.Wallets.IntegrationTests.SeedData;
 using App.Modules.Wallets.IntegrationTests.SeedWork;
-using WireMock.Matchers;
-using WireMock.RequestBuilders;
-using WireMock.ResponseBuilders;
+using Dapper;
+using Npgsql;
 
 namespace App.Modules.Wallets.IntegrationTests.DebitWallets;
 
@@ -13,69 +16,26 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
     [Test]
     public async Task ConnectBankAccountToDebitWalletCommand_Test()
     {
-        var userId = Guid.NewGuid();
-        var bankId = Guid.NewGuid();
-        var walletId = await AddDebitWalletFor(userId);
+        SaltEdgeHttpClientMocker.MockCreateCustomerSuccessfulResponse();
+        SaltEdgeHttpClientMocker.MockCreateConnectSessionSuccessfulResponse();
 
-        var customerId = "1087222023010130820";
-        var providerCode = "fakebank_interactive_xf";
-        var expectedRedirectUrl = "https://www.saltedge.com/connect?token=GENERATED_TOKEN";
+        var walletId = await AddDebitWalletFor(BankConnectionProcessingData.UserId);
 
-        MockCreateCustomerSuccessfulResponse(userId, customerId);
-        MockCreateConnectSessionSuccessfulResponse(customerId, providerCode, expectedRedirectUrl);
+        var result = await WalletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(BankConnectionProcessingData.UserId, walletId, BankConnectionProcessingData.BankId));
+        var bankConnectionProcess = await WalletsModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(result.Id));
+        var saltEdgeCustomer = await GetSaltEdgeCustomerByUserId(BankConnectionProcessingData.UserId);
 
-        var redirectUrl = await WalletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(userId, walletId, bankId));
+        Assert.That(result.RedirectUrl, Is.EqualTo(BankConnectionProcessingData.ExpectedRedirectUrl));
 
-        Assert.That(redirectUrl, Is.EqualTo(expectedRedirectUrl));
-    }
+        Assert.That(bankConnectionProcess, Is.Not.Null);
+        Assert.That(bankConnectionProcess.UserId, Is.EqualTo(BankConnectionProcessingData.UserId));
+        Assert.That(bankConnectionProcess.BankId, Is.EqualTo(BankConnectionProcessingData.BankId));
+        Assert.That(bankConnectionProcess.WalletId, Is.EqualTo(walletId));
+        Assert.That(bankConnectionProcess.WalletType, Is.EqualTo(WalletType.Debit.Value));
+        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.Redirected.Value));
 
-    private void MockCreateCustomerSuccessfulResponse(Guid userId, string customerId)
-    {
-        WireMock.Given(
-                Request.Create()
-                    .WithPath("/customers")
-                    .WithBodyAsJson(new { data = new { identifier = userId.ToString() } })
-                    .UsingPost()
-            )
-            .RespondWith(
-                Response.Create()
-                    .WithStatusCode(201)
-                    .WithBodyAsJson(new
-                    {
-                        data = new
-                        {
-                            id = customerId,
-                            identifier = userId.ToString()
-                        }
-                    }));
-    }
-
-    private void MockCreateConnectSessionSuccessfulResponse(string customerId, string providerCode, string expectedConnectUrl)
-    {
-        WireMock.Given(
-                Request.Create()
-                    .WithPath("/connect_sessions/create")
-                    .WithBody(new JsonPartialMatcher(new
-                    {
-                        data = new
-                        {
-                            customer_id = customerId,
-                            provider_code = providerCode
-                        }
-                    }))
-                    .UsingPost()
-            )
-            .RespondWith(
-                Response.Create()
-                    .WithStatusCode(201)
-                    .WithBodyAsJson(new
-                    {
-                        data = new
-                        {
-                            expires_at = "2023-08-22T07:58:14Z",
-                            connect_url = expectedConnectUrl
-                        }
-                    }));
+        Assert.That(saltEdgeCustomer, Is.Not.Null);
+        Assert.That(saltEdgeCustomer.Id, Is.EqualTo(BankConnectionProcessingData.ExternalCustomerId));
     }
 
     private async Task<Guid> AddDebitWalletFor(Guid userId)
@@ -90,5 +50,21 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
             true);
 
         return await WalletsModule.ExecuteCommandAsync(command);
+    }
+
+    private async Task<SaltEdgeCustomerDto?> GetSaltEdgeCustomerByUserId(Guid userId)
+    {
+        await using var connection = new NpgsqlConnection(ConnectionString);
+
+        var sql = @"SELECT id, identifier FROM wallets.salt_edge_customers WHERE identifier = @UserId";
+
+        return await connection.QuerySingleOrDefaultAsync<SaltEdgeCustomerDto>(sql, new { UserId = userId });
+    }
+
+    private class SaltEdgeCustomerDto
+    {
+        public string Id { get; set; }
+
+        public Guid Identifier { get; set; }
     }
 }

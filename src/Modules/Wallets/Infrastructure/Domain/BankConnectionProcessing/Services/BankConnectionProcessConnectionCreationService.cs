@@ -12,11 +12,17 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
 {
     private readonly ISaltEdgeConnectionRepository _connectionRepository;
 
+    private readonly IBankConnectionRepository _bankConnectionRepository;
+
     private readonly ISaltEdgeIntegrationService _saltEdgeIntegrationService;
 
-    public BankConnectionProcessConnectionCreationService(ISaltEdgeConnectionRepository connectionRepository, ISaltEdgeIntegrationService saltEdgeIntegrationService)
+    public BankConnectionProcessConnectionCreationService(
+        ISaltEdgeConnectionRepository connectionRepository,
+        IBankConnectionRepository bankConnectionRepository,
+        ISaltEdgeIntegrationService saltEdgeIntegrationService)
     {
         _connectionRepository = connectionRepository;
+        _bankConnectionRepository = bankConnectionRepository;
         _saltEdgeIntegrationService = saltEdgeIntegrationService;
     }
 
@@ -36,6 +42,7 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
             new Currency(account.CurrencyCode)));
 
         await _connectionRepository.AddAsync(saltEdgeConnection);
+        await _bankConnectionRepository.AddAsync(connection);
 
         return connection;
     }

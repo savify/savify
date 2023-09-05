@@ -20,7 +20,8 @@ public class BankConnectionRepository : IBankConnectionRepository
 
     public async Task<BankConnection> GetByIdAsync(BankConnectionId id)
     {
-        var bankConnection = await _walletsContext.BankConnections.FirstOrDefaultAsync(x => x.Id == id);
+        var bankConnection = _walletsContext.BankConnections.Local.FirstOrDefault(x => x.Id == id) ??
+                             await _walletsContext.BankConnections.FirstOrDefaultAsync(x => x.Id == id);
 
         if (bankConnection == null)
         {

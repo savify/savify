@@ -75,6 +75,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         {
             CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
 
+            // TODO: at this moment bank connection does not exist (it will be added in CommandHandler); We need to save connection in previous step (ConnectioCreationService)
             var bankAccountId = connection.GetSingleBankAccount().Id;
             await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
 

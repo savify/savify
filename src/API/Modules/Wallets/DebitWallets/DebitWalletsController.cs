@@ -79,14 +79,11 @@ public class DebitWalletsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> ConnectBankAccount(Guid walletId, ConnectBankAccountToDebitWalletRequest request)
     {
-        var redirectUrl = await _walletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
+        var result = await _walletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
             _executionContextAccessor.UserId,
             walletId,
             request.BankId));
 
-        return Created("", new
-        {
-            RedirectUrl = redirectUrl
-        });
+        return Created("", result);
     }
 }

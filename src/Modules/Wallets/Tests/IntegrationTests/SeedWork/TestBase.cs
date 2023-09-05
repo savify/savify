@@ -4,6 +4,7 @@ using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Infrastructure.Configuration;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Wallets.IntegrationTests.SeedData;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,7 @@ public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
 
-    protected WireMockServer WireMock { get; private set; }
+    protected SaltEdgeHttpClientMocker SaltEdgeHttpClientMocker { get; private set; }
 
     protected IWalletsModule WalletsModule { get; private set; }
 
@@ -40,7 +41,7 @@ public class TestBase
         WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
         WalletsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
-        WireMock = WireMockServer.StartWithAdminInterface(port: 1080, ssl: false);
+        SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
     }
 
     [SetUp]
