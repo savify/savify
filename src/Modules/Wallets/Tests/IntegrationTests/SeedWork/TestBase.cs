@@ -44,6 +44,12 @@ public class TestBase
         SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
     }
 
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        SaltEdgeHttpClientMocker.StopWireMockServer();
+    }
+
     [SetUp]
     public async Task BeforeEachTest()
     {

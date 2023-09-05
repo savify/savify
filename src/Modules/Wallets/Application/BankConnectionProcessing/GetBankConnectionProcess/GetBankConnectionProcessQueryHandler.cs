@@ -4,7 +4,7 @@ using Dapper;
 
 namespace App.Modules.Wallets.Application.BankConnectionProcessing.GetBankConnectionProcess;
 
-public class GetBankConnectionProcessQueryHandler : IQueryHandler<GetBankConnectionProcessQuery, BankConnectionProcessDto?>
+internal class GetBankConnectionProcessQueryHandler : IQueryHandler<GetBankConnectionProcessQuery, BankConnectionProcessDto?>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

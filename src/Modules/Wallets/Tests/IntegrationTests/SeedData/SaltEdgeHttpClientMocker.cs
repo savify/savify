@@ -14,6 +14,11 @@ public class SaltEdgeHttpClientMocker
         _wireMock = wireMock;
     }
 
+    public void StopWireMockServer()
+    {
+        _wireMock.Stop();
+    }
+
     public void MockCreateCustomerSuccessfulResponse()
     {
         _wireMock.Given(
