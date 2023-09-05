@@ -21,7 +21,8 @@ public class BankConnectionProcessConnectionCreationServiceTests : UnitTestBase
         var bankId = new BankId(Guid.NewGuid());
         var externalConnectionId = "123456";
 
-        var connectionRepository = Substitute.For<ISaltEdgeConnectionRepository>();
+        var saltEdgeConnectionRepository = Substitute.For<ISaltEdgeConnectionRepository>();
+        var bankConnectionRepository = Substitute.For<IBankConnectionRepository>();
         var integrationService = Substitute.For<ISaltEdgeIntegrationService>();
 
         var externalConnection = new SaltEdgeConnection(
@@ -45,7 +46,10 @@ public class BankConnectionProcessConnectionCreationServiceTests : UnitTestBase
         integrationService.FetchConsentAsync(externalConnection.LastConsentId, externalConnection.Id).Returns(consent);
         integrationService.FetchAccountsAsync(externalConnection.Id).Returns(saltEdgeAccounts);
 
-        var connectionCreationService = new BankConnectionProcessConnectionCreationService(connectionRepository, integrationService);
+        var connectionCreationService = new BankConnectionProcessConnectionCreationService(
+            saltEdgeConnectionRepository,
+            bankConnectionRepository,
+            integrationService);
 
         var connection = await connectionCreationService.CreateConnection(bankConnectionProcessId, userId, bankId, externalConnectionId);
 
@@ -59,7 +63,9 @@ public class BankConnectionProcessConnectionCreationServiceTests : UnitTestBase
         await integrationService.Received(1).FetchConnectionAsync(externalConnectionId);
         await integrationService.Received(1).FetchConsentAsync(externalConnection.LastConsentId, externalConnection.Id);
         await integrationService.Received(1).FetchAccountsAsync(externalConnection.Id);
-        await connectionRepository.Received(1).AddAsync(Arg.Is<SaltEdgeConnection>(c =>
+        await saltEdgeConnectionRepository.Received(1).AddAsync(Arg.Is<SaltEdgeConnection>(c =>
             c.Id == externalConnectionId && c.InternalConnectionId == bankConnectionProcessId.Value));
+        await bankConnectionRepository.Received(1).AddAsync(Arg.Is<BankConnection>(c =>
+            c.Id == connection.Id));
     }
 }
