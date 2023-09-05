@@ -32,7 +32,7 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
         var saltEdgeConsent = await _saltEdgeIntegrationService.FetchConsentAsync(saltEdgeConnection.LastConsentId, saltEdgeConnection.Id);
         var saltEdgeAccounts = await _saltEdgeIntegrationService.FetchAccountsAsync(saltEdgeConnection.Id);
 
-        var connection = BankConnection.CreateFromBankConnectionProcess(id, bankId, userId, new Consent(saltEdgeConsent.ExpiresAt ?? DateTime.MaxValue));
+        var connection = BankConnection.CreateFromBankConnectionProcess(id, bankId, userId, new Consent(saltEdgeConsent.ExpiresAt?.ToUniversalTime() ?? DateTime.MaxValue.ToUniversalTime()));
 
         saltEdgeConnection.InternalConnectionId = connection.Id.Value;
         saltEdgeAccounts.ForEach(account => connection.AddBankAccount(
