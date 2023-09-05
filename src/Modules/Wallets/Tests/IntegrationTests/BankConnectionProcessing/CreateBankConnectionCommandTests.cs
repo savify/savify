@@ -38,7 +38,7 @@ public class CreateBankConnectionCommandTests : TestBase
         Assert.That(wallet.BankConnectionId, Is.EqualTo(bankConnectionProcess.Id));
         Assert.That(wallet.BankAccountId, Is.Not.Null);
     }
-    
+
     [Test]
     public async Task CreateBankConnectionCommand_WithMultipleAccounts_FinishesBankConnectionProcess_Test()
     {
