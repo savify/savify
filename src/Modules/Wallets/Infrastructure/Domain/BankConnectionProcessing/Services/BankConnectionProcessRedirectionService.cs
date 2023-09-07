@@ -29,8 +29,7 @@ public class BankConnectionProcessRedirectionService : IBankConnectionProcessRed
 
         // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
         var responseContent = await _saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl);
-
-        // TODO: convert expiresAt to UTC timezone
-        return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt);
+        
+        return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt.ToUniversalTime());
     }
 }
