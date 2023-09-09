@@ -38,16 +38,16 @@ public abstract class Request
         return this;
     }
 
-    public string GetFullUrl(string url)
+    public string GetFullUrl()
     {
         if (_queryParameters.Any())
         {
             var queryParameters = _queryParameters.Select(parameter => $"{parameter.Key}={parameter.Value}");
 
-            return url + Path + "?" + string.Join("&", queryParameters);
+            return Path + "?" + string.Join("&", queryParameters);
         }
 
-        return url + Path;
+        return Path;
     }
 
     public static GetRequest Get(string path)
