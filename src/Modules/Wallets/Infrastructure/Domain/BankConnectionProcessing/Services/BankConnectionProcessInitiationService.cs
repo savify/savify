@@ -19,7 +19,7 @@ public class BankConnectionProcessInitiationService : IBankConnectionProcessInit
 
     public async Task InitiateForAsync(UserId userId)
     {
-        var customer = await _customerRepository.GetSaltEdgeCustomerForAsync(userId.Value);
+        var customer = await _customerRepository.GetSaltEdgeCustomerOrDefaultAsync(userId.Value);
 
         if (customer is null)
         {

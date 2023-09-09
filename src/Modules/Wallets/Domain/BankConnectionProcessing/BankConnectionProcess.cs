@@ -52,7 +52,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         _status = BankConnectionProcessStatus.Redirected;
         _updatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new UserRedirectedDomainEvent(Id, (DateTime)_redirectUrlExpiresAt));
+        AddDomainEvent(new UserRedirectedDomainEvent(Id, _redirectUrlExpiresAt.Value));
 
         return _redirectUrl;
     }

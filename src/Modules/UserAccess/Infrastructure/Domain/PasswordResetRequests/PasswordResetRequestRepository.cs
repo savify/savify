@@ -20,7 +20,7 @@ public class PasswordResetRequestRepository : IPasswordResetRequestRepository
 
     public async Task<PasswordResetRequest> GetByIdAsync(PasswordResetRequestId id)
     {
-        var passwordResetRequest = await _userAccessContext.PasswordResetRequests.FirstOrDefaultAsync(x => x.Id == id);
+        var passwordResetRequest = await _userAccessContext.PasswordResetRequests.SingleOrDefaultAsync(x => x.Id == id);
 
         if (passwordResetRequest == null)
         {

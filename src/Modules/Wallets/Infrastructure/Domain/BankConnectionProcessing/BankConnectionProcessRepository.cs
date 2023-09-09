@@ -21,7 +21,7 @@ public class BankConnectionProcessRepository : IBankConnectionProcessRepository
 
     public async Task<BankConnectionProcess> GetByIdAsync(BankConnectionProcessId id)
     {
-        var bankConnectionProcess = await _walletsContext.BankConnectionProcesses.FirstOrDefaultAsync(x => x.Id == id);
+        var bankConnectionProcess = await _walletsContext.BankConnectionProcesses.SingleOrDefaultAsync(x => x.Id == id);
 
         if (bankConnectionProcess == null)
         {
@@ -33,7 +33,7 @@ public class BankConnectionProcessRepository : IBankConnectionProcessRepository
 
     public async Task<BankConnectionProcess> GetByIdAndUserIdAsync(BankConnectionProcessId id, UserId userId)
     {
-        var bankConnectionProcess = await _walletsContext.BankConnectionProcesses.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var bankConnectionProcess = await _walletsContext.BankConnectionProcesses.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (bankConnectionProcess == null)
         {

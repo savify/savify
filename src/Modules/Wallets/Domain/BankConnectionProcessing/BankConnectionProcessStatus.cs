@@ -25,9 +25,9 @@ public record BankConnectionProcessStatus(string Value)
     private static readonly BankConnectionProcessStatus[] FinalStatuses = { RedirectUrlExpired, ErrorAtProvider, ConsentRefused, Completed, Cancelled };
 
     private static readonly IDictionary<BankConnectionProcessStatus, BankConnectionProcessStatus[]> ValidStatusTransitions = new Dictionary<BankConnectionProcessStatus, BankConnectionProcessStatus[]>
-        {
-            {Initiated, new []{Redirected, Cancelled}},
-            {Redirected, new []{RedirectUrlExpired, ErrorAtProvider, ConsentRefused, WaitingForAccountChoosing, Completed, Cancelled}},
-            {WaitingForAccountChoosing, new []{Completed, Cancelled}}
-        };
+    {
+        [Initiated] = new[] { Redirected, Cancelled },
+        [Redirected] = new[] { RedirectUrlExpired, ErrorAtProvider, ConsentRefused, WaitingForAccountChoosing, Completed, Cancelled },
+        [WaitingForAccountChoosing] = new[] { Completed, Cancelled }
+    };
 }

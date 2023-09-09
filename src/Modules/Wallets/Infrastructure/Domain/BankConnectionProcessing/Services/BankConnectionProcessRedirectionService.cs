@@ -23,13 +23,13 @@ public class BankConnectionProcessRedirectionService : IBankConnectionProcessRed
 
     public async Task<Redirection> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId)
     {
-        var customer = await _customerRepository.GetSaltEdgeCustomerForAsync(userId.Value);
+        var customer = await _customerRepository.GetSaltEdgeCustomerOrDefaultAsync(userId.Value);
         var providerCode = "fakebank_interactive_xf"; // TODO: get provider code (external bank id) from 'Banks' module
         var returnToUrl = "https://display-parameters.com/"; // TODO: get url from configuration
 
         // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
         var responseContent = await _saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl);
-        
+
         return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt.ToUniversalTime());
     }
 }

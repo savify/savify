@@ -20,7 +20,7 @@ public class UserNotificationSettingsRepository : IUserNotificationSettingsRepos
 
     public async Task<Notifications.Domain.UserNotificationSettings.UserNotificationSettings> GetByIdAsync(UserNotificationSettingsId id)
     {
-        var userNotificationSettings = await _notificationsContext.UserNotificationSettings.FirstOrDefaultAsync(x => x.Id == id);
+        var userNotificationSettings = await _notificationsContext.UserNotificationSettings.SingleOrDefaultAsync(x => x.Id == id);
 
         if (userNotificationSettings == null)
         {
@@ -32,7 +32,7 @@ public class UserNotificationSettingsRepository : IUserNotificationSettingsRepos
 
     public async Task<Notifications.Domain.UserNotificationSettings.UserNotificationSettings> GetByUserEmailAsync(string email)
     {
-        var userNotificationSettings = await _notificationsContext.UserNotificationSettings.FirstOrDefaultAsync(x => x.Email == email);
+        var userNotificationSettings = await _notificationsContext.UserNotificationSettings.SingleOrDefaultAsync(x => x.Email == email);
 
         if (userNotificationSettings == null)
         {
