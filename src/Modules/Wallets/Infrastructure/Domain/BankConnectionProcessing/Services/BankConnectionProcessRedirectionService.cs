@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
@@ -27,9 +28,16 @@ public class BankConnectionProcessRedirectionService : IBankConnectionProcessRed
         var providerCode = "fakebank_interactive_xf"; // TODO: get provider code (external bank id) from 'Banks' module
         var returnToUrl = "https://display-parameters.com/"; // TODO: get url from configuration
 
-        // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
-        var responseContent = await _saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl);
+        try
+        {
+            // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
+            var responseContent = await _saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl);
 
-        return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt.ToUniversalTime());
+            return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt.ToUniversalTime());
+        }
+        catch (SaltEdgeIntegrationException)
+        {
+            throw new DomainException("Something went wrong during bank connection processing. Try again or contact support.");
+        }
     }
 }
