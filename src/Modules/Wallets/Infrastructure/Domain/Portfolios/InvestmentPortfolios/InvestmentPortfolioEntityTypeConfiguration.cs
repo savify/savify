@@ -22,8 +22,8 @@ internal class InvestmentPortfolioEntityTypeConfiguration : IEntityTypeConfigura
             y.WithOwner().HasForeignKey("investment_portfolio_id");
             y.ToTable("assets", "wallets");
 
-            y.HasKey(x => x.Id);
-            y.Property(x => x.Id).HasColumnName("id");
+            y.HasKey("Id");
+            y.Property<AssetId>("Id").HasColumnName("id");
 
             y.Property<string>("_title").HasColumnName("title");
             y.Property<decimal>("_amount").HasColumnName("amount");
