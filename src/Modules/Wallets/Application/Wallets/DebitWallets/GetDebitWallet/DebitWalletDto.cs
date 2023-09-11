@@ -19,4 +19,8 @@ public class DebitWalletDto
     public DateTime CreatedAt { get; set; }
 
     public bool IsRemoved { get; set; }
+
+    public Guid? BankConnectionId { get; set; }
+
+    public Guid? BankAccountId { get; set; }
 }

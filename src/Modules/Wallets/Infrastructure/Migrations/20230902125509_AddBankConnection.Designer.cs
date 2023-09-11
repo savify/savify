@@ -3,6 +3,7 @@ using System;
 using App.Modules.Wallets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.Wallets.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletsContext))]
-    partial class AccountsContextModelSnapshot : ModelSnapshot
+    [Migration("20230902125509_AddBankConnection")]
+    partial class AddBankConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,43 +116,70 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                     b.ToTable("internal_commands", "wallets");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
+            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("_title")
-                        .IsRequired()
+                    b.Property<Guid>("BankId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("bank_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("wallet_id");
+
+                    b.Property<DateTime?>("_expiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<DateTime>("_initiatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("initiated_at");
+
+                    b.Property<string>("_redirectUrl")
                         .HasColumnType("text")
-                        .HasColumnName("title");
+                        .HasColumnName("redirect_url");
+
+                    b.Property<DateTime?>("_updatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
-                    b.ToTable("investment_portfolios", "wallets");
+                    b.ToTable("bank_connection_processes", "wallets");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Portfolios.PortfolioViewMetadata.PortfolioViewMetadata", b =>
+            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnections.BankConnection", b =>
                 {
-                    b.Property<Guid>("PortfolioId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("portfolio_id");
+                        .HasColumnName("id");
 
-                    b.Property<string>("Color")
-                        .HasColumnType("text")
-                        .HasColumnName("color");
+                    b.Property<Guid?>("BankId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("bank_id");
 
-                    b.Property<string>("Icon")
-                        .HasColumnType("text")
-                        .HasColumnName("icon");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
-                    b.Property<bool>("IsConsideredInTotalBalance")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_considered_in_total_balance");
+                    b.Property<DateTime>("_createdAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
-                    b.HasKey("PortfolioId");
+                    b.Property<DateTime?>("_refreshedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("refreshed_at");
 
-                    b.ToTable("portfolio_view_matadata", "wallets");
+                    b.HasKey("Id");
+
+                    b.ToTable("bank_connections", "wallets");
                 });
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CashWallets.CashWallet", b =>
@@ -299,101 +329,168 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                     b.ToTable("wallet_view_metadata", "wallets");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
+            modelBuilder.Entity("App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections.SaltEdgeConnection", b =>
                 {
-                    b.OwnsMany("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets.Asset", "_assets", b1 =>
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id");
+
+                    b.Property<string>("CountryCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("country_code");
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("customer_id");
+
+                    b.Property<Guid>("InternalConnectionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("internal_connection_id");
+
+                    b.Property<string>("LastConsentId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("last_consent_id");
+
+                    b.Property<string>("ProviderCode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("provider_code");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("salt_edge_connections", "wallets");
+                });
+
+            modelBuilder.Entity("App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Customers.SaltEdgeCustomer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("Identifier")
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("salt_edge_customers", "wallets");
+                });
+
+            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
+                {
+                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcessStatus", "_status", b1 =>
+                        {
+                            b1.Property<Guid>("BankConnectionProcessId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("status");
+
+                            b1.HasKey("BankConnectionProcessId");
+
+                            b1.ToTable("bank_connection_processes", "wallets");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BankConnectionProcessId");
+                        });
+
+                    b.Navigation("_status");
+                });
+
+            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnections.BankConnection", b =>
+                {
+                    b.OwnsMany("App.Modules.Wallets.Domain.BankConnections.BankAccounts.BankAccount", "_accounts", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
 
-                            b1.Property<decimal>("_amount")
-                                .HasColumnType("numeric")
+                            b1.Property<Guid>("BankConnectionId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("bank_connection_id");
+
+                            b1.Property<int>("_amount")
+                                .HasColumnType("integer")
                                 .HasColumnName("amount");
 
-                            b1.Property<string>("_country")
+                            b1.Property<string>("_externalId")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("country");
+                                .HasColumnName("external_id");
 
-                            b1.Property<string>("_exchange")
+                            b1.Property<string>("_name")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("exchange");
+                                .HasColumnName("name");
 
-                            b1.Property<DateTime?>("_purchasedAt")
-                                .HasColumnType("timestamp with time zone")
-                                .HasColumnName("purchased_at");
+                            b1.HasKey("Id", "BankConnectionId");
 
-                            b1.Property<string>("_tickerSymbol")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("ticker_symbol");
+                            b1.HasIndex("BankConnectionId");
 
-                            b1.Property<string>("_title")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("title");
-
-                            b1.Property<Guid>("investment_portfolio_id")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("investment_portfolio_id");
-
-                            b1.ToTable("assets", "wallets");
+                            b1.ToTable("bank_accounts", "wallets");
 
                             b1.WithOwner()
-                                .HasForeignKey("investment_portfolio_id");
+                                .HasForeignKey("BankConnectionId");
 
-                            b1.OwnsOne("App.Modules.Wallets.Domain.Finance.Money", "_purchasePrice", b2 =>
+                            b1.OwnsOne("App.Modules.Wallets.Domain.Currency", "_currency", b2 =>
                                 {
-                                    b2.Property<Guid>("AssetId")
+                                    b2.Property<Guid>("BankAccountId")
                                         .HasColumnType("uuid");
 
-                                    b2.Property<decimal>("Amount")
-                                        .HasColumnType("money")
-                                        .HasColumnName("purchase_price_amount");
+                                    b2.Property<Guid>("BankAccountBankConnectionId")
+                                        .HasColumnType("uuid");
 
-                                    b2.HasKey("AssetId");
+                                    b2.Property<string>("Value")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("currency");
 
-                                    b2.ToTable("assets", "wallets");
+                                    b2.HasKey("BankAccountId", "BankAccountBankConnectionId");
+
+                                    b2.ToTable("bank_accounts", "wallets");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("AssetId");
-
-                                    b2.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "Currency", b3 =>
-                                        {
-                                            b3.Property<Guid>("MoneyAssetId")
-                                                .HasColumnType("uuid");
-
-                                            b3.Property<string>("Value")
-                                                .IsRequired()
-                                                .HasColumnType("text")
-                                                .HasColumnName("purchase_price_currency");
-
-                                            b3.HasKey("MoneyAssetId");
-
-                                            b3.ToTable("assets", "wallets");
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("MoneyAssetId");
-                                        });
-
-                                    b2.Navigation("Currency")
-                                        .IsRequired();
+                                        .HasForeignKey("BankAccountId", "BankAccountBankConnectionId");
                                 });
 
-                            b1.Navigation("_purchasePrice");
+                            b1.Navigation("_currency");
                         });
 
-                    b.Navigation("_assets");
+                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnections.Consent", "_consent", b1 =>
+                        {
+                            b1.Property<Guid>("BankConnectionId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTime>("ExpiresAt")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("consent_expires_at");
+
+                            b1.HasKey("BankConnectionId");
+
+                            b1.ToTable("bank_connections", "wallets");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BankConnectionId");
+                        });
+
+                    b.Navigation("_accounts");
+
+                    b.Navigation("_consent");
                 });
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CashWallets.CashWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("CashWalletId")
                                 .HasColumnType("uuid");
@@ -416,7 +513,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CreditWallets.CreditWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("CreditWalletId")
                                 .HasColumnType("uuid");
@@ -439,7 +536,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.DebitWallets.DebitWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("DebitWalletId")
                                 .HasColumnType("uuid");

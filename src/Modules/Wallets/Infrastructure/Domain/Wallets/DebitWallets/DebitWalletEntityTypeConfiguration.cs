@@ -1,5 +1,6 @@
-using App.Modules.Wallets.Domain.Finance;
 using App.Modules.Wallets.Domain.Users;
+using App.Modules.Wallets.Domain.Wallets.BankAccountConnections;
+using App.Modules.Wallets.Domain.Finance;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,6 +27,12 @@ internal class DebitWalletEntityTypeConfiguration : IEntityTypeConfiguration<Deb
         builder.OwnsOne<Currency>("_currency", b =>
         {
             b.Property(currency => currency.Value).HasColumnName("currency");
+        });
+
+        builder.OwnsOne<BankAccountConnection?>("_bankAccountConnection", b =>
+        {
+            b.Property(connection => connection.Id).HasColumnName("bank_connection_id");
+            b.Property(connection => connection.BankAccountId).HasColumnName("bank_account_id");
         });
     }
 }

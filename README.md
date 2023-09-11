@@ -19,7 +19,12 @@
     ```bash
     make db-update
     ```
-4. Build and run project (API)
+4. For making API calls to external providers, you should set all required [secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=linux) for a project. Run
+    ```bash
+   dotnet user-secrets set "SaltEdge:AppId" "**AppId**" --project src/API
+   dotnet user-secrets set "SaltEdge:AppSecret" "**AppSecret**" --project src/API
+   ```
+5. Build and run project (API)
 
 ### Available hosts
 * [API - http://localhost:8080/](http://localhost:8080/)
@@ -41,4 +46,11 @@ Example:
 * Pull request from `feature/SAV-1-user-access-module-init` to `main` branch: `feat(SAV-1): user access module initialization`
 * When merging pull request remember about squashing commits from your branch.
 
+### Code standards
+We use `.editorconfig` to ensure the same code standards on all local environments. Make sure you have `dotnet-format` 
+tool installed; Run:
+```
+dotnet tool install -g dotnet-format --version "7.*" --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json
+```
+to install it. Before each commit run `make codestyle-fix` to align all changed files to .editorconfig settings.
 

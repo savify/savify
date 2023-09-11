@@ -8,6 +8,7 @@ using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
+using App.Integrations.SaltEdge;
 using App.Modules.Notifications.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
@@ -66,6 +67,8 @@ public class Program
             });
         });
 
+        builder.Services.AddSaltEdgeIntegration(builder.Configuration);
+
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);
         builder.Services.AddWalletsModule(builder.Configuration, _logger);
@@ -116,14 +119,14 @@ public class Program
 
     private static void ConfigureLogger()
     {
-        string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
 
         _logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .Enrich.WithSensitiveDataMasking()
             .Destructure.UsingAttributes()
             .Enrich.WithProperty("Environment", environment!)
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
+            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
             .CreateLogger();
 
         _loggerForApi = _logger.ForContext("Module", "API");

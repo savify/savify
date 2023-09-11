@@ -26,13 +26,10 @@ internal static class EmailModule
                 return new EmailMessageMapper(configuration);
             });
 
-            services.AddScoped<IEmailSender>(provider =>
-            {
-                return new EmailSender(
-                    provider.GetService<EmailMessageMapper>(),
-                    configuration,
-                    provider.GetService<ILogger>());
-            });
+            services.AddScoped<IEmailSender>(provider => new EmailSender(
+                provider.GetService<EmailMessageMapper>(),
+                configuration,
+                provider.GetService<ILogger>()));
 
             services.AddScoped<IEmailTemplateGenerator, EmailTemplateGenerator>();
             services.AddScoped<IEmailMessageFactory, EmailMessageFactory>();

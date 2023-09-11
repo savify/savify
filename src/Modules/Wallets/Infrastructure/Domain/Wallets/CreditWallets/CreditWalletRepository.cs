@@ -22,7 +22,7 @@ internal class CreditWalletRepository : ICreditWalletRepository
 
     public async Task<CreditWallet> GetByIdAsync(WalletId id)
     {
-        var wallet = await _walletsContext.CreditWallets.FirstOrDefaultAsync(wallet => wallet.Id == id);
+        var wallet = await _walletsContext.CreditWallets.SingleOrDefaultAsync(wallet => wallet.Id == id);
 
         if (wallet is null)
         {
@@ -34,7 +34,7 @@ internal class CreditWalletRepository : ICreditWalletRepository
 
     public async Task<CreditWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId)
     {
-        var wallet = await _walletsContext.CreditWallets.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var wallet = await _walletsContext.CreditWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (wallet == null)
         {
