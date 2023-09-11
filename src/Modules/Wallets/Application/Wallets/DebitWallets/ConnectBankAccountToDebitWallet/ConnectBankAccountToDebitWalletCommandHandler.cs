@@ -8,7 +8,7 @@ using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 
-internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<ConnectBankAccountToDebitWalletCommand, string>
+internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<ConnectBankAccountToDebitWalletCommand, BankConnectionProcessInitiationResult>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 
@@ -30,7 +30,7 @@ internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<C
         _bankConnectionProcessRedirectionService = bankConnectionProcessRedirectionService;
     }
 
-    public async Task<string> Handle(ConnectBankAccountToDebitWalletCommand command, CancellationToken cancellationToken)
+    public async Task<BankConnectionProcessInitiationResult> Handle(ConnectBankAccountToDebitWalletCommand command, CancellationToken cancellationToken)
     {
         var wallet = await _debitWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
 
@@ -39,6 +39,6 @@ internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<C
 
         await _bankConnectionProcessRepository.AddAsync(bankConnectionProcess);
 
-        return redirectUrl;
+        return new BankConnectionProcessInitiationResult(bankConnectionProcess.Id.Value, redirectUrl);
     }
 }

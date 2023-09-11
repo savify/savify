@@ -2,7 +2,7 @@ using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 
-public class ConnectBankAccountToDebitWalletCommand : CommandBase<string>
+public class ConnectBankAccountToDebitWalletCommand : CommandBase<BankConnectionProcessInitiationResult>
 {
     public Guid UserId { get; }
 

@@ -4,16 +4,20 @@ using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Infrastructure.Configuration;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Wallets.IntegrationTests.SeedData;
 using Dapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using WireMock.Server;
 
 namespace App.Modules.Wallets.IntegrationTests.SeedWork;
 
 public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
+
+    protected SaltEdgeHttpClientMocker SaltEdgeHttpClientMocker { get; private set; }
 
     protected IWalletsModule WalletsModule { get; private set; }
 
@@ -36,6 +40,14 @@ public class TestBase
         using var scope = WebApplicationFactory.Services.CreateScope();
         WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
         WalletsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+
+        SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
+    }
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        SaltEdgeHttpClientMocker.StopWireMockServer();
     }
 
     [SetUp]

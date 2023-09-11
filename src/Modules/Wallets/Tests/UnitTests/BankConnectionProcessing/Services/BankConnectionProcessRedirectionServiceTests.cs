@@ -19,7 +19,7 @@ public class BankConnectionProcessRedirectionServiceTests : UnitTestBase
         var bankId = new BankId(Guid.NewGuid());
 
         var customerRepository = Substitute.For<ISaltEdgeCustomerRepository>();
-        customerRepository.GetSaltEdgeCustomerForAsync(userId.Value).Returns(new SaltEdgeCustomer("123456", userId.Value));
+        customerRepository.GetSaltEdgeCustomerOrDefaultAsync(userId.Value).Returns(new SaltEdgeCustomer("123456", userId.Value));
 
         var responseContent = new CreateConnectSessionResponseContent();
         responseContent.ConnectUrl = "https://connect-url.com/connect";
@@ -41,7 +41,7 @@ public class BankConnectionProcessRedirectionServiceTests : UnitTestBase
         Assert.That(redirection.Url, Is.EqualTo(responseContent.ConnectUrl));
         Assert.That(redirection.ExpiresAt, Is.EqualTo(responseContent.ExpiresAt));
 
-        await customerRepository.Received(1).GetSaltEdgeCustomerForAsync(userId.Value);
+        await customerRepository.Received(1).GetSaltEdgeCustomerOrDefaultAsync(userId.Value);
         await integrationService.Received(1).CreateConnectSessionAsync(bankConnectionProcessId.Value,
             "123456",
             "fakebank_interactive_xf",

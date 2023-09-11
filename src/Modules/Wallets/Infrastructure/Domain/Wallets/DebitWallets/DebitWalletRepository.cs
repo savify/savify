@@ -22,7 +22,7 @@ internal class DebitWalletRepository : IDebitWalletRepository
 
     public async Task<DebitWallet> GetByIdAsync(WalletId id)
     {
-        var wallet = await _walletsContext.DebitWallets.FirstOrDefaultAsync(wallet => wallet.Id == id);
+        var wallet = await _walletsContext.DebitWallets.SingleOrDefaultAsync(wallet => wallet.Id == id);
 
         if (wallet is null)
         {
@@ -34,7 +34,7 @@ internal class DebitWalletRepository : IDebitWalletRepository
 
     public async Task<DebitWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId)
     {
-        var wallet = await _walletsContext.DebitWallets.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var wallet = await _walletsContext.DebitWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (wallet == null)
         {
