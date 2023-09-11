@@ -5,7 +5,7 @@ namespace App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets;
 
 public class Asset : Entity
 {
-    public AssetId Id { get; private set; }
+    internal AssetId Id { get; private set; }
 
     private string _title;
 
