@@ -43,7 +43,6 @@ public class Program
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
 
-        builder.Services.AddHttpClient();
         builder.Services.AddLocalization();
         builder.Services.AddDistributedMemoryCache();
         builder.Services.AddSingleton<ILocalizerFactory, JsonStringLocalizerFactory>();
@@ -68,7 +67,7 @@ public class Program
             });
         });
 
-        builder.Services.AddSaltEdgeIntegration(builder.Configuration, _logger);
+        builder.Services.AddSaltEdgeIntegration(builder.Configuration);
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);

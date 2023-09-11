@@ -19,7 +19,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
     public async Task<CreateCustomerResponseContent> CreateCustomerAsync(Guid userId)
     {
-        var request = Request.Post("/customers")
+        var request = Request.Post("customers")
             .WithContent(new CreateCustomerRequestContent(userId.ToString()));
         var response = await _client.SendAsync(request);
 
@@ -33,7 +33,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
     public async Task<CreateConnectSessionResponseContent> CreateConnectSessionAsync(Guid bankConnectionProcessId, string customerId, string providerCode, string returnToUrl)
     {
-        var request = Request.Post("/connect_sessions/create")
+        var request = Request.Post("connect_sessions/create")
             .WithContent(new CreateConnectSessionRequestContent(
                 customerId,
                 providerCode,
@@ -52,7 +52,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
     public async Task<SaltEdgeConnection> FetchConnectionAsync(string connectionId)
     {
-        var request = Request.Get($"/connections/{connectionId}");
+        var request = Request.Get($"connections/{connectionId}");
 
         var response = await _client.SendAsync(request);
 
@@ -73,7 +73,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
     public async Task<Consent> FetchConsentAsync(string consentId, string connectionId)
     {
-        var request = Request.Get($"/consents/{consentId}").WithQueryParameter("connection_id", connectionId);
+        var request = Request.Get($"consents/{consentId}").WithQueryParameter("connection_id", connectionId);
 
         var response = await _client.SendAsync(request);
 
@@ -94,7 +94,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
     public async Task<List<SaltEdgeAccount>> FetchAccountsAsync(string connectionId)
     {
-        var request = Request.Get("/accounts").WithQueryParameter("connection_id", connectionId);
+        var request = Request.Get("accounts").WithQueryParameter("connection_id", connectionId);
 
         var response = await _client.SendAsync(request);
 

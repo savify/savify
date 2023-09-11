@@ -45,16 +45,26 @@ public class BankConnectionProcess : Entity, IAggregateRoot
             new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
             new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Redirected));
 
-        var redirection = await redirectionService.Redirect(Id, UserId, BankId);
+        try
+        {
+            var redirection = await redirectionService.Redirect(Id, UserId, BankId);
 
-        _redirectUrl = redirection.Url;
-        _redirectUrlExpiresAt = redirection.ExpiresAt;
-        _status = BankConnectionProcessStatus.Redirected;
-        _updatedAt = DateTime.UtcNow;
+            _redirectUrl = redirection.Url;
+            _redirectUrlExpiresAt = redirection.ExpiresAt;
+            _status = BankConnectionProcessStatus.Redirected;
+            _updatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new UserRedirectedDomainEvent(Id, _redirectUrlExpiresAt.Value));
+            AddDomainEvent(new UserRedirectedDomainEvent(Id, _redirectUrlExpiresAt.Value));
 
-        return _redirectUrl;
+            return _redirectUrl;
+        }
+        catch (DomainException)
+        {
+            _status = BankConnectionProcessStatus.ErrorAtProvider;
+            _updatedAt = DateTime.UtcNow;
+
+            throw;
+        }
     }
 
     public async Task<BankConnection> CreateConnection(
@@ -64,29 +74,38 @@ public class BankConnectionProcess : Entity, IAggregateRoot
     {
         CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
-        var connection = await connectionCreationService.CreateConnection(Id, UserId, BankId, externalConnectionId);
-
-        if (connection.HasMultipleBankAccounts())
+        try
         {
-            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.WaitingForAccountChoosing));
-            _status = BankConnectionProcessStatus.WaitingForAccountChoosing;
+            var connection = await connectionCreationService.CreateConnection(Id, UserId, BankId, externalConnectionId);
+
+            if (connection.HasMultipleBankAccounts())
+            {
+                CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.WaitingForAccountChoosing));
+                _status = BankConnectionProcessStatus.WaitingForAccountChoosing;
+            }
+            else
+            {
+                CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
+
+                var bankAccountId = connection.GetSingleBankAccount().Id;
+                await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
+
+                _status = BankConnectionProcessStatus.Completed;
+
+                AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
+            }
+
+            _updatedAt = DateTime.UtcNow;
+
+            return connection;
         }
-        else
+        catch (DomainException)
         {
-            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
+            _status = BankConnectionProcessStatus.ErrorAtProvider;
+            _updatedAt = DateTime.UtcNow;
 
-            // TODO: at this moment bank connection does not exist (it will be added in CommandHandler); We need to save connection in previous step (ConnectioCreationService)
-            var bankAccountId = connection.GetSingleBankAccount().Id;
-            await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
-
-            _status = BankConnectionProcessStatus.Completed;
-
-            AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
+            throw;
         }
-
-        _updatedAt = DateTime.UtcNow;
-
-        return connection;
     }
 
     public async Task ChooseBankAccount(BankAccountId bankAccountId, IBankAccountConnector bankAccountConnector)

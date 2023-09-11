@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge;
@@ -23,10 +24,17 @@ public class BankConnectionProcessInitiationService : IBankConnectionProcessInit
 
         if (customer is null)
         {
-            var responseContent = await _saltEdgeIntegrationService.CreateCustomerAsync(userId.Value);
-            await _customerRepository.AddAsync(new SaltEdgeCustomer(
-                responseContent.Id,
-                Guid.Parse(responseContent.Identifier)));
+            try
+            {
+                var responseContent = await _saltEdgeIntegrationService.CreateCustomerAsync(userId.Value);
+                await _customerRepository.AddAsync(new SaltEdgeCustomer(
+                    responseContent.Id,
+                    Guid.Parse(responseContent.Identifier)));
+            }
+            catch (SaltEdgeIntegrationException)
+            {
+                throw new DomainException("Something went wrong during bank connection process initiation. Try again or contact support.");
+            }
         }
     }
 }

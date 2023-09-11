@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
@@ -28,22 +29,34 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
 
     public async Task<BankConnection> CreateConnection(BankConnectionProcessId id, UserId userId, BankId bankId, string externalConnectionId)
     {
-        var saltEdgeConnection = await _saltEdgeIntegrationService.FetchConnectionAsync(externalConnectionId);
-        var saltEdgeConsent = await _saltEdgeIntegrationService.FetchConsentAsync(saltEdgeConnection.LastConsentId, saltEdgeConnection.Id);
-        var saltEdgeAccounts = await _saltEdgeIntegrationService.FetchAccountsAsync(saltEdgeConnection.Id);
+        try
+        {
+            var saltEdgeConnection = await _saltEdgeIntegrationService.FetchConnectionAsync(externalConnectionId);
+            var saltEdgeConsent = await _saltEdgeIntegrationService.FetchConsentAsync(saltEdgeConnection.LastConsentId, saltEdgeConnection.Id);
+            var saltEdgeAccounts = await _saltEdgeIntegrationService.FetchAccountsAsync(saltEdgeConnection.Id);
 
-        var connection = BankConnection.CreateFromBankConnectionProcess(id, bankId, userId, new Consent(saltEdgeConsent.ExpiresAt?.ToUniversalTime() ?? DateTime.MaxValue.ToUniversalTime()));
+            var connection = BankConnection.CreateFromBankConnectionProcess(
+                id,
+                bankId,
+                userId,
+                new Consent(saltEdgeConsent.ExpiresAt?.ToUniversalTime() ?? DateTime.MaxValue.ToUniversalTime()));
 
-        saltEdgeConnection.InternalConnectionId = connection.Id.Value;
-        saltEdgeAccounts.ForEach(account => connection.AddBankAccount(
-            account.Id,
-            account.Name,
-            (int)(account.Balance * 100.00),
-            new Currency(account.CurrencyCode)));
+            saltEdgeConnection.InternalConnectionId = connection.Id.Value;
+            saltEdgeAccounts.ForEach(account => connection.AddBankAccount(
+                account.Id,
+                account.Name,
+                (int)(account.Balance * 100.00),
+                new Currency(account.CurrencyCode)));
 
-        await _connectionRepository.AddAsync(saltEdgeConnection);
-        await _bankConnectionRepository.AddAsync(connection);
+            await _connectionRepository.AddAsync(saltEdgeConnection);
+            await _bankConnectionRepository.AddAsync(connection);
 
-        return connection;
+            return connection;
+        }
+        catch (SaltEdgeIntegrationException)
+        {
+            throw new DomainException("Something went wrong during bank connection processing. Try again or contact support.");
+        }
+
     }
 }
