@@ -74,7 +74,7 @@ public class ModulesTests : TestBase
 
         AssertArchTestResult(result);
     }
-    
+
     [Test]
     public void WalletsModule_DoesNotHave_Dependency_On_Other_Modules()
     {
@@ -102,7 +102,7 @@ public class ModulesTests : TestBase
 
         AssertArchTestResult(result);
     }
-    
+
     [Test]
     public void BanksModule_DoesNotHave_Dependency_On_Other_Modules()
     {

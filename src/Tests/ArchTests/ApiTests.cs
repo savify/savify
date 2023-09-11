@@ -42,7 +42,7 @@ public class ApiTests : TestBase
 
         AssertArchTestResult(result);
     }
-    
+
     [Test]
     public void WalletsApi_DoesNotHaveDependency_ToOtherModules()
     {
@@ -61,7 +61,7 @@ public class ApiTests : TestBase
 
         AssertArchTestResult(result);
     }
-    
+
     [Test]
     public void BanksApi_DoesNotHaveDependency_ToOtherModules()
     {

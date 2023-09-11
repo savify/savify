@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Domain;
+using App.Modules.Banks.Domain.Banks.Events;
 using App.Modules.Banks.Domain.ExternalProviders;
 
 namespace App.Modules.Banks.Domain.Banks;
@@ -67,6 +68,8 @@ public class Bank : Entity, IAggregateRoot
         _isRegulated = isRegulated;
         _maxConsentDays = maxConsentDays;
         _defaultLogoUrl = defaultLogoUrl;
+
+        AddDomainEvent(new BankAddedDomainEvent(Id, externalProviderName, externalId));
     }
 
     private Bank() { }

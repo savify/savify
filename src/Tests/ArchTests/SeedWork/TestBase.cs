@@ -10,9 +10,9 @@ public abstract class TestBase
     public const string UserAccessNamespace = "App.Modules.UserAccess";
 
     public const string NotificationsNamespace = "App.Modules.Notifications";
-    
+
     public const string WalletsNamespace = "App.Modules.Wallets";
-    
+
     public const string BanksNamespace = "App.Modules.Banks";
 
     protected static void AssertAreImmutable(IEnumerable<Type> types)
