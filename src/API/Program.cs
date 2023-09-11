@@ -67,7 +67,7 @@ public class Program
             });
         });
 
-        builder.Services.AddSaltEdgeIntegration(builder.Configuration, _logger);
+        builder.Services.AddSaltEdgeIntegration(builder.Configuration);
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);
@@ -119,7 +119,7 @@ public class Program
 
     private static void ConfigureLogger()
     {
-        string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
 
         _logger = new LoggerConfiguration()
             .Enrich.FromLogContext()

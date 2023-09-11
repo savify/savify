@@ -21,7 +21,7 @@ public class WalletViewMetadataRepository : IWalletViewMetadataRepository
 
     public async Task<Modules.Wallets.Domain.Wallets.WalletViewMetadata.WalletViewMetadata> GetByWalletIdAsync(WalletId walletId)
     {
-        var walletViewMetadata = await _walletsContext.WalletsViewMetadata.FirstOrDefaultAsync(x => x.WalletId == walletId);
+        var walletViewMetadata = await _walletsContext.WalletsViewMetadata.SingleOrDefaultAsync(x => x.WalletId == walletId);
 
         if (walletViewMetadata == null)
         {

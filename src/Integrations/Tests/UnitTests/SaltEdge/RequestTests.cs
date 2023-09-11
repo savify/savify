@@ -12,7 +12,7 @@ public class RequestTests
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Get));
         Assert.That(request.Content, Is.Null);
-        Assert.That(request.GetFullUrl("https://www.saltedge.com/api/v5"), Is.EqualTo("https://www.saltedge.com/api/v5" + "/some-path"));
+        Assert.That(request.GetFullUrl(), Is.EqualTo("/some-path"));
     }
 
     [Test]
@@ -22,7 +22,7 @@ public class RequestTests
             .WithQueryParameter("foo", "bar")
             .WithQueryParameter("abc", 123);
 
-        Assert.That(request.GetFullUrl("https://www.saltedge.com/api/v5"), Is.EqualTo("https://www.saltedge.com/api/v5" + "/some-path" + "?foo=bar&abc=123"));
+        Assert.That(request.GetFullUrl(), Is.EqualTo("/some-path" + "?foo=bar&abc=123"));
     }
 
     [Test]
@@ -37,7 +37,7 @@ public class RequestTests
         var request = Request.Get("/some-path")
             .WithQueryParameters(queryParameters);
 
-        Assert.That(request.GetFullUrl("https://www.saltedge.com/api/v5"), Is.EqualTo("https://www.saltedge.com/api/v5" + "/some-path" + "?foo=bar&abc=123"));
+        Assert.That(request.GetFullUrl(), Is.EqualTo("/some-path" + "?foo=bar&abc=123"));
     }
 
     [Test]
@@ -55,7 +55,7 @@ public class RequestTests
         var requestContent = await request.Content.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Post));
-        Assert.That(requestContent, Is.EqualTo("{\"foo\":\"bar\",\"abc\":123}"));
+        Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
     }
 
     [Test]
@@ -73,7 +73,7 @@ public class RequestTests
         var requestContent = await request.Content.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Put));
-        Assert.That(requestContent, Is.EqualTo("{\"foo\":\"bar\",\"abc\":123}"));
+        Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
     }
 
     [Test]
@@ -91,7 +91,7 @@ public class RequestTests
         var requestContent = await request.Content.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Patch));
-        Assert.That(requestContent, Is.EqualTo("{\"foo\":\"bar\",\"abc\":123}"));
+        Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
     }
 
     [Test]

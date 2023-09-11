@@ -1,5 +1,5 @@
+using App.Modules.Wallets.Domain;
 using App.Modules.Wallets.Domain.Users;
-using App.Modules.Wallets.Domain.Wallets;
 using App.Modules.Wallets.Domain.Wallets.CashWallets;
 using App.Modules.Wallets.Domain.Wallets.CashWallets.Events;
 using App.Modules.Wallets.Domain.Wallets.CashWallets.Rules;

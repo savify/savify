@@ -1,15 +1,21 @@
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.Modules.Wallets.Domain.BankConnectionProcessing;
+using App.Modules.Wallets.Domain.BankConnections;
 using App.Modules.Wallets.Domain.Wallets.CashWallets;
 using App.Modules.Wallets.Domain.Wallets.CreditWallets;
 using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
+using App.Modules.Wallets.Infrastructure.Domain.BankConnectionProcessing;
+using App.Modules.Wallets.Infrastructure.Domain.BankConnections;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.CashWallets;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.CreditWallets;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.DebitWallets;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.WalletViewMetadata;
 using App.Modules.Wallets.Infrastructure.Inbox;
+using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections;
+using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Customers;
 using App.Modules.Wallets.Infrastructure.InternalCommands;
 using App.Modules.Wallets.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +38,14 @@ public class WalletsContext : DbContext
 
     public DbSet<InternalCommand>? InternalCommands { get; set; }
 
+    public DbSet<BankConnectionProcess>? BankConnectionProcesses { get; set; }
+
+    public DbSet<BankConnection>? BankConnections { get; set; }
+
+    public DbSet<SaltEdgeCustomer>? SaltEdgeCustomers { get; set; }
+
+    public DbSet<SaltEdgeConnection>? SaltEdgeConnections { get; set; }
+
     public WalletsContext(DbContextOptions<WalletsContext> options) : base(options)
     {
     }
@@ -45,5 +59,9 @@ public class WalletsContext : DbContext
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new BankConnectionProcessEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new BankConnectionEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new SaltEdgeCustomerEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new SaltEdgeConnectionEntityTypeConfiguration());
     }
 }

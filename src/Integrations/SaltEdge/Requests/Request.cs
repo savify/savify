@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+using App.Integrations.SaltEdge.Json;
 
 namespace App.Integrations.SaltEdge.Requests;
 
@@ -29,21 +30,24 @@ public abstract class Request
 
     public Request WithQueryParameters(IDictionary<string, object> queryParameters)
     {
-        _queryParameters = queryParameters;
+        foreach (var queryParameter in queryParameters)
+        {
+            _queryParameters[queryParameter.Key] = queryParameter.Value;
+        }
 
         return this;
     }
 
-    public string GetFullUrl(string url)
+    public string GetFullUrl()
     {
         if (_queryParameters.Any())
         {
             var queryParameters = _queryParameters.Select(parameter => $"{parameter.Key}={parameter.Value}");
 
-            return url + Path + "?" + string.Join("&", queryParameters);
+            return Path + "?" + string.Join("&", queryParameters);
         }
 
-        return url + Path;
+        return Path;
     }
 
     public static GetRequest Get(string path)
@@ -87,7 +91,10 @@ public class PostRequest : Request
     public Request WithContent(object content)
     {
         Content = new StringContent(
-            JsonSerializer.Serialize(content),
+            JsonSerializer.Serialize(new Dictionary<string, object> { { "data", content } }, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
+            }),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
 
@@ -104,7 +111,10 @@ public class PatchRequest : Request
     public Request WithContent(object content)
     {
         Content = new StringContent(
-            JsonSerializer.Serialize(content),
+            JsonSerializer.Serialize(new Dictionary<string, object> { { "data", content } }, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
+            }),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
 
@@ -121,7 +131,10 @@ public class PutRequest : Request
     public Request WithContent(object content)
     {
         Content = new StringContent(
-            JsonSerializer.Serialize(content),
+            JsonSerializer.Serialize(new Dictionary<string, object> { { "data", content } }, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = new SnakeCaseNamingPolicy()
+            }),
             Encoding.UTF8,
             MediaTypeNames.Application.Json);
 

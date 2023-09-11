@@ -20,7 +20,7 @@ public class UserRegistrationRepository : IUserRegistrationRepository
 
     public async Task<UserRegistration> GetByIdAsync(UserRegistrationId id)
     {
-        var userRegistration = await _userAccessContext.UserRegistrations.FirstOrDefaultAsync(x => x.Id == id);
+        var userRegistration = await _userAccessContext.UserRegistrations.SingleOrDefaultAsync(x => x.Id == id);
 
         if (userRegistration == null)
         {
