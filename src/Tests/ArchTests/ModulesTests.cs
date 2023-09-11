@@ -1,11 +1,17 @@
 using System.Reflection;
 using App.ArchTests.SeedWork;
+using App.Modules.Banks.Application.Contracts;
+using App.Modules.Banks.Domain.Banks;
+using App.Modules.Banks.Infrastructure;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Domain.UserNotificationSettings;
 using App.Modules.Notifications.Infrastructure;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Infrastructure;
+using App.Modules.Wallets.Application.Contracts;
+using App.Modules.Wallets.Domain.Wallets.DebitWallets;
+using App.Modules.Wallets.Infrastructure;
 using MediatR;
 
 namespace App.ArchTests;
@@ -18,7 +24,9 @@ public class ModulesTests : TestBase
     {
         var otherModules = new List<string>
         {
-            NotificationsNamespace
+            NotificationsNamespace,
+            WalletsNamespace,
+            BanksNamespace
         };
         List<Assembly> userAccessAssemblies = new List<Assembly>
         {
@@ -44,7 +52,9 @@ public class ModulesTests : TestBase
     {
         var otherModules = new List<string>
         {
-            UserAccessNamespace
+            UserAccessNamespace,
+            WalletsNamespace,
+            BanksNamespace
         };
         List<Assembly> notificationAssemblies = new List<Assembly>
         {
@@ -54,6 +64,62 @@ public class ModulesTests : TestBase
         };
 
         var result = Types.InAssemblies(notificationAssemblies)
+            .That()
+            .DoNotImplementInterface(typeof(INotificationHandler<>))
+            .And().DoNotHaveNameEndingWith("IntegrationEventHandler")
+            .And().DoNotHaveName("EventBusInitialization")
+            .Should()
+            .NotHaveDependencyOnAny(otherModules.ToArray())
+            .GetResult();
+
+        AssertArchTestResult(result);
+    }
+    
+    [Test]
+    public void WalletsModule_DoesNotHave_Dependency_On_Other_Modules()
+    {
+        var otherModules = new List<string>
+        {
+            UserAccessNamespace,
+            NotificationsNamespace,
+            BanksNamespace
+        };
+        List<Assembly> walletsAssemblies = new List<Assembly>
+        {
+            typeof(IWalletsModule).Assembly,
+            typeof(DebitWallet).Assembly,
+            typeof(WalletsContext).Assembly
+        };
+
+        var result = Types.InAssemblies(walletsAssemblies)
+            .That()
+            .DoNotImplementInterface(typeof(INotificationHandler<>))
+            .And().DoNotHaveNameEndingWith("IntegrationEventHandler")
+            .And().DoNotHaveName("EventBusInitialization")
+            .Should()
+            .NotHaveDependencyOnAny(otherModules.ToArray())
+            .GetResult();
+
+        AssertArchTestResult(result);
+    }
+    
+    [Test]
+    public void BanksModule_DoesNotHave_Dependency_On_Other_Modules()
+    {
+        var otherModules = new List<string>
+        {
+            UserAccessNamespace,
+            NotificationsNamespace,
+            WalletsNamespace
+        };
+        List<Assembly> banksAssemblies = new List<Assembly>
+        {
+            typeof(IBanksModule).Assembly,
+            typeof(Bank).Assembly,
+            typeof(BanksContext).Assembly
+        };
+
+        var result = Types.InAssemblies(banksAssemblies)
             .That()
             .DoNotImplementInterface(typeof(INotificationHandler<>))
             .And().DoNotHaveNameEndingWith("IntegrationEventHandler")
