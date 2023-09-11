@@ -18,6 +18,6 @@ public class SaltEdgeConnectionRepository : ISaltEdgeConnectionRepository
 
     public async Task<SaltEdgeConnection?> GetByInternalIdAsync(Guid internalConnectionId)
     {
-        return await _walletsContext.SaltEdgeConnections.FirstOrDefaultAsync(x => x.InternalConnectionId == internalConnectionId);
+        return await _walletsContext.SaltEdgeConnections.SingleOrDefaultAsync(x => x.InternalConnectionId == internalConnectionId);
     }
 }

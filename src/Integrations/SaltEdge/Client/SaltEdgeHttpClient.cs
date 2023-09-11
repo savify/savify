@@ -1,4 +1,3 @@
-using App.Integrations.SaltEdge.Configuration;
 using App.Integrations.SaltEdge.Requests;
 using App.Integrations.SaltEdge.Responses;
 using Serilog;
@@ -7,34 +6,26 @@ namespace App.Integrations.SaltEdge.Client;
 
 public class SaltEdgeHttpClient : ISaltEdgeHttpClient
 {
-    private readonly SaltEdgeClientConfiguration _configuration;
-
     private readonly HttpClient _httpClient;
 
     private readonly ILogger _logger;
 
-    public SaltEdgeHttpClient(SaltEdgeClientConfiguration configuration, IHttpClientFactory httpClientFactory, ILogger logger)
+    public SaltEdgeHttpClient(HttpClient httpClient, ILogger logger)
     {
-        _configuration = configuration;
-        _httpClient = httpClientFactory.CreateClient();
+        _httpClient = httpClient;
         _logger = logger;
     }
 
     public async Task<Response> SendAsync(Request request)
     {
-        var requestFullUrl = request.GetFullUrl(_configuration.BaseUrl);
         var httpRequestMessage = new HttpRequestMessage(
             request.Method,
-            requestFullUrl)
+            request.GetFullUrl())
         {
-            Headers =
-            {
-                { HeaderName.AppId, _configuration.AppId },
-                { HeaderName.Secret, _configuration.AppSecret }
-            },
             Content = request.Content
         };
 
+        var requestFullUrl = _httpClient.BaseAddress + request.GetFullUrl();
         _logger.Information("Attempting to perform {Method}:{Url} request", request.Method, requestFullUrl);
 
         var httpResponseMessage = await _httpClient.SendAsync(httpRequestMessage);

@@ -1,7 +1,6 @@
 using System.Net;
 using System.Text.Json;
 using App.Integrations.SaltEdge.Client;
-using App.Integrations.SaltEdge.Configuration;
 using App.Integrations.SaltEdge.Requests;
 using App.Integrations.UnitTests.SeedWork;
 using Serilog;
@@ -11,18 +10,13 @@ namespace App.Integrations.UnitTests.SaltEdge;
 [TestFixture]
 public class SaltEdgeHttpClientTests
 {
-    private SaltEdgeClientConfiguration _configuration;
+    private readonly string _baseUrl = "https://www.saltedge.com/api/v5/";
 
     private ILogger _logger;
 
     [SetUp]
     public void SetUp()
     {
-        _configuration = new SaltEdgeClientConfiguration();
-        _configuration.BaseUrl = "https://www.saltedge.com/api/v5";
-        _configuration.AppId = "app-id";
-        _configuration.AppSecret = "app-secret";
-
         _logger = Substitute.For<ILogger>();
     }
 
@@ -36,11 +30,9 @@ public class SaltEdgeHttpClientTests
             {"data", expectedResponseContent}
         }));
         var httpClient = new HttpClient(httpMessageHandler);
+        httpClient.BaseAddress = new Uri(_baseUrl);
 
-        var httpClientFactory = Substitute.For<IHttpClientFactory>();
-        httpClientFactory.CreateClient().Returns(httpClient);
-
-        var client = new SaltEdgeHttpClient(_configuration, httpClientFactory, _logger);
+        var client = new SaltEdgeHttpClient(httpClient, _logger);
         var request = Request.Get("/some-path");
 
         var response = await client.SendAsync(request);
@@ -68,11 +60,9 @@ public class SaltEdgeHttpClientTests
 
         var httpMessageHandler = new MockHttpMessageHandler(HttpStatusCode.BadRequest, JsonSerializer.Serialize(expectedResponse));
         var httpClient = new HttpClient(httpMessageHandler);
+        httpClient.BaseAddress = new Uri(_baseUrl);
 
-        var httpClientFactory = Substitute.For<IHttpClientFactory>();
-        httpClientFactory.CreateClient().Returns(httpClient);
-
-        var client = new SaltEdgeHttpClient(_configuration, httpClientFactory, _logger);
+        var client = new SaltEdgeHttpClient(httpClient, _logger);
         var request = Request.Get("/some-path");
 
         var response = await client.SendAsync(request);

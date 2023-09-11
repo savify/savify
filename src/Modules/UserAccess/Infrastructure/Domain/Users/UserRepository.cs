@@ -20,7 +20,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> GetByIdAsync(UserId id)
     {
-        var user = await _userAccessContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+        var user = await _userAccessContext.Users.SingleOrDefaultAsync(x => x.Id == id);
 
         if (user == null)
         {

@@ -37,14 +37,14 @@ public class BankConnection : Entity, IAggregateRoot
     {
         CheckRules(new BankConnectionShouldHaveBankAccountWithGivenIdRule(_accounts, bankAccountId));
 
-        return _accounts.First(a => a.Id == bankAccountId);
+        return _accounts.Single(a => a.Id == bankAccountId);
     }
 
     public BankAccount GetSingleBankAccount()
     {
         CheckRules(new BankConnectionMustHaveOnlyOneAccountRule(_accounts));
 
-        return _accounts.First();
+        return _accounts.Single();
     }
 
     public bool HasMultipleBankAccounts() => _accounts.Count > 1;

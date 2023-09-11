@@ -22,7 +22,7 @@ public class CashWalletRepository : ICashWalletRepository
 
     public async Task<CashWallet> GetByIdAsync(WalletId id)
     {
-        var wallet = await _walletsContext.CashWallets.FirstOrDefaultAsync(x => x.Id == id);
+        var wallet = await _walletsContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id);
 
         if (wallet == null)
         {
@@ -34,7 +34,7 @@ public class CashWalletRepository : ICashWalletRepository
 
     public async Task<CashWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId)
     {
-        var wallet = await _walletsContext.CashWallets.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var wallet = await _walletsContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (wallet == null)
         {

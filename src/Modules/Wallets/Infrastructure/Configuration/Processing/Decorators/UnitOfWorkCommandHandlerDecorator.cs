@@ -27,7 +27,7 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
 
         if (command is InternalCommandBase<TResult>)
         {
-            var internalCommand = await _walletsContext.InternalCommands.FirstOrDefaultAsync(
+            var internalCommand = await _walletsContext.InternalCommands.SingleOrDefaultAsync(
                 x => x.Id == command.Id, cancellationToken: cancellationToken);
 
             if (internalCommand != null)

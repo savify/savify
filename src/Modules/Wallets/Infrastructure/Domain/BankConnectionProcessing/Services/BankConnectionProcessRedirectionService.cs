@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
@@ -23,14 +24,20 @@ public class BankConnectionProcessRedirectionService : IBankConnectionProcessRed
 
     public async Task<Redirection> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId)
     {
-        var customer = await _customerRepository.GetSaltEdgeCustomerForAsync(userId.Value);
+        var customer = await _customerRepository.GetSaltEdgeCustomerOrDefaultAsync(userId.Value);
         var providerCode = "fakebank_interactive_xf"; // TODO: get provider code (external bank id) from 'Banks' module
         var returnToUrl = "https://display-parameters.com/"; // TODO: get url from configuration
 
-        // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
-        var responseContent = await _saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl);
+        try
+        {
+            // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
+            var responseContent = await _saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl);
 
-        // TODO: convert expiresAt to UTC timezone
-        return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt);
+            return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt.ToUniversalTime());
+        }
+        catch (SaltEdgeIntegrationException)
+        {
+            throw new DomainException("Something went wrong during bank connection processing. Try again or contact support.");
+        }
     }
 }
