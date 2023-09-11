@@ -3,6 +3,7 @@ using App.Modules.Wallets.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
+using App.Modules.Wallets.Domain.Finance;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections;

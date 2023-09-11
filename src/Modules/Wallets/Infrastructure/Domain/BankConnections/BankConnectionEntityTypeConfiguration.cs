@@ -1,6 +1,7 @@
 using App.Modules.Wallets.Domain;
 using App.Modules.Wallets.Domain.BankConnections;
 using App.Modules.Wallets.Domain.BankConnections.BankAccounts;
+using App.Modules.Wallets.Domain.Finance;
 using App.Modules.Wallets.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

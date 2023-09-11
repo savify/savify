@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Domain;
+using App.Modules.Wallets.Domain.Finance;
 
 namespace App.Modules.Wallets.Domain.BankConnections.BankAccounts;
 

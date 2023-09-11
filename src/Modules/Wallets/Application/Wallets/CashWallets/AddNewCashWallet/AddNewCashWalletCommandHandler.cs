@@ -1,8 +1,8 @@
 using App.Modules.Wallets.Application.Configuration.Commands;
-using App.Modules.Wallets.Domain;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets.CashWallets;
 using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
+using Currency = App.Modules.Wallets.Domain.Finance.Currency;
 
 namespace App.Modules.Wallets.Application.Wallets.CashWallets.AddNewCashWallet;
 
