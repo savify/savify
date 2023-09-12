@@ -1,19 +1,17 @@
 using System.Reflection;
-using App.API.Configuration.ExecutionContext;
+using App.Modules.Banks.Application.Contracts;
+using App.Modules.Banks.Domain.Banks;
+using App.Modules.Banks.Infrastructure;
 
-namespace App.ArchTests.SeedWork;
+namespace App.Modules.Banks.ArchTests.SeedWork;
 
 public abstract class TestBase
 {
-    protected static Assembly ApiAssembly => typeof(ExecutionContextAccessor).Assembly;
+    protected static Assembly DomainAssembly => typeof(Bank).Assembly;
 
-    public const string UserAccessNamespace = "App.Modules.UserAccess";
+    protected static Assembly ApplicationAssembly => typeof(CommandBase).Assembly;
 
-    public const string NotificationsNamespace = "App.Modules.Notifications";
-
-    public const string WalletsNamespace = "App.Modules.Wallets";
-
-    public const string BanksNamespace = "App.Modules.Banks";
+    protected static Assembly InfrastructureAssembly => typeof(BanksContext).Assembly;
 
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {

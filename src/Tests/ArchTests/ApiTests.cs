@@ -10,7 +10,9 @@ public class ApiTests : TestBase
     {
         var otherModules = new List<string>
         {
-            NotificationsNamespace
+            NotificationsNamespace,
+            WalletsNamespace,
+            BanksNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
@@ -27,11 +29,51 @@ public class ApiTests : TestBase
     {
         var otherModules = new List<string>
         {
-            UserAccessNamespace
+            UserAccessNamespace,
+            WalletsNamespace,
+            BanksNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
-            .ResideInNamespace("DensMed.API.Modules.Notifications")
+            .ResideInNamespace("App.API.Modules.Notifications")
+            .Should()
+            .NotHaveDependencyOnAny(otherModules.ToArray())
+            .GetResult();
+
+        AssertArchTestResult(result);
+    }
+
+    [Test]
+    public void WalletsApi_DoesNotHaveDependency_ToOtherModules()
+    {
+        var otherModules = new List<string>
+        {
+            UserAccessNamespace,
+            NotificationsNamespace,
+            BanksNamespace
+        };
+        var result = Types.InAssembly(ApiAssembly)
+            .That()
+            .ResideInNamespace("App.API.Modules.Wallets")
+            .Should()
+            .NotHaveDependencyOnAny(otherModules.ToArray())
+            .GetResult();
+
+        AssertArchTestResult(result);
+    }
+
+    [Test]
+    public void BanksApi_DoesNotHaveDependency_ToOtherModules()
+    {
+        var otherModules = new List<string>
+        {
+            UserAccessNamespace,
+            NotificationsNamespace,
+            WalletsNamespace
+        };
+        var result = Types.InAssembly(ApiAssembly)
+            .That()
+            .ResideInNamespace("App.API.Modules.Banks")
             .Should()
             .NotHaveDependencyOnAny(otherModules.ToArray())
             .GetResult();

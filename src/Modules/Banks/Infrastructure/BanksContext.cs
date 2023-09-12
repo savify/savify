@@ -1,6 +1,8 @@
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.Modules.Banks.Domain.Banks;
+using App.Modules.Banks.Infrastructure.Domain.Banks;
 using App.Modules.Banks.Infrastructure.Inbox;
 using App.Modules.Banks.Infrastructure.InternalCommands;
 using App.Modules.Banks.Infrastructure.Outbox;
@@ -10,6 +12,8 @@ namespace App.Modules.Banks.Infrastructure;
 
 public class BanksContext : DbContext
 {
+    public DbSet<Bank>? Banks { get; set; }
+
     public DbSet<OutboxMessage>? OutboxMessages { get; set; }
 
     public DbSet<InboxMessage>? InboxMessages { get; set; }
@@ -22,6 +26,7 @@ public class BanksContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new BankEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
