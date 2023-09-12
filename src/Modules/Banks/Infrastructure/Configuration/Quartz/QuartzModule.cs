@@ -1,6 +1,7 @@
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Inbox;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.InternalCommands;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Banks.Infrastructure.Configuration.Processing.RecurringCommands;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
@@ -13,5 +14,6 @@ internal static class QuartzModule
         services.AddTransient<IJob, ProcessOutboxJob>();
         services.AddTransient<IJob, ProcessInboxJob>();
         services.AddTransient<IJob, ProcessInternalCommandsJob>();
+        services.AddTransient<IJob, BanksSynchronisationJob>();
     }
 }

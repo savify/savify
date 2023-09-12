@@ -2,6 +2,7 @@ using System.Collections.Specialized;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Inbox;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.InternalCommands;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Banks.Infrastructure.Configuration.Processing.RecurringCommands;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Logging;
@@ -26,6 +27,7 @@ internal static class QuartzInitialization
         ScheduleProcessOutboxJob(_scheduler);
         ScheduleProcessInboxJob(_scheduler);
         ScheduleProcessInternalCommandJob(_scheduler);
+        ScheduleBanksSynchronisationJob(_scheduler);
 
         logger.Information("Quartz started");
     }
@@ -52,7 +54,7 @@ internal static class QuartzInitialization
         var outboxProcessingTrigger = TriggerBuilder
             .Create()
             .StartNow()
-            .WithCronSchedule("0/5 * * ? * *")
+            .WithCronSchedule("0/5 * * ? * *") // every 5 seconds
             .Build();
 
         scheduler.ScheduleJob(processOutboxJob, outboxProcessingTrigger).GetAwaiter().GetResult();
@@ -64,7 +66,7 @@ internal static class QuartzInitialization
         var outboxProcessingTrigger = TriggerBuilder
             .Create()
             .StartNow()
-            .WithCronSchedule("0/5 * * ? * *")
+            .WithCronSchedule("0/5 * * ? * *") // every 5 seconds
             .Build();
 
         scheduler.ScheduleJob(processInboxJob, outboxProcessingTrigger).GetAwaiter().GetResult();
@@ -76,9 +78,21 @@ internal static class QuartzInitialization
         var commandsProcessingTrigger = TriggerBuilder
             .Create()
             .StartNow()
-            .WithCronSchedule("0/5 * * ? * *")
+            .WithCronSchedule("0/5 * * ? * *") // every 5 seconds
             .Build();
 
         scheduler.ScheduleJob(processInternalCommandsJob, commandsProcessingTrigger).GetAwaiter().GetResult();
+    }
+
+    private static void ScheduleBanksSynchronisationJob(IScheduler scheduler)
+    {
+        var banksSynchronisationJob = JobBuilder.Create<BanksSynchronisationJob>().Build();
+        var commandsProcessingTrigger = TriggerBuilder
+            .Create()
+            .StartNow()
+            .WithCronSchedule("0 0 3 ? * *") // everyday at 3AM
+            .Build();
+
+        scheduler.ScheduleJob(banksSynchronisationJob, commandsProcessingTrigger).GetAwaiter().GetResult();
     }
 }
