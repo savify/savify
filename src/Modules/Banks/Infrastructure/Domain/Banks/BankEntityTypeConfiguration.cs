@@ -12,10 +12,11 @@ public class BankEntityTypeConfiguration : IEntityTypeConfiguration<Bank>
     {
         builder.ToTable("banks", "banks");
 
-        builder.HasKey("Id", "_externalId");
+        builder.HasKey("Id", "ExternalId");
         builder.Property(x => x.Id).HasColumnName("id");
+        builder.Property(x => x.ExternalId).HasColumnName("external_id");
+        builder.Property(x => x.LastBanksSynchronisationProcessId).HasColumnName("last_banks_synchronisation_process_id");
 
-        builder.Property<string>("_externalId").HasColumnName("external_id");
         builder.Property<string>("_name").HasColumnName("name");
         builder.Property<bool>("_isRegulated").HasColumnName("is_regulated");
         builder.Property<int?>("_maxConsentDays").HasColumnName("max_consent_days");

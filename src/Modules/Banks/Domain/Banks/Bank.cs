@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Banks.Domain.Banks.Events;
+using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Domain.ExternalProviders;
 
 namespace App.Modules.Banks.Domain.Banks;
@@ -9,6 +10,8 @@ public class Bank : Entity, IAggregateRoot
     public BankId Id { get; private set; }
 
     public string ExternalId { get; private set; }
+
+    public BanksSynchronisationProcessId LastBanksSynchronisationProcessId { get; private set; }
 
     private ExternalProviderName _externalProviderName;
 
@@ -31,6 +34,7 @@ public class Bank : Entity, IAggregateRoot
     private DateTime? _updatedAt;
 
     public static Bank AddNew(
+        BanksSynchronisationProcessId banksSynchronisationProcessId,
         ExternalProviderName externalProviderName,
         string externalId,
         string name,
@@ -40,16 +44,19 @@ public class Bank : Entity, IAggregateRoot
         int? maxConsentDays,
         string defaultLogoUrl)
     {
-        return new Bank(externalProviderName, externalId, name, country, status, isRegulated, maxConsentDays, defaultLogoUrl);
+        return new Bank(banksSynchronisationProcessId, externalProviderName, externalId, name, country, status, isRegulated, maxConsentDays, defaultLogoUrl);
     }
 
-    public void Update(string name, bool wasDisabled, bool isRegulated, int? maxConsentDays, string defaultLogoUrl)
+    public void Update(BanksSynchronisationProcessId banksSynchronisationProcessId, string name, bool wasDisabled, bool isRegulated, int? maxConsentDays, string defaultLogoUrl)
     {
         // TODO: maybe we should add some logic to save data that was updated on bank?
+        LastBanksSynchronisationProcessId = banksSynchronisationProcessId;
         _name = name;
         _isRegulated = isRegulated;
         _maxConsentDays = maxConsentDays;
         _defaultLogoUrl = defaultLogoUrl;
+        _updatedAt = DateTime.UtcNow;
+
         if (wasDisabled)
         {
             _status = BankStatus.Disabled;
@@ -63,6 +70,7 @@ public class Bank : Entity, IAggregateRoot
     public bool IsInBeta() => _status == BankStatus.Beta;
 
     public Bank(
+        BanksSynchronisationProcessId banksSynchronisationProcessId,
         ExternalProviderName externalProviderName,
         string externalId,
         string name,
@@ -72,6 +80,7 @@ public class Bank : Entity, IAggregateRoot
         int? maxConsentDays,
         string defaultLogoUrl)
     {
+        LastBanksSynchronisationProcessId = banksSynchronisationProcessId;
         Id = new BankId(Guid.NewGuid());
         _externalProviderName = externalProviderName;
         ExternalId = externalId;
@@ -81,6 +90,7 @@ public class Bank : Entity, IAggregateRoot
         _isRegulated = isRegulated;
         _maxConsentDays = maxConsentDays;
         _defaultLogoUrl = defaultLogoUrl;
+        _createdAt = DateTime.UtcNow;
 
         AddDomainEvent(new BankAddedDomainEvent(Id, _externalProviderName, ExternalId));
     }

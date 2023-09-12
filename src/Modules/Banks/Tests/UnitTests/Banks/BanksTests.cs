@@ -1,6 +1,7 @@
 using App.Modules.Banks.Domain;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.Banks.Events;
+using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Domain.ExternalProviders;
 
 namespace App.Modules.Banks.UnitTests.Banks;
@@ -11,7 +12,9 @@ public class BanksTests : UnitTestBase
     [Test]
     public void AddingNewBank_IsSuccessful()
     {
+        var bankSynchronisationProcessId = new BanksSynchronisationProcessId(Guid.NewGuid());
         var bank = Bank.AddNew(
+            bankSynchronisationProcessId,
             ExternalProviderName.SaltEdge,
             "external-id",
             "Bank name",
@@ -28,5 +31,6 @@ public class BanksTests : UnitTestBase
         Assert.That(bank.IsEnabled, Is.True);
         Assert.That(bank.IsFake, Is.True);
         Assert.That(bank.IsInBeta, Is.False);
+        Assert.That(bank.LastBanksSynchronisationProcessId, Is.EqualTo(bankSynchronisationProcessId));
     }
 }

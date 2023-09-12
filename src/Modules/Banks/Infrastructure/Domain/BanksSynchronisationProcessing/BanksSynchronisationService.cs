@@ -30,6 +30,7 @@ public class BanksSynchronisationService : IBanksSynchronisationService
             var bankStatus = externalProvider.Status is "inactive" or "disabled" ? BankStatus.Disabled : BankStatus.Beta;
 
             var bank = Bank.AddNew(
+                banksSynchronisationProcessId,
                 ExternalProviderName.SaltEdge,
                 externalProvider.Code,
                 externalProvider.Name,
@@ -56,6 +57,7 @@ public class BanksSynchronisationService : IBanksSynchronisationService
                 var bankStatus = externalProvider.Status is "inactive" or "disabled" ? BankStatus.Disabled : BankStatus.Beta;
 
                 bank = Bank.AddNew(
+                    banksSynchronisationProcessId,
                     ExternalProviderName.SaltEdge,
                     externalProvider.Code,
                     externalProvider.Name,
@@ -72,6 +74,7 @@ public class BanksSynchronisationService : IBanksSynchronisationService
                 var wasDisabled = externalProvider.Status is "inactive" or "disabled";
 
                 bank.Update(
+                    banksSynchronisationProcessId,
                     externalProvider.Name,
                     wasDisabled,
                     externalProvider.Regulated,
