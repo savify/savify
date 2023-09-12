@@ -4,6 +4,7 @@ using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure.Configuration.DataAccess;
 using App.Modules.Banks.Infrastructure.Configuration.Domain;
 using App.Modules.Banks.Infrastructure.Configuration.EventBus;
+using App.Modules.Banks.Infrastructure.Configuration.Integration;
 using App.Modules.Banks.Infrastructure.Configuration.Logging;
 using App.Modules.Banks.Infrastructure.Configuration.Mediation;
 using App.Modules.Banks.Infrastructure.Configuration.Processing;
@@ -20,14 +21,16 @@ public static class BanksModuleCollectionExtensions
     public static IServiceCollection AddBanksModule(
         this IServiceCollection services,
         IConfiguration configuration,
-        ILogger logger)
+        ILogger logger,
+        bool isProduction)
     {
         var moduleLogger = logger.ForContext("Module", "Banks");
 
         ConfigureCompositionRoot(
             services,
             configuration.GetConnectionString("Savify"),
-            moduleLogger);
+            moduleLogger,
+            isProduction);
 
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
@@ -41,6 +44,7 @@ public static class BanksModuleCollectionExtensions
         this IServiceCollection services,
         string connectionString,
         ILogger logger,
+        bool isProduction,
         IEventBus? eventBus = null)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
@@ -55,6 +59,7 @@ public static class BanksModuleCollectionExtensions
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
+        IntegrationModule.Configure(services, isProduction);
 
         BanksCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
