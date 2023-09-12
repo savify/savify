@@ -61,6 +61,8 @@ public class BanksSynchronisationProcess : Entity, IAggregateRoot
         _finishedAt = DateTime.UtcNow;
     }
 
+    public BanksSynchronisationProcessStatus GetStatus() => _status;
+
     public BanksSynchronisationProcess(BanksSynchronisationProcessInitiator initiatedBy)
     {
         Id = new BanksSynchronisationProcessId(Guid.NewGuid());

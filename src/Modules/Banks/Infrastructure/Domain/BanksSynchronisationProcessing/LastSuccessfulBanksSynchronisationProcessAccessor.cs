@@ -18,7 +18,7 @@ public class LastSuccessfulBanksSynchronisationProcessAccessor : ILastSuccessful
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = @"SELECT id, status, finished_at FROM banks.banks_synchronisation_processes p 
+        const string sql = @"SELECT id, status, finished_at AS finishedAt FROM banks.banks_synchronisation_processes p 
                                 WHERE p.status = @status ORDER BY p.finished_at DESC";
 
         return await connection.QueryFirstOrDefaultAsync<ILastSuccessfulBanksSynchronisationProcessAccessor.LastSuccessfulBanksSynchronisationProcess>(

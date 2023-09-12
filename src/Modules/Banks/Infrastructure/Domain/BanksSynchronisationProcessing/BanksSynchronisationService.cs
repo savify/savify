@@ -1,9 +1,11 @@
 using App.Modules.Banks.Domain;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
+using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Exceptions;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Services;
 using App.Modules.Banks.Domain.ExternalProviders;
 using App.Modules.Banks.Infrastructure.Integrations.SaltEdge;
+using App.Modules.Banks.Infrastructure.Integrations.SaltEdge.Providers;
 
 namespace App.Modules.Banks.Infrastructure.Domain.BanksSynchronisationProcessing;
 
@@ -23,7 +25,7 @@ public class BanksSynchronisationService : IBanksSynchronisationService
 
     public async Task SynchroniseAsync(BanksSynchronisationProcessId banksSynchronisationProcessId)
     {
-        var externalProviders = await _saltEdgeIntegrationService.FetchProvidersAsync();
+        var externalProviders = await GetExternalProviders();
 
         foreach (var externalProvider in externalProviders)
         {
@@ -46,7 +48,7 @@ public class BanksSynchronisationService : IBanksSynchronisationService
 
     public async Task SynchroniseAsync(BanksSynchronisationProcessId banksSynchronisationProcessId, DateTime fromDate)
     {
-        var externalProviders = await _saltEdgeIntegrationService.FetchProvidersAsync(fromDate);
+        var externalProviders = await GetExternalProviders(fromDate);
 
         foreach (var externalProvider in externalProviders)
         {
@@ -81,6 +83,18 @@ public class BanksSynchronisationService : IBanksSynchronisationService
                     externalProvider.MaxConsentDays,
                     externalProvider.LogoUrl);
             }
+        }
+    }
+
+    private async Task<List<SaltEdgeProvider>> GetExternalProviders(DateTime? fromDate = null)
+    {
+        try
+        {
+            return await _saltEdgeIntegrationService.FetchProvidersAsync(fromDate);
+        }
+        catch (SaltEdgeIntegrationException exception)
+        {
+            throw new BanksSynchronisationProcessException(exception.Message);
         }
     }
 }

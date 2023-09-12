@@ -12,11 +12,11 @@ public class SaltEdgeProvider
 
     public bool Regulated { get; }
 
-    public int MaxConsentDays { get; }
+    public int? MaxConsentDays { get; }
 
     public string LogoUrl { get; }
 
-    public SaltEdgeProvider(string code, string name, string status, string countryCode, bool regulated, int maxConsentDays, string logoUrl)
+    public SaltEdgeProvider(string code, string name, string status, string countryCode, bool regulated, int? maxConsentDays, string logoUrl)
     {
         Code = code;
         Name = name;
