@@ -2,7 +2,7 @@ using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.Banks.Infrastructure.Domain.BankSynchronisationProcessing;
+namespace App.Modules.Banks.Infrastructure.Domain.BanksSynchronisationProcessing;
 
 public class BanksSynchronisationProcessEntityTypeConfiguration : IEntityTypeConfiguration<BanksSynchronisationProcess>
 {

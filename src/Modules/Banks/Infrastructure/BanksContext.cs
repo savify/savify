@@ -4,7 +4,7 @@ using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Infrastructure.Domain.Banks;
-using App.Modules.Banks.Infrastructure.Domain.BankSynchronisationProcessing;
+using App.Modules.Banks.Infrastructure.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Infrastructure.Inbox;
 using App.Modules.Banks.Infrastructure.InternalCommands;
 using App.Modules.Banks.Infrastructure.Outbox;

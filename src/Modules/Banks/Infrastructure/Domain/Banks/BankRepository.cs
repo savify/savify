@@ -29,4 +29,9 @@ public class BankRepository : IBankRepository
 
         return bank;
     }
+
+    public async Task<Bank?> GetByExternalIdAsync(string externalId)
+    {
+        return await _banksContext.Banks.SingleOrDefaultAsync(b => b.ExternalId == externalId);
+    }
 }

@@ -2,7 +2,7 @@ using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Modules.Banks.Infrastructure.Domain.BankSynchronisationProcessing;
+namespace App.Modules.Banks.Infrastructure.Domain.BanksSynchronisationProcessing;
 
 public class BanksSynchronisationProcessRepository : IBanksSynchronisationProcessRepository
 {
