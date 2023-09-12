@@ -1,4 +1,4 @@
-using App.Modules.Banks.Domain.BankSynchronisationProcessing.Services;
+using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Services;
 using App.Modules.Banks.Infrastructure.Domain.BankSynchronisationProcessing;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +8,6 @@ internal static class DomainModule
 {
     internal static void Configure(IServiceCollection services)
     {
-        services.AddScoped<IBankSynchronisationService, BankSynchronisationService>();
+        services.AddScoped<IBanksSynchronisationService, BanksSynchronisationService>();
     }
 }
