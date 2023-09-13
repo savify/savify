@@ -12,7 +12,9 @@ public class BankEntityTypeConfiguration : IEntityTypeConfiguration<Bank>
     {
         builder.ToTable("banks", "banks");
 
-        builder.HasKey("Id", "ExternalId");
+        builder.HasKey("Id");
+        builder.HasIndex(x => x.ExternalId).IsUnique();
+
         builder.Property(x => x.Id).HasColumnName("id");
         builder.Property(x => x.ExternalId).HasColumnName("external_id");
         builder.Property(x => x.LastBanksSynchronisationProcessId).HasColumnName("last_banks_synchronisation_process_id");
@@ -25,19 +27,22 @@ public class BankEntityTypeConfiguration : IEntityTypeConfiguration<Bank>
         builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
         builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
 
-        builder.OwnsOne<ExternalProviderName>("_externalProviderName", b =>
-        {
-            b.Property(x => x.Value).HasColumnName("external_provider_name");
-        });
+        builder.Property<ExternalProviderName>("_externalProviderName")
+            .HasColumnName("external_provider_name")
+            .HasConversion(
+                n => n.Value,
+                n => new ExternalProviderName(n));
 
-        builder.OwnsOne<Country>("_country", b =>
-        {
-            b.Property(x => x.Code).HasColumnName("country_code");
-        });
+        builder.Property<Country>("_country")
+            .HasColumnName("country_code")
+            .HasConversion(
+                c => c.Code,
+                c => Country.From(c));
 
-        builder.OwnsOne<BankStatus>("_status", b =>
-        {
-            b.Property(x => x.Value).HasColumnName("status");
-        });
+        builder.Property<BankStatus>("_status")
+            .HasColumnName("status")
+            .HasConversion(
+                s => s.Value,
+                s => new BankStatus(s));
     }
 }

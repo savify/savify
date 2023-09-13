@@ -70,7 +70,7 @@ public class BanksSynchronisationProcess : Entity, IAggregateRoot
         _initiatedBy = initiatedBy;
         _startedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new BanksSynchronisationProcessStartedEvent(Id, _initiatedBy));
+        AddDomainEvent(new BanksSynchronisationProcessStartedDomainEvent(Id, _initiatedBy));
     }
 
     private BanksSynchronisationProcess() { }

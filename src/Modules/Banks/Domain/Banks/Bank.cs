@@ -80,10 +80,10 @@ public class Bank : Entity, IAggregateRoot
         int? maxConsentDays,
         string defaultLogoUrl)
     {
-        LastBanksSynchronisationProcessId = banksSynchronisationProcessId;
         Id = new BankId(Guid.NewGuid());
-        _externalProviderName = externalProviderName;
+        LastBanksSynchronisationProcessId = banksSynchronisationProcessId;
         ExternalId = externalId;
+        _externalProviderName = externalProviderName;
         _name = name;
         _country = country;
         _status = status;

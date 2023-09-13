@@ -3,6 +3,7 @@ using System;
 using App.Modules.Banks.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.Banks.Infrastructure.Migrations
 {
     [DbContext(typeof(BanksContext))]
-    partial class BanksContextModelSnapshot : ModelSnapshot
+    [Migration("20230913074639_AddIndexOnExternalId")]
+    partial class AddIndexOnExternalId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,11 +131,6 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("last_banks_synchronisation_process_id");
 
-                    b.Property<string>("_country")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("country_code");
-
                     b.Property<DateTime>("_createdAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -141,11 +139,6 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("default_logo_url");
-
-                    b.Property<string>("_externalProviderName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("external_provider_name");
 
                     b.Property<bool>("_isRegulated")
                         .HasColumnType("boolean")
@@ -163,11 +156,6 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
-
-                    b.Property<string>("_status")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("status");
 
                     b.Property<DateTime?>("_updatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -198,6 +186,71 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("banks_synchronisation_processes", "banks");
+                });
+
+            modelBuilder.Entity("App.Modules.Banks.Domain.Banks.Bank", b =>
+                {
+                    b.OwnsOne("App.Modules.Banks.Domain.Banks.BankStatus", "_status", b1 =>
+                        {
+                            b1.Property<Guid>("BankId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("status");
+
+                            b1.HasKey("BankId");
+
+                            b1.ToTable("banks", "banks");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BankId");
+                        });
+
+                    b.OwnsOne("App.Modules.Banks.Domain.Country", "_country", b1 =>
+                        {
+                            b1.Property<Guid>("BankId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Code")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("country_code");
+
+                            b1.HasKey("BankId");
+
+                            b1.ToTable("banks", "banks");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BankId");
+                        });
+
+                    b.OwnsOne("App.Modules.Banks.Domain.ExternalProviders.ExternalProviderName", "_externalProviderName", b1 =>
+                        {
+                            b1.Property<Guid>("BankId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("external_provider_name");
+
+                            b1.HasKey("BankId");
+
+                            b1.ToTable("banks", "banks");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BankId");
+                        });
+
+                    b.Navigation("_country");
+
+                    b.Navigation("_externalProviderName")
+                        .IsRequired();
+
+                    b.Navigation("_status")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("App.Modules.Banks.Domain.BanksSynchronisationProcessing.BanksSynchronisationProcess", b =>

@@ -5,7 +5,7 @@ using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Services;
 
 namespace App.Modules.Banks.Application.BanksSynchronisationProcessing.SynchroniseBanks;
 
-public class SynchroniseBanksRecurringCommandHandler : ICommandHandler<SynchroniseBanksRecurringCommand, Result>
+internal class SynchroniseBanksRecurringCommandHandler : ICommandHandler<SynchroniseBanksRecurringCommand, Result>
 {
     private readonly IBanksSynchronisationProcessRepository _banksSynchronisationProcessRepository;
 
