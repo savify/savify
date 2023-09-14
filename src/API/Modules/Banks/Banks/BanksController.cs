@@ -1,4 +1,5 @@
 using App.API.Configuration.Authorization;
+using App.API.Requests;
 using App.Modules.Banks.Application.Banks.GetBanks;
 using App.Modules.Banks.Application.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -21,9 +22,10 @@ public class BanksController : ControllerBase
     [HttpGet]
     [HasPermission(BanksPermissions.ManageBanks)]
     [ProducesResponseType(typeof(List<BankDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetList()
+    public async Task<IActionResult> GetList([FromQuery] PaginationQueryParameters pagination)
     {
-        var banks = await _banksModule.ExecuteQueryAsync(new GetBanksQuery());
+        var banks = await _banksModule.ExecuteQueryAsync(
+            new GetBanksQuery(pagination.Page, pagination.PerPage));
 
         return Ok(banks);
     }
