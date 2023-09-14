@@ -1,4 +1,4 @@
-using App.Modules.Banks.Application.Banks.GetBanks;
+using App.Modules.Banks.Application.Banks.Internal.GetBanks;
 using App.Modules.Banks.Application.BanksSynchronisationProcessing.SynchroniseBanks;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;

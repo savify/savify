@@ -1,8 +1,8 @@
 using App.API.Configuration.Authorization;
 using App.API.Requests;
-using App.Modules.Banks.Application.Banks.Public;
-using App.Modules.Banks.Application.Banks.Public.GetBank;
-using App.Modules.Banks.Application.Banks.Public.GetBanks;
+using App.Modules.Banks.Application.Banks.Internal;
+using App.Modules.Banks.Application.Banks.Internal.GetBank;
+using App.Modules.Banks.Application.Banks.Internal.GetBanks;
 using App.Modules.Banks.Application.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +11,18 @@ namespace App.API.Modules.Banks.Banks;
 
 [Authorize]
 [ApiController]
-[Route("public/banks/banks")]
-public class BanksController : ControllerBase
+[Route("banks/banks")]
+public class BanksInternalController : ControllerBase
 {
     private readonly IBanksModule _banksModule;
 
-    public BanksController(IBanksModule banksModule)
+    public BanksInternalController(IBanksModule banksModule)
     {
         _banksModule = banksModule;
     }
 
     [HttpGet]
-    [NoPermissionRequired]
+    [HasPermission(BanksPermissions.ManageBanks)]
     [ProducesResponseType(typeof(List<BankDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] PaginationQueryParameters pagination)
     {
@@ -33,7 +33,7 @@ public class BanksController : ControllerBase
     }
 
     [HttpGet("{bankId}")]
-    [NoPermissionRequired]
+    [HasPermission(BanksPermissions.ManageBanks)]
     [ProducesResponseType(typeof(BankDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid bankId)
     {

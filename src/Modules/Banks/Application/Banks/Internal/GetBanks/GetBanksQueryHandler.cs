@@ -3,7 +3,7 @@ using App.BuildingBlocks.Application.Queries;
 using App.Modules.Banks.Application.Configuration.Queries;
 using Dapper;
 
-namespace App.Modules.Banks.Application.Banks.GetBanks;
+namespace App.Modules.Banks.Application.Banks.Internal.GetBanks;
 
 internal class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, List<BankDto>>
 {

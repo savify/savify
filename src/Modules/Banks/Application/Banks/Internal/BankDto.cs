@@ -1,4 +1,4 @@
-namespace App.Modules.Banks.Application.Banks.GetBanks;
+namespace App.Modules.Banks.Application.Banks.Internal;
 
 public class BankDto
 {

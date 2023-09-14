@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Application.Queries;
 using App.Modules.Banks.Application.Contracts;
 
-namespace App.Modules.Banks.Application.Banks.GetBanks;
+namespace App.Modules.Banks.Application.Banks.Internal.GetBanks;
 
 public class GetBanksQuery : QueryBase<List<BankDto>>, IPagedQuery
 {
