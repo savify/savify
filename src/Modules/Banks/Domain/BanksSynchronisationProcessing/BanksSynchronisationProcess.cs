@@ -53,12 +53,16 @@ public class BanksSynchronisationProcess : Entity, IAggregateRoot
     {
         _status = BanksSynchronisationProcessStatus.Finished;
         _finishedAt = DateTime.UtcNow;
+        
+        AddDomainEvent(new BanksSynchronisationProcessFinishedDomainEvent(Id));
     }
 
     public void Fail()
     {
         _status = BanksSynchronisationProcessStatus.Failed;
         _finishedAt = DateTime.UtcNow;
+        
+        AddDomainEvent(new BanksSynchronisationProcessFailedDomainEvent(Id));
     }
 
     public BanksSynchronisationProcessStatus GetStatus() => _status;

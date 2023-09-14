@@ -16,10 +16,11 @@ public class BanksSynchronisationProcessEntityTypeConfiguration : IEntityTypeCon
         builder.Property<DateTime>("_startedAt").HasColumnName("started_at");
         builder.Property<DateTime?>("_finishedAt").HasColumnName("finished_at");
 
-        builder.OwnsOne<BanksSynchronisationProcessStatus>("_status", b =>
-        {
-            b.Property(x => x.Value).HasColumnName("status");
-        });
+        builder.Property<BanksSynchronisationProcessStatus>("_status")
+            .HasColumnName("status")
+            .HasConversion(
+                s => s.Value,
+                s => new BanksSynchronisationProcessStatus(s));
 
         builder.OwnsOne<BanksSynchronisationProcessInitiator>("_initiatedBy", b =>
         {

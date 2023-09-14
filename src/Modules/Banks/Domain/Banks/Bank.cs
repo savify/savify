@@ -61,6 +61,15 @@ public class Bank : Entity, IAggregateRoot
         {
             _status = BankStatus.Disabled;
         }
+        
+        AddDomainEvent(new BankUpdatedDomainEvent(
+            Id,
+            banksSynchronisationProcessId,
+            name,
+            wasDisabled,
+            isRegulated,
+            maxConsentDays,
+            defaultLogoUrl));
     }
 
     public bool IsFake() => _country.IsFake();
