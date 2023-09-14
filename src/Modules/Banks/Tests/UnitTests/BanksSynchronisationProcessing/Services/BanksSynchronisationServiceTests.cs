@@ -16,10 +16,10 @@ public class BanksSynchronisationServiceTests : UnitTestBase
     {
         var bankSynchronisationProcessId = new BanksSynchronisationProcessId(Guid.NewGuid());
         var externalProviders = GetExternalProviders();
-        
+
         var integrationService = Substitute.For<ISaltEdgeIntegrationService>();
         integrationService.FetchProvidersAsync().Returns(externalProviders);
-        
+
         var bankRepository = Substitute.For<IBankRepository>();
 
         var service = new BanksSynchronisationService(integrationService, bankRepository);
@@ -33,24 +33,24 @@ public class BanksSynchronisationServiceTests : UnitTestBase
             b.IsFake()
             && b.IsEnabled()
             && b.IsInBeta()));
-        
+
         await bankRepository.Received(1).AddAsync(Arg.Is<Bank>(b =>
             b.LastBanksSynchronisationProcessId == bankSynchronisationProcessId &&
             b.ExternalId == "external-id-2" &&
             b.IsFake()
             && b.IsEnabled() == false));
     }
-    
+
     [Test]
     public async Task SynchroniseAsync_ForEachExternalProvider_FromProvidedDate_WillCreateANewBankOrUpdateExistingBank()
     {
         var bankSynchronisationProcessId = new BanksSynchronisationProcessId(Guid.NewGuid());
         var fromDate = DateTime.UtcNow;
         var externalProviders = GetExternalProviders();
-        
+
         var integrationService = Substitute.For<ISaltEdgeIntegrationService>();
         integrationService.FetchProvidersAsync(fromDate).Returns(externalProviders);
-        
+
         var bankRepository = Substitute.For<IBankRepository>();
         bankRepository.GetByExternalIdAsync("external-id-2").Returns(Bank.AddNew(new BanksSynchronisationProcessId(
             Guid.NewGuid()),
@@ -74,14 +74,14 @@ public class BanksSynchronisationServiceTests : UnitTestBase
             b.IsFake()
             && b.IsEnabled()
             && b.IsInBeta()));
-        
+
         await bankRepository.DidNotReceive().AddAsync(Arg.Is<Bank>(b => b.ExternalId == "external-id-2"));
     }
 
     private List<SaltEdgeProvider> GetExternalProviders()
     {
         var providers = new List<SaltEdgeProvider>();
-        
+
         providers.Add(new SaltEdgeProvider(
             "external-id-1",
             "Bank name 1",
@@ -90,7 +90,7 @@ public class BanksSynchronisationServiceTests : UnitTestBase
             true,
             60,
             "https://cdn.savify.localhost/logos/banks/bank-1.png"));
-        
+
         providers.Add(new SaltEdgeProvider(
             "external-id-2",
             "Bank name 2",
@@ -99,7 +99,7 @@ public class BanksSynchronisationServiceTests : UnitTestBase
             false,
             null,
             "https://cdn.savify.localhost/logos/banks/bank-2.png"));
-        
+
         return providers;
     }
 }

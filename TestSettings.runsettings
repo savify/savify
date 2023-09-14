@@ -4,4 +4,28 @@
 		<Parameter name="ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING" value="host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass" />
 		<Parameter name="ASPNETCORE_ENVIRONMENT" value="Testing" />
 	</TestRunParameters>
+	<RunConfiguration>
+		<EnvironmentVariables>
+			<ASPNETCORE_ENVIRONMENT>Testing</ASPNETCORE_ENVIRONMENT>
+			<ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING>host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass</ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING>
+		</EnvironmentVariables>
+	</RunConfiguration>
+	<DataCollectionRunSettings>
+		<DataCollectors>
+			<DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0" assemblyQualifiedName="Microsoft.VisualStudio.Coverage.DynamicCoverageDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+				<Configuration>
+					<CodeCoverage>
+						<ModulePaths>
+							<Exclude>
+								<Function>.*\.UnitTests\..*</Function>
+								<Function>.*\.ArchTests\..*</Function>
+								<Function>.*\.IntegrationTests\..*</Function>
+								<Function>.*\.Migrations\..*</Function>
+							</Exclude>
+						</ModulePaths>
+					</CodeCoverage>
+				</Configuration>
+			</DataCollector>
+		</DataCollectors>
+	</DataCollectionRunSettings>
 </RunSettings>

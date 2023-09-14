@@ -6,17 +6,17 @@ namespace App.Modules.Banks.Domain.Banks.Events;
 public class BankUpdatedDomainEvent : DomainEventBase
 {
     public BankId BankId { get; }
-    
+
     public BanksSynchronisationProcessId BanksSynchronisationProcessId { get; }
-    
+
     public string Name { get; }
-    
+
     public bool WasDisabled { get; }
-    
+
     public bool IsRegulated { get; }
-    
+
     public int? MaxConsentDays { get; }
-    
+
     public string DefaultLogoUrl { get; }
 
     public BankUpdatedDomainEvent(

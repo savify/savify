@@ -4,7 +4,7 @@ using Dapper;
 
 namespace App.Modules.Banks.Application.Banks.GetBanks;
 
-public class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, List<BankDto>>
+internal class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, List<BankDto>>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

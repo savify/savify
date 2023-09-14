@@ -13,7 +13,7 @@ public class BanksSynchronisationProcessTests : UnitTestBase
     public async Task StartingBanksSynchronisationProcess_ThatWasNotPerformedBefore_WillFinishWithSuccess()
     {
         var banksSynchronisationService = Substitute.For<IBanksSynchronisationService>();
-        
+
         var lastSuccessfulBanksSynchronisationProcessAccessor =
             Substitute.For<ILastSuccessfulBanksSynchronisationProcessAccessor>();
 
@@ -22,10 +22,10 @@ public class BanksSynchronisationProcessTests : UnitTestBase
             banksSynchronisationService,
             lastSuccessfulBanksSynchronisationProcessAccessor
             );
-        
+
         var processStartedDomainEvent = AssertPublishedDomainEvent<BanksSynchronisationProcessStartedDomainEvent>(banksSynchronisationProcess);
         var processFinishedDomainEvent = AssertPublishedDomainEvent<BanksSynchronisationProcessFinishedDomainEvent>(banksSynchronisationProcess);
-        
+
         await lastSuccessfulBanksSynchronisationProcessAccessor.Received(1).AccessAsync();
         await banksSynchronisationService.Received(1).SynchroniseAsync(banksSynchronisationProcess.Id);
         Assert.That(banksSynchronisationProcess.GetStatus(), Is.EqualTo(BanksSynchronisationProcessStatus.Finished));
@@ -33,7 +33,7 @@ public class BanksSynchronisationProcessTests : UnitTestBase
         Assert.That(processStartedDomainEvent.InitiatedBy, Is.EqualTo(BanksSynchronisationProcessInitiator.InternalCommand));
         Assert.That(processFinishedDomainEvent.BanksSynchronisationProcessId, Is.EqualTo(banksSynchronisationProcess.Id));
     }
-    
+
     [Test]
     public async Task StartingBanksSynchronisationProcess_WhenSynchronisationWasPreviouslyPerformed_WillFinishWithSuccess()
     {
@@ -55,7 +55,7 @@ public class BanksSynchronisationProcessTests : UnitTestBase
 
         var processStartedDomainEvent = AssertPublishedDomainEvent<BanksSynchronisationProcessStartedDomainEvent>(banksSynchronisationProcess);
         var processFinishedDomainEvent = AssertPublishedDomainEvent<BanksSynchronisationProcessFinishedDomainEvent>(banksSynchronisationProcess);
-        
+
         await lastSuccessfulBanksSynchronisationProcessAccessor.Received(1).AccessAsync();
         await banksSynchronisationService.Received(1).SynchroniseAsync(banksSynchronisationProcess.Id, lastSuccessfulBankSynchronisationProcess.FinishedAt);
         Assert.That(banksSynchronisationProcess.GetStatus(), Is.EqualTo(BanksSynchronisationProcessStatus.Finished));
@@ -71,19 +71,19 @@ public class BanksSynchronisationProcessTests : UnitTestBase
         banksSynchronisationService
             .SynchroniseAsync(Arg.Any<BanksSynchronisationProcessId>())
             .ThrowsAsync(new BanksSynchronisationProcessException("Some sync error message"));
-        
+
         var lastSuccessfulBanksSynchronisationProcessAccessor =
             Substitute.For<ILastSuccessfulBanksSynchronisationProcessAccessor>();
-        
+
         var banksSynchronisationProcess = await BanksSynchronisationProcess.Start(
             BanksSynchronisationProcessInitiator.InternalCommand,
             banksSynchronisationService,
             lastSuccessfulBanksSynchronisationProcessAccessor
         );
-        
+
         var processStartedDomainEvent = AssertPublishedDomainEvent<BanksSynchronisationProcessStartedDomainEvent>(banksSynchronisationProcess);
         var processFailedDomainEvent = AssertPublishedDomainEvent<BanksSynchronisationProcessFailedDomainEvent>(banksSynchronisationProcess);
-        
+
         await lastSuccessfulBanksSynchronisationProcessAccessor.Received(1).AccessAsync();
         await banksSynchronisationService.Received(1).SynchroniseAsync(banksSynchronisationProcess.Id);
         Assert.That(banksSynchronisationProcess.GetStatus(), Is.EqualTo(BanksSynchronisationProcessStatus.Failed));
