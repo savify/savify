@@ -1,9 +1,8 @@
-using App.Modules.Banks.Application.Banks.GetBanks;
+using App.Modules.Banks.Application.Banks.Internal.GetBanks;
 using App.Modules.Banks.Application.BanksSynchronisationProcessing.SynchroniseBanks;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.IntegrationTests.SeedWork;
-using App.Modules.Notifications.Application.Contracts;
 using Dapper;
 using Npgsql;
 
@@ -45,7 +44,7 @@ public class SynchroniseBanksRecurringCommandTests : TestBase
 
         await BanksModule.ExecuteCommandAsync(new SynchroniseBanksCommand(Guid.NewGuid()));
         var banks = await BanksModule.ExecuteQueryAsync(new GetBanksQuery());
-        var updatedBank = banks.Single(b => b.ExternalId == "external-id-1");
+        var updatedBank = banks.Single(b => b.Name == "Bank name 1");
 
         Assert.That(banks.Count, Is.EqualTo(2));
         Assert.That(updatedBank.Status, Is.EqualTo(BankStatus.Disabled.Value));
