@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Banks.Domain.Banks.Events;
+using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Domain.ExternalProviders;
 
 namespace App.Modules.Banks.Domain.Banks;
@@ -8,9 +9,11 @@ public class Bank : Entity, IAggregateRoot
 {
     public BankId Id { get; private set; }
 
-    private ExternalProviderName _externalProviderName;
+    public string ExternalId { get; private set; }
 
-    private string _externalId;
+    public BanksSynchronisationProcessId LastBanksSynchronisationProcessId { get; private set; }
+
+    private ExternalProviderName _externalProviderName;
 
     private string _name;
 
@@ -31,6 +34,7 @@ public class Bank : Entity, IAggregateRoot
     private DateTime? _updatedAt;
 
     public static Bank AddNew(
+        BanksSynchronisationProcessId banksSynchronisationProcessId,
         ExternalProviderName externalProviderName,
         string externalId,
         string name,
@@ -40,7 +44,32 @@ public class Bank : Entity, IAggregateRoot
         int? maxConsentDays,
         string defaultLogoUrl)
     {
-        return new Bank(externalProviderName, externalId, name, country, status, isRegulated, maxConsentDays, defaultLogoUrl);
+        return new Bank(banksSynchronisationProcessId, externalProviderName, externalId, name, country, status, isRegulated, maxConsentDays, defaultLogoUrl);
+    }
+
+    public void Update(BanksSynchronisationProcessId banksSynchronisationProcessId, string name, bool wasDisabled, bool isRegulated, int? maxConsentDays, string defaultLogoUrl)
+    {
+        // TODO: maybe we should add some logic to save data that was updated on bank?
+        LastBanksSynchronisationProcessId = banksSynchronisationProcessId;
+        _name = name;
+        _isRegulated = isRegulated;
+        _maxConsentDays = maxConsentDays;
+        _defaultLogoUrl = defaultLogoUrl;
+        _updatedAt = DateTime.UtcNow;
+
+        if (wasDisabled)
+        {
+            _status = BankStatus.Disabled;
+        }
+
+        AddDomainEvent(new BankUpdatedDomainEvent(
+            Id,
+            banksSynchronisationProcessId,
+            name,
+            wasDisabled,
+            isRegulated,
+            maxConsentDays,
+            defaultLogoUrl));
     }
 
     public bool IsFake() => _country.IsFake();
@@ -50,6 +79,7 @@ public class Bank : Entity, IAggregateRoot
     public bool IsInBeta() => _status == BankStatus.Beta;
 
     public Bank(
+        BanksSynchronisationProcessId banksSynchronisationProcessId,
         ExternalProviderName externalProviderName,
         string externalId,
         string name,
@@ -60,16 +90,18 @@ public class Bank : Entity, IAggregateRoot
         string defaultLogoUrl)
     {
         Id = new BankId(Guid.NewGuid());
+        LastBanksSynchronisationProcessId = banksSynchronisationProcessId;
+        ExternalId = externalId;
         _externalProviderName = externalProviderName;
-        _externalId = externalId;
         _name = name;
         _country = country;
         _status = status;
         _isRegulated = isRegulated;
         _maxConsentDays = maxConsentDays;
         _defaultLogoUrl = defaultLogoUrl;
+        _createdAt = DateTime.UtcNow;
 
-        AddDomainEvent(new BankAddedDomainEvent(Id, externalProviderName, externalId));
+        AddDomainEvent(new BankAddedDomainEvent(Id, _externalProviderName, ExternalId));
     }
 
     private Bank() { }

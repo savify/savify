@@ -119,9 +119,19 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("_externalId")
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("external_id");
+
+                    b.Property<Guid>("LastBanksSynchronisationProcessId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("last_banks_synchronisation_process_id");
+
+                    b.Property<string>("_country")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("country_code");
 
                     b.Property<DateTime>("_createdAt")
                         .HasColumnType("timestamp with time zone")
@@ -131,6 +141,11 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("default_logo_url");
+
+                    b.Property<string>("_externalProviderName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("external_provider_name");
 
                     b.Property<bool>("_isRegulated")
                         .HasColumnType("boolean")
@@ -149,85 +164,89 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<string>("_status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
                     b.Property<DateTime?>("_updatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("Id", "_externalId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId")
+                        .IsUnique();
 
                     b.ToTable("banks", "banks");
                 });
 
-            modelBuilder.Entity("App.Modules.Banks.Domain.Banks.Bank", b =>
+            modelBuilder.Entity("App.Modules.Banks.Domain.BanksSynchronisationProcessing.BanksSynchronisationProcess", b =>
                 {
-                    b.OwnsOne("App.Modules.Banks.Domain.Banks.BankStatus", "_status", b1 =>
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("_finishedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("finished_at");
+
+                    b.Property<DateTime>("_startedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("started_at");
+
+                    b.Property<string>("_status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("banks_synchronisation_processes", "banks");
+                });
+
+            modelBuilder.Entity("App.Modules.Banks.Domain.BanksSynchronisationProcessing.BanksSynchronisationProcess", b =>
+                {
+                    b.OwnsOne("App.Modules.Banks.Domain.BanksSynchronisationProcessing.BanksSynchronisationProcessInitiator", "_initiatedBy", b1 =>
                         {
-                            b1.Property<Guid>("BankId")
+                            b1.Property<Guid>("BanksSynchronisationProcessId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("Bank_externalId")
-                                .HasColumnType("text");
+                            b1.Property<Guid?>("UserId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("initiated_by_user_id");
 
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("status");
+                            b1.HasKey("BanksSynchronisationProcessId");
 
-                            b1.HasKey("BankId", "Bank_externalId");
-
-                            b1.ToTable("banks", "banks");
+                            b1.ToTable("banks_synchronisation_processes", "banks");
 
                             b1.WithOwner()
-                                .HasForeignKey("BankId", "Bank_externalId");
+                                .HasForeignKey("BanksSynchronisationProcessId");
+
+                            b1.OwnsOne("App.Modules.Banks.Domain.BanksSynchronisationProcessing.BanksSynchronisationProcessInitiatorType", "Type", b2 =>
+                                {
+                                    b2.Property<Guid>("BanksSynchronisationProcessInitiatorBanksSynchronisationProcessId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<string>("Value")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("initiated_by_type");
+
+                                    b2.HasKey("BanksSynchronisationProcessInitiatorBanksSynchronisationProcessId");
+
+                                    b2.ToTable("banks_synchronisation_processes", "banks");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("BanksSynchronisationProcessInitiatorBanksSynchronisationProcessId");
+                                });
+
+                            b1.Navigation("Type")
+                                .IsRequired();
                         });
 
-                    b.OwnsOne("App.Modules.Banks.Domain.Country", "_country", b1 =>
-                        {
-                            b1.Property<Guid>("BankId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Bank_externalId")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Code")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("country_code");
-
-                            b1.HasKey("BankId", "Bank_externalId");
-
-                            b1.ToTable("banks", "banks");
-
-                            b1.WithOwner()
-                                .HasForeignKey("BankId", "Bank_externalId");
-                        });
-
-                    b.OwnsOne("App.Modules.Banks.Domain.ExternalProviders.ExternalProviderName", "_externalProviderName", b1 =>
-                        {
-                            b1.Property<Guid>("BankId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Bank_externalId")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("external_provider_name");
-
-                            b1.HasKey("BankId", "Bank_externalId");
-
-                            b1.ToTable("banks", "banks");
-
-                            b1.WithOwner()
-                                .HasForeignKey("BankId", "Bank_externalId");
-                        });
-
-                    b.Navigation("_country");
-
-                    b.Navigation("_externalProviderName");
-
-                    b.Navigation("_status");
+                    b.Navigation("_initiatedBy")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

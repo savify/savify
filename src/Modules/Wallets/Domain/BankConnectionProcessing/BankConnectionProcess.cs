@@ -63,6 +63,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
             _status = BankConnectionProcessStatus.ErrorAtProvider;
             _updatedAt = DateTime.UtcNow;
 
+            // TODO: if we throw exception data will not be saved. We should return some kind of result
             throw;
         }
     }
@@ -104,6 +105,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
             _status = BankConnectionProcessStatus.ErrorAtProvider;
             _updatedAt = DateTime.UtcNow;
 
+            // TODO: if we throw exception data will not be saved. We should return some kind of result
             throw;
         }
     }
