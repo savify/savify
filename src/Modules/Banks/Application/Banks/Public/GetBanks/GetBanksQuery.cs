@@ -3,7 +3,7 @@ using App.Modules.Banks.Application.Contracts;
 
 namespace App.Modules.Banks.Application.Banks.Public.GetBanks;
 
-public class GetBanksQuery : QueryBase<List<BankDto>>, IPagedQuery
+public class GetBanksQuery : QueryBase<IEnumerable<BankDto>>, IPagedQuery
 {
     public int? Page { get; }
 

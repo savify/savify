@@ -4,5 +4,5 @@ namespace App.Modules.Banks.Infrastructure.Integrations.SaltEdge;
 
 public interface ISaltEdgeIntegrationService
 {
-    public Task<List<SaltEdgeProvider>> FetchProvidersAsync(DateTime? fromDate = null);
+    public Task<IEnumerable<SaltEdgeProvider>> FetchProvidersAsync(DateTime? fromDate = null);
 }

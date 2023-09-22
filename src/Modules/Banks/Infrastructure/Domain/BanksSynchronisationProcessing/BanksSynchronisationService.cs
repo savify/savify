@@ -86,7 +86,7 @@ public class BanksSynchronisationService : IBanksSynchronisationService
         }
     }
 
-    private async Task<List<SaltEdgeProvider>> GetExternalProviders(DateTime? fromDate = null)
+    private async Task<IEnumerable<SaltEdgeProvider>> GetExternalProviders(DateTime? fromDate = null)
     {
         try
         {

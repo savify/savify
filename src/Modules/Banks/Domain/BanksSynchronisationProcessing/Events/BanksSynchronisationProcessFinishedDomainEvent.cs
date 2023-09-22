@@ -6,7 +6,6 @@ public class BanksSynchronisationProcessFinishedDomainEvent : DomainEventBase
 {
     public BanksSynchronisationProcessId BanksSynchronisationProcessId { get; }
 
-
     public BanksSynchronisationProcessFinishedDomainEvent(BanksSynchronisationProcessId banksSynchronisationProcessId)
     {
         BanksSynchronisationProcessId = banksSynchronisationProcessId;
