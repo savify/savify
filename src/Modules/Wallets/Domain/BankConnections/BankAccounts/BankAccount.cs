@@ -10,7 +10,7 @@ public class BankAccount : Entity
     internal BankConnectionId BankConnectionId { get; private set; }
 
     // TODO: rename amount to balance
-    internal int Amount { get; }
+    internal int Balance { get; }
 
     internal Currency Currency { get; }
 
@@ -18,18 +18,18 @@ public class BankAccount : Entity
 
     private string _name;
 
-    internal static BankAccount CreateNew(BankConnectionId bankConnectionId, string externalId, string name, int amount, Currency currency)
+    internal static BankAccount CreateNew(BankConnectionId bankConnectionId, string externalId, string name, int balance, Currency currency)
     {
-        return new BankAccount(bankConnectionId, externalId, name, amount, currency);
+        return new BankAccount(bankConnectionId, externalId, name, balance, currency);
     }
 
-    private BankAccount(BankConnectionId bankConnectionId, string externalId, string name, int amount, Currency currency)
+    private BankAccount(BankConnectionId bankConnectionId, string externalId, string name, int balance, Currency currency)
     {
         Id = new BankAccountId(Guid.NewGuid());
         BankConnectionId = bankConnectionId;
         _externalId = externalId;
         _name = name;
-        Amount = amount;
+        Balance = balance;
         Currency = currency;
     }
 

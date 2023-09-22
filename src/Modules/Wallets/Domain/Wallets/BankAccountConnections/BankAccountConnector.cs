@@ -36,7 +36,7 @@ public class BankAccountConnector : IBankAccountConnector
 
             var bankAccount = bankConnection.GetBankAccountById(bankAccountId);
 
-            wallet.ConnectBankAccount(bankConnectionId, bankAccountId, bankAccount.Amount, bankAccount.Currency);
+            wallet.ConnectBankAccount(bankConnectionId, bankAccountId, bankAccount.Balance, bankAccount.Currency);
         }
 
         // TODO: handle credit wallets and throw exception in case wallet type is not debit or credit
