@@ -24,7 +24,7 @@ public class BankConnectionProcessRedirectionService : IBankConnectionProcessRed
 
     public async Task<Redirection> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId)
     {
-        var customer = await _customerRepository.GetSaltEdgeCustomerOrDefaultAsync(userId.Value);
+        var customer = await _customerRepository.GetAsync(userId.Value);
         var providerCode = "fakebank_interactive_xf"; // TODO: get provider code (external bank id) from 'Banks' module
         var returnToUrl = "https://display-parameters.com/"; // TODO: get url from configuration
 

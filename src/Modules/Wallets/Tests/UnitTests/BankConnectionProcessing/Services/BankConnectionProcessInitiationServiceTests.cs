@@ -32,7 +32,7 @@ public class BankConnectionProcessInitiationServiceTests : UnitTestBase
 
         await service.InitiateForAsync(userId);
 
-        await customerRepository.Received(1).GetSaltEdgeCustomerOrDefaultAsync(userId.Value);
+        await customerRepository.Received(1).GetOrDefaultAsync(userId.Value);
         await customerRepository.Received(1).AddAsync(Arg.Is<SaltEdgeCustomer>(c =>
             c.Id == customer.Id && c.Identifier == customer.Identifier));
         await integrationService.Received(1).CreateCustomerAsync(userId.Value);
@@ -46,13 +46,13 @@ public class BankConnectionProcessInitiationServiceTests : UnitTestBase
         var customerRepository = Substitute.For<ISaltEdgeCustomerRepository>();
         var integrationService = Substitute.For<ISaltEdgeIntegrationService>();
 
-        customerRepository.GetSaltEdgeCustomerOrDefaultAsync(userId.Value).Returns(new SaltEdgeCustomer("123456", Guid.NewGuid()));
+        customerRepository.GetOrDefaultAsync(userId.Value).Returns(new SaltEdgeCustomer("123456", Guid.NewGuid()));
 
         var service = new BankConnectionProcessInitiationService(customerRepository, integrationService);
 
         await service.InitiateForAsync(userId);
 
-        await customerRepository.Received(1).GetSaltEdgeCustomerOrDefaultAsync(userId.Value);
+        await customerRepository.Received(1).GetOrDefaultAsync(userId.Value);
         await customerRepository.Received(0).AddAsync(Arg.Any<SaltEdgeCustomer>());
         await integrationService.Received(0).CreateCustomerAsync(userId.Value);
     }
