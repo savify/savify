@@ -9,17 +9,13 @@ internal class SynchroniseBanksCommandHandler : ICommandHandler<SynchroniseBanks
 {
     private readonly IBanksSynchronisationProcessRepository _banksSynchronisationProcessRepository;
 
-    private readonly ILastSuccessfulBanksSynchronisationProcessAccessor _lastSuccessfulBanksSynchronisationProcessAccessor;
-
     private readonly IBanksSynchronisationService _banksSynchronisationService;
 
     public SynchroniseBanksCommandHandler(
         IBanksSynchronisationProcessRepository banksSynchronisationProcessRepository,
-        ILastSuccessfulBanksSynchronisationProcessAccessor lastSuccessfulBanksSynchronisationProcessAccessor,
         IBanksSynchronisationService banksSynchronisationService)
     {
         _banksSynchronisationProcessRepository = banksSynchronisationProcessRepository;
-        _lastSuccessfulBanksSynchronisationProcessAccessor = lastSuccessfulBanksSynchronisationProcessAccessor;
         _banksSynchronisationService = banksSynchronisationService;
     }
 
@@ -27,8 +23,7 @@ internal class SynchroniseBanksCommandHandler : ICommandHandler<SynchroniseBanks
     {
         var banksSynchronisationProcess = await BanksSynchronisationProcess.Start(
             BanksSynchronisationProcessInitiator.User(new UserId(command.UserId)),
-            _banksSynchronisationService,
-            _lastSuccessfulBanksSynchronisationProcessAccessor);
+            _banksSynchronisationService);
 
         await _banksSynchronisationProcessRepository.AddAsync(banksSynchronisationProcess);
 

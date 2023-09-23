@@ -19,26 +19,15 @@ public class BanksSynchronisationProcess : Entity, IAggregateRoot
 
     public static async Task<BanksSynchronisationProcess> Start(
         BanksSynchronisationProcessInitiator initiatedBy,
-        IBanksSynchronisationService banksSynchronisationService,
-        ILastSuccessfulBanksSynchronisationProcessAccessor lastSuccessfulBanksSynchronisationProcessAccessor)
+        IBanksSynchronisationService banksSynchronisationService)
     {
         var banksSynchronisationProcess = new BanksSynchronisationProcess(initiatedBy);
 
         // TODO: for now synchronisation process will be synchronous; if execution time will be too large, we need to handle it asynchronous
         try
         {
-            var lastSuccessfulBankSynchronisationProcess = await lastSuccessfulBanksSynchronisationProcessAccessor.AccessAsync();
+            await banksSynchronisationService.SynchroniseAsync(banksSynchronisationProcess.Id);
 
-            if (lastSuccessfulBankSynchronisationProcess is not null)
-            {
-                await banksSynchronisationService.SynchroniseAsync(
-                    banksSynchronisationProcess.Id,
-                    fromDate: lastSuccessfulBankSynchronisationProcess.FinishedAt);
-            }
-            else
-            {
-                await banksSynchronisationService.SynchroniseAsync(banksSynchronisationProcess.Id);
-            }
             banksSynchronisationProcess.Finish();
         }
         catch (BanksSynchronisationProcessException)

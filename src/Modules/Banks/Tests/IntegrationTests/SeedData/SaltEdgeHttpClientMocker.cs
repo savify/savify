@@ -39,7 +39,7 @@ public class SaltEdgeHttpClientMocker
                 {
                     code = "external-id-2",
                     name = "Bank name 2",
-                    status = "inactive",
+                    status = "active",
                     country_code = Country.FakeCountry.Code,
                     regulated = false,
                     max_consent_days = 90,
@@ -60,7 +60,7 @@ public class SaltEdgeHttpClientMocker
                     .WithBodyAsJson(banksJson));
     }
 
-    public void MockFetchUpdatedProvidersSuccessfulResponse(DateTime fromDate)
+    public void MockFetchUpdatedProvidersSuccessfulResponse()
     {
         var banksJson = new
         {
@@ -83,7 +83,6 @@ public class SaltEdgeHttpClientMocker
                 Request.Create()
                     .WithPath("/providers")
                     .WithParam("include_fake_providers")
-                    .WithParam("from_date")
                     .UsingGet()
             )
             .RespondWith(
