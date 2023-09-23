@@ -47,6 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ArchTests", "src\Tests\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{29792374-3E5F-485C-90CD-773DAA420286}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.env.test = .env.test
 		.gitignore = .gitignore
 		docker-compose.yaml = docker-compose.yaml
@@ -74,43 +75,43 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BEE875FA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{77C71F41-06F2-4E66-9810-CB98B5A59A94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Wallets.Application", "src\Modules\Wallets\Application\App.Modules.Wallets.Application.csproj", "{8CD80D28-2647-47B7-9206-2FA4446B9C92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.Application", "src\Modules\Wallets\Application\App.Modules.Wallets.Application.csproj", "{8CD80D28-2647-47B7-9206-2FA4446B9C92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Wallets.Domain", "src\Modules\Wallets\Domain\App.Modules.Wallets.Domain.csproj", "{CA815CC1-CF0F-4B68-833B-F72569F5DB7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.Domain", "src\Modules\Wallets\Domain\App.Modules.Wallets.Domain.csproj", "{CA815CC1-CF0F-4B68-833B-F72569F5DB7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Wallets.Infrastructure", "src\Modules\Wallets\Infrastructure\App.Modules.Wallets.Infrastructure.csproj", "{8B049133-B324-4E25-B896-F0EE02A91B44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.Infrastructure", "src\Modules\Wallets\Infrastructure\App.Modules.Wallets.Infrastructure.csproj", "{8B049133-B324-4E25-B896-F0EE02A91B44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Wallets.IntegrationEvents", "src\Modules\Wallets\IntegrationEvents\App.Modules.Wallets.IntegrationEvents.csproj", "{1A15C488-F52F-4B36-B9D6-A39879789D28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.IntegrationEvents", "src\Modules\Wallets\IntegrationEvents\App.Modules.Wallets.IntegrationEvents.csproj", "{1A15C488-F52F-4B36-B9D6-A39879789D28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Wallets.ArchTests", "src\Modules\Wallets\Tests\ArchTests\App.Modules.Wallets.ArchTests.csproj", "{2D4B364D-47F8-403A-80FC-887E03F024DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.ArchTests", "src\Modules\Wallets\Tests\ArchTests\App.Modules.Wallets.ArchTests.csproj", "{2D4B364D-47F8-403A-80FC-887E03F024DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Wallets.IntegrationTests", "src\Modules\Wallets\Tests\IntegrationTests\App.Modules.Wallets.IntegrationTests.csproj", "{936345AF-742F-4292-9A33-6B59B2CC3787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.IntegrationTests", "src\Modules\Wallets\Tests\IntegrationTests\App.Modules.Wallets.IntegrationTests.csproj", "{936345AF-742F-4292-9A33-6B59B2CC3787}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Wallets.UnitTests", "src\Modules\Wallets\Tests\UnitTests\App.Modules.Wallets.UnitTests.csproj", "{CE76C341-38B9-4FA8-A5AB-37E102A9B838}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.UnitTests", "src\Modules\Wallets\Tests\UnitTests\App.Modules.Wallets.UnitTests.csproj", "{CE76C341-38B9-4FA8-A5AB-37E102A9B838}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wallets", "Wallets", "{345FEA79-1699-4B15-BF2C-FDAFCFAE1572}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Integrations.SaltEdge", "src\Integrations\SaltEdge\App.Integrations.SaltEdge.csproj", "{CCE8C87B-F5E4-462B-9670-E43CBE97CBCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Integrations.SaltEdge", "src\Integrations\SaltEdge\App.Integrations.SaltEdge.csproj", "{CCE8C87B-F5E4-462B-9670-E43CBE97CBCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Integrations.UnitTests", "src\Integrations\Tests\UnitTests\App.Integrations.UnitTests.csproj", "{D17C944B-FCBF-4D1A-BBAF-A24E3D214641}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Integrations.UnitTests", "src\Integrations\Tests\UnitTests\App.Integrations.UnitTests.csproj", "{D17C944B-FCBF-4D1A-BBAF-A24E3D214641}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{15F6D2F7-AE91-45AE-B420-0CC6BF7030AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C355D924-1EEA-47B7-BCB3-AF667D09A0B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Banks.Domain", "src\Modules\Banks\Domain\App.Modules.Banks.Domain.csproj", "{F8DDF03A-0EC1-416C-84FC-DE7639CA02DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Banks.Domain", "src\Modules\Banks\Domain\App.Modules.Banks.Domain.csproj", "{F8DDF03A-0EC1-416C-84FC-DE7639CA02DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Banks.Application", "src\Modules\Banks\Application\App.Modules.Banks.Application.csproj", "{7C6662F8-05F7-4241-B5E6-DF9E19EC9E0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Banks.Application", "src\Modules\Banks\Application\App.Modules.Banks.Application.csproj", "{7C6662F8-05F7-4241-B5E6-DF9E19EC9E0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Banks.Infrastructure", "src\Modules\Banks\Infrastructure\App.Modules.Banks.Infrastructure.csproj", "{934EC115-2F85-4B33-90F8-F027633298DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Banks.Infrastructure", "src\Modules\Banks\Infrastructure\App.Modules.Banks.Infrastructure.csproj", "{934EC115-2F85-4B33-90F8-F027633298DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Banks.IntegrationEvents", "src\Modules\Banks\IntegrationEvents\App.Modules.Banks.IntegrationEvents.csproj", "{89743086-9733-4941-8072-1288ED898A59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Banks.IntegrationEvents", "src\Modules\Banks\IntegrationEvents\App.Modules.Banks.IntegrationEvents.csproj", "{89743086-9733-4941-8072-1288ED898A59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Banks.UnitTests", "src\Modules\Banks\Tests\UnitTests\App.Modules.Banks.UnitTests.csproj", "{9D0873F5-2D7B-4526-8EE7-FC38FF7129B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Banks.UnitTests", "src\Modules\Banks\Tests\UnitTests\App.Modules.Banks.UnitTests.csproj", "{9D0873F5-2D7B-4526-8EE7-FC38FF7129B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Banks.ArchTests", "src\Modules\Banks\Tests\ArchTests\App.Modules.Banks.ArchTests.csproj", "{756BC7D9-B7D4-466F-87C1-9CFEA6FDD4E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Banks.ArchTests", "src\Modules\Banks\Tests\ArchTests\App.Modules.Banks.ArchTests.csproj", "{756BC7D9-B7D4-466F-87C1-9CFEA6FDD4E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Modules.Banks.IntegrationTests", "src\Modules\Banks\Tests\IntegrationTests\App.Modules.Banks.IntegrationTests.csproj", "{5A22ED87-E024-4FAD-AE2C-6CC47D19BEF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Banks.IntegrationTests", "src\Modules\Banks\Tests\IntegrationTests\App.Modules.Banks.IntegrationTests.csproj", "{5A22ED87-E024-4FAD-AE2C-6CC47D19BEF6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Banks", "Banks", "{689E9618-A0CC-44DC-92D0-8B3796C0092B}"
 EndProject
@@ -298,29 +299,29 @@ Global
 		{204158C0-0EAE-4149-B51C-E260DD32600A} = {E7279069-FA67-42DC-B1AA-02F963BAA432}
 		{614AA553-EB57-47CC-BBCF-E94373C917DA} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
 		{F1A35675-89C9-4F73-AAA3-FAF5B1212FCB} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
+		{0C0018A6-D578-4BD8-8C49-23EF4CEF1DFB} = {345FEA79-1699-4B15-BF2C-FDAFCFAE1572}
 		{BEE875FA-59EC-4A1A-940D-0C3B6E360304} = {614AA553-EB57-47CC-BBCF-E94373C917DA}
 		{77C71F41-06F2-4E66-9810-CB98B5A59A94} = {F1A35675-89C9-4F73-AAA3-FAF5B1212FCB}
-		{345FEA79-1699-4B15-BF2C-FDAFCFAE1572} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
 		{8CD80D28-2647-47B7-9206-2FA4446B9C92} = {345FEA79-1699-4B15-BF2C-FDAFCFAE1572}
 		{CA815CC1-CF0F-4B68-833B-F72569F5DB7B} = {345FEA79-1699-4B15-BF2C-FDAFCFAE1572}
 		{8B049133-B324-4E25-B896-F0EE02A91B44} = {345FEA79-1699-4B15-BF2C-FDAFCFAE1572}
 		{1A15C488-F52F-4B36-B9D6-A39879789D28} = {345FEA79-1699-4B15-BF2C-FDAFCFAE1572}
-		{0C0018A6-D578-4BD8-8C49-23EF4CEF1DFB} = {345FEA79-1699-4B15-BF2C-FDAFCFAE1572}
 		{2D4B364D-47F8-403A-80FC-887E03F024DC} = {0C0018A6-D578-4BD8-8C49-23EF4CEF1DFB}
 		{936345AF-742F-4292-9A33-6B59B2CC3787} = {0C0018A6-D578-4BD8-8C49-23EF4CEF1DFB}
 		{CE76C341-38B9-4FA8-A5AB-37E102A9B838} = {0C0018A6-D578-4BD8-8C49-23EF4CEF1DFB}
+		{345FEA79-1699-4B15-BF2C-FDAFCFAE1572} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
 		{CCE8C87B-F5E4-462B-9670-E43CBE97CBCC} = {15F6D2F7-AE91-45AE-B420-0CC6BF7030AA}
-		{C355D924-1EEA-47B7-BCB3-AF667D09A0B5} = {15F6D2F7-AE91-45AE-B420-0CC6BF7030AA}
 		{D17C944B-FCBF-4D1A-BBAF-A24E3D214641} = {C355D924-1EEA-47B7-BCB3-AF667D09A0B5}
-		{689E9618-A0CC-44DC-92D0-8B3796C0092B} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
-		{7C6662F8-05F7-4241-B5E6-DF9E19EC9E0F} = {689E9618-A0CC-44DC-92D0-8B3796C0092B}
+		{C355D924-1EEA-47B7-BCB3-AF667D09A0B5} = {15F6D2F7-AE91-45AE-B420-0CC6BF7030AA}
 		{F8DDF03A-0EC1-416C-84FC-DE7639CA02DD} = {689E9618-A0CC-44DC-92D0-8B3796C0092B}
+		{7C6662F8-05F7-4241-B5E6-DF9E19EC9E0F} = {689E9618-A0CC-44DC-92D0-8B3796C0092B}
 		{934EC115-2F85-4B33-90F8-F027633298DD} = {689E9618-A0CC-44DC-92D0-8B3796C0092B}
 		{89743086-9733-4941-8072-1288ED898A59} = {689E9618-A0CC-44DC-92D0-8B3796C0092B}
-		{E13C66C2-C0ED-42AA-95C6-5A060C45B0B1} = {689E9618-A0CC-44DC-92D0-8B3796C0092B}
+		{9D0873F5-2D7B-4526-8EE7-FC38FF7129B7} = {E13C66C2-C0ED-42AA-95C6-5A060C45B0B1}
 		{756BC7D9-B7D4-466F-87C1-9CFEA6FDD4E7} = {E13C66C2-C0ED-42AA-95C6-5A060C45B0B1}
 		{5A22ED87-E024-4FAD-AE2C-6CC47D19BEF6} = {E13C66C2-C0ED-42AA-95C6-5A060C45B0B1}
-		{9D0873F5-2D7B-4526-8EE7-FC38FF7129B7} = {E13C66C2-C0ED-42AA-95C6-5A060C45B0B1}
+		{689E9618-A0CC-44DC-92D0-8B3796C0092B} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
+		{E13C66C2-C0ED-42AA-95C6-5A060C45B0B1} = {689E9618-A0CC-44DC-92D0-8B3796C0092B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F51F7F7A-D302-4F30-97E8-A4EBC860CF6F}
