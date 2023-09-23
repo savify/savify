@@ -23,7 +23,7 @@ public class BanksController : ControllerBase
 
     [HttpGet]
     [NoPermissionRequired]
-    [ProducesResponseType(typeof(List<BankDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<BankDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] PaginationQueryParameters pagination)
     {
         var banks = await _banksModule.ExecuteQueryAsync(

@@ -72,6 +72,8 @@ public class Bank : Entity, IAggregateRoot
             defaultLogoUrl));
     }
 
+    public void Disable() => _status = BankStatus.Disabled;
+
     public bool IsFake() => _country.IsFake();
 
     public bool IsEnabled() => _status == BankStatus.Enabled || _status == BankStatus.Beta;

@@ -9,6 +9,5 @@ internal static class DomainModule
     internal static void Configure(IServiceCollection services)
     {
         services.AddScoped<IBanksSynchronisationService, BanksSynchronisationService>();
-        services.AddScoped<ILastSuccessfulBanksSynchronisationProcessAccessor, LastSuccessfulBanksSynchronisationProcessAccessor>();
     }
 }

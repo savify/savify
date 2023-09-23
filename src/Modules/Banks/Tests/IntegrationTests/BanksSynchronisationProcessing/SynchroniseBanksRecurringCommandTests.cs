@@ -1,10 +1,7 @@
 using App.Modules.Banks.Application.Banks.Internal.GetBanks;
 using App.Modules.Banks.Application.BanksSynchronisationProcessing.SynchroniseBanks;
 using App.Modules.Banks.Domain.Banks;
-using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.IntegrationTests.SeedWork;
-using Dapper;
-using Npgsql;
 
 namespace App.Modules.Banks.IntegrationTests.BanksSynchronisationProcessing;
 
@@ -39,10 +36,9 @@ public class SynchroniseBanksRecurringCommandTests : TestBase
         SaltEdgeHttpClientMocker.MockFetchProvidersSuccessfulResponse();
         await BanksModule.ExecuteCommandAsync(new SynchroniseBanksRecurringCommand());
 
-        var lastProcessFinishedAt = await GetLastBanksSyncProcessFinishedAt();
-        SaltEdgeHttpClientMocker.MockFetchUpdatedProvidersSuccessfulResponse(lastProcessFinishedAt);
+        SaltEdgeHttpClientMocker.MockFetchUpdatedProvidersSuccessfulResponse();
 
-        await BanksModule.ExecuteCommandAsync(new SynchroniseBanksCommand(Guid.NewGuid()));
+        await BanksModule.ExecuteCommandAsync(new SynchroniseBanksRecurringCommand());
         var banks = await BanksModule.ExecuteQueryAsync(new GetBanksQuery());
         var updatedBank = banks.Single(b => b.Name == "Bank name 1");
 
@@ -53,14 +49,19 @@ public class SynchroniseBanksRecurringCommandTests : TestBase
         Assert.That(updatedBank.DefaultLogoUrl, Is.EqualTo("https://external/banks/bank-new.svg"));
     }
 
-    private async Task<DateTime> GetLastBanksSyncProcessFinishedAt()
+    [Test]
+    public async Task SynchroniseBanksRecurringCommand_WhenSomeBankWasDisabled_WillDisableThisBank_Test()
     {
-        await using var connection = new NpgsqlConnection(ConnectionString);
+        SaltEdgeHttpClientMocker.MockFetchProvidersSuccessfulResponse();
+        await BanksModule.ExecuteCommandAsync(new SynchroniseBanksRecurringCommand());
 
-        var sql = @"SELECT finished_at FROM banks.banks_synchronisation_processes WHERE status = @FinishedStatus";
+        SaltEdgeHttpClientMocker.MockFetchUpdatedProvidersSuccessfulResponse();
 
-        return await connection.QuerySingleAsync<DateTime>(
-            sql,
-            new { FinishedStatus = BanksSynchronisationProcessStatus.Finished.Value });
+        await BanksModule.ExecuteCommandAsync(new SynchroniseBanksRecurringCommand());
+        var banks = await BanksModule.ExecuteQueryAsync(new GetBanksQuery());
+        var disabledBank = banks.Single(b => b.Name == "Bank name 2");
+
+        Assert.That(banks.Count, Is.EqualTo(2));
+        Assert.That(disabledBank.Status, Is.EqualTo(BankStatus.Disabled.Value));
     }
 }

@@ -34,4 +34,9 @@ public class BankRepository : IBankRepository
     {
         return await _banksContext.Banks.SingleOrDefaultAsync(b => b.ExternalId == externalId);
     }
+
+    public async Task<IEnumerable<Bank>> GetAllAsync()
+    {
+        return await _banksContext.Banks.ToListAsync();
+    }
 }

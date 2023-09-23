@@ -25,34 +25,20 @@ public class BanksSynchronisationService : IBanksSynchronisationService
 
     public async Task SynchroniseAsync(BanksSynchronisationProcessId banksSynchronisationProcessId)
     {
+        var banks = await _bankRepository.GetAllAsync();
         var externalProviders = await GetExternalProviders();
 
-        foreach (var externalProvider in externalProviders)
+        foreach (var bank in banks)
         {
-            var bankStatus = externalProvider.Status is "inactive" or "disabled" ? BankStatus.Disabled : BankStatus.Beta;
-
-            var bank = Bank.AddNew(
-                banksSynchronisationProcessId,
-                ExternalProviderName.SaltEdge,
-                externalProvider.Code,
-                externalProvider.Name,
-                Country.From(externalProvider.CountryCode),
-                bankStatus,
-                externalProvider.Regulated,
-                externalProvider.MaxConsentDays,
-                externalProvider.LogoUrl);
-
-            await _bankRepository.AddAsync(bank);
+            if (!externalProviders.Any(p => p.Code == bank.ExternalId))
+            {
+                bank.Disable();
+            }
         }
-    }
-
-    public async Task SynchroniseAsync(BanksSynchronisationProcessId banksSynchronisationProcessId, DateTime fromDate)
-    {
-        var externalProviders = await GetExternalProviders(fromDate);
 
         foreach (var externalProvider in externalProviders)
         {
-            var bank = await _bankRepository.GetByExternalIdAsync(externalProvider.Code);
+            var bank = banks.FirstOrDefault(b => b.ExternalId == externalProvider.Code);
 
             if (bank is null)
             {
@@ -83,6 +69,7 @@ public class BanksSynchronisationService : IBanksSynchronisationService
                     externalProvider.MaxConsentDays,
                     externalProvider.LogoUrl);
             }
+
         }
     }
 

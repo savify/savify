@@ -27,6 +27,7 @@ public class BanksSynchronisationServiceTests : UnitTestBase
         await service.SynchroniseAsync(bankSynchronisationProcessId);
 
         await integrationService.Received(1).FetchProvidersAsync();
+        await bankRepository.Received(1).GetAllAsync();
         await bankRepository.Received(1).AddAsync(Arg.Is<Bank>(b =>
             b.LastBanksSynchronisationProcessId == bankSynchronisationProcessId &&
             b.ExternalId == "external-id-1" &&
@@ -42,32 +43,34 @@ public class BanksSynchronisationServiceTests : UnitTestBase
     }
 
     [Test]
-    public async Task SynchroniseAsync_ForEachExternalProvider_FromProvidedDate_WillCreateANewBankOrUpdateExistingBank()
+    public async Task SynchroniseAsync_ForEachExternalProvider_WillCreateANewBankOrUpdateExistingBank()
     {
         var bankSynchronisationProcessId = new BanksSynchronisationProcessId(Guid.NewGuid());
-        var fromDate = DateTime.UtcNow;
         var externalProviders = GetExternalProviders();
 
         var integrationService = Substitute.For<ISaltEdgeIntegrationService>();
-        integrationService.FetchProvidersAsync(fromDate).Returns(externalProviders);
+        integrationService.FetchProvidersAsync().Returns(externalProviders);
 
         var bankRepository = Substitute.For<IBankRepository>();
-        bankRepository.GetByExternalIdAsync("external-id-2").Returns(Bank.AddNew(new BanksSynchronisationProcessId(
-            Guid.NewGuid()),
-            ExternalProviderName.SaltEdge,
-            "external-id-2",
-            "Bank name 2",
-            Country.FakeCountry,
-            BankStatus.Beta,
-            true,
-            null,
-            "https://cdn.savify.localhost/logos/banks/bank-2.png"));
+        bankRepository.GetAllAsync().Returns(new List<Bank>
+        {
+            Bank.AddNew(new BanksSynchronisationProcessId(
+                    Guid.NewGuid()),
+                ExternalProviderName.SaltEdge,
+                "external-id-2",
+                "Bank name 2",
+                Country.FakeCountry,
+                BankStatus.Beta,
+                true,
+                null,
+                "https://cdn.savify.localhost/logos/banks/bank-2.png")
+        });
 
         var service = new BanksSynchronisationService(integrationService, bankRepository);
 
-        await service.SynchroniseAsync(bankSynchronisationProcessId, fromDate);
+        await service.SynchroniseAsync(bankSynchronisationProcessId);
 
-        await integrationService.Received(1).FetchProvidersAsync(fromDate);
+        await integrationService.Received(1).FetchProvidersAsync();
         await bankRepository.Received(1).AddAsync(Arg.Is<Bank>(b =>
             b.LastBanksSynchronisationProcessId == bankSynchronisationProcessId &&
             b.ExternalId == "external-id-1" &&
