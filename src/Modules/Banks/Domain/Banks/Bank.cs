@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Domain;
+using App.Modules.Banks.Domain.Banks.BankRevisions;
 using App.Modules.Banks.Domain.Banks.Events;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Domain.ExternalProviders;
@@ -12,6 +13,8 @@ public class Bank : Entity, IAggregateRoot
     public string ExternalId { get; private set; }
 
     public BanksSynchronisationProcessId LastBanksSynchronisationProcessId { get; private set; }
+
+    internal BankRevisionId CurrentRevisionId { get; private set; }
 
     private ExternalProviderName _externalProviderName;
 
@@ -49,27 +52,51 @@ public class Bank : Entity, IAggregateRoot
 
     public void Update(BanksSynchronisationProcessId banksSynchronisationProcessId, string name, bool wasDisabled, bool isRegulated, int? maxConsentDays, string defaultLogoUrl)
     {
-        // TODO: maybe we should add some logic to save data that was updated on bank?
-        LastBanksSynchronisationProcessId = banksSynchronisationProcessId;
-        _name = name;
-        _isRegulated = isRegulated;
-        _maxConsentDays = maxConsentDays;
-        _defaultLogoUrl = defaultLogoUrl;
-        _updatedAt = DateTime.UtcNow;
+        var wasChanged = name != _name || wasDisabled || isRegulated != _isRegulated ||
+                         maxConsentDays != _maxConsentDays || defaultLogoUrl != _defaultLogoUrl;
 
-        if (wasDisabled)
+        if (wasChanged)
         {
-            _status = BankStatus.Disabled;
-        }
+            LastBanksSynchronisationProcessId = banksSynchronisationProcessId;
+            _name = name;
+            _isRegulated = isRegulated;
+            _maxConsentDays = maxConsentDays;
+            _defaultLogoUrl = defaultLogoUrl;
+            _updatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new BankUpdatedDomainEvent(
+            if (wasDisabled)
+            {
+                _status = BankStatus.Disabled;
+            }
+
+            AddDomainEvent(new BankUpdatedDomainEvent(
+                Id,
+                banksSynchronisationProcessId,
+                name,
+                wasDisabled,
+                isRegulated,
+                maxConsentDays,
+                defaultLogoUrl));
+        }
+    }
+
+    public BankRevision CreateRevision(BankRevisionType revisionType)
+    {
+        var revision = BankRevision.CreateNew(
             Id,
-            banksSynchronisationProcessId,
-            name,
-            wasDisabled,
-            isRegulated,
-            maxConsentDays,
-            defaultLogoUrl));
+            LastBanksSynchronisationProcessId,
+            revisionType,
+            _name,
+            _status,
+            _isRegulated,
+            _maxConsentDays,
+            _logoUrl,
+            _defaultLogoUrl
+            );
+
+        CurrentRevisionId = revision.Id;
+
+        return revision;
     }
 
     public void Disable() => _status = BankStatus.Disabled;

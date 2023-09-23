@@ -1,5 +1,6 @@
 using App.Modules.Banks.Domain;
 using App.Modules.Banks.Domain.Banks;
+using App.Modules.Banks.Domain.Banks.BankRevisions;
 using App.Modules.Banks.Domain.ExternalProviders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,6 +19,8 @@ public class BankEntityTypeConfiguration : IEntityTypeConfiguration<Bank>
         builder.Property(x => x.Id).HasColumnName("id");
         builder.Property(x => x.ExternalId).HasColumnName("external_id");
         builder.Property(x => x.LastBanksSynchronisationProcessId).HasColumnName("last_banks_synchronisation_process_id");
+
+        builder.Property<BankRevisionId>("CurrentRevisionId").HasColumnName("current_revision_id");
 
         builder.Property<string>("_name").HasColumnName("name");
         builder.Property<bool>("_isRegulated").HasColumnName("is_regulated");
