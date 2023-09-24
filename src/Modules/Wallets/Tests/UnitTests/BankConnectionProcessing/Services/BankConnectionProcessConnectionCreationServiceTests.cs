@@ -6,7 +6,7 @@ using App.Modules.Wallets.Infrastructure.Domain.BankConnectionProcessing.Service
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Accounts;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections;
-using Consent = App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.ResponseContent.Consent;
+using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.ResponseContent;
 
 namespace App.Modules.Wallets.UnitTests.BankConnectionProcessing.Services;
 
@@ -33,7 +33,7 @@ public class BankConnectionProcessConnectionCreationServiceTests : UnitTestBase
             "123456",
             "123456",
             "active");
-        var consent = new Consent();
+        var consent = new SaltEdgeConsent();
         consent.Id = "123456";
         consent.ExpiresAt = null;
 

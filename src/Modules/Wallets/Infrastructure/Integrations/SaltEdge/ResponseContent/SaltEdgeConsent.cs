@@ -1,6 +1,6 @@
 namespace App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.ResponseContent;
 
-public class Consent
+public class SaltEdgeConsent
 {
     public string Id { get; set; }
 
