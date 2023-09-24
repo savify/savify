@@ -80,11 +80,14 @@ public class Bank : Entity, IAggregateRoot
         }
     }
 
+    // TODO: support updating bank by user (BankRevisionCreatorType.User)
     public BankRevision CreateRevision(BankRevisionType revisionType)
     {
         var revision = BankRevision.CreateNew(
             Id,
-            LastBanksSynchronisationProcessId,
+            new BankRevisionCreator(
+                BankRevisionCreatorType.SynchronisationProcess,
+                LastBanksSynchronisationProcessId.Value),
             revisionType,
             _name,
             _status,

@@ -1,6 +1,5 @@
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.Banks.BankRevisions;
-using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,7 +15,6 @@ public class BankRevisionEntityTypeConfiguration : IEntityTypeConfiguration<Bank
         builder.Property(x => x.Id).HasColumnName("id");
 
         builder.Property<BankId>("BankId").HasColumnName("bank_id");
-        builder.Property<BanksSynchronisationProcessId>("BanksSynchronisationProcessId").HasColumnName("banks_synchronisation_process_id");
 
         builder.Property<string>("_name").HasColumnName("name");
         builder.Property<bool>("_isRegulated").HasColumnName("is_regulated");
@@ -36,5 +34,14 @@ public class BankRevisionEntityTypeConfiguration : IEntityTypeConfiguration<Bank
             .HasConversion(
                 r => r.Value,
                 r => new BankRevisionType(r));
+
+        builder.OwnsOne<BankRevisionCreator>("_createdBy", b =>
+        {
+            b.Property(c => c.Type).HasColumnName("created_by_type").HasConversion(
+                t => t.Value,
+                t => new BankRevisionCreatorType(t));
+
+            b.Property(c => c.Id).HasColumnName("created_by_id");
+        });
     }
 }

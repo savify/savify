@@ -1,6 +1,5 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Banks.Domain.Banks.BankRevisions.Events;
-using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 
 namespace App.Modules.Banks.Domain.Banks.BankRevisions;
 
@@ -10,7 +9,7 @@ public class BankRevision : Entity, IAggregateRoot
 
     internal BankId BankId { get; private set; }
 
-    internal BanksSynchronisationProcessId BanksSynchronisationProcessId { get; private set; }
+    private BankRevisionCreator _createdBy;
 
     private BankRevisionType _revisionType;
 
@@ -30,7 +29,7 @@ public class BankRevision : Entity, IAggregateRoot
 
     public static BankRevision CreateNew(
         BankId bankId,
-        BanksSynchronisationProcessId banksSynchronisationProcessId,
+        BankRevisionCreator createdBy,
         BankRevisionType revisionType,
         string name,
         BankStatus status,
@@ -41,7 +40,7 @@ public class BankRevision : Entity, IAggregateRoot
     {
         return new BankRevision(
             bankId,
-            banksSynchronisationProcessId,
+            createdBy,
             revisionType,
             name,
             status,
@@ -53,7 +52,7 @@ public class BankRevision : Entity, IAggregateRoot
 
     private BankRevision(
         BankId bankId,
-        BanksSynchronisationProcessId banksSynchronisationProcessId,
+        BankRevisionCreator createdBy,
         BankRevisionType revisionType,
         string name,
         BankStatus status,
@@ -64,7 +63,7 @@ public class BankRevision : Entity, IAggregateRoot
     {
         Id = new BankRevisionId(Guid.NewGuid());
         BankId = bankId;
-        BanksSynchronisationProcessId = banksSynchronisationProcessId;
+        _createdBy = createdBy;
         _revisionType = revisionType;
         _name = name;
         _status = status;
