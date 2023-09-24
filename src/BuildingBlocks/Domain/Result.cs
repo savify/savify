@@ -1,16 +1,17 @@
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace App.Modules.Wallets.Domain.BankConnectionProcessing.Results;
+namespace App.BuildingBlocks.Domain;
 
 public class Result<TSuccess, TError>
 {
     private readonly TSuccess? _success;
+
     private readonly TError? _error;
 
     public TSuccess Success { get => _success ?? throw new InvalidOperationException(""); }
+
     public TError Error { get => _error ?? throw new InvalidOperationException(""); }
 
     public bool IsSuccess => _success is not null;
+
     public bool IsError => _error is not null;
 
     public Result(TSuccess success)
@@ -23,8 +24,9 @@ public class Result<TSuccess, TError>
         _error = error;
     }
 
-    public static implicit operator Result<TSuccess, TError>(TSuccess success) => new Result<TSuccess, TError>(success);
-    public static implicit operator Result<TSuccess, TError>(TError error) => new Result<TSuccess, TError>(error);
+    public static implicit operator Result<TSuccess, TError>(TSuccess success) => new(success);
+
+    public static implicit operator Result<TSuccess, TError>(TError error) => new(error);
 }
 
 public class Result<TSuccess> where TSuccess : class
@@ -40,9 +42,10 @@ public class Result<TSuccess> where TSuccess : class
 
     public bool IsSuccess => _success is not null;
 
+    public bool IsError => _success is null;
+
 
     public static implicit operator Result<TSuccess>(TSuccess success) => new(success);
-
 
     public static implicit operator Result<TSuccess>(ErrorResult errorResult) => new(success: null);
 
@@ -50,10 +53,13 @@ public class Result<TSuccess> where TSuccess : class
 
 }
 
-public class ErrorResult
-{ }
+public class SuccessResult { }
+
+public class ErrorResult { }
 
 public class Result
 {
-    public ErrorResult Error => new ErrorResult();
+    public static SuccessResult Success => new();
+
+    public static ErrorResult Error => new();
 }

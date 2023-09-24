@@ -2,7 +2,7 @@ using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.Wallets.CreditWallets.EditCreditWallet;
 
-public class EditCreditWalletCommand : CommandBase<Result>
+public class EditCreditWalletCommand : CommandBase
 {
     public Guid UserId { get; }
 

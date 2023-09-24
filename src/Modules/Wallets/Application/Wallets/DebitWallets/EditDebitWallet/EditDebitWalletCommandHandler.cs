@@ -1,5 +1,4 @@
 using App.Modules.Wallets.Application.Configuration.Commands;
-using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Domain.Finance;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets;
@@ -8,7 +7,7 @@ using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.EditDebitWallet;
 
-internal class EditDebitWalletCommandHandler : ICommandHandler<EditDebitWalletCommand, Result>
+internal class EditDebitWalletCommandHandler : ICommandHandler<EditDebitWalletCommand>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 
@@ -20,7 +19,7 @@ internal class EditDebitWalletCommandHandler : ICommandHandler<EditDebitWalletCo
         _walletViewMetadataRepository = walletViewMetadataRepository;
     }
 
-    public async Task<Result> Handle(EditDebitWalletCommand command, CancellationToken cancellationToken)
+    public async Task Handle(EditDebitWalletCommand command, CancellationToken cancellationToken)
     {
         var wallet = await _debitWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
         wallet.Edit(
@@ -33,7 +32,5 @@ internal class EditDebitWalletCommandHandler : ICommandHandler<EditDebitWalletCo
             command.Color,
             command.Icon,
             command.ConsiderInTotalBalance);
-
-        return Result.Success;
     }
 }

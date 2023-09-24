@@ -6,7 +6,7 @@ using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.RemoveDebitWallet;
 
-internal class RemoveDebitWalletCommandHandler : ICommandHandler<RemoveDebitWalletCommand, Result>
+internal class RemoveDebitWalletCommandHandler : ICommandHandler<RemoveDebitWalletCommand>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 
@@ -15,12 +15,10 @@ internal class RemoveDebitWalletCommandHandler : ICommandHandler<RemoveDebitWall
         _debitWalletRepository = debitWalletRepository;
     }
 
-    public async Task<Result> Handle(RemoveDebitWalletCommand command, CancellationToken cancellationToken)
+    public async Task Handle(RemoveDebitWalletCommand command, CancellationToken cancellationToken)
     {
         var wallet = await _debitWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
 
         wallet.Remove();
-
-        return Result.Success;
     }
 }

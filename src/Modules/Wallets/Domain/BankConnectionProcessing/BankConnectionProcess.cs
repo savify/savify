@@ -1,6 +1,5 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Events;
-using App.Modules.Wallets.Domain.BankConnectionProcessing.Results;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Rules;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
@@ -46,26 +45,24 @@ public class BankConnectionProcess : Entity, IAggregateRoot
             new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
             new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Redirected));
 
-        try
-        {
-            var redirection = await redirectionService.Redirect(Id, UserId, BankId);
+        var redirectionResult = await redirectionService.Redirect(Id, UserId, BankId);
 
-            _redirectUrl = redirection.Url;
-            _redirectUrlExpiresAt = redirection.ExpiresAt;
-            _status = BankConnectionProcessStatus.Redirected;
-            _updatedAt = DateTime.UtcNow;
-
-            AddDomainEvent(new UserRedirectedDomainEvent(Id, _redirectUrlExpiresAt.Value));
-
-            return _redirectUrl;
-        }
-        catch (DomainException)
+        if (redirectionResult.IsError)
         {
             _status = BankConnectionProcessStatus.ErrorAtProvider;
             _updatedAt = DateTime.UtcNow;
 
-            return Result<string>.Error();
+            return Result.Error;
         }
+
+        _redirectUrl = redirectionResult.Success.Url;
+        _redirectUrlExpiresAt = redirectionResult.Success.ExpiresAt;
+        _status = BankConnectionProcessStatus.Redirected;
+        _updatedAt = DateTime.UtcNow;
+
+        AddDomainEvent(new UserRedirectedDomainEvent(Id, _redirectUrlExpiresAt.Value));
+
+        return _redirectUrl;
     }
 
     public async Task<BankConnection> CreateConnection(

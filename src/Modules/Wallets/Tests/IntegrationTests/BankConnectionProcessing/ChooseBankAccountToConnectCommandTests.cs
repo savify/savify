@@ -50,7 +50,7 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
             _walletId,
             BankConnectionProcessingData.BankId));
 
-        return result.Id;
+        return result.Success.Id;
     }
 
     private async Task CreateBankConnectionWithMultipleBankAccounts(Guid bankConnectionProcessId)

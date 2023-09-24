@@ -36,10 +36,10 @@ public class BankConnectionProcessRedirectionServiceTests : UnitTestBase
 
         var redirectionService = new BankConnectionProcessRedirectionService(customerRepository, integrationService);
 
-        var redirection = await redirectionService.Redirect(bankConnectionProcessId, userId, bankId);
+        var redirectionResult = await redirectionService.Redirect(bankConnectionProcessId, userId, bankId);
 
-        Assert.That(redirection.Url, Is.EqualTo(responseContent.ConnectUrl));
-        Assert.That(redirection.ExpiresAt, Is.EqualTo(responseContent.ExpiresAt));
+        Assert.That(redirectionResult.Success.Url, Is.EqualTo(responseContent.ConnectUrl));
+        Assert.That(redirectionResult.Success.ExpiresAt, Is.EqualTo(responseContent.ExpiresAt));
 
         await customerRepository.Received(1).GetAsync(userId.Value);
         await integrationService.Received(1).CreateConnectSessionAsync(bankConnectionProcessId.Value,

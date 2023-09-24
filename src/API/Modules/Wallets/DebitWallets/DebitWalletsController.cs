@@ -84,6 +84,11 @@ public class DebitWalletsController : ControllerBase
             walletId,
             request.BankId));
 
-        return Created("", result);
+        if (result.IsError)
+        {
+            return Problem(statusCode: StatusCodes.Status424FailedDependency);
+        }
+
+        return Created("", result.Success);
     }
 }

@@ -3,6 +3,7 @@ using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Wallets.Application.Contracts;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
+using static App.Modules.Wallets.Infrastructure.Configuration.Processing.Decorators.ValidationCommandHandlerDecorator;
 
 namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.Decorators;
 
@@ -26,7 +27,43 @@ internal class ValidationCommandHandlerDecorator<T, TResult> : ICommandHandler<T
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
-        var errors = _validators
+        Validate(command, _validators, _localizer);
+
+        return await _decorated.Handle(command, cancellationToken);
+    }
+}
+
+internal class ValidationCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
+{
+    private readonly ICommandHandler<T> _decorated;
+
+    private readonly IEnumerable<IValidator<T>> _validators;
+
+    private readonly IStringLocalizer _localizer;
+
+    public ValidationCommandHandlerDecorator(
+        ICommandHandler<T> decorated,
+        IEnumerable<IValidator<T>> validators,
+        IStringLocalizer localizer)
+    {
+        _decorated = decorated;
+        _validators = validators;
+        _localizer = localizer;
+    }
+
+    public async Task Handle(T command, CancellationToken cancellationToken)
+    {
+        Validate(command, _validators, _localizer);
+
+        await _decorated.Handle(command, cancellationToken);
+    }
+}
+
+internal static class ValidationCommandHandlerDecorator
+{
+    internal static void Validate<T>(T command, IEnumerable<IValidator<T>> validators, IStringLocalizer localizer)
+    {
+        var errors = validators
             .Select(v => v.Validate(command))
             .SelectMany(result => result.Errors)
             .Where(error => error != null)
@@ -45,13 +82,11 @@ internal class ValidationCommandHandlerDecorator<T, TResult> : ICommandHandler<T
                     fieldErrors = errorList[error.PropertyName];
                 }
 
-                fieldErrors.Add(_localizer[error.ErrorMessage]);
+                fieldErrors.Add(localizer[error.ErrorMessage]);
                 errorList[error.PropertyName] = fieldErrors;
             }
 
             throw new InvalidCommandException(errorList);
         }
-
-        return await _decorated.Handle(command, cancellationToken);
     }
 }

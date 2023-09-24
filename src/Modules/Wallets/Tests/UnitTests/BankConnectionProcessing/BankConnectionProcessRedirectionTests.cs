@@ -47,10 +47,10 @@ public class BankConnectionProcessRedirectionTests : UnitTestBase
         var redirection = new Redirection("https://redirect-url.com/connect", DateTime.MaxValue);
         _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(redirection);
 
-        var redirectUrl = await bankConnectionProcess.Redirect(_redirectionService);
+        var redirectionResult = await bankConnectionProcess.Redirect(_redirectionService);
 
         var userRedirectedDomainEvent = AssertPublishedDomainEvent<UserRedirectedDomainEvent>(bankConnectionProcess);
-        Assert.That(redirectUrl, Is.EqualTo(redirection.Url));
+        Assert.That(redirectionResult.Success, Is.EqualTo(redirection.Url));
         Assert.That(userRedirectedDomainEvent.BankConnectionProcessId, Is.EqualTo(bankConnectionProcess.Id));
         Assert.That(userRedirectedDomainEvent.ExpiresAt, Is.EqualTo(redirection.ExpiresAt));
     }

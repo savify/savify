@@ -22,10 +22,10 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
         var walletId = await AddDebitWalletFor(BankConnectionProcessingData.UserId);
 
         var result = await WalletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(BankConnectionProcessingData.UserId, walletId, BankConnectionProcessingData.BankId));
-        var bankConnectionProcess = await WalletsModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(result.Id));
+        var bankConnectionProcess = await WalletsModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(result.Success.Id));
         var saltEdgeCustomer = await GetSaltEdgeCustomerByUserId(BankConnectionProcessingData.UserId);
 
-        Assert.That(result.RedirectUrl, Is.EqualTo(BankConnectionProcessingData.ExpectedRedirectUrl));
+        Assert.That(result.Success.RedirectUrl, Is.EqualTo(BankConnectionProcessingData.ExpectedRedirectUrl));
 
         Assert.That(bankConnectionProcess, Is.Not.Null);
         Assert.That(bankConnectionProcess.UserId, Is.EqualTo(BankConnectionProcessingData.UserId));

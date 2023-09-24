@@ -2,7 +2,7 @@ using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.BankConnectionProcessing.CreateBankConnection;
 
-public class CreateBankConnectionCommand : CommandBase<Result>
+public class CreateBankConnectionCommand : CommandBase
 {
     public Guid BankConnectionProcessId { get; }
 

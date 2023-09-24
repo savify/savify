@@ -68,7 +68,7 @@ public class CreateBankConnectionCommandTests : TestBase
             _walletId,
             BankConnectionProcessingData.BankId));
 
-        return result.Id;
+        return result.Success.Id;
     }
 
     private async Task<int> CountBankAccountsInConnection(Guid bankConnectionId)

@@ -2,7 +2,7 @@ using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.Wallets.CreditWallets.RemoveCreditWallet;
 
-public class RemoveCreditWalletCommand : CommandBase<Result>
+public class RemoveCreditWalletCommand : CommandBase
 {
     public Guid UserId { get; }
 

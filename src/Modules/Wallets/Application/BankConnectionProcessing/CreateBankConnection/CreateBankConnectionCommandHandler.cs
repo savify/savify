@@ -1,12 +1,11 @@
 using App.Modules.Wallets.Application.Configuration.Commands;
-using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.Wallets.BankAccountConnections;
 
 namespace App.Modules.Wallets.Application.BankConnectionProcessing.CreateBankConnection;
 
-internal class CreateBankConnectionCommandHandler : ICommandHandler<CreateBankConnectionCommand, Result>
+internal class CreateBankConnectionCommandHandler : ICommandHandler<CreateBankConnectionCommand>
 {
     private readonly IBankConnectionProcessRepository _bankConnectionProcessRepository;
 
@@ -24,12 +23,10 @@ internal class CreateBankConnectionCommandHandler : ICommandHandler<CreateBankCo
         _bankAccountConnector = bankAccountConnector;
     }
 
-    public async Task<Result> Handle(CreateBankConnectionCommand command, CancellationToken cancellationToken)
+    public async Task Handle(CreateBankConnectionCommand command, CancellationToken cancellationToken)
     {
         var bankConnectionProcess = await _bankConnectionProcessRepository.GetByIdAsync(new BankConnectionProcessId(command.BankConnectionProcessId));
 
         await bankConnectionProcess.CreateConnection(command.ExternalBankConnectionId, _connectionCreationService, _bankAccountConnector);
-
-        return Result.Success;
     }
 }
