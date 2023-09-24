@@ -39,7 +39,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         return new BankConnectionProcess(userId, bankId, walletId, walletType);
     }
 
-    public async Task<Result<string>> Redirect(IBankConnectionProcessRedirectionService redirectionService)
+    public async Task<Result<string, RedirectionError>> Redirect(IBankConnectionProcessRedirectionService redirectionService)
     {
         CheckRules(new BankConnectionProcessCannotMakeRedirectionWhenRedirectUrlIsExpiredRule(_status),
             new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
@@ -47,12 +47,12 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
         var redirectionResult = await redirectionService.Redirect(Id, UserId, BankId);
 
-        if (redirectionResult.IsError)
+        if (redirectionResult.IsError && redirectionResult.Error == RedirectionError.ExternalProviderError)
         {
             _status = BankConnectionProcessStatus.ErrorAtProvider;
             _updatedAt = DateTime.UtcNow;
 
-            return Result.Error;
+            return redirectionResult.Error;
         }
 
         _redirectUrl = redirectionResult.Success.Url;

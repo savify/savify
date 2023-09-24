@@ -6,9 +6,9 @@ public class Result<TSuccess, TError>
 
     private readonly TError? _error;
 
-    public TSuccess Success { get => _success ?? throw new InvalidOperationException(""); }
+    public TSuccess Success { get => _success ?? throw new InvalidOperationException("Result is not successful"); }
 
-    public TError Error { get => _error ?? throw new InvalidOperationException(""); }
+    public TError Error { get => _error ?? throw new InvalidOperationException("Result is successful and does not have any error"); }
 
     public bool IsSuccess => _success is not null;
 
@@ -38,7 +38,7 @@ public class Result<TSuccess> where TSuccess : class
         _success = success;
     }
 
-    public TSuccess Success { get => _success ?? throw new InvalidOperationException(""); }
+    public TSuccess Success { get => _success ?? throw new InvalidOperationException("Result is not successful"); }
 
     public bool IsSuccess => _success is not null;
 
@@ -53,13 +53,27 @@ public class Result<TSuccess> where TSuccess : class
 
 }
 
-public class SuccessResult { }
+public class SuccessResult : Result
+{
+    public override bool IsSuccess => true;
 
-public class ErrorResult { }
+    public override bool IsError => false;
+}
 
-public class Result
+public class ErrorResult : Result
+{
+    public override bool IsSuccess => false;
+
+    public override bool IsError => true;
+}
+
+public abstract class Result
 {
     public static SuccessResult Success => new();
 
     public static ErrorResult Error => new();
+
+    public abstract bool IsSuccess { get; }
+
+    public abstract bool IsError { get; }
 }

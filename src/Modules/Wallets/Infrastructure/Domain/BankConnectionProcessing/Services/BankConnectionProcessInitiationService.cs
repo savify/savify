@@ -1,6 +1,6 @@
-using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.Users;
+using App.Modules.Wallets.Infrastructure.Integrations.Exceptions;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Customers;
 
@@ -33,7 +33,7 @@ public class BankConnectionProcessInitiationService : IBankConnectionProcessInit
             }
             catch (SaltEdgeIntegrationException)
             {
-                throw new DomainException("Something went wrong during bank connection process initiation. Try again or contact support.");
+                throw new ExternalProviderException("Something went wrong during bank connection process");
             }
         }
     }

@@ -3,7 +3,7 @@ using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 
-public class ConnectBankAccountToDebitWalletCommand : CommandBase<Result<BankConnectionProcessInitiationSuccess>>
+public class ConnectBankAccountToDebitWalletCommand : CommandBase<Result<BankConnectionProcessInitiationSuccess, BankConnectionProcessInitiationError>>
 {
     public Guid UserId { get; }
 

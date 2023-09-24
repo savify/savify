@@ -14,6 +14,7 @@ using App.Modules.Notifications.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
 using App.Modules.Wallets.Infrastructure.Configuration;
+using App.Modules.Wallets.Infrastructure.Integrations.Exceptions;
 using Destructurama;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -55,6 +56,7 @@ public class Program
             x.Map<RepositoryException>(ex => new RepositoryExceptionProblemDetails(ex));
             x.Map<AuthenticationException>(ex => new AuthenticationExceptionProblemDetails(ex));
             x.Map<UserContextIsNotAvailableException>(ex => new UserContextIsNotAvailableProblemDetails(ex));
+            x.Map<ExternalProviderException>(ex => new ExternalProviderExceptionProblemDetails(ex));
         });
 
         builder.Services.AddUserAuthentication(builder.Configuration);

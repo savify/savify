@@ -9,7 +9,7 @@ using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 
-internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<ConnectBankAccountToDebitWalletCommand, Result<BankConnectionProcessInitiationSuccess>>
+internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<ConnectBankAccountToDebitWalletCommand, Result<BankConnectionProcessInitiationSuccess, BankConnectionProcessInitiationError>>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 
@@ -31,7 +31,7 @@ internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<C
         _bankConnectionProcessRedirectionService = bankConnectionProcessRedirectionService;
     }
 
-    public async Task<Result<BankConnectionProcessInitiationSuccess>> Handle(ConnectBankAccountToDebitWalletCommand command, CancellationToken cancellationToken)
+    public async Task<Result<BankConnectionProcessInitiationSuccess, BankConnectionProcessInitiationError>> Handle(ConnectBankAccountToDebitWalletCommand command, CancellationToken cancellationToken)
     {
         var wallet = await _debitWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
 
@@ -40,9 +40,9 @@ internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<C
 
         await _bankConnectionProcessRepository.AddAsync(bankConnectionProcess);
 
-        if (redirectionResult.IsError)
+        if (redirectionResult.IsError && redirectionResult.Error == RedirectionError.ExternalProviderError)
         {
-            return Result<BankConnectionProcessInitiationSuccess>.Error();
+            return BankConnectionProcessInitiationError.ExternalProviderError;
         }
 
         return new BankConnectionProcessInitiationSuccess(bankConnectionProcess.Id.Value, redirectionResult.Success);

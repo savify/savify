@@ -22,7 +22,7 @@ public class BankConnectionProcessRedirectionService : IBankConnectionProcessRed
         _saltEdgeIntegrationService = saltEdgeIntegrationService;
     }
 
-    public async Task<Result<Redirection>> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId)
+    public async Task<Result<Redirection, RedirectionError>> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId)
     {
         var customer = await _customerRepository.GetAsync(userId.Value);
         var providerCode = "fakebank_interactive_xf"; // TODO: get provider code (external bank id) from 'Banks' module
@@ -37,7 +37,7 @@ public class BankConnectionProcessRedirectionService : IBankConnectionProcessRed
         }
         catch (SaltEdgeIntegrationException)
         {
-            return Result.Error;
+            return RedirectionError.ExternalProviderError;
         }
     }
 }

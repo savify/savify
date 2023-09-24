@@ -6,5 +6,5 @@ namespace App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 
 public interface IBankConnectionProcessRedirectionService
 {
-    public Task<Result<Redirection>> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId);
+    public Task<Result<Redirection, RedirectionError>> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId);
 }
