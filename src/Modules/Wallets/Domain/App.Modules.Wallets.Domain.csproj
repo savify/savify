@@ -10,4 +10,5 @@
       <ProjectReference Include="..\..\..\BuildingBlocks\Domain\App.BuildingBlocks.Domain.csproj" />
     </ItemGroup>
 
+
 </Project>
