@@ -42,5 +42,18 @@ public class Result<TSuccess> where TSuccess : class
 
 
     public static implicit operator Result<TSuccess>(TSuccess success) => new(success);
+
+
+    public static implicit operator Result<TSuccess>(ErrorResult errorResult) => new(success: null);
+
     public static Result<TSuccess> Error() => new(success: null);
+
+}
+
+public class ErrorResult
+{ }
+
+public class Result
+{
+    public ErrorResult Error => new ErrorResult();
 }
