@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Events;
+using App.Modules.Wallets.Domain.BankConnectionProcessing.Results;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Rules;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
@@ -39,7 +40,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         return new BankConnectionProcess(userId, bankId, walletId, walletType);
     }
 
-    public async Task<string> Redirect(IBankConnectionProcessRedirectionService redirectionService)
+    public async Task<Result<string>> Redirect(IBankConnectionProcessRedirectionService redirectionService)
     {
         CheckRules(new BankConnectionProcessCannotMakeRedirectionWhenRedirectUrlIsExpiredRule(_status),
             new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
@@ -63,8 +64,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
             _status = BankConnectionProcessStatus.ErrorAtProvider;
             _updatedAt = DateTime.UtcNow;
 
-            // TODO: if we throw exception data will not be saved. We should return some kind of result
-            throw;
+            return Result<string>.Error();
         }
     }
 
