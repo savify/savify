@@ -33,8 +33,6 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
         try
         {
             var saltEdgeConnection = await _saltEdgeIntegrationService.FetchConnectionAsync(externalConnectionId);
-            //The type of saltEdgeConsent is Consent. Most of entities in salt edge integration contain SaltEdge prefix.
-            //Should we refactor it then?
             var saltEdgeConsent = await _saltEdgeIntegrationService.FetchConsentAsync(saltEdgeConnection.LastConsentId, saltEdgeConnection.Id);
             var saltEdgeAccounts = await _saltEdgeIntegrationService.FetchAccountsAsync(saltEdgeConnection.Id);
 
@@ -58,9 +56,6 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
         }
         catch (SaltEdgeIntegrationException)
         {
-            //Are we sure we are going to throw a domain exception here? Maybe it had to be called 'InfrastructureException'?
-            //It looks like we are doing a domain job here. If the job was not done we throw something is wrong with a domain.
-            //Here for example the TPP could be offline for a while. But it's not our domain problem, it's external's service problem.
             throw new DomainException("Something went wrong during bank connection processing. Try again or contact support.");
         }
 

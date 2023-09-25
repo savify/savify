@@ -9,7 +9,6 @@ public class BankAccount : Entity
 
     internal BankConnectionId BankConnectionId { get; private set; }
 
-    // TODO: rename amount to balance
     internal int Balance { get; }
 
     internal Currency Currency { get; }
