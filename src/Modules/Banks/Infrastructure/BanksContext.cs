@@ -2,8 +2,10 @@ using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.Modules.Banks.Domain.Banks;
+using App.Modules.Banks.Domain.Banks.BankRevisions;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Infrastructure.Domain.Banks;
+using App.Modules.Banks.Infrastructure.Domain.Banks.BankRevisions;
 using App.Modules.Banks.Infrastructure.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Infrastructure.Inbox;
 using App.Modules.Banks.Infrastructure.InternalCommands;
@@ -15,6 +17,8 @@ namespace App.Modules.Banks.Infrastructure;
 public class BanksContext : DbContext
 {
     public DbSet<Bank>? Banks { get; set; }
+
+    public DbSet<BankRevision>? BankRevisions { get; set; }
 
     public DbSet<BanksSynchronisationProcess>? BankSynchronisationProcesses { get; set; }
 
@@ -31,6 +35,7 @@ public class BanksContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new BankEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new BankRevisionEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BanksSynchronisationProcessEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());

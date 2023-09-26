@@ -8,7 +8,7 @@ public class BanksSynchronisationProcessInitiator
 
     public UserId? UserId { get; }
 
-    public static BanksSynchronisationProcessInitiator InternalCommand = new(BanksSynchronisationProcessInitiatorType.InternalCommand);
+    public static BanksSynchronisationProcessInitiator InternalCommand => new(BanksSynchronisationProcessInitiatorType.InternalCommand);
 
     public static BanksSynchronisationProcessInitiator User(UserId id) => new(BanksSynchronisationProcessInitiatorType.User, id);
 
