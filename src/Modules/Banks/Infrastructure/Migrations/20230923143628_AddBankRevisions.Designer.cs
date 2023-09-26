@@ -3,6 +3,7 @@ using System;
 using App.Modules.Banks.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.Banks.Infrastructure.Migrations
 {
     [DbContext(typeof(BanksContext))]
-    partial class BanksContextModelSnapshot : ModelSnapshot
+    [Migration("20230923143628_AddBankRevisions")]
+    partial class AddBankRevisions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,6 +198,10 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("bank_id");
 
+                    b.Property<Guid>("BanksSynchronisationProcessId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("banks_synchronisation_process_id");
+
                     b.Property<DateTime>("_createdAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -258,36 +265,6 @@ namespace App.Modules.Banks.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("banks_synchronisation_processes", "banks");
-                });
-
-            modelBuilder.Entity("App.Modules.Banks.Domain.Banks.BankRevisions.BankRevision", b =>
-                {
-                    b.OwnsOne("App.Modules.Banks.Domain.Banks.BankRevisions.BankRevisionCreator", "_createdBy", b1 =>
-                        {
-                            b1.Property<Guid>("BankRevisionId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("BankRevisionBankId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("created_by_id");
-
-                            b1.Property<string>("Type")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("created_by_type");
-
-                            b1.HasKey("BankRevisionId", "BankRevisionBankId");
-
-                            b1.ToTable("bank_revisions", "banks");
-
-                            b1.WithOwner()
-                                .HasForeignKey("BankRevisionId", "BankRevisionBankId");
-                        });
-
-                    b.Navigation("_createdBy");
                 });
 
             modelBuilder.Entity("App.Modules.Banks.Domain.BanksSynchronisationProcessing.BanksSynchronisationProcess", b =>

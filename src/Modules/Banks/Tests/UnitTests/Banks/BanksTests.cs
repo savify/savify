@@ -1,5 +1,7 @@
 using App.Modules.Banks.Domain;
 using App.Modules.Banks.Domain.Banks;
+using App.Modules.Banks.Domain.Banks.BankRevisions;
+using App.Modules.Banks.Domain.Banks.BankRevisions.Events;
 using App.Modules.Banks.Domain.Banks.Events;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Domain.ExternalProviders;
@@ -68,5 +70,27 @@ public class BanksTests : UnitTestBase
         Assert.That(domainEvent.DefaultLogoUrl, Is.EqualTo("https://cdn.savify.localhost/logos/banks/new-bank.png"));
         Assert.That(bank.LastBanksSynchronisationProcessId, Is.EqualTo(newBankSynchronisationProcessId));
         Assert.That(bank.IsEnabled, Is.False);
+    }
+
+    [Test]
+    public void CreateRevision_ReturnsNewBankRevision()
+    {
+        var bankSynchronisationProcessId = new BanksSynchronisationProcessId(Guid.NewGuid());
+        var bank = Bank.AddNew(
+            bankSynchronisationProcessId,
+            ExternalProviderName.SaltEdge,
+            "external-id",
+            "Bank name",
+            Country.FakeCountry,
+            BankStatus.Enabled,
+            true,
+            null,
+            "https://cdn.savify.localhost/logos/banks/bank.png");
+
+        var revision = bank.CreateRevision(BankRevisionType.Added);
+
+        var domainEvent = AssertPublishedDomainEvent<BankRevisionCreatedDomainEvent>(revision);
+        Assert.That(domainEvent.BankId, Is.EqualTo(bank.Id));
+        Assert.That(domainEvent.BankRevisionType, Is.EqualTo(BankRevisionType.Added));
     }
 }

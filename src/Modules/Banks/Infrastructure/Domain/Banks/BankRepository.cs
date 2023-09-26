@@ -20,7 +20,8 @@ public class BankRepository : IBankRepository
 
     public async Task<Bank> GetByIdAsync(BankId id)
     {
-        var bank = await _banksContext.Banks.SingleOrDefaultAsync(b => b.Id == id);
+        var bank = _banksContext.Banks.Local.SingleOrDefault(b => b.Id == id) ??
+                   await _banksContext.Banks.SingleOrDefaultAsync(b => b.Id == id);
 
         if (bank is null)
         {
