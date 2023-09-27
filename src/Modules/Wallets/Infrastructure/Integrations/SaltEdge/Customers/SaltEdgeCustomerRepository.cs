@@ -19,14 +19,14 @@ public class SaltEdgeCustomerRepository : ISaltEdgeCustomerRepository
 
     public async Task<SaltEdgeCustomer> GetAsync(Guid userId)
     {
-        var maybeCustomer = await GetOrDefaultAsync(userId);
+        var customer = await GetOrDefaultAsync(userId);
 
-        if (maybeCustomer is null)
+        if (customer is null)
         {
             throw new NotFoundRepositoryException<SaltEdgeCustomer>(userId);
         }
 
-        return maybeCustomer;
+        return customer;
     }
 
     public async Task<SaltEdgeCustomer?> GetOrDefaultAsync(Guid userId)

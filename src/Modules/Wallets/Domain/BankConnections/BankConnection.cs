@@ -29,9 +29,9 @@ public class BankConnection : Entity, IAggregateRoot
         return new BankConnection(id.Value, bankId, userId, consent);
     }
 
-    public void AddBankAccount(string externalId, string name, int amount, Currency currency)
+    public void AddBankAccount(string externalId, string name, int balance, Currency currency)
     {
-        _accounts.Add(BankAccount.CreateNew(Id, externalId, name, amount, currency));
+        _accounts.Add(BankAccount.CreateNew(Id, externalId, name, balance, currency));
     }
 
     public BankAccount GetBankAccountById(BankAccountId bankAccountId)
