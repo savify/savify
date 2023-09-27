@@ -4,7 +4,7 @@ using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Accounts;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.RequestContent;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.ResponseContent;
-using Consent = App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.ResponseContent.Consent;
+using SaltEdgeConsent = App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.ResponseContent.SaltEdgeConsent;
 
 namespace App.Modules.Wallets.Infrastructure.Integrations.SaltEdge;
 
@@ -71,7 +71,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
         return connection;
     }
 
-    public async Task<Consent> FetchConsentAsync(string consentId, string connectionId)
+    public async Task<SaltEdgeConsent> FetchConsentAsync(string consentId, string connectionId)
     {
         var request = Request.Get($"consents/{consentId}").WithQueryParameter("connection_id", connectionId);
 
@@ -82,7 +82,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
             throw new SaltEdgeIntegrationException(response.Error.Message);
         }
 
-        var consent = response.Content?.As<Consent>();
+        var consent = response.Content?.As<SaltEdgeConsent>();
 
         if (consent is null)
         {
