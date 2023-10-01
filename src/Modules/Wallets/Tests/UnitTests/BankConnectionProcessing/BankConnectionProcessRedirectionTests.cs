@@ -56,6 +56,21 @@ public class BankConnectionProcessRedirectionTests : UnitTestBase
     }
 
     [Test]
+    public async Task RedirectingUser_WhenExternalProviderErrorOccures_ReturnsExternalProviderErrorResult()
+    {
+        var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
+
+        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(RedirectionError.ExternalProviderError);
+
+        var redirectionResult = await bankConnectionProcess.Redirect(_redirectionService);
+
+        Assert.That(redirectionResult.IsError, Is.True);
+
+        var error = redirectionResult.Error;
+        Assert.That(error, Is.EqualTo(RedirectionError.ExternalProviderError));
+    }
+
+    [Test]
     public async Task RedirectingUser_WhenRedirectUrlIsExpired_BreaksBankConnectionProcessCannotMakeRedirectionWhenRedirectUrlIsExpiredRule()
     {
         var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
@@ -106,6 +121,36 @@ public class BankConnectionProcessRedirectionTests : UnitTestBase
 
         await bankConnectionProcess.Redirect(_redirectionService);
 
+        AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
+        {
+            await bankConnectionProcess.Redirect(_redirectionService);
+        });
+    }
+
+    [Test]
+    public async Task RedirectingUser_WhenIsNotInTheRightStatus_AndExternalServiceErrorOccures_BreaksBankConnectionProcessShouldKeepValidStatusTransitionsRule()
+    {
+        // Arrange
+        // For  the arrangement we create and push a bank connection process to the WaitingForAccountChoosing status.
+        var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
+
+        var redirection = new Redirection("https://redirect-url.com/connect", DateTime.MaxValue);
+        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(redirection);
+        await bankConnectionProcess.Redirect(_redirectionService);
+
+        var bankConnectionStub = BankConnection.CreateFromBankConnectionProcess(bankConnectionProcess.Id, _bankId, _userId, new Consent(DateTime.MaxValue));
+        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, new Currency("USD"));
+        bankConnectionStub.AddBankAccount("123", "Test Account 2", 100, new Currency("USD"));
+
+        _connectionCreationService
+            .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")
+            .Returns(bankConnectionStub);
+
+        await bankConnectionProcess.CreateConnection("123456", _connectionCreationService, _bankAccountConnector);
+
+        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(RedirectionError.ExternalProviderError);
+
+        // Act & Assert
         AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
         {
             await bankConnectionProcess.Redirect(_redirectionService);

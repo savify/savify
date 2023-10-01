@@ -43,21 +43,22 @@ public class BankConnectionProcess : Entity, IAggregateRoot
     public async Task<Result<string, RedirectionError>> Redirect(IBankConnectionProcessRedirectionService redirectionService)
     {
         CheckRules(new BankConnectionProcessCannotMakeRedirectionWhenRedirectUrlIsExpiredRule(_status),
-            new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
-            new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Redirected));
+            new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
         var redirectionResult = await redirectionService.Redirect(Id, UserId, BankId);
 
         if (redirectionResult.IsError && redirectionResult.Error == RedirectionError.ExternalProviderError)
         {
+            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.ErrorAtProvider));
             _status = BankConnectionProcessStatus.ErrorAtProvider;
             _updatedAt = DateTime.UtcNow;
 
             return redirectionResult.Error;
         }
 
-        var redirection = redirectionResult.Success;
+        CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Redirected));
 
+        var redirection = redirectionResult.Success;
         _redirectUrl = redirection.Url;
         _redirectUrlExpiresAt = redirection.ExpiresAt;
         _status = BankConnectionProcessStatus.Redirected;
