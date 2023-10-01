@@ -56,8 +56,10 @@ public class BankConnectionProcess : Entity, IAggregateRoot
             return redirectionResult.Error;
         }
 
-        _redirectUrl = redirectionResult.Success.Url;
-        _redirectUrlExpiresAt = redirectionResult.Success.ExpiresAt;
+        var redirection = redirectionResult.Success;
+
+        _redirectUrl = redirection.Url;
+        _redirectUrlExpiresAt = redirection.ExpiresAt;
         _status = BankConnectionProcessStatus.Redirected;
         _updatedAt = DateTime.UtcNow;
 
@@ -77,6 +79,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
         if (connectionResult.IsError && connectionResult.Error == CreateConnectionError.ExternalProviderError)
         {
+            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.ErrorAtProvider));
             _status = BankConnectionProcessStatus.ErrorAtProvider;
             _updatedAt = DateTime.UtcNow;
 

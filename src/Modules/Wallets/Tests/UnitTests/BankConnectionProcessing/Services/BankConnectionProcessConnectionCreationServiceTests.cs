@@ -51,7 +51,10 @@ public class BankConnectionProcessConnectionCreationServiceTests : UnitTestBase
             bankConnectionRepository,
             integrationService);
 
-        var connection = await connectionCreationService.CreateConnection(bankConnectionProcessId, userId, bankId, externalConnectionId);
+        var connectionResult = await connectionCreationService.CreateConnection(bankConnectionProcessId, userId, bankId, externalConnectionId);
+
+        Assert.That(connectionResult.IsSuccess, Is.True);
+        var connection = connectionResult.Success;
 
         var connectionCreatedDomainEvent = AssertPublishedDomainEvent<BankConnectionCreatedDomainEvent>(connection);
         Assert.That(connection.Id.Value, Is.EqualTo(bankConnectionProcessId.Value));

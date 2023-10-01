@@ -58,13 +58,17 @@ public class BankConnectionProcessBankAccountChoosingTests : UnitTestBase
             .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")
             .Returns(bankConnectionStub);
 
-        var connection = await bankConnectionProcess.CreateConnection("123456", _connectionCreationService, _bankAccountConnector);
+        var connectionResult = await bankConnectionProcess.CreateConnection("123456", _connectionCreationService, _bankAccountConnector);
 
         var accountId = new BankAccountId(Guid.NewGuid());
         await bankConnectionProcess.ChooseBankAccount(accountId, _bankAccountConnector);
 
         var completedDomainEvent = AssertPublishedDomainEvent<BankConnectionProcessCompletedDomainEvent>(bankConnectionProcess);
         Assert.That(completedDomainEvent.BankConnectionProcessId, Is.EqualTo(bankConnectionProcess.Id));
+
+        Assert.That(connectionResult.IsSuccess, Is.True);
+        var connection = connectionResult.Success;
+
         Assert.That(connection.Id.Value, Is.EqualTo(bankConnectionProcess.Id.Value));
 
         await _bankAccountConnector.Received(1).ConnectBankAccountToWallet(_walletId, WalletType.Debit, connection.Id, accountId);
