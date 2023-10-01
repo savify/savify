@@ -1,4 +1,4 @@
-namespace App.BuildingBlocks.Domain;
+namespace App.BuildingBlocks.Domain.Results;
 
 public class Result<TSuccess, TError>
 {
@@ -47,33 +47,26 @@ public class Result<TSuccess> where TSuccess : class
 
     public static implicit operator Result<TSuccess>(TSuccess success) => new(success);
 
-    public static implicit operator Result<TSuccess>(ErrorResult errorResult) => new(success: null);
+    public static implicit operator Result<TSuccess>(ErrorResult _) => new(success: null);
 
     public static Result<TSuccess> Error() => new(success: null);
 
 }
 
-public class SuccessResult : Result
-{
-    public override bool IsSuccess => true;
-
-    public override bool IsError => false;
-}
-
-public class ErrorResult : Result
-{
-    public override bool IsSuccess => false;
-
-    public override bool IsError => true;
-}
-
 public abstract class Result
 {
+    private readonly bool _isSuccess;
+
+    public Result(bool isSuccess)
+    {
+        _isSuccess = isSuccess;
+    }
+
     public static SuccessResult Success => new();
 
     public static ErrorResult Error => new();
 
-    public abstract bool IsSuccess { get; }
+    public bool IsSuccess => _isSuccess;
 
-    public abstract bool IsError { get; }
+    public bool IsError => !_isSuccess;
 }
