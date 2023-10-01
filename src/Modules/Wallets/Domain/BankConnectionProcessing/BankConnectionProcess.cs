@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Events;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Rules;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
@@ -65,46 +66,45 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         return _redirectUrl;
     }
 
-    public async Task<BankConnection> CreateConnection(
+    public async Task<Result<BankConnection, CreateConnectionError>> CreateConnection(
         string externalConnectionId,
         IBankConnectionProcessConnectionCreationService connectionCreationService,
         IBankAccountConnector bankAccountConnector)
     {
         CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
-        try
-        {
-            var connection = await connectionCreationService.CreateConnection(Id, UserId, BankId, externalConnectionId);
+        var connectionResult = await connectionCreationService.CreateConnection(Id, UserId, BankId, externalConnectionId);
 
-            if (connection.HasMultipleBankAccounts())
-            {
-                CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.WaitingForAccountChoosing));
-                _status = BankConnectionProcessStatus.WaitingForAccountChoosing;
-            }
-            else
-            {
-                CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
-
-                var bankAccountId = connection.GetSingleBankAccount().Id;
-                await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
-
-                _status = BankConnectionProcessStatus.Completed;
-
-                AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
-            }
-
-            _updatedAt = DateTime.UtcNow;
-
-            return connection;
-        }
-        catch (DomainException)
+        if (connectionResult.IsError && connectionResult.Error == CreateConnectionError.ExternalProviderError)
         {
             _status = BankConnectionProcessStatus.ErrorAtProvider;
             _updatedAt = DateTime.UtcNow;
 
-            // TODO: if we throw exception data will not be saved. We should return some kind of result
-            throw;
+            return connectionResult.Error;
         }
+
+        var connection = connectionResult.Success;
+
+        if (connection.HasMultipleBankAccounts())
+        {
+            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.WaitingForAccountChoosing));
+            _status = BankConnectionProcessStatus.WaitingForAccountChoosing;
+        }
+        else
+        {
+            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
+
+            var bankAccountId = connection.GetSingleBankAccount().Id;
+            await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
+
+            _status = BankConnectionProcessStatus.Completed;
+
+            AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
+        }
+
+        _updatedAt = DateTime.UtcNow;
+
+        return connection;
     }
 
     public async Task ChooseBankAccount(BankAccountId bankAccountId, IBankAccountConnector bankAccountConnector)

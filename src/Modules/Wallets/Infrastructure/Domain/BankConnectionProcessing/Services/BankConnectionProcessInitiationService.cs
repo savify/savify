@@ -33,7 +33,7 @@ public class BankConnectionProcessInitiationService : IBankConnectionProcessInit
             }
             catch (SaltEdgeIntegrationException)
             {
-                throw new ExternalProviderException("Something went wrong during bank connection process");
+                throw new ExternalProviderException("Something went wrong during bank connection initialization process");
             }
         }
     }

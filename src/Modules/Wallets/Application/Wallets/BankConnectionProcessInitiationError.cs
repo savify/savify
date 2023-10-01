@@ -1,5 +1,3 @@
-using App.BuildingBlocks.Domain;
-
 namespace App.Modules.Wallets.Application.Wallets;
 
 public record BankConnectionProcessInitiationError(string Type)

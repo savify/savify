@@ -1,4 +1,4 @@
-using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;

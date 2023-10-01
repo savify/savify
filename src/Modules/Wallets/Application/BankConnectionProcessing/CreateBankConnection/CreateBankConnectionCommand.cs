@@ -1,8 +1,9 @@
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Wallets.Application.Contracts;
 
 namespace App.Modules.Wallets.Application.BankConnectionProcessing.CreateBankConnection;
 
-public class CreateBankConnectionCommand : CommandBase
+public class CreateBankConnectionCommand : CommandBase<EmptyResult<CreateBankConnectionError>>
 {
     public Guid BankConnectionProcessId { get; }
 

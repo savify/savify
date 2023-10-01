@@ -32,9 +32,14 @@ public class SaltEdgeCallbacksController : ControllerBase
         // TODO: accept all stages and make it prettier
         if (request.Data.Stage == "finish")
         {
-            await _walletsModule.ExecuteCommandAsync(new CreateBankConnectionCommand(
+            var result = await _walletsModule.ExecuteCommandAsync(new CreateBankConnectionCommand(
                 request.Data.CustomFields.BankConnectionProcessId,
                 request.Data.ConnectionId));
+
+            if (result.IsError && result.Error == CreateBankConnectionError.ExternalProviderError)
+            {
+                return Problem(statusCode: StatusCodes.Status424FailedDependency);
+            }
         }
 
         return Accepted();

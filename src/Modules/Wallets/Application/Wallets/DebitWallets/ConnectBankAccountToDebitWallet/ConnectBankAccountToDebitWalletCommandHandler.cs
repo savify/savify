@@ -1,4 +1,4 @@
-using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;

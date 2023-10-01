@@ -1,4 +1,4 @@
-using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Wallets.Domain.BankConnections;
 using App.Modules.Wallets.Domain.Users;
 

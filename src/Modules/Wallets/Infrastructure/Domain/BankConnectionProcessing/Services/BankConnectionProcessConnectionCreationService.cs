@@ -1,5 +1,4 @@
-using App.BuildingBlocks.Domain;
-using App.Modules.Wallets.Domain;
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
 using App.Modules.Wallets.Domain.BankConnections;
@@ -28,7 +27,7 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
         _saltEdgeIntegrationService = saltEdgeIntegrationService;
     }
 
-    public async Task<BankConnection> CreateConnection(BankConnectionProcessId id, UserId userId, BankId bankId, string externalConnectionId)
+    public async Task<Result<BankConnection, CreateConnectionError>> CreateConnection(BankConnectionProcessId id, UserId userId, BankId bankId, string externalConnectionId)
     {
         try
         {
@@ -56,7 +55,7 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
         }
         catch (SaltEdgeIntegrationException)
         {
-            throw new DomainException("Something went wrong during bank connection processing. Try again or contact support.");
+            return CreateConnectionError.ExternalProviderError;
         }
 
     }
