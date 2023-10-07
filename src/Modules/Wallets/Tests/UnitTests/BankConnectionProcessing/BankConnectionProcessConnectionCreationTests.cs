@@ -160,7 +160,7 @@ public class BankConnectionProcessConnectionCreationTests : UnitTestBase
             .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")
             .Returns(bankConnectionStub);
 
-        AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
+        AssertBrokenRuleAsync<BankConnectionProcessStatusShouldKeepValidTransitionRule>(async Task () =>
         {
             await bankConnectionProcess.CreateConnection("123456", _connectionCreationService, _bankAccountConnector);
         });
@@ -179,7 +179,7 @@ public class BankConnectionProcessConnectionCreationTests : UnitTestBase
             .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")
             .Returns(bankConnectionStub);
 
-        AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
+        AssertBrokenRuleAsync<BankConnectionProcessStatusShouldKeepValidTransitionRule>(async Task () =>
         {
             await bankConnectionProcess.CreateConnection("123456", _connectionCreationService, _bankAccountConnector);
         });
@@ -194,7 +194,7 @@ public class BankConnectionProcessConnectionCreationTests : UnitTestBase
             .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")
             .Returns(CreateConnectionError.ExternalProviderError);
 
-        AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
+        AssertBrokenRuleAsync<BankConnectionProcessStatusShouldKeepValidTransitionRule>(async Task () =>
         {
             await bankConnectionProcess.CreateConnection("123456", _connectionCreationService, _bankAccountConnector);
         });

@@ -121,7 +121,7 @@ public class BankConnectionProcessRedirectionTests : UnitTestBase
 
         await bankConnectionProcess.Redirect(_redirectionService);
 
-        AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
+        AssertBrokenRuleAsync<BankConnectionProcessStatusShouldKeepValidTransitionRule>(async Task () =>
         {
             await bankConnectionProcess.Redirect(_redirectionService);
         });
@@ -151,7 +151,7 @@ public class BankConnectionProcessRedirectionTests : UnitTestBase
         _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(RedirectionError.ExternalProviderError);
 
         // Act & Assert
-        AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
+        AssertBrokenRuleAsync<BankConnectionProcessStatusShouldKeepValidTransitionRule>(async Task () =>
         {
             await bankConnectionProcess.Redirect(_redirectionService);
         });
