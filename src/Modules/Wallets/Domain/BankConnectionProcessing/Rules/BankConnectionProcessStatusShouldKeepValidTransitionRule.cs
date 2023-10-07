@@ -4,19 +4,19 @@ namespace App.Modules.Wallets.Domain.BankConnectionProcessing.Rules;
 
 public class BankConnectionProcessStatusShouldKeepValidTransitionRule : IBusinessRule
 {
-    private readonly BankConnectionProcessStatus _status;
+    private readonly BankConnectionProcessStatus _currentStatus;
 
     private readonly BankConnectionProcessStatus _newStatus;
 
-    public BankConnectionProcessStatusShouldKeepValidTransitionRule(BankConnectionProcessStatus status, BankConnectionProcessStatus newStatus)
+    public BankConnectionProcessStatusShouldKeepValidTransitionRule(BankConnectionProcessStatus currentStatus, BankConnectionProcessStatus newStatus)
     {
-        _status = status;
+        _currentStatus = currentStatus;
         _newStatus = newStatus;
     }
 
-    public bool IsBroken() => !_status.IsStatusTransitionValid(_newStatus);
+    public bool IsBroken() => !_currentStatus.IsStatusTransitionValid(_newStatus);
 
     public string MessageTemplate => "Status transition from '{0}' to '{1}' is not valid";
 
-    public object[] MessageArguments => new object[] { _status.Value, _newStatus.Value };
+    public object[] MessageArguments => new object[] { _currentStatus.Value, _newStatus.Value };
 }
