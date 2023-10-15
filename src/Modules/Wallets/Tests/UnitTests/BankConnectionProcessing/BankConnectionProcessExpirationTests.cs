@@ -69,7 +69,7 @@ public class BankConnectionProcessExpirationTests : UnitTestBase
     {
         var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
 
-        AssertBrokenRule<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(() =>
+        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() =>
         {
             bankConnectionProcess.Expire();
         });

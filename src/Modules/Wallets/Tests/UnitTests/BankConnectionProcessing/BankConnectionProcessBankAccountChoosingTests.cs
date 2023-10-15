@@ -104,7 +104,7 @@ public class BankConnectionProcessBankAccountChoosingTests : UnitTestBase
     {
         var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
 
-        AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
+        AssertBrokenRuleAsync<BankConnectionProcessStatusShouldKeepValidTransitionRule>(async Task () =>
         {
             await bankConnectionProcess.ChooseBankAccount(new BankAccountId(Guid.NewGuid()), _bankAccountConnector);
         });

@@ -49,19 +49,17 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
         if (redirectionResult.IsError && redirectionResult.Error == RedirectionError.ExternalProviderError)
         {
-            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.ErrorAtProvider));
-            _status = BankConnectionProcessStatus.ErrorAtProvider;
+            _status = _status.ToErrorAtProvider();
             _updatedAt = DateTime.UtcNow;
 
             return redirectionResult.Error;
         }
 
-        CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Redirected));
 
         var redirection = redirectionResult.Success;
         _redirectUrl = redirection.Url;
         _redirectUrlExpiresAt = redirection.ExpiresAt;
-        _status = BankConnectionProcessStatus.Redirected;
+        _status = _status.ToRedirected();
         _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new UserRedirectedDomainEvent(Id, _redirectUrlExpiresAt.Value));
@@ -80,8 +78,7 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
         if (connectionResult.IsError && connectionResult.Error == CreateConnectionError.ExternalProviderError)
         {
-            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.ErrorAtProvider));
-            _status = BankConnectionProcessStatus.ErrorAtProvider;
+            _status = _status.ToErrorAtProvider();
             _updatedAt = DateTime.UtcNow;
 
             return connectionResult.Error;
@@ -91,17 +88,14 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
         if (connection.HasMultipleBankAccounts())
         {
-            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.WaitingForAccountChoosing));
-            _status = BankConnectionProcessStatus.WaitingForAccountChoosing;
+            _status = _status.ToWaitingForAccountChoosing();
         }
         else
         {
-            CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
-
             var bankAccountId = connection.GetSingleBankAccount().Id;
             await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
 
-            _status = BankConnectionProcessStatus.Completed;
+            _status = _status.ToCompleted();
 
             AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
         }
@@ -113,12 +107,11 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
     public async Task ChooseBankAccount(BankAccountId bankAccountId, IBankAccountConnector bankAccountConnector)
     {
-        CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
-            new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
+        CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
         await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
 
-        _status = BankConnectionProcessStatus.Completed;
+        _status = _status.ToCompleted();
         _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
@@ -126,10 +119,9 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
     public void Expire()
     {
-        CheckRules(new RedirectUrlShouldBeExpiredRule(_redirectUrlExpiresAt),
-            new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.RedirectUrlExpired));
+        CheckRules(new RedirectUrlShouldBeExpiredRule(_redirectUrlExpiresAt));
 
-        _status = BankConnectionProcessStatus.RedirectUrlExpired;
+        _status = _status.ToRedirectUrlExpired();
         _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new BankConnectionProcessExpiredDomainEvent(Id));
