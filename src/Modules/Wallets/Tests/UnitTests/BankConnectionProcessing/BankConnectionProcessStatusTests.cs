@@ -64,13 +64,15 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     }
 
     [Test]
-    public void ToErrorAtProvider_HasValidTransitionFromRedirected()
+    [TestCase(State.Initiated)]
+    [TestCase(State.Redirected)]
+    public void ToErrorAtProvider_HasValidTransitionFrom(State initialState)
     {
-        var redirected = BankConnectionProcessStatusFactory.Create(State.Redirected);
+        var status = BankConnectionProcessStatusFactory.Create(initialState);
 
         Assert.DoesNotThrow(() =>
         {
-            var errorAtProvider = redirected.ToErrorAtProvider();
+            var errorAtProvider = status.ToErrorAtProvider();
         });
     }
 

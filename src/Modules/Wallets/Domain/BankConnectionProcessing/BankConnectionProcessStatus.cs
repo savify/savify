@@ -59,7 +59,7 @@ public record BankConnectionProcessStatus
 
     private static readonly IDictionary<State, State[]> ValidStatusTransitions = new Dictionary<State, State[]>
     {
-        [State.Initiated] = new[] { State.Redirected, State.Cancelled },
+        [State.Initiated] = new[] { State.Redirected, State.Cancelled, State.ErrorAtProvider },
         [State.Redirected] = new[] { State.RedirectUrlExpired, State.ErrorAtProvider, State.ConsentRefused, State.WaitingForAccountChoosing, State.Completed, State.Cancelled },
         [State.WaitingForAccountChoosing] = new[] { State.Completed, State.Cancelled }
     };
