@@ -3,56 +3,76 @@ using App.Modules.Wallets.Domain.BankConnectionProcessing.Rules;
 
 namespace App.Modules.Wallets.Domain.BankConnectionProcessing;
 
-public record BankConnectionProcessStatus(string Value)
+public record BankConnectionProcessStatus
 {
-    public static BankConnectionProcessStatus Initiated => new(nameof(Initiated));
+    private readonly State _value;
 
-    public BankConnectionProcessStatus ToRedirected() => TransitTo(Redirected);
+    public State Value => _value;
 
-    public BankConnectionProcessStatus ToRedirectUrlExpired() => TransitTo(RedirectUrlExpired);
+    private BankConnectionProcessStatus(State value)
+    {
+        _value = value;
+    }
 
-    public BankConnectionProcessStatus ToErrorAtProvider() => TransitTo(ErrorAtProvider);
+    public static BankConnectionProcessStatus Initiated => new(State.Initiated);
 
-    public BankConnectionProcessStatus ToConsentRefused() => TransitTo(ConsentRefused);
+    public BankConnectionProcessStatus ToRedirected() => TransitTo(State.Redirected);
 
-    public BankConnectionProcessStatus ToWaitingForAccountChoosing() => TransitTo(WaitingForAccountChoosing);
+    public BankConnectionProcessStatus ToRedirectUrlExpired() => TransitTo(State.RedirectUrlExpired);
 
-    public BankConnectionProcessStatus ToCompleted() => TransitTo(Completed);
+    public BankConnectionProcessStatus ToErrorAtProvider() => TransitTo(State.ErrorAtProvider);
 
-    public BankConnectionProcessStatus ToCancelled() => TransitTo(Cancelled);
+    public BankConnectionProcessStatus ToConsentRefused() => TransitTo(State.ConsentRefused);
 
-    public bool IsFinal => FinalStatuses.Contains(this);
+    public BankConnectionProcessStatus ToWaitingForAccountChoosing() => TransitTo(State.WaitingForAccountChoosing);
 
-    public bool IsStatusTransitionValid(BankConnectionProcessStatus newStatus) => ValidStatusTransitions[this].Contains(newStatus);
+    public BankConnectionProcessStatus ToCompleted() => TransitTo(State.Completed);
 
-    private BankConnectionProcessStatus TransitTo(BankConnectionProcessStatus newStatus)
+    public BankConnectionProcessStatus ToCancelled() => TransitTo(State.Cancelled);
+
+    public bool IsFinal => FinalStatuses.Contains(Value);
+
+    public bool IsStatusTransitionValid(BankConnectionProcessStatus newStatus)
     {
         var currentStatus = this;
+
+        var canCurrentStatusBeTransited = ValidStatusTransitions.TryGetValue(currentStatus.Value, out var availableTransitionStates);
+        if (canCurrentStatusBeTransited)
+        {
+            return availableTransitionStates!.Contains(newStatus.Value);
+        }
+
+        return false;
+    } 
+
+    private BankConnectionProcessStatus TransitTo(State state)
+    {
+        var currentStatus = this;
+        var newStatus = new BankConnectionProcessStatus(state);
+
         BusinessRuleChecker.CheckRules(new BankConnectionProcessStatusShouldKeepValidTransitionRule(currentStatus, newStatus));
 
         return newStatus;
     }
 
-    private static readonly BankConnectionProcessStatus[] FinalStatuses = { RedirectUrlExpired, ErrorAtProvider, ConsentRefused, Completed, Cancelled };
+    private static readonly State[] FinalStatuses = { State.RedirectUrlExpired, State.ErrorAtProvider, State.ConsentRefused, State.Completed, State.Cancelled };
 
-    private static readonly IDictionary<BankConnectionProcessStatus, BankConnectionProcessStatus[]> ValidStatusTransitions = new Dictionary<BankConnectionProcessStatus, BankConnectionProcessStatus[]>
+    private static readonly IDictionary<State, State[]> ValidStatusTransitions = new Dictionary<State, State[]>
     {
-        [Initiated] = new[] { Redirected, Cancelled },
-        [Redirected] = new[] { RedirectUrlExpired, ErrorAtProvider, ConsentRefused, WaitingForAccountChoosing, Completed, Cancelled },
-        [WaitingForAccountChoosing] = new[] { Completed, Cancelled }
+        [State.Initiated] = new[] { State.Redirected, State.Cancelled },
+        [State.Redirected] = new[] { State.RedirectUrlExpired, State.ErrorAtProvider, State.ConsentRefused, State.WaitingForAccountChoosing, State.Completed, State.Cancelled },
+        [State.WaitingForAccountChoosing] = new[] { State.Completed, State.Cancelled }
     };
 
-    private static BankConnectionProcessStatus Redirected => new(nameof(Redirected));
-
-    private static BankConnectionProcessStatus RedirectUrlExpired => new(nameof(RedirectUrlExpired));
-
-    private static BankConnectionProcessStatus ErrorAtProvider => new(nameof(ErrorAtProvider));
-
-    private static BankConnectionProcessStatus ConsentRefused => new(nameof(ConsentRefused));
-
-    private static BankConnectionProcessStatus WaitingForAccountChoosing => new(nameof(WaitingForAccountChoosing));
-
-    private static BankConnectionProcessStatus Completed => new(nameof(Completed));
-
-    private static BankConnectionProcessStatus Cancelled => new(nameof(Cancelled));
+    public enum State
+    {
+        Initiated,
+        Redirected,
+        RedirectUrlExpired,
+        ErrorAtProvider,
+        ConsentRefused,
+        WaitingForAccountChoosing,
+        Completed,
+        Cancelled
+    }
 }

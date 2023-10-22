@@ -1,6 +1,4 @@
-using App.Modules.Wallets.Domain.Users;
-
-namespace App.Modules.Wallets.IntegrationTests.SeedData;
+namespace App.Modules.Wallets.IntegrationTests.BankConnectionProcessing;
 
 public static class BankConnectionProcessingData
 {

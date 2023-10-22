@@ -1,3 +1,4 @@
+using App.Modules.Wallets.IntegrationTests.BankConnectionProcessing;
 using WireMock.Matchers;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;

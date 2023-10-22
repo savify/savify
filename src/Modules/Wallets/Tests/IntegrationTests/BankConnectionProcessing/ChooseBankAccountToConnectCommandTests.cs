@@ -34,7 +34,7 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
         var bankConnectionProcess = await WalletsModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
         var wallet = await WalletsModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId));
 
-        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.Completed.Value));
+        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
         Assert.That(wallet.BankConnectionId, Is.EqualTo(bankConnectionProcessId));
         Assert.That(wallet.BankAccountId, Is.EqualTo(bankAccountId));
     }
