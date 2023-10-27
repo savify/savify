@@ -5,10 +5,9 @@ namespace App.Modules.Categories.Infrastructure.Configuration.Integration;
 
 public class IntegrationModule
 {
-    internal static void Configure(IServiceCollection services, bool isProduction)
+    internal static void Configure(IServiceCollection services)
     {
         // services.AddScoped<ISaltEdgeIntegrationService>(provider => new SaltEdgeIntegrationService(
-        //     provider.GetService<ISaltEdgeHttpClient>(),
-        //     isProduction));
+        //     provider.GetService<ISaltEdgeHttpClient>()));
     }
 }

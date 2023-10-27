@@ -12,7 +12,8 @@ public class ApiTests : TestBase
         {
             NotificationsNamespace,
             WalletsNamespace,
-            BanksNamespace
+            BanksNamespace,
+            CategoriesNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
@@ -31,7 +32,8 @@ public class ApiTests : TestBase
         {
             UserAccessNamespace,
             WalletsNamespace,
-            BanksNamespace
+            BanksNamespace,
+            CategoriesNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
@@ -50,7 +52,8 @@ public class ApiTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            BanksNamespace
+            BanksNamespace,
+            CategoriesNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
@@ -69,11 +72,32 @@ public class ApiTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            WalletsNamespace
+            WalletsNamespace,
+            CategoriesNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
             .ResideInNamespace("App.API.Modules.Banks")
+            .Should()
+            .NotHaveDependencyOnAny(otherModules.ToArray())
+            .GetResult();
+
+        AssertArchTestResult(result);
+    }
+
+    [Test]
+    public void CategoriesApi_DoesNotHaveDependency_ToOtherModules()
+    {
+        var otherModules = new List<string>
+        {
+            UserAccessNamespace,
+            NotificationsNamespace,
+            WalletsNamespace,
+            BanksNamespace
+        };
+        var result = Types.InAssembly(ApiAssembly)
+            .That()
+            .ResideInNamespace("App.API.Modules.Categories")
             .Should()
             .NotHaveDependencyOnAny(otherModules.ToArray())
             .GetResult();

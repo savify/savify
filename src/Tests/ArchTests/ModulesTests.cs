@@ -3,6 +3,9 @@ using App.ArchTests.SeedWork;
 using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Infrastructure;
+using App.Modules.Categories.Application.Contracts;
+using App.Modules.Categories.Domain.Categories;
+using App.Modules.Categories.Infrastructure;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Domain.UserNotificationSettings;
 using App.Modules.Notifications.Infrastructure;
@@ -26,7 +29,8 @@ public class ModulesTests : TestBase
         {
             NotificationsNamespace,
             WalletsNamespace,
-            BanksNamespace
+            BanksNamespace,
+            CategoriesNamespace
         };
         List<Assembly> userAccessAssemblies = new List<Assembly>
         {
@@ -54,7 +58,8 @@ public class ModulesTests : TestBase
         {
             UserAccessNamespace,
             WalletsNamespace,
-            BanksNamespace
+            BanksNamespace,
+            CategoriesNamespace
         };
         List<Assembly> notificationAssemblies = new List<Assembly>
         {
@@ -82,7 +87,8 @@ public class ModulesTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            BanksNamespace
+            BanksNamespace,
+            CategoriesNamespace
         };
         List<Assembly> walletsAssemblies = new List<Assembly>
         {
@@ -110,13 +116,43 @@ public class ModulesTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            WalletsNamespace
+            WalletsNamespace,
+            CategoriesNamespace
         };
         List<Assembly> banksAssemblies = new List<Assembly>
         {
             typeof(IBanksModule).Assembly,
             typeof(Bank).Assembly,
             typeof(BanksContext).Assembly
+        };
+
+        var result = Types.InAssemblies(banksAssemblies)
+            .That()
+            .DoNotImplementInterface(typeof(INotificationHandler<>))
+            .And().DoNotHaveNameEndingWith("IntegrationEventHandler")
+            .And().DoNotHaveName("EventBusInitialization")
+            .Should()
+            .NotHaveDependencyOnAny(otherModules.ToArray())
+            .GetResult();
+
+        AssertArchTestResult(result);
+    }
+
+    [Test]
+    public void CategoriesModule_DoesNotHave_Dependency_On_Other_Modules()
+    {
+        var otherModules = new List<string>
+        {
+            UserAccessNamespace,
+            NotificationsNamespace,
+            WalletsNamespace,
+            BanksNamespace
+        };
+        List<Assembly> banksAssemblies = new List<Assembly>
+        {
+            typeof(ICategoriesModule).Assembly,
+            typeof(Category).Assembly,
+            typeof(CategoriesContext).Assembly
         };
 
         var result = Types.InAssemblies(banksAssemblies)

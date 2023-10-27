@@ -21,16 +21,14 @@ public static class CategoriesModuleCollectionExtensions
     public static IServiceCollection AddCategoriesModule(
         this IServiceCollection services,
         IConfiguration configuration,
-        ILogger logger,
-        bool isProduction)
+        ILogger logger)
     {
         var moduleLogger = logger.ForContext("Module", "Categories");
 
         ConfigureCompositionRoot(
             services,
             configuration.GetConnectionString("Savify"),
-            moduleLogger,
-            isProduction);
+            moduleLogger);
 
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
@@ -44,7 +42,6 @@ public static class CategoriesModuleCollectionExtensions
         this IServiceCollection services,
         string connectionString,
         ILogger logger,
-        bool isProduction,
         IEventBus? eventBus = null)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
@@ -59,7 +56,7 @@ public static class CategoriesModuleCollectionExtensions
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
-        IntegrationModule.Configure(services, isProduction);
+        IntegrationModule.Configure(services);
 
         CategoriesCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }

@@ -10,6 +10,7 @@ using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
 using App.Integrations.SaltEdge;
 using App.Modules.Banks.Infrastructure.Configuration;
+using App.Modules.Categories.Infrastructure.Configuration;
 using App.Modules.Notifications.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
@@ -76,6 +77,7 @@ public class Program
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);
         builder.Services.AddWalletsModule(builder.Configuration, _logger);
         builder.Services.AddBanksModule(builder.Configuration, _logger, builder.Environment.IsProduction());
+        builder.Services.AddCategoriesModule(builder.Configuration, _logger);
 
         var app = builder.Build();
 

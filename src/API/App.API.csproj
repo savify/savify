@@ -25,6 +25,7 @@
     <ItemGroup>
       <ProjectReference Include="..\BuildingBlocks\Infrastructure\App.BuildingBlocks.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\Banks\Infrastructure\App.Modules.Banks.Infrastructure.csproj" />
+      <ProjectReference Include="..\Modules\Categories\Infrastructure\App.Modules.Categories.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\Wallets\Infrastructure\App.Modules.Wallets.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\Notifications\Infrastructure\App.Modules.Notifications.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\UserAccess\Infrastructure\App.Modules.UserAccess.Infrastructure.csproj" />
@@ -34,6 +35,11 @@
       <Content Update="Resources\Modules\Notifications\Templates\Emails\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Modules\Categories\" />
     </ItemGroup>
 
 </Project>
