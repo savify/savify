@@ -1,10 +1,9 @@
 using App.Modules.Notifications.Application.Configuration.Commands;
-using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewalEmail;
 
-internal class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<SendUserRegistrationRenewalEmailCommand, Result>
+internal class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<SendUserRegistrationRenewalEmailCommand>
 {
     private readonly IEmailMessageFactory _emailMessageFactory;
 
@@ -16,7 +15,7 @@ internal class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<
         _emailSender = emailSender;
     }
 
-    public async Task<Result> Handle(SendUserRegistrationRenewalEmailCommand command, CancellationToken cancellationToken)
+    public async Task Handle(SendUserRegistrationRenewalEmailCommand command, CancellationToken cancellationToken)
     {
         var emailMessage = _emailMessageFactory.CreateLocalizedEmailMessage(
             command.Email,
@@ -25,7 +24,5 @@ internal class SendUserRegistrationRenewalEmailCommandHandler : ICommandHandler<
             command.Language);
 
         await _emailSender.SendEmailAsync(emailMessage);
-
-        return Result.Success;
     }
 }

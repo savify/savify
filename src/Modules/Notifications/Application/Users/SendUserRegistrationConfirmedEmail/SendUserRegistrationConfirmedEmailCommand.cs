@@ -1,10 +1,9 @@
 using App.Modules.Notifications.Application.Configuration.Commands;
-using App.Modules.Notifications.Application.Contracts;
 using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmedEmail;
 
-public class SendUserRegistrationConfirmedEmailCommand : InternalCommandBase<Result>
+public class SendUserRegistrationConfirmedEmailCommand : InternalCommandBase
 {
     [JsonConstructor]
     public SendUserRegistrationConfirmedEmailCommand(Guid id, string name, string email, string language) : base(id)

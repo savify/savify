@@ -1,10 +1,9 @@
 using App.Modules.Notifications.Application.Configuration.Commands;
-using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmationEmail;
 
-internal class SendUserRegistrationConfirmationEmailCommandHandler : ICommandHandler<SendUserRegistrationConfirmationEmailCommand, Result>
+internal class SendUserRegistrationConfirmationEmailCommandHandler : ICommandHandler<SendUserRegistrationConfirmationEmailCommand>
 {
     private readonly IEmailMessageFactory _emailMessageFactory;
 
@@ -16,7 +15,7 @@ internal class SendUserRegistrationConfirmationEmailCommandHandler : ICommandHan
         _emailSender = emailSender;
     }
 
-    public async Task<Result> Handle(SendUserRegistrationConfirmationEmailCommand command, CancellationToken cancellationToken)
+    public async Task Handle(SendUserRegistrationConfirmationEmailCommand command, CancellationToken cancellationToken)
     {
         var emailMessage = _emailMessageFactory.CreateLocalizedEmailMessage(
             command.Email,
@@ -25,7 +24,5 @@ internal class SendUserRegistrationConfirmationEmailCommandHandler : ICommandHan
             command.Language);
 
         await _emailSender.SendEmailAsync(emailMessage);
-
-        return Result.Success;
     }
 }

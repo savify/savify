@@ -5,6 +5,11 @@ namespace App.Modules.Notifications.Infrastructure;
 
 public class NotificationsModule : INotificationsModule
 {
+    public async Task ExecuteCommandAsync(ICommand command)
+    {
+        await CommandExecutor.Execute(command);
+    }
+
     public async Task<TResult> ExecuteCommandAsync<TResult>(ICommand<TResult> command)
     {
         return await CommandExecutor.Execute(command);
