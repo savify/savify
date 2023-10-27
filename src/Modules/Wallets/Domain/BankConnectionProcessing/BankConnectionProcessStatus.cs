@@ -43,7 +43,7 @@ public record BankConnectionProcessStatus
         }
 
         return false;
-    } 
+    }
 
     private BankConnectionProcessStatus TransitTo(State state)
     {
