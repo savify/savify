@@ -26,7 +26,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
                 provider.GetRequiredService<IDomainEventsDispatcher>())));
 
             services.Replace(ServiceDescriptor.Scoped<IDomainEventsAccessor>(provider => new DomainEventsAccessor(
-                provider.GetRequiredService<UserAccessContext>())));
+                provider.GetRequiredService<BanksContext>())));
 
             // TODO: find some solution to work with domain notifications maps without duplication in tests!
             var domainNotificationsMap = new BiDictionary<string, Type>();
