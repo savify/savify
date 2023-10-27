@@ -15,13 +15,13 @@ public class CommandScheduler : ICommandScheduler
         _walletsContext = walletsContext;
     }
 
-    public async Task EnqueueAsync<T>(ICommand<T> command)
+    public async Task EnqueueAsync(ICommand command)
     {
         await _walletsContext.AddAsync(CreateInternalCommandFrom(command));
         await _walletsContext.SaveChangesAsync();
     }
 
-    private InternalCommand CreateInternalCommandFrom<T>(ICommand<T> command)
+    private InternalCommand CreateInternalCommandFrom(ICommand command)
     {
         var internalCommand = new InternalCommand();
 

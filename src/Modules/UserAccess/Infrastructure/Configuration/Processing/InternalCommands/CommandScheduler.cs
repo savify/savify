@@ -15,13 +15,13 @@ public class CommandScheduler : ICommandScheduler
         _userAccessContext = userAccessContext;
     }
 
-    public async Task EnqueueAsync<T>(ICommand<T> command)
+    public async Task EnqueueAsync(ICommand command)
     {
         await _userAccessContext.AddAsync(CreateInternalCommandFrom(command));
         await _userAccessContext.SaveChangesAsync();
     }
 
-    private InternalCommand CreateInternalCommandFrom<T>(ICommand<T> command)
+    private InternalCommand CreateInternalCommandFrom(ICommand command)
     {
         var internalCommand = new InternalCommand();
 
