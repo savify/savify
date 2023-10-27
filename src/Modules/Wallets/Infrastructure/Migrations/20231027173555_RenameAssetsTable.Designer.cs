@@ -3,6 +3,7 @@ using System;
 using App.Modules.Wallets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.Wallets.Infrastructure.Migrations
 {
     [DbContext(typeof(WalletsContext))]
-    partial class WalletsContextModelSnapshot : ModelSnapshot
+    [Migration("20231027173555_RenameAssetsTable")]
+    partial class RenameAssetsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
