@@ -48,6 +48,7 @@ public class TestBase
     public void TearDown()
     {
         SaltEdgeHttpClientMocker.StopWireMockServer();
+        WebApplicationFactory.Dispose();
     }
 
     [SetUp]
