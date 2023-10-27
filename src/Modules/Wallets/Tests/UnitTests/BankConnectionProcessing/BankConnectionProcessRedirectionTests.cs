@@ -47,12 +47,27 @@ public class BankConnectionProcessRedirectionTests : UnitTestBase
         var redirection = new Redirection("https://redirect-url.com/connect", DateTime.MaxValue);
         _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(redirection);
 
-        var redirectUrl = await bankConnectionProcess.Redirect(_redirectionService);
+        var redirectionResult = await bankConnectionProcess.Redirect(_redirectionService);
 
         var userRedirectedDomainEvent = AssertPublishedDomainEvent<UserRedirectedDomainEvent>(bankConnectionProcess);
-        Assert.That(redirectUrl, Is.EqualTo(redirection.Url));
+        Assert.That(redirectionResult.Success, Is.EqualTo(redirection.Url));
         Assert.That(userRedirectedDomainEvent.BankConnectionProcessId, Is.EqualTo(bankConnectionProcess.Id));
         Assert.That(userRedirectedDomainEvent.ExpiresAt, Is.EqualTo(redirection.ExpiresAt));
+    }
+
+    [Test]
+    public async Task RedirectingUser_WhenExternalProviderErrorOccures_ReturnsExternalProviderErrorResult()
+    {
+        var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
+
+        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(RedirectionError.ExternalProviderError);
+
+        var redirectionResult = await bankConnectionProcess.Redirect(_redirectionService);
+
+        Assert.That(redirectionResult.IsError, Is.True);
+
+        var error = redirectionResult.Error;
+        Assert.That(error, Is.EqualTo(RedirectionError.ExternalProviderError));
     }
 
     [Test]
@@ -91,22 +106,6 @@ public class BankConnectionProcessRedirectionTests : UnitTestBase
         await bankConnectionProcess.CreateConnection("123456", _connectionCreationService, _bankAccountConnector);
 
         AssertBrokenRuleAsync<CannotOperateOnBankConnectionProcessWithFinalStatusRule>(async Task () =>
-        {
-            await bankConnectionProcess.Redirect(_redirectionService);
-        });
-    }
-
-    [Test]
-    public async Task RedirectingUser_WhenIsNotInTheRightStatus_BreaksBankConnectionProcessShouldKeepValidStatusTransitionsRule()
-    {
-        var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
-
-        var redirection = new Redirection("https://redirect-url.com/connect", DateTime.MaxValue);
-        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(redirection);
-
-        await bankConnectionProcess.Redirect(_redirectionService);
-
-        AssertBrokenRuleAsync<BankConnectionProcessShouldKeepValidStatusTransitionsRule>(async Task () =>
         {
             await bankConnectionProcess.Redirect(_redirectionService);
         });

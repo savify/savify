@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Events;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Rules;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
@@ -39,85 +40,78 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         return new BankConnectionProcess(userId, bankId, walletId, walletType);
     }
 
-    public async Task<string> Redirect(IBankConnectionProcessRedirectionService redirectionService)
+    public async Task<Result<string, RedirectionError>> Redirect(IBankConnectionProcessRedirectionService redirectionService)
     {
         CheckRules(new BankConnectionProcessCannotMakeRedirectionWhenRedirectUrlIsExpiredRule(_status),
-            new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
-            new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Redirected));
+            new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
-        try
+        var redirectionResult = await redirectionService.Redirect(Id, UserId, BankId);
+
+        if (redirectionResult.IsError && redirectionResult.Error == RedirectionError.ExternalProviderError)
         {
-            var redirection = await redirectionService.Redirect(Id, UserId, BankId);
-
-            _redirectUrl = redirection.Url;
-            _redirectUrlExpiresAt = redirection.ExpiresAt;
-            _status = BankConnectionProcessStatus.Redirected;
+            _status = _status.ToErrorAtProvider();
             _updatedAt = DateTime.UtcNow;
 
-            AddDomainEvent(new UserRedirectedDomainEvent(Id, _redirectUrlExpiresAt.Value));
-
-            return _redirectUrl;
+            return redirectionResult.Error;
         }
-        catch (DomainException)
-        {
-            _status = BankConnectionProcessStatus.ErrorAtProvider;
-            _updatedAt = DateTime.UtcNow;
 
-            // TODO: if we throw exception data will not be saved. We should return some kind of result
-            throw;
-        }
+
+        var redirection = redirectionResult.Success;
+        _redirectUrl = redirection.Url;
+        _redirectUrlExpiresAt = redirection.ExpiresAt;
+        _status = _status.ToRedirected();
+        _updatedAt = DateTime.UtcNow;
+
+        AddDomainEvent(new UserRedirectedDomainEvent(Id, _redirectUrlExpiresAt.Value));
+
+        return _redirectUrl;
     }
 
-    public async Task<BankConnection> CreateConnection(
+    public async Task<Result<BankConnection, CreateConnectionError>> CreateConnection(
         string externalConnectionId,
         IBankConnectionProcessConnectionCreationService connectionCreationService,
         IBankAccountConnector bankAccountConnector)
     {
         CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
-        try
+        var connectionResult = await connectionCreationService.CreateConnection(Id, UserId, BankId, externalConnectionId);
+
+        if (connectionResult.IsError && connectionResult.Error == CreateConnectionError.ExternalProviderError)
         {
-            var connection = await connectionCreationService.CreateConnection(Id, UserId, BankId, externalConnectionId);
-
-            if (connection.HasMultipleBankAccounts())
-            {
-                CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.WaitingForAccountChoosing));
-                _status = BankConnectionProcessStatus.WaitingForAccountChoosing;
-            }
-            else
-            {
-                CheckRules(new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
-
-                var bankAccountId = connection.GetSingleBankAccount().Id;
-                await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
-
-                _status = BankConnectionProcessStatus.Completed;
-
-                AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
-            }
-
+            _status = _status.ToErrorAtProvider();
             _updatedAt = DateTime.UtcNow;
 
-            return connection;
+            return connectionResult.Error;
         }
-        catch (DomainException)
-        {
-            _status = BankConnectionProcessStatus.ErrorAtProvider;
-            _updatedAt = DateTime.UtcNow;
 
-            // TODO: if we throw exception data will not be saved. We should return some kind of result
-            throw;
+        var connection = connectionResult.Success;
+
+        if (connection.HasMultipleBankAccounts())
+        {
+            _status = _status.ToWaitingForAccountChoosing();
         }
+        else
+        {
+            var bankAccountId = connection.GetSingleBankAccount().Id;
+            await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
+
+            _status = _status.ToCompleted();
+
+            AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
+        }
+
+        _updatedAt = DateTime.UtcNow;
+
+        return connection;
     }
 
     public async Task ChooseBankAccount(BankAccountId bankAccountId, IBankAccountConnector bankAccountConnector)
     {
-        CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status),
-            new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.Completed));
+        CheckRules(new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
         await bankAccountConnector.ConnectBankAccountToWallet(WalletId, _walletType, new BankConnectionId(Id.Value), bankAccountId);
 
-        _status = BankConnectionProcessStatus.Completed;
+        _status = _status.ToCompleted();
         _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new BankConnectionProcessCompletedDomainEvent(Id, bankAccountId));
@@ -125,10 +119,9 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
     public void Expire()
     {
-        CheckRules(new RedirectUrlShouldBeExpiredRule(_redirectUrlExpiresAt),
-            new BankConnectionProcessShouldKeepValidStatusTransitionsRule(_status, BankConnectionProcessStatus.RedirectUrlExpired));
+        CheckRules(new RedirectUrlShouldBeExpiredRule(_redirectUrlExpiresAt));
 
-        _status = BankConnectionProcessStatus.RedirectUrlExpired;
+        _status = _status.ToRedirectUrlExpired();
         _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new BankConnectionProcessExpiredDomainEvent(Id));

@@ -2,6 +2,7 @@
 using App.API.Modules.Wallets.DebitWallets.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.Wallets.Application.Contracts;
+using App.Modules.Wallets.Application.Wallets;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.EditDebitWallet;
@@ -84,6 +85,11 @@ public class DebitWalletsController : ControllerBase
             walletId,
             request.BankId));
 
-        return Created("", result);
+        if (result.IsError && result.Error == BankConnectionProcessInitiationError.ExternalProviderError)
+        {
+            return Problem(statusCode: StatusCodes.Status424FailedDependency);
+        }
+
+        return Created("", result.Success);
     }
 }

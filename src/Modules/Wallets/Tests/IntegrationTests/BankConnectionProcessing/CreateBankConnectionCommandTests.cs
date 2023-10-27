@@ -31,7 +31,7 @@ public class CreateBankConnectionCommandTests : TestBase
         var wallet = await WalletsModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId));
 
         Assert.That(bankConnectionProcess, Is.Not.Null);
-        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.Completed.Value));
+        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
         Assert.That(await CountBankAccountsInConnection(bankConnectionProcess.Id), Is.EqualTo(1));
         Assert.That(wallet.Balance, Is.EqualTo((int)BankConnectionProcessingData.ExternalUSDAccountBalance * 100));
         Assert.That(wallet.Currency, Is.EqualTo(BankConnectionProcessingData.ExternalUSDAccountCurrency));
@@ -53,7 +53,7 @@ public class CreateBankConnectionCommandTests : TestBase
         var bankConnectionProcess = await WalletsModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
 
         Assert.That(bankConnectionProcess, Is.Not.Null);
-        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.WaitingForAccountChoosing.Value));
+        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.WaitingForAccountChoosing.ToString()));
         Assert.That(await CountBankAccountsInConnection(bankConnectionProcess.Id), Is.EqualTo(2));
     }
 
@@ -68,7 +68,7 @@ public class CreateBankConnectionCommandTests : TestBase
             _walletId,
             BankConnectionProcessingData.BankId));
 
-        return result.Id;
+        return result.Success.Id;
     }
 
     private async Task<int> CountBankAccountsInConnection(Guid bankConnectionId)

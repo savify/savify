@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnectionProcessing.Services;
@@ -8,7 +9,7 @@ using App.Modules.Wallets.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 
-internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<ConnectBankAccountToDebitWalletCommand, BankConnectionProcessInitiationResult>
+internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<ConnectBankAccountToDebitWalletCommand, Result<BankConnectionProcessInitiationSuccess, BankConnectionProcessInitiationError>>
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 
@@ -30,15 +31,20 @@ internal class ConnectBankAccountToDebitWalletCommandHandler : ICommandHandler<C
         _bankConnectionProcessRedirectionService = bankConnectionProcessRedirectionService;
     }
 
-    public async Task<BankConnectionProcessInitiationResult> Handle(ConnectBankAccountToDebitWalletCommand command, CancellationToken cancellationToken)
+    public async Task<Result<BankConnectionProcessInitiationSuccess, BankConnectionProcessInitiationError>> Handle(ConnectBankAccountToDebitWalletCommand command, CancellationToken cancellationToken)
     {
         var wallet = await _debitWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
 
         var bankConnectionProcess = await wallet.InitiateBankConnectionProcess(new BankId(command.BankId), _bankConnectionProcessInitiationService);
-        var redirectUrl = await bankConnectionProcess.Redirect(_bankConnectionProcessRedirectionService);
+        var redirectionResult = await bankConnectionProcess.Redirect(_bankConnectionProcessRedirectionService);
 
         await _bankConnectionProcessRepository.AddAsync(bankConnectionProcess);
 
-        return new BankConnectionProcessInitiationResult(bankConnectionProcess.Id.Value, redirectUrl);
+        if (redirectionResult.IsError && redirectionResult.Error == RedirectionError.ExternalProviderError)
+        {
+            return BankConnectionProcessInitiationError.ExternalProviderError;
+        }
+
+        return new BankConnectionProcessInitiationSuccess(bankConnectionProcess.Id.Value, redirectionResult.Success);
     }
 }

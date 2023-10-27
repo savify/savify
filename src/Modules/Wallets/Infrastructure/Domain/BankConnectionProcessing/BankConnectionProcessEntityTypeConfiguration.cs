@@ -31,7 +31,7 @@ public class BankConnectionProcessEntityTypeConfiguration : IEntityTypeConfigura
 
         builder.OwnsOne<BankConnectionProcessStatus>("_status", b =>
         {
-            b.Property(x => x.Value).HasColumnName("status");
+            b.Property(x => x.Value).HasConversion<string>().HasColumnName("status");
         });
     }
 }

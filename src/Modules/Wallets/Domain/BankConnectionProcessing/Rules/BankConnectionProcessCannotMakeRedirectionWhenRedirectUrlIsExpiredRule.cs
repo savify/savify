@@ -11,7 +11,7 @@ public class BankConnectionProcessCannotMakeRedirectionWhenRedirectUrlIsExpiredR
         _status = status;
     }
 
-    public bool IsBroken() => _status == BankConnectionProcessStatus.RedirectUrlExpired;
+    public bool IsBroken() => _status.Value == BankConnectionProcessStatus.State.RedirectUrlExpired;
 
     public string MessageTemplate => "Redirect URL was expired";
 }

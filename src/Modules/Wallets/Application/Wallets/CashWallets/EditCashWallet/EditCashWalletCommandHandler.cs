@@ -1,5 +1,4 @@
 using App.Modules.Wallets.Application.Configuration.Commands;
-using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Domain.Finance;
 using App.Modules.Wallets.Domain.Users;
 using App.Modules.Wallets.Domain.Wallets;
@@ -8,7 +7,7 @@ using App.Modules.Wallets.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.Wallets.Application.Wallets.CashWallets.EditCashWallet;
 
-internal class EditCashWalletCommandHandler : ICommandHandler<EditCashWalletCommand, Result>
+internal class EditCashWalletCommandHandler : ICommandHandler<EditCashWalletCommand>
 {
     private readonly ICashWalletRepository _cashWalletRepository;
 
@@ -20,7 +19,7 @@ internal class EditCashWalletCommandHandler : ICommandHandler<EditCashWalletComm
         _walletViewMetadataRepository = walletViewMetadataRepository;
     }
 
-    public async Task<Result> Handle(EditCashWalletCommand command, CancellationToken cancellationToken)
+    public async Task Handle(EditCashWalletCommand command, CancellationToken cancellationToken)
     {
         var wallet = await _cashWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
         wallet.Edit(
@@ -33,7 +32,5 @@ internal class EditCashWalletCommandHandler : ICommandHandler<EditCashWalletComm
             command.Color,
             command.Icon,
             command.ConsiderInTotalBalance);
-
-        return Result.Success;
     }
 }

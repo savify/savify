@@ -1,12 +1,12 @@
 namespace App.Modules.Wallets.Application.Wallets;
 
-public class BankConnectionProcessInitiationResult
+public class BankConnectionProcessInitiationSuccess
 {
     public Guid Id { get; }
 
     public string RedirectUrl { get; }
 
-    public BankConnectionProcessInitiationResult(Guid id, string redirectUrl)
+    public BankConnectionProcessInitiationSuccess(Guid id, string redirectUrl)
     {
         Id = id;
         RedirectUrl = redirectUrl;
