@@ -1,11 +1,10 @@
 using App.Modules.Banks.Application.Configuration.Commands;
-using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Services;
 
 namespace App.Modules.Banks.Application.BanksSynchronisationProcessing.SynchroniseBanks;
 
-internal class SynchroniseBanksRecurringCommandHandler : ICommandHandler<SynchroniseBanksRecurringCommand, Result>
+internal class SynchroniseBanksRecurringCommandHandler : ICommandHandler<SynchroniseBanksRecurringCommand>
 {
     private readonly IBanksSynchronisationProcessRepository _banksSynchronisationProcessRepository;
 
@@ -19,14 +18,12 @@ internal class SynchroniseBanksRecurringCommandHandler : ICommandHandler<Synchro
         _banksSynchronisationService = banksSynchronisationService;
     }
 
-    public async Task<Result> Handle(SynchroniseBanksRecurringCommand command, CancellationToken cancellationToken)
+    public async Task Handle(SynchroniseBanksRecurringCommand command, CancellationToken cancellationToken)
     {
         var banksSynchronisationProcess = await BanksSynchronisationProcess.Start(
             BanksSynchronisationProcessInitiator.InternalCommand,
             _banksSynchronisationService);
 
         await _banksSynchronisationProcessRepository.AddAsync(banksSynchronisationProcess);
-
-        return Result.Success;
     }
 }
