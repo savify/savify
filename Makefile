@@ -20,7 +20,15 @@ wallets-migrations:
 banks-migrations:
 	dotnet ef migrations add $(name) --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext
 
-db-update: user-access-db-update notifications-db-update wallets-db-update banks-db-update
+# make categories-migrations name=MigrationName
+categories-migrations:
+	dotnet ef migrations add $(name) --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext
+
+# make transactions-migrations name=MigrationName
+transactions-migrations:
+	dotnet ef migrations add $(name) --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext
+
+db-update: user-access-db-update notifications-db-update wallets-db-update banks-db-update categories-db-update transactions-db-update
 
 user-access-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext
@@ -34,7 +42,13 @@ wallets-db-update:
 banks-db-update:
 	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext
 
-test-db-update: user-access-test-db-update notifications-test-db-update wallets-test-db-update banks-test-db-update
+categories-db-update:
+	dotnet ef database update --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext
+
+transactions-db-update:
+	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext
+
+test-db-update: user-access-test-db-update notifications-test-db-update wallets-test-db-update banks-test-db-update categories-test-db-update
 
 user-access-test-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext -- --environment Testing
@@ -47,6 +61,12 @@ wallets-test-db-update:
 
 banks-test-db-update:
 	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext -- --environment Testing
+
+categories-test-db-update:
+	dotnet ef database update --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext -- --environment Testing
+
+transactions-test-db-update:
+	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext -- --environment Testing
 
 seed-database:
 	docker cp ./src/Database/Scripts/ClearDatabase.sql savify-database:/clear.sql

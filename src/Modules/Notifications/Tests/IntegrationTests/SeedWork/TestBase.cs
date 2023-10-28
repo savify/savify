@@ -41,6 +41,12 @@ public class TestBase
         NotificationsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
     }
 
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        WebApplicationFactory.Dispose();
+    }
+
     [SetUp]
     public async Task BeforeEachTest()
     {

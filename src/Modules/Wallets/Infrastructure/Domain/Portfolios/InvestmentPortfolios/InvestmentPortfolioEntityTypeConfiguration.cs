@@ -20,7 +20,7 @@ internal class InvestmentPortfolioEntityTypeConfiguration : IEntityTypeConfigura
         builder.OwnsMany<Asset>("_assets", y =>
         {
             y.WithOwner().HasForeignKey("investment_portfolio_id");
-            y.ToTable("assets", "wallets");
+            y.ToTable("investment_portfolio_assets", "wallets");
 
             y.HasKey("Id");
             y.Property<AssetId>("Id").HasColumnName("id");
