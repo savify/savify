@@ -24,7 +24,11 @@ banks-migrations:
 categories-migrations:
 	dotnet ef migrations add $(name) --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext
 
-db-update: user-access-db-update notifications-db-update wallets-db-update banks-db-update categories-db-update
+# make transactions-migrations name=MigrationName
+transactions-migrations:
+	dotnet ef migrations add $(name) --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext
+
+db-update: user-access-db-update notifications-db-update wallets-db-update banks-db-update categories-db-update transactions-db-update
 
 user-access-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext
@@ -40,6 +44,9 @@ banks-db-update:
 
 categories-db-update:
 	dotnet ef database update --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext
+
+transactions-db-update:
+	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext
 
 test-db-update: user-access-test-db-update notifications-test-db-update wallets-test-db-update banks-test-db-update categories-test-db-update
 
@@ -57,6 +64,9 @@ banks-test-db-update:
 
 categories-test-db-update:
 	dotnet ef database update --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext -- --environment Testing
+
+transactions-test-db-update:
+	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext -- --environment Testing
 
 seed-database:
 	docker cp ./src/Database/Scripts/ClearDatabase.sql savify-database:/clear.sql
