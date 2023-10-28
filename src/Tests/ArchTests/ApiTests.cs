@@ -13,7 +13,8 @@ public class ApiTests : TestBase
             NotificationsNamespace,
             WalletsNamespace,
             BanksNamespace,
-            CategoriesNamespace
+            CategoriesNamespace,
+            TransactionsNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
@@ -33,7 +34,8 @@ public class ApiTests : TestBase
             UserAccessNamespace,
             WalletsNamespace,
             BanksNamespace,
-            CategoriesNamespace
+            CategoriesNamespace,
+            TransactionsNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
@@ -53,7 +55,8 @@ public class ApiTests : TestBase
             UserAccessNamespace,
             NotificationsNamespace,
             BanksNamespace,
-            CategoriesNamespace
+            CategoriesNamespace,
+            TransactionsNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
@@ -73,7 +76,8 @@ public class ApiTests : TestBase
             UserAccessNamespace,
             NotificationsNamespace,
             WalletsNamespace,
-            CategoriesNamespace
+            CategoriesNamespace,
+            TransactionsNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
@@ -93,11 +97,33 @@ public class ApiTests : TestBase
             UserAccessNamespace,
             NotificationsNamespace,
             WalletsNamespace,
-            BanksNamespace
+            BanksNamespace,
+            TransactionsNamespace
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
             .ResideInNamespace("App.API.Modules.Categories")
+            .Should()
+            .NotHaveDependencyOnAny(otherModules.ToArray())
+            .GetResult();
+
+        AssertArchTestResult(result);
+    }
+
+    [Test]
+    public void TransactionsApi_DoesNotHaveDependency_ToOtherModules()
+    {
+        var otherModules = new List<string>
+        {
+            UserAccessNamespace,
+            NotificationsNamespace,
+            WalletsNamespace,
+            BanksNamespace,
+            CategoriesNamespace
+        };
+        var result = Types.InAssembly(ApiAssembly)
+            .That()
+            .ResideInNamespace("App.API.Modules.Transactions")
             .Should()
             .NotHaveDependencyOnAny(otherModules.ToArray())
             .GetResult();
