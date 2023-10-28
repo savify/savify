@@ -40,6 +40,12 @@ public class TestBase
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
     }
 
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        WebApplicationFactory.Dispose();
+    }
+
     [SetUp]
     public async Task BeforeEachTest()
     {
