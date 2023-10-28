@@ -35,3 +35,33 @@ internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T, TResu
         }
     }
 }
+
+internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
+{
+    private readonly ICommandHandler<T> _decorated;
+
+    private readonly IStringLocalizer _localizer;
+
+    public BusinessRuleExceptionLocalizationCommandHandlerDecorator(ICommandHandler<T> decorated, IStringLocalizer localizer)
+    {
+        _decorated = decorated;
+        _localizer = localizer;
+    }
+
+    public async Task Handle(T command, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _decorated.Handle(command, cancellationToken);
+        }
+        catch (BusinessRuleValidationException exception)
+        {
+            var localizedMessage = _localizer[
+                exception.BrokenRule.MessageTemplate,
+                exception.BrokenRule.MessageArguments ?? Array.Empty<object>()
+            ];
+
+            throw new LocalizedBusinessRuleValidationException(exception.BrokenRule, localizedMessage);
+        }
+    }
+}

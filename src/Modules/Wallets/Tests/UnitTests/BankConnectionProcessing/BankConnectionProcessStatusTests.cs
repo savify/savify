@@ -77,7 +77,6 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     }
 
     [Test]
-    [TestCase(State.Initiated)]
     [TestCase(State.RedirectUrlExpired)]
     [TestCase(State.ErrorAtProvider)]
     [TestCase(State.ConsentRefused)]

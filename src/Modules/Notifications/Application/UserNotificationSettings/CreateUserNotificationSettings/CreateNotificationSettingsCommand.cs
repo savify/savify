@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.Application.UserNotificationSettings.CreateUserNotificationSettings;
 
-public class CreateNotificationSettingsCommand : InternalCommandBase<Result>
+public class CreateNotificationSettingsCommand : InternalCommandBase
 {
     [JsonConstructor]
     public CreateNotificationSettingsCommand(Guid id, Guid userId, string name, string email, string preferredLanguage) : base(id)

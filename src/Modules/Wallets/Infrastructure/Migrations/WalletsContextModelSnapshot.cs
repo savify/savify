@@ -422,7 +422,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess._status#App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcessStatus", "_status", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcessStatus", "_status", b1 =>
                         {
                             b1.Property<Guid>("BankConnectionProcessId")
                                 .HasColumnType("uuid");
@@ -440,7 +440,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                                 .HasForeignKey("BankConnectionProcessId");
                         });
 
-                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess._walletType#App.Modules.Wallets.Domain.Wallets.WalletType", "_walletType", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.WalletType", "_walletType", b1 =>
                         {
                             b1.Property<Guid>("BankConnectionProcessId")
                                 .HasColumnType("uuid");
@@ -465,7 +465,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnections.BankConnection", b =>
                 {
-                    b.OwnsMany("App.Modules.Wallets.Domain.BankConnections.BankConnection._accounts#App.Modules.Wallets.Domain.BankConnections.BankAccounts.BankAccount", "_accounts", b1 =>
+                    b.OwnsMany("App.Modules.Wallets.Domain.BankConnections.BankAccounts.BankAccount", "_accounts", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -498,7 +498,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("BankConnectionId");
 
-                            b1.OwnsOne("App.Modules.Wallets.Domain.BankConnections.BankConnection._accounts#App.Modules.Wallets.Domain.BankConnections.BankAccounts.BankAccount.Currency#App.Modules.Wallets.Domain.Finance.Currency", "Currency", b2 =>
+                            b1.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "Currency", b2 =>
                                 {
                                     b2.Property<Guid>("BankAccountId")
                                         .HasColumnType("uuid");
@@ -523,7 +523,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnections.BankConnection._consent#App.Modules.Wallets.Domain.BankConnections.Consent", "_consent", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnections.Consent", "_consent", b1 =>
                         {
                             b1.Property<Guid>("BankConnectionId")
                                 .HasColumnType("uuid");
@@ -547,7 +547,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
                 {
-                    b.OwnsMany("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio._assets#App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets.Asset", "_assets", b1 =>
+                    b.OwnsMany("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets.Asset", "_assets", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -588,12 +588,12 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
                             b1.HasIndex("investment_portfolio_id");
 
-                            b1.ToTable("assets", "wallets");
+                            b1.ToTable("investment_portfolio_assets", "wallets");
 
                             b1.WithOwner()
                                 .HasForeignKey("investment_portfolio_id");
 
-                            b1.OwnsOne("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio._assets#App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets.Asset._purchasePrice#App.Modules.Wallets.Domain.Finance.Money", "_purchasePrice", b2 =>
+                            b1.OwnsOne("App.Modules.Wallets.Domain.Finance.Money", "_purchasePrice", b2 =>
                                 {
                                     b2.Property<Guid>("AssetId")
                                         .HasColumnType("uuid");
@@ -604,12 +604,12 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
                                     b2.HasKey("AssetId");
 
-                                    b2.ToTable("assets", "wallets");
+                                    b2.ToTable("investment_portfolio_assets", "wallets");
 
                                     b2.WithOwner()
                                         .HasForeignKey("AssetId");
 
-                                    b2.OwnsOne("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio._assets#App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets.Asset._purchasePrice#App.Modules.Wallets.Domain.Finance.Money.Currency#App.Modules.Wallets.Domain.Finance.Currency", "Currency", b3 =>
+                                    b2.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "Currency", b3 =>
                                         {
                                             b3.Property<Guid>("MoneyAssetId")
                                                 .HasColumnType("uuid");
@@ -621,7 +621,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
                                             b3.HasKey("MoneyAssetId");
 
-                                            b3.ToTable("assets", "wallets");
+                                            b3.ToTable("investment_portfolio_assets", "wallets");
 
                                             b3.WithOwner()
                                                 .HasForeignKey("MoneyAssetId");
@@ -639,7 +639,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CashWallets.CashWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.CashWallets.CashWallet._currency#App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("CashWalletId")
                                 .HasColumnType("uuid");
@@ -662,7 +662,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CreditWallets.CreditWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.CreditWallets.CreditWallet._currency#App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("CreditWalletId")
                                 .HasColumnType("uuid");
@@ -685,7 +685,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.DebitWallets.DebitWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.DebitWallets.DebitWallet._bankAccountConnection#App.Modules.Wallets.Domain.Wallets.BankAccountConnections.BankAccountConnection", "_bankAccountConnection", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.BankAccountConnections.BankAccountConnection", "_bankAccountConnection", b1 =>
                         {
                             b1.Property<Guid>("DebitWalletId")
                                 .HasColumnType("uuid");
@@ -706,7 +706,7 @@ namespace App.Modules.Wallets.Infrastructure.Migrations
                                 .HasForeignKey("DebitWalletId");
                         });
 
-                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.DebitWallets.DebitWallet._currency#App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("DebitWalletId")
                                 .HasColumnType("uuid");

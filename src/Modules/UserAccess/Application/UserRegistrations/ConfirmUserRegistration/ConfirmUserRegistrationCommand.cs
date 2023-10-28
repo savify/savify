@@ -3,7 +3,7 @@ using Destructurama.Attributed;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 
-public class ConfirmUserRegistrationCommand : CommandBase<Result>
+public class ConfirmUserRegistrationCommand : CommandBase
 {
     public Guid UserRegistrationId { get; }
 

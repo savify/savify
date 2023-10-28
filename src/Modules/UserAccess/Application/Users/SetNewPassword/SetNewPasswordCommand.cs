@@ -2,7 +2,7 @@ using App.Modules.UserAccess.Application.Contracts;
 
 namespace App.Modules.UserAccess.Application.Users.SetNewPassword;
 
-public class SetNewPasswordCommand : CommandBase<Result>
+public class SetNewPasswordCommand : CommandBase
 {
     public Guid UserId { get; }
 

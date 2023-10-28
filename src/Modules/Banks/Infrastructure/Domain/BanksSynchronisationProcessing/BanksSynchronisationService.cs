@@ -69,7 +69,6 @@ public class BanksSynchronisationService : IBanksSynchronisationService
                     externalProvider.MaxConsentDays,
                     externalProvider.LogoUrl);
             }
-
         }
     }
 

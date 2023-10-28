@@ -1,11 +1,10 @@
 using App.Modules.Notifications.Application.Configuration.Commands;
-using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Domain.UserNotificationSettings;
 
 namespace App.Modules.Notifications.Application.Users.SendPasswordResetConfirmationCodeEmail;
 
-internal class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHandler<SendPasswordResetConfirmationCodeEmailCommand, Result>
+internal class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHandler<SendPasswordResetConfirmationCodeEmailCommand>
 {
     private readonly IUserNotificationSettingsRepository _notificationSettingsRepository;
 
@@ -23,7 +22,7 @@ internal class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHa
         _emailSender = emailSender;
     }
 
-    public async Task<Result> Handle(SendPasswordResetConfirmationCodeEmailCommand command, CancellationToken cancellationToken)
+    public async Task Handle(SendPasswordResetConfirmationCodeEmailCommand command, CancellationToken cancellationToken)
     {
         var notificationSettings = await _notificationSettingsRepository.GetByUserEmailAsync(command.Email);
 
@@ -34,7 +33,5 @@ internal class SendPasswordResetConfirmationCodeEmailCommandHandler : ICommandHa
             notificationSettings.PreferredLanguage.Value);
 
         await _emailSender.SendEmailAsync(emailMessage);
-
-        return Result.Success;
     }
 }

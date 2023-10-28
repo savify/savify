@@ -15,6 +15,10 @@ public abstract class TestBase
 
     public const string BanksNamespace = "App.Modules.Banks";
 
+    public const string CategoriesNamespace = "App.Modules.Categories";
+
+    public const string TransactionsNamespace = "App.Modules.Transactions";
+
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {
         IList<Type> failingTypes = new List<Type>();
