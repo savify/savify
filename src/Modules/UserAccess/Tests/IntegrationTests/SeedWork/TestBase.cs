@@ -1,6 +1,7 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Tests.IntegrationTests;
+using App.Database.Scripts.Clear;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Infrastructure.Configuration;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
@@ -69,16 +70,7 @@ public class TestBase
 
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM user_access.internal_commands; " +
-                           "DELETE FROM user_access.outbox_messages; " +
-                           "DELETE FROM user_access.roles_permissions; " +
-                           "DELETE FROM user_access.users; " +
-                           "DELETE FROM user_access.user_roles; " +
-                           "DELETE FROM user_access.permissions; " +
-                           "DELETE FROM user_access.inbox_messages; " +
-                           "DELETE FROM user_access.user_registrations; " +
-                           "DELETE FROM user_access.password_reset_requests; " +
-                           "DELETE FROM user_access.refresh_tokens; ";
+        var sql = await ClearDatabaseCommandProvider.GetAsync();
 
         await connection.ExecuteScalarAsync(sql);
     }

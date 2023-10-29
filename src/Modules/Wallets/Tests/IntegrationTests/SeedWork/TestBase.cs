@@ -1,6 +1,7 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Tests.IntegrationTests;
+using App.Database.Scripts.Clear;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Infrastructure.Configuration;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
@@ -76,18 +77,7 @@ public class TestBase
 
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM wallets.internal_commands; " +
-                           "DELETE FROM wallets.outbox_messages; " +
-                           "DELETE FROM wallets.inbox_messages; " +
-                           "DELETE FROM wallets.cash_wallets; " +
-                           "DELETE FROM wallets.credit_wallets; " +
-                           "DELETE FROM wallets.debit_wallets;" +
-                           "DELETE FROM wallets.wallet_view_metadata;" +
-                           "DELETE FROM wallets.bank_accounts;" +
-                           "DELETE FROM wallets.bank_connection_processes;" +
-                           "DELETE FROM wallets.bank_connections;" +
-                           "DELETE FROM wallets.salt_edge_connections;" +
-                           "DELETE FROM wallets.salt_edge_customers;";
+        var sql = await ClearDatabaseCommandProvider.GetAsync();
 
         await connection.ExecuteScalarAsync(sql);
     }

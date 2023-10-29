@@ -1,6 +1,7 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Tests.IntegrationTests;
+using App.Database.Scripts.Clear;
 using App.Modules.Categories.Application.Contracts;
 using App.Modules.Categories.Infrastructure.Configuration;
 using App.Modules.Categories.Infrastructure.Configuration.Processing.Outbox;
@@ -76,9 +77,7 @@ public class TestBase
 
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM categories.internal_commands; " +
-                           "DELETE FROM categories.outbox_messages; " +
-                           "DELETE FROM categories.inbox_messages; ";
+        var sql = await ClearDatabaseCommandProvider.GetAsync();
 
         await connection.ExecuteScalarAsync(sql);
     }
