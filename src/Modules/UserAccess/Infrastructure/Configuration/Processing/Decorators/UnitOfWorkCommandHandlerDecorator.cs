@@ -26,11 +26,6 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
     {
         var result = await _decorated.Handle(command, cancellationToken);
 
-        if (command is InternalCommandBase<TResult>)
-        {
-            await SetInternalCommandAsProcessedAsync(_userAccessContext, command.Id, cancellationToken);
-        }
-
         await _unitOfWork.CommitAsync(cancellationToken);
 
         return result;
