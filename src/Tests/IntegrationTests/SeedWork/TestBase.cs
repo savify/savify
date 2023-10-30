@@ -3,6 +3,7 @@ using App.API;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
+using App.Database.Scripts.Clear;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.UserAccess.Application.Contracts;
 using Dapper;
@@ -72,27 +73,7 @@ public class TestBase
 
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        // TODO: move to some external class/sql file
-        const string sql = "DELETE FROM user_access.outbox_messages; " +
-                           "DELETE FROM user_access.roles_permissions; " +
-                           "DELETE FROM user_access.users; " +
-                           "DELETE FROM user_access.user_roles; " +
-                           "DELETE FROM user_access.permissions; " +
-                           "DELETE FROM user_access.inbox_messages; " +
-                           "DELETE FROM user_access.internal_commands; " +
-                           "DELETE FROM user_access.user_registrations; " +
-                           "DELETE FROM user_access.password_reset_requests; " +
-                           "DELETE FROM user_access.refresh_tokens; " +
-                           "DELETE FROM notifications.inbox_messages; " +
-                           "DELETE FROM notifications.internal_commands; " +
-                           "DELETE FROM notifications.user_notification_settings; " +
-                           "DELETE FROM wallets.internal_commands; " +
-                           "DELETE FROM wallets.outbox_messages; " +
-                           "DELETE FROM wallets.cash_wallets; " +
-                           "DELETE FROM wallets.debit_wallets; " +
-                           "DELETE FROM wallets.credit_wallets; " +
-                           "DELETE FROM wallets.wallet_view_metadata; " +
-                           "DELETE FROM wallets.inbox_messages; ";
+        var sql = await ClearDatabaseCommandProvider.GetAsync();
 
         await connection.ExecuteScalarAsync(sql);
     }

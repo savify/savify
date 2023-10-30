@@ -69,8 +69,8 @@ transactions-test-db-update:
 	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext -- --environment Testing
 
 seed-database:
-	docker cp ./src/Database/Scripts/ClearDatabase.sql savify-database:/clear.sql
-	docker cp ./src/Database/Scripts/SeedDatabase.sql savify-database:/seed.sql
+	docker cp ./src/Database/Scripts/Clear/ClearDatabase.sql savify-database:/clear.sql
+	docker cp ./src/Database/Scripts/Seed/SeedDatabase.sql savify-database:/seed.sql
 	docker exec -u postgres savify-database psql savify user -f /clear.sql
 	docker exec -u postgres savify-database psql savify user -f /seed.sql
 

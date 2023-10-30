@@ -27,6 +27,7 @@
         <ProjectReference Include="..\..\..\..\API\App.API.csproj" />
         <ProjectReference Include="..\..\..\..\BuildingBlocks\Application\App.BuildingBlocks.Application.csproj" />
         <ProjectReference Include="..\..\..\..\BuildingBlocks\Tests\App.BuildingBlocks.Tests.csproj" />
+        <ProjectReference Include="..\..\..\..\Database\Scripts\App.Database.Scripts.csproj" />
         <ProjectReference Include="..\..\Application\App.Modules.Categories.Application.csproj" />
         <ProjectReference Include="..\..\Infrastructure\App.Modules.Categories.Infrastructure.csproj" />
     </ItemGroup>

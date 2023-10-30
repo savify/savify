@@ -1,6 +1,7 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Tests.IntegrationTests;
+using App.Database.Scripts.Clear;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Infrastructure.Configuration;
@@ -56,9 +57,7 @@ public class TestBase
 
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM notifications.internal_commands; " +
-                           "DELETE FROM notifications.inbox_messages; " +
-                           "DELETE FROM notifications.user_notification_settings; ";
+        var sql = await ClearDatabaseCommandProvider.GetAsync();
 
         await connection.ExecuteScalarAsync(sql);
     }

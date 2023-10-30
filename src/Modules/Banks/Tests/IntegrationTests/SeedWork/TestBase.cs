@@ -1,6 +1,7 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Tests.IntegrationTests;
+using App.Database.Scripts.Clear;
 using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure.Configuration;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
@@ -76,11 +77,7 @@ public class TestBase
 
     private static async Task ClearDatabase(IDbConnection connection)
     {
-        const string sql = "DELETE FROM banks.internal_commands; " +
-                           "DELETE FROM banks.outbox_messages; " +
-                           "DELETE FROM banks.inbox_messages; " +
-                           "DELETE FROM banks.banks; " +
-                           "DELETE FROM banks.banks_synchronisation_processes; ";
+        var sql = await ClearDatabaseCommandProvider.GetAsync();
 
         await connection.ExecuteScalarAsync(sql);
     }
