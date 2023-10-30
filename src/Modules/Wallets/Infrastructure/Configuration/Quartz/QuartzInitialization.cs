@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using App.BuildingBlocks.Infrastructure.Quartz;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing.Inbox;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing.InternalCommands;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;

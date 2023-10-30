@@ -1,13 +1,13 @@
 using Quartz.Logging;
 using Serilog;
 
-namespace App.Modules.Categories.Infrastructure.Configuration.Quartz;
+namespace App.BuildingBlocks.Infrastructure.Quartz;
 
 public class SerilogLogProvider : ILogProvider
 {
     private readonly ILogger _logger;
 
-    internal SerilogLogProvider(ILogger logger)
+    public SerilogLogProvider(ILogger logger)
     {
         _logger = logger;
     }
