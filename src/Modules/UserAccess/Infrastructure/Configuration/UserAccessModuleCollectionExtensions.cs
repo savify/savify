@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Infrastructure;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
@@ -11,7 +12,6 @@ using App.Modules.UserAccess.Domain.UserRegistrations.Events;
 using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Infrastructure.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.Authentication;
-using App.Modules.UserAccess.Infrastructure.Configuration.DataAccess;
 using App.Modules.UserAccess.Infrastructure.Configuration.Domain;
 using App.Modules.UserAccess.Infrastructure.Configuration.EventBus;
 using App.Modules.UserAccess.Infrastructure.Configuration.Logging;
@@ -63,9 +63,9 @@ public static class UserAccessModuleCollectionExtensions
         domainNotificationsMap.Add(nameof(UserRegistrationRenewedDomainEvent), typeof(UserRegistrationRenewedNotification));
         domainNotificationsMap.Add(nameof(PasswordResetRequestedDomainEvent), typeof(PasswordResetRequestedNotification));
 
+        DataAccessModule<UserAccessContext>.Configure(services, connectionString);
         OutboxModule.Configure(services, domainNotificationsMap);
         AuthenticationModule.Configure(services, authenticationConfiguration);
-        DataAccessModule.Configure(services, connectionString);
         DomainModule.Configure(services);
         LoggingModule.Configure(services, logger);
         EventBusModule.Configure(services, eventBus);

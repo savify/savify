@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Infrastructure;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Integration;
 using App.Modules.Transactions.Application.Contracts;
-using App.Modules.Transactions.Infrastructure.Configuration.DataAccess;
 using App.Modules.Transactions.Infrastructure.Configuration.Domain;
 using App.Modules.Transactions.Infrastructure.Configuration.EventBus;
 using App.Modules.Transactions.Infrastructure.Configuration.Integration;
@@ -49,7 +49,7 @@ public static class TransactionsModuleCollectionExtensions
         // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
 
         OutboxModule.Configure(services, domainNotificationsMap);
-        DataAccessModule.Configure(services, connectionString);
+        DataAccessModule<TransactionsContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
         LoggingModule.Configure(services, logger);
         EventBusModule.Configure(services, eventBus);

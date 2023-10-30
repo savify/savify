@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Infrastructure;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Integration;
 using App.Modules.Categories.Application.Contracts;
-using App.Modules.Categories.Infrastructure.Configuration.DataAccess;
 using App.Modules.Categories.Infrastructure.Configuration.Domain;
 using App.Modules.Categories.Infrastructure.Configuration.EventBus;
 using App.Modules.Categories.Infrastructure.Configuration.Integration;
@@ -49,7 +49,7 @@ public static class CategoriesModuleCollectionExtensions
         // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
 
         OutboxModule.Configure(services, domainNotificationsMap);
-        DataAccessModule.Configure(services, connectionString);
+        DataAccessModule<CategoriesContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
         LoggingModule.Configure(services, logger);
         EventBusModule.Configure(services, eventBus);

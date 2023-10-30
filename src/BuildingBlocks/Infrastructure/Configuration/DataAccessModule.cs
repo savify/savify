@@ -4,28 +4,28 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Banks.Infrastructure.Configuration.DataAccess;
+namespace App.BuildingBlocks.Infrastructure.Configuration;
 
-internal static class DataAccessModule
+public static class DataAccessModule<TContext> where TContext : DbContext
 {
-    internal static void Configure(IServiceCollection services, string databaseConnectionString)
+    public static void Configure(IServiceCollection services, string databaseConnectionString)
     {
         services.AddScoped<ISqlConnectionFactory>(_ =>
         {
             return new SqlConnectionFactory(databaseConnectionString);
         });
 
-        services.AddDbContext<BanksContext>(options =>
+        services.AddDbContext<TContext>(options =>
         {
             options.UseNpgsql(databaseConnectionString);
             options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
         });
 
-        services.AddScoped<DbContext, BanksContext>();
+        services.AddScoped<DbContext, TContext>();
 
         services.Scan(scan =>
         {
-            scan.FromAssemblies(Assemblies.Infrastructure)
+            scan.FromAssemblies(typeof(TContext).Assembly)
                 .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime();

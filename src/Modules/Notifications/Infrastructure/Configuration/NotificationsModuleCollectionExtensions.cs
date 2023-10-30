@@ -1,7 +1,7 @@
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Integration;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
-using App.Modules.Notifications.Infrastructure.Configuration.DataAccess;
 using App.Modules.Notifications.Infrastructure.Configuration.Domain;
 using App.Modules.Notifications.Infrastructure.Configuration.Email;
 using App.Modules.Notifications.Infrastructure.Configuration.EventBus;
@@ -48,7 +48,7 @@ public static class NotificationsModuleCollectionExtensions
         IEmailMessageFactory? emailMessageFactory = null,
         IEventBus? eventBus = null)
     {
-        DataAccessModule.Configure(services, connectionString);
+        DataAccessModule<NotificationsContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
         EmailModule.Configure(services, emailConfiguration, emailSender, emailMessageFactory);
         LoggingModule.Configure(services, logger);

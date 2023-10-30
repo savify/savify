@@ -1,7 +1,7 @@
 using Quartz.Logging;
 using Serilog;
 
-namespace App.BuildingBlocks.Infrastructure.Quartz;
+namespace App.BuildingBlocks.Infrastructure.Configuration.Quartz;
 
 public class SerilogLogProvider : ILogProvider
 {

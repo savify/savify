@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Infrastructure;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Integration;
 using App.Modules.Banks.Application.Contracts;
-using App.Modules.Banks.Infrastructure.Configuration.DataAccess;
 using App.Modules.Banks.Infrastructure.Configuration.Domain;
 using App.Modules.Banks.Infrastructure.Configuration.EventBus;
 using App.Modules.Banks.Infrastructure.Configuration.Integration;
@@ -51,8 +51,8 @@ public static class BanksModuleCollectionExtensions
 
         // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
 
+        DataAccessModule<BanksContext>.Configure(services, connectionString);
         OutboxModule.Configure(services, domainNotificationsMap);
-        DataAccessModule.Configure(services, connectionString);
         DomainModule.Configure(services);
         LoggingModule.Configure(services, logger);
         EventBusModule.Configure(services, eventBus);

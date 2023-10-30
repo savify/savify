@@ -1,7 +1,7 @@
 using App.BuildingBlocks.Infrastructure;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Integration;
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Wallets.Infrastructure.Configuration.DataAccess;
 using App.Modules.Wallets.Infrastructure.Configuration.Domain;
 using App.Modules.Wallets.Infrastructure.Configuration.EventBus;
 using App.Modules.Wallets.Infrastructure.Configuration.Integration;
@@ -48,8 +48,8 @@ public static class WalletsModuleCollectionExtensions
 
         // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
 
+        DataAccessModule<WalletsContext>.Configure(services, connectionString);
         OutboxModule.Configure(services, domainNotificationsMap);
-        DataAccessModule.Configure(services, connectionString);
         DomainModule.Configure(services);
         LoggingModule.Configure(services, logger);
         EventBusModule.Configure(services, eventBus);
