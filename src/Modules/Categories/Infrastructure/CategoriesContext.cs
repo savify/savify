@@ -1,9 +1,7 @@
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
-using App.Modules.Categories.Infrastructure.Inbox;
-using App.Modules.Categories.Infrastructure.InternalCommands;
-using App.Modules.Categories.Infrastructure.Outbox;
+using App.BuildingBlocks.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Categories.Infrastructure;
@@ -22,8 +20,8 @@ public class CategoriesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration(CategoriesModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(CategoriesModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(CategoriesModule.DatabaseSchemaName));
     }
 }

@@ -1,14 +1,20 @@
-using App.BuildingBlocks.Infrastructure.Inbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.Banks.Infrastructure.Inbox;
+namespace App.BuildingBlocks.Infrastructure.Inbox;
 
 public class InboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<InboxMessage>
 {
+    private readonly string _databaseSchemaName;
+
+    public InboxMessageEntityTypeConfiguration(string databaseSchemaName)
+    {
+        _databaseSchemaName = databaseSchemaName;
+    }
+
     public void Configure(EntityTypeBuilder<InboxMessage> builder)
     {
-        builder.ToTable("inbox_messages", "banks");
+        builder.ToTable("inbox_messages", schema: _databaseSchemaName);
 
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");

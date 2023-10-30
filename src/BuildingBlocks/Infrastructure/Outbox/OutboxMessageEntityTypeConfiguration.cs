@@ -1,14 +1,21 @@
-using App.BuildingBlocks.Infrastructure.Inbox;
+using App.BuildingBlocks.Application.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.Wallets.Infrastructure.Inbox;
+namespace App.BuildingBlocks.Infrastructure.Outbox;
 
-public class InboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<InboxMessage>
+public class OutboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<OutboxMessage>
 {
-    public void Configure(EntityTypeBuilder<InboxMessage> builder)
+    private readonly string _databaseSchemaName;
+
+    public OutboxMessageEntityTypeConfiguration(string databaseSchemaName)
     {
-        builder.ToTable("inbox_messages", "wallets");
+        _databaseSchemaName = databaseSchemaName;
+    }
+
+    public void Configure(EntityTypeBuilder<OutboxMessage> builder)
+    {
+        builder.ToTable("outbox_messages", _databaseSchemaName);
 
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");

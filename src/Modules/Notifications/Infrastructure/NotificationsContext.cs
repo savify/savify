@@ -2,8 +2,6 @@ using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.Modules.Notifications.Domain.UserNotificationSettings;
 using App.Modules.Notifications.Infrastructure.Domain.UserNotificationSettings;
-using App.Modules.Notifications.Infrastructure.Inbox;
-using App.Modules.Notifications.Infrastructure.InternalCommands;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Notifications.Infrastructure;
@@ -23,7 +21,7 @@ public class NotificationsContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserNotificationSettingsEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(NotificationsModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(NotificationsModule.DatabaseSchemaName));
     }
 }

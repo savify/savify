@@ -5,6 +5,8 @@ namespace App.Modules.Notifications.Infrastructure;
 
 public class NotificationsModule : INotificationsModule
 {
+    public static string DatabaseSchemaName => "notifications";
+
     public async Task ExecuteCommandAsync(ICommand command)
     {
         await CommandExecutor.Execute(command);

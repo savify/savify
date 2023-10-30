@@ -16,4 +16,5 @@
       <ProjectReference Include="..\Domain\App.BuildingBlocks.Domain.csproj" />
     </ItemGroup>
 
+
 </Project>

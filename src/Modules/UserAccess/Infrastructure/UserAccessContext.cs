@@ -1,15 +1,13 @@
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.BuildingBlocks.Infrastructure.Outbox;
 using App.Modules.UserAccess.Domain.PasswordResetRequest;
 using App.Modules.UserAccess.Domain.UserRegistrations;
 using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Infrastructure.Domain.PasswordResetRequests;
 using App.Modules.UserAccess.Infrastructure.Domain.UserRegistrations;
 using App.Modules.UserAccess.Infrastructure.Domain.Users;
-using App.Modules.UserAccess.Infrastructure.Inbox;
-using App.Modules.UserAccess.Infrastructure.InternalCommands;
-using App.Modules.UserAccess.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.UserAccess.Infrastructure;
@@ -37,8 +35,8 @@ public class UserAccessContext : DbContext
         modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserRegistrationEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new PasswordResetRequestEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration(UserAccessModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(UserAccessModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(UserAccessModule.DatabaseSchemaName));
     }
 }

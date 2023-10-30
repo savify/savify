@@ -1,15 +1,13 @@
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.BuildingBlocks.Infrastructure.Outbox;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.Banks.BankRevisions;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Infrastructure.Domain.Banks;
 using App.Modules.Banks.Infrastructure.Domain.Banks.BankRevisions;
 using App.Modules.Banks.Infrastructure.Domain.BanksSynchronisationProcessing;
-using App.Modules.Banks.Infrastructure.Inbox;
-using App.Modules.Banks.Infrastructure.InternalCommands;
-using App.Modules.Banks.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Banks.Infrastructure;
@@ -37,8 +35,8 @@ public class BanksContext : DbContext
         modelBuilder.ApplyConfiguration(new BankEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankRevisionEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BanksSynchronisationProcessEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration(BanksModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(BanksModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(BanksModule.DatabaseSchemaName));
     }
 }

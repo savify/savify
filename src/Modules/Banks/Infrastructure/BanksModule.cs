@@ -5,6 +5,8 @@ namespace App.Modules.Banks.Infrastructure;
 
 public class BanksModule : IBanksModule
 {
+    public static string DatabaseSchemaName => "banks";
+
     public async Task ExecuteCommandAsync(ICommand command)
     {
         await CommandExecutor.Execute(command);
