@@ -12,21 +12,24 @@ public class Transaction : Entity, IAggregateRoot
 
     private Target _target;
 
+    private DateTime _madeOn;
+
     private string _comment;
 
     private ICollection<string> _tags;
 
-    public static Transaction AddNew(TransactionType type, Source source, Target target, string comment, ICollection<string> tags)
+    public static Transaction AddNew(TransactionType type, Source source, Target target, DateTime madeOn, string comment, ICollection<string> tags)
     {
-        return new Transaction(type, source, target, comment, tags);
+        return new Transaction(type, source, target, madeOn, comment, tags);
     }
 
-    public Transaction(TransactionType type, Source source, Target target, string comment, ICollection<string> tags)
+    public Transaction(TransactionType type, Source source, Target target, DateTime madeOn, string comment, ICollection<string> tags)
     {
         Id = new TransactionId(Guid.NewGuid());
         _type = type;
         _source = source;
         _target = target;
+        _madeOn = madeOn;
         _comment = comment;
         _tags = tags;
 

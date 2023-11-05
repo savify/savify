@@ -21,6 +21,7 @@ public class TransactionTests : UnitTestBase
             TransactionType.Expense(),
             source,
             target,
+            madeOn: new DateTime(year: 2024, month: 01, day: 15),
             comment: "For ski pass.",
             tags: new[] { "Skis", "Vacations", "Love" });
 

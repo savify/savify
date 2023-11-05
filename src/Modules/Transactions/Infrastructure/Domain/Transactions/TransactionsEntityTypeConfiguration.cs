@@ -33,6 +33,8 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
 
         });
 
+        builder.Property<DateTime>("_madeOn");
+
         builder.Property<string>("_comment").HasColumnName("comment");
 
         builder.Property<ICollection<string>>("_tags")
