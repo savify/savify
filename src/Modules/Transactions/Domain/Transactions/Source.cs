@@ -14,5 +14,5 @@ public record Source
         Amount = amount;
     }
 
-    internal static Source With(Sender sender, Money amount) => new(sender, amount);
+    public static Source With(Sender sender, Money amount) => new(sender, amount);
 }

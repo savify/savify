@@ -14,5 +14,5 @@ public record Target
         Amount = amount;
     }
 
-    internal static Target With(Recipient recipient, Money amount) => new(recipient, amount);
+    public static Target With(Recipient recipient, Money amount) => new(recipient, amount);
 }

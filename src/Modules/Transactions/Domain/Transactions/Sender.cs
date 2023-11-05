@@ -9,5 +9,5 @@ public record Sender
         Address = address;
     }
 
-    internal static Sender WhoHave(string address) => new(address);
+    public static Sender WhoHas(string address) => new(address);
 }
