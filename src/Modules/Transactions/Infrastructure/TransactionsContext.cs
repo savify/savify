@@ -1,6 +1,8 @@
+using System.Transactions;
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.Modules.Transactions.Infrastructure.Domain.Transactions;
 using App.Modules.Transactions.Infrastructure.Inbox;
 using App.Modules.Transactions.Infrastructure.InternalCommands;
 using App.Modules.Transactions.Infrastructure.Outbox;
@@ -16,6 +18,8 @@ public class TransactionsContext : DbContext
 
     public DbSet<InternalCommand>? InternalCommands { get; set; }
 
+    public DbSet<Transaction> Transactions { get; set; }
+
     public TransactionsContext(DbContextOptions<TransactionsContext> options) : base(options)
     {
     }
@@ -25,5 +29,6 @@ public class TransactionsContext : DbContext
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new TransactionsEntityTypeConfiguration());
     }
 }
