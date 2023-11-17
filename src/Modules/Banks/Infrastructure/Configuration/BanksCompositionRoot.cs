@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Modules.Banks.Infrastructure.Configuration;
 
-public class BanksCompositionRoot
+public static class BanksCompositionRoot
 {
     private static IServiceProvider _serviceProvider;
 

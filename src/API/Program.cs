@@ -72,6 +72,7 @@ public class Program
             });
         });
 
+        builder.Services.AddEventBus();
         builder.Services.AddSaltEdgeIntegration(builder.Configuration);
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);

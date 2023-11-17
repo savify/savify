@@ -52,7 +52,6 @@ public static class TransactionsModuleCollectionExtensions
         DataAccessModule<TransactionsContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
         LoggingModule.Configure(services, logger);
-        EventBusModule.Configure(services, eventBus);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);

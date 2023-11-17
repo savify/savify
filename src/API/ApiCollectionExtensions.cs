@@ -1,4 +1,5 @@
 using System.Text;
+using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +31,13 @@ public static class ApiCollectionExtensions
 
         services.AddSingleton<IAuthenticationConfigurationProvider>(
             _ => new AuthenticationConfigurationProvider(authenticationConfiguration));
+
+        return services;
+    }
+
+    public static IServiceCollection AddEventBus(this IServiceCollection services)
+    {
+        services.AddSingleton<IEventBus, InMemoryEventBusClient>();
 
         return services;
     }

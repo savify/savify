@@ -52,7 +52,6 @@ public static class NotificationsModuleCollectionExtensions
         DomainModule.Configure(services);
         EmailModule.Configure(services, emailConfiguration, emailSender, emailMessageFactory);
         LoggingModule.Configure(services, logger);
-        EventBusModule.Configure(services, eventBus);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);

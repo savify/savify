@@ -52,7 +52,6 @@ public static class WalletsModuleCollectionExtensions
         OutboxModule.Configure(services, domainNotificationsMap);
         DomainModule.Configure(services);
         LoggingModule.Configure(services, logger);
-        EventBusModule.Configure(services, eventBus);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
