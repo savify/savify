@@ -2,6 +2,7 @@ using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Application.Events;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Infrastructure.Configuration.Logging;
 using Dapper;
 using MediatR;
 using Newtonsoft.Json;
@@ -23,12 +24,12 @@ public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
         IMediator mediator,
         ISqlConnectionFactory sqlConnectionFactory,
         IDomainNotificationsMapper<WalletsContext> domainNotificationsMapper,
-        ILogger logger)
+        ILoggerProvider loggerProvider)
     {
         _mediator = mediator;
         _sqlConnectionFactory = sqlConnectionFactory;
         _domainNotificationsMapper = domainNotificationsMapper;
-        _logger = logger;
+        _logger = loggerProvider.Provide();
     }
 
     public async Task Handle(ProcessOutboxCommand command, CancellationToken cancellationToken)
