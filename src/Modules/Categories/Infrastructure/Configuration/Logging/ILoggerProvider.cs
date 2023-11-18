@@ -2,7 +2,7 @@ using Serilog;
 
 namespace App.Modules.Categories.Infrastructure.Configuration.Logging;
 
-public interface ICategoriesLoggerProvider
+public interface ILoggerProvider
 {
     ILogger Provide();
 }

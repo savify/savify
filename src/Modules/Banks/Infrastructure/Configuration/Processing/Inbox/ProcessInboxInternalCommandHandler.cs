@@ -17,7 +17,7 @@ public class ProcessInboxInternalCommandHandler : ICommandHandler<ProcessInboxCo
     public ProcessInboxInternalCommandHandler(
         IMediator mediator,
         ISqlConnectionFactory sqlConnectionFactory,
-        IBanksLoggerProvider loggerProvider)
+        ILoggerProvider loggerProvider)
     {
         _mediator = mediator;
         _sqlConnectionFactory = sqlConnectionFactory;

@@ -1,10 +1,10 @@
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Integration;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Infrastructure.Configuration.Domain;
 using App.Modules.Notifications.Infrastructure.Configuration.Email;
 using App.Modules.Notifications.Infrastructure.Configuration.EventBus;
+using App.Modules.Notifications.Infrastructure.Configuration.Logging;
 using App.Modules.Notifications.Infrastructure.Configuration.Mediation;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing;
 using App.Modules.Notifications.Infrastructure.Configuration.Quartz;
@@ -50,6 +50,7 @@ public static class NotificationsModuleCollectionExtensions
         DomainModule.Configure(services);
         EmailModule.Configure(services, emailConfiguration, emailSender, emailMessageFactory);
         QuartzModule.Configure(services);
+        LoggingModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
 

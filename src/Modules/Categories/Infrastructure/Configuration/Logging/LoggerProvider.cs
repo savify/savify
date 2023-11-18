@@ -2,11 +2,11 @@ using Serilog;
 
 namespace App.Modules.Categories.Infrastructure.Configuration.Logging;
 
-public class CategoriesLoggerProvider : ICategoriesLoggerProvider
+public class LoggerProvider : ILoggerProvider
 {
     private readonly ILogger _logger;
 
-    public CategoriesLoggerProvider(ILogger logger)
+    public LoggerProvider(ILogger logger)
     {
         _logger = logger;
     }

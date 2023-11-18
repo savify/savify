@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Categories.Infrastructure.Configuration.Logging;
+namespace App.Modules.Notifications.Infrastructure.Configuration.Logging;
 
 internal static class LoggingModule
 {

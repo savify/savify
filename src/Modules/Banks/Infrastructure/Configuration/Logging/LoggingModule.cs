@@ -6,6 +6,6 @@ internal static class LoggingModule
 {
     public static void Configure(IServiceCollection services)
     {
-        services.AddScoped<IBanksLoggerProvider, BanksLoggerProvider>();
+        services.AddScoped<ILoggerProvider, LoggerProvider>();
     }
 }

@@ -2,11 +2,11 @@ using Serilog;
 
 namespace App.Modules.Banks.Infrastructure.Configuration.Logging;
 
-public class BanksLoggerProvider : IBanksLoggerProvider
+public class LoggerProvider : ILoggerProvider
 {
     private readonly ILogger _logger;
 
-    public BanksLoggerProvider(ILogger logger)
+    public LoggerProvider(ILogger logger)
     {
         _logger = logger;
     }

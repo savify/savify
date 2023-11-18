@@ -24,7 +24,7 @@ public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
         IMediator mediator,
         ISqlConnectionFactory sqlConnectionFactory,
         IDomainNotificationsMapper<CategoriesContext> domainNotificationsMapper,
-        ICategoriesLoggerProvider loggerProvider)
+        ILoggerProvider loggerProvider)
     {
         _mediator = mediator;
         _sqlConnectionFactory = sqlConnectionFactory;
