@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Application;
 using App.Modules.UserAccess.Application.Configuration.Commands;
 using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Infrastructure.Configuration.Logging;
 using Serilog;
 using Serilog.Context;
 using Serilog.Core;
@@ -18,11 +19,11 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
 
     public LoggingCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
-        ILogger logger,
+        ILoggerProvider loggerProvider,
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = logger.ForContext("Module", "UserAccess");
+        _logger = loggerProvider.Provide();
         _executionContextAccessor = executionContextAccessor;
     }
 
@@ -76,11 +77,11 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
 
     public LoggingCommandHandlerDecorator(
         ICommandHandler<T> decorated,
-        ILogger logger,
+        ILoggerProvider loggerProvider,
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = logger.ForContext("Module", "UserAccess");
+        _logger = loggerProvider.Provide();
         _executionContextAccessor = executionContextAccessor;
     }
 

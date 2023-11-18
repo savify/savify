@@ -13,6 +13,7 @@ using App.Modules.UserAccess.Infrastructure.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.Domain;
 using App.Modules.UserAccess.Infrastructure.Configuration.EventBus;
+using App.Modules.UserAccess.Infrastructure.Configuration.Logging;
 using App.Modules.UserAccess.Infrastructure.Configuration.Mediation;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
@@ -63,6 +64,7 @@ public static class UserAccessModuleCollectionExtensions
         AuthenticationModule.Configure(services, authenticationConfiguration);
         DomainModule.Configure(services);
         QuartzModule.Configure(services);
+        LoggingModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
 
