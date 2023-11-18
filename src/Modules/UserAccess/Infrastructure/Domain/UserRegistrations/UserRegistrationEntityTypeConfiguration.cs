@@ -10,7 +10,7 @@ public class UserRegistrationEntityTypeConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<UserRegistration> builder)
     {
-        builder.ToTable("user_registrations", "user_access");
+        builder.ToTable("user_registrations");
 
         builder.HasKey(x => x.Id);
         builder.Property(b => b.Id).HasColumnName("id");

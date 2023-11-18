@@ -12,7 +12,7 @@ public class BankConnectionEntityTypeConfiguration : IEntityTypeConfiguration<Ba
 {
     public void Configure(EntityTypeBuilder<BankConnection> builder)
     {
-        builder.ToTable("bank_connections", "wallets");
+        builder.ToTable("bank_connections");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");

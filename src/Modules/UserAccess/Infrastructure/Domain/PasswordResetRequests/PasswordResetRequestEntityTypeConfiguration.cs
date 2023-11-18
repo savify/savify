@@ -9,7 +9,7 @@ public class PasswordResetRequestEntityTypeConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<PasswordResetRequest> builder)
     {
-        builder.ToTable("password_reset_requests", "user_access");
+        builder.ToTable("password_reset_requests");
 
         builder.HasKey(x => x.Id);
         builder.Property(b => b.Id).HasColumnName("id");

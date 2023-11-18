@@ -10,7 +10,7 @@ internal class InvestmentPortfolioEntityTypeConfiguration : IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<InvestmentPortfolio> builder)
     {
-        builder.ToTable("investment_portfolios", "wallets");
+        builder.ToTable("investment_portfolios");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");

@@ -19,8 +19,10 @@ public class TransactionsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration(TransactionsModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(TransactionsModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(TransactionsModule.DatabaseSchemaName));
+        modelBuilder.HasDefaultSchema(TransactionsModule.DatabaseSchemaName);
+
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
     }
 }

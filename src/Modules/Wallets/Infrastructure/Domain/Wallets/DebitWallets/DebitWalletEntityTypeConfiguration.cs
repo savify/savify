@@ -11,7 +11,7 @@ internal class DebitWalletEntityTypeConfiguration : IEntityTypeConfiguration<Deb
 {
     public void Configure(EntityTypeBuilder<DebitWallet> builder)
     {
-        builder.ToTable("debit_wallets", "wallets");
+        builder.ToTable("debit_wallets");
 
         builder.HasKey(wallet => wallet.Id);
         builder.Property(wallet => wallet.Id).HasColumnName("id");

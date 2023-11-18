@@ -31,11 +31,13 @@ public class BanksContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(BanksModule.DatabaseSchemaName);
+
         modelBuilder.ApplyConfiguration(new BankEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankRevisionEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BanksSynchronisationProcessEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration(BanksModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(BanksModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(BanksModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
     }
 }

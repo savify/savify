@@ -57,18 +57,20 @@ public class WalletsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(WalletsModule.DatabaseSchemaName);
+
         modelBuilder.ApplyConfiguration(new CashWalletEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new CreditWalletsEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new DebitWalletEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new WalletViewMetadataEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InvestmentPortfolioEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new PortfolioViewMetadataEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration(WalletsModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(WalletsModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(WalletsModule.DatabaseSchemaName));
         modelBuilder.ApplyConfiguration(new BankConnectionProcessEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankConnectionEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeCustomerEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeConnectionEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
     }
 }

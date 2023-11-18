@@ -20,8 +20,10 @@ public class NotificationsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(NotificationsModule.DatabaseSchemaName);
+
         modelBuilder.ApplyConfiguration(new UserNotificationSettingsEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(NotificationsModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(NotificationsModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
     }
 }

@@ -10,7 +10,7 @@ internal class CreditWalletsEntityTypeConfiguration : IEntityTypeConfiguration<C
 {
     public void Configure(EntityTypeBuilder<CreditWallet> builder)
     {
-        builder.ToTable("credit_wallets", "wallets");
+        builder.ToTable("credit_wallets");
 
         builder.HasKey(wallet => wallet.Id);
         builder.Property(wallet => wallet.Id).HasColumnName("id");

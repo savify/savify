@@ -31,11 +31,13 @@ public class UserAccessContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(UserAccessModule.DatabaseSchemaName);
+
         modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserRegistrationEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new PasswordResetRequestEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration(UserAccessModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(UserAccessModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(UserAccessModule.DatabaseSchemaName));
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
     }
 }

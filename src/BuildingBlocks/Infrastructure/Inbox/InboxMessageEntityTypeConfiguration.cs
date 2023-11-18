@@ -5,16 +5,9 @@ namespace App.BuildingBlocks.Infrastructure.Inbox;
 
 public class InboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<InboxMessage>
 {
-    private readonly string _databaseSchemaName;
-
-    public InboxMessageEntityTypeConfiguration(string databaseSchemaName)
-    {
-        _databaseSchemaName = databaseSchemaName;
-    }
-
     public void Configure(EntityTypeBuilder<InboxMessage> builder)
     {
-        builder.ToTable("inbox_messages", schema: _databaseSchemaName);
+        builder.ToTable("inbox_messages");
 
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");

@@ -7,7 +7,7 @@ public class WalletViewMetadataEntityTypeConfiguration : IEntityTypeConfiguratio
 {
     public void Configure(EntityTypeBuilder<Modules.Wallets.Domain.Wallets.WalletViewMetadata.WalletViewMetadata> builder)
     {
-        builder.ToTable("wallet_view_metadata", "wallets");
+        builder.ToTable("wallet_view_metadata");
 
         builder.HasKey(x => x.WalletId);
         builder.Property(x => x.WalletId).HasColumnName("wallet_id");

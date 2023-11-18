@@ -5,16 +5,9 @@ namespace App.BuildingBlocks.Infrastructure.InternalCommands;
 
 public class InternalCommandEntityTypeConfiguration : IEntityTypeConfiguration<InternalCommand>
 {
-    private readonly string _databaseSchemaName;
-
-    public InternalCommandEntityTypeConfiguration(string databaseSchemaName)
-    {
-        _databaseSchemaName = databaseSchemaName;
-    }
-
     public void Configure(EntityTypeBuilder<InternalCommand> builder)
     {
-        builder.ToTable("internal_commands", schema: _databaseSchemaName);
+        builder.ToTable("internal_commands");
 
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id).HasColumnName("id");

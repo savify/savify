@@ -19,8 +19,10 @@ public class CategoriesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration(CategoriesModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration(CategoriesModule.DatabaseSchemaName));
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration(CategoriesModule.DatabaseSchemaName));
+        modelBuilder.HasDefaultSchema(CategoriesModule.DatabaseSchemaName);
+
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
     }
 }
