@@ -1,9 +1,7 @@
 using App.BuildingBlocks.Application;
-using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.Modules.Transactions.Infrastructure;
-using App.Modules.Transactions.Infrastructure.Outbox;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;

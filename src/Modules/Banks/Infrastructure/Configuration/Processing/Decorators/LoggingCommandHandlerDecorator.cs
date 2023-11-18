@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Application;
 using App.Modules.Banks.Application.Configuration.Commands;
 using App.Modules.Banks.Application.Contracts;
+using App.Modules.Banks.Infrastructure.Configuration.Logging;
 using Serilog;
 using Serilog.Context;
 using Serilog.Core;
@@ -18,11 +19,11 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
 
     public LoggingCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
-        ILogger logger,
+        IBanksLoggerProvider banksLoggerProvider,
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = logger.ForContext("Module", "Banks");
+        _logger = banksLoggerProvider.Provide();
         _executionContextAccessor = executionContextAccessor;
     }
 
@@ -76,11 +77,11 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
 
     public LoggingCommandHandlerDecorator(
         ICommandHandler<T> decorated,
-        ILogger logger,
+        IBanksLoggerProvider banksLoggerProvider,
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = logger.ForContext("Module", "Banks");
+        _logger = banksLoggerProvider.Provide();
         _executionContextAccessor = executionContextAccessor;
     }
 

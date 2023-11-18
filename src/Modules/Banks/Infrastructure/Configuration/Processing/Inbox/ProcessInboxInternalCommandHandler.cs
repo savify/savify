@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Data;
 using App.Modules.Banks.Application.Configuration.Commands;
+using App.Modules.Banks.Infrastructure.Configuration.Logging;
 using Dapper;
 using MediatR;
 using Newtonsoft.Json;
@@ -13,11 +14,14 @@ public class ProcessInboxInternalCommandHandler : ICommandHandler<ProcessInboxCo
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
     private readonly ILogger _logger;
 
-    public ProcessInboxInternalCommandHandler(IMediator mediator, ISqlConnectionFactory sqlConnectionFactory, ILogger logger)
+    public ProcessInboxInternalCommandHandler(
+        IMediator mediator,
+        ISqlConnectionFactory sqlConnectionFactory,
+        IBanksLoggerProvider banksLoggerProvider)
     {
         _mediator = mediator;
         _sqlConnectionFactory = sqlConnectionFactory;
-        _logger = logger;
+        _logger = banksLoggerProvider.Provide();
     }
 
 

@@ -4,6 +4,7 @@ using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure.Configuration.Domain;
 using App.Modules.Banks.Infrastructure.Configuration.EventBus;
 using App.Modules.Banks.Infrastructure.Configuration.Integration;
+using App.Modules.Banks.Infrastructure.Configuration.Logging;
 using App.Modules.Banks.Infrastructure.Configuration.Mediation;
 using App.Modules.Banks.Infrastructure.Configuration.Processing;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
@@ -50,6 +51,7 @@ public static class BanksModuleCollectionExtensions
         OutboxModule.Configure(services, domainNotificationsMap);
         DomainModule.Configure(services);
         QuartzModule.Configure(services);
+        LoggingModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
         IntegrationModule.Configure(services, isProduction);
