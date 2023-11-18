@@ -1,4 +1,3 @@
-using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.BuildingBlocks.Infrastructure.Outbox;

@@ -23,17 +23,9 @@ internal static class ProcessingModule
             return localizerFactory.Create<WalletsLocalizationResource>();
         });
 
-        services.AddScoped<IDomainEventsAccessor>(provider =>
-        {
-            return new DomainEventsAccessor(provider.GetRequiredService<WalletsContext>());
-        });
-        services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
-        services.AddScoped<IUnitOfWork>(provider =>
-        {
-            return new UnitOfWork(
-                provider.GetRequiredService<WalletsContext>(),
-                provider.GetRequiredService<IDomainEventsDispatcher>());
-        });
+        services.AddScoped<IDomainEventsAccessor<WalletsContext>, DomainEventsAccessor<WalletsContext>>();
+        services.AddScoped<IDomainEventsDispatcher<WalletsContext>, DomainEventsDispatcher<WalletsContext>>();
+        services.AddScoped<IUnitOfWork<WalletsContext>, UnitOfWork<WalletsContext>>();
 
         services.AddScoped<ICommandScheduler, CommandScheduler>();
 

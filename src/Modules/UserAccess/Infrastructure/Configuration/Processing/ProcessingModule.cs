@@ -23,17 +23,9 @@ internal static class ProcessingModule
             return localizerFactory.Create<UserAccessLocalizationResource>();
         });
 
-        services.AddScoped<IDomainEventsAccessor>(provider =>
-        {
-            return new DomainEventsAccessor(provider.GetRequiredService<UserAccessContext>());
-        });
-        services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
-        services.AddScoped<IUnitOfWork>(provider =>
-        {
-            return new UnitOfWork(
-                provider.GetRequiredService<UserAccessContext>(),
-                provider.GetRequiredService<IDomainEventsDispatcher>());
-        });
+        services.AddScoped<IDomainEventsAccessor<UserAccessContext>, DomainEventsAccessor<UserAccessContext>>();
+        services.AddScoped<IDomainEventsDispatcher<UserAccessContext>, DomainEventsDispatcher<UserAccessContext>>();
+        services.AddScoped<IUnitOfWork<UserAccessContext>, UnitOfWork<UserAccessContext>>();
 
         services.AddScoped<ICommandScheduler, CommandScheduler>();
 

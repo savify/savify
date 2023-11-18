@@ -6,11 +6,11 @@ using Polly;
 
 namespace App.Modules.Banks.Infrastructure.Configuration.Processing.InternalCommands;
 
-internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
+internal class ProcessInternalInternalCommandsInternalCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-    public ProcessInternalCommandsCommandHandler(ISqlConnectionFactory sqlConnectionFactory)
+    public ProcessInternalInternalCommandsInternalCommandHandler(ISqlConnectionFactory sqlConnectionFactory)
     {
         _sqlConnectionFactory = sqlConnectionFactory;
     }

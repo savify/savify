@@ -9,17 +9,15 @@ namespace App.Modules.Banks.Infrastructure.Configuration.Processing.Decorators;
 internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {
     private readonly ICommandHandler<T, TResult> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly BanksContext _banksContext;
+
+    private readonly IUnitOfWork<BanksContext> _unitOfWork;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
-        IUnitOfWork unitOfWork,
-        BanksContext banksContext)
+        IUnitOfWork<BanksContext> unitOfWork)
     {
         _decorated = decorated;
         _unitOfWork = unitOfWork;
-        _banksContext = banksContext;
     }
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
@@ -35,12 +33,12 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
 internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
 {
     private readonly ICommandHandler<T> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork<BanksContext> _unitOfWork;
     private readonly BanksContext _banksContext;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T> decorated,
-        IUnitOfWork unitOfWork,
+        IUnitOfWork<BanksContext> unitOfWork,
         BanksContext banksContext)
     {
         _decorated = decorated;

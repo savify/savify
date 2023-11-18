@@ -7,13 +7,13 @@ using Serilog;
 
 namespace App.Modules.Banks.Infrastructure.Configuration.Processing.Inbox;
 
-public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
+public class ProcessInboxInternalCommandHandler : ICommandHandler<ProcessInboxCommand>
 {
     private readonly IMediator _mediator;
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
     private readonly ILogger _logger;
 
-    public ProcessInboxCommandHandler(IMediator mediator, ISqlConnectionFactory sqlConnectionFactory, ILogger logger)
+    public ProcessInboxInternalCommandHandler(IMediator mediator, ISqlConnectionFactory sqlConnectionFactory, ILogger logger)
     {
         _mediator = mediator;
         _sqlConnectionFactory = sqlConnectionFactory;

@@ -1,27 +1,28 @@
 using App.BuildingBlocks.Application.Events;
-using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Infrastructure.Outbox;
 using App.BuildingBlocks.Infrastructure.Serialization;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 
-public class DomainEventsDispatcher : IDomainEventsDispatcher
+public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext> where TContext : DbContext
 {
     private readonly IMediator _mediator;
 
-    private readonly IOutbox _outbox;
+    private readonly IOutbox<TContext> _outbox;
 
-    private readonly IDomainEventsAccessor _domainEventsAccessor;
+    private readonly IDomainEventsAccessor<TContext> _domainEventsAccessor;
 
-    private readonly IDomainNotificationsMapper _domainNotificationsMapper;
+    private readonly IDomainNotificationsMapper<TContext> _domainNotificationsMapper;
 
     public DomainEventsDispatcher(
         IMediator mediator,
-        IOutbox outbox,
-        IDomainEventsAccessor domainEventsAccessor,
-        IDomainNotificationsMapper domainNotificationsMapper)
+        IOutbox<TContext> outbox,
+        IDomainEventsAccessor<TContext> domainEventsAccessor,
+        IDomainNotificationsMapper<TContext> domainNotificationsMapper)
     {
         _mediator = mediator;
         _outbox = outbox;

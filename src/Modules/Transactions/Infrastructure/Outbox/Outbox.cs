@@ -1,8 +1,8 @@
-using App.BuildingBlocks.Application.Outbox;
+using App.BuildingBlocks.Infrastructure.Outbox;
 
 namespace App.Modules.Transactions.Infrastructure.Outbox;
 
-public class Outbox : IOutbox
+public class Outbox : IOutbox<TransactionsContext>
 {
     private readonly TransactionsContext _transactionsContext;
 

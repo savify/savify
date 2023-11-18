@@ -9,20 +9,20 @@ using Serilog;
 
 namespace App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
 
-public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
+public class ProcessOutboxInternalCommandHandler : ICommandHandler<ProcessOutboxCommand>
 {
     private readonly IMediator _mediator;
 
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-    private readonly IDomainNotificationsMapper _domainNotificationsMapper;
+    private readonly IDomainNotificationsMapper<BanksContext> _domainNotificationsMapper;
 
     private readonly ILogger _logger;
 
-    public ProcessOutboxCommandHandler(
+    public ProcessOutboxInternalCommandHandler(
         IMediator mediator,
         ISqlConnectionFactory sqlConnectionFactory,
-        IDomainNotificationsMapper domainNotificationsMapper,
+        IDomainNotificationsMapper<BanksContext> domainNotificationsMapper,
         ILogger logger)
     {
         _mediator = mediator;

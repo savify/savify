@@ -1,4 +1,4 @@
-namespace App.BuildingBlocks.Application.Outbox;
+namespace App.BuildingBlocks.Infrastructure.Outbox;
 
 public class OutboxMessage
 {

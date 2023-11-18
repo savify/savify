@@ -15,14 +15,14 @@ public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
 
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-    private readonly IDomainNotificationsMapper _domainNotificationsMapper;
+    private readonly IDomainNotificationsMapper<WalletsContext> _domainNotificationsMapper;
 
     private readonly ILogger _logger;
 
     public ProcessOutboxCommandHandler(
         IMediator mediator,
         ISqlConnectionFactory sqlConnectionFactory,
-        IDomainNotificationsMapper domainNotificationsMapper,
+        IDomainNotificationsMapper<WalletsContext> domainNotificationsMapper,
         ILogger logger)
     {
         _mediator = mediator;

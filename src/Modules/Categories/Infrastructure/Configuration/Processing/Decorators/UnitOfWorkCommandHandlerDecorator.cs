@@ -9,17 +9,14 @@ namespace App.Modules.Categories.Infrastructure.Configuration.Processing.Decorat
 internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {
     private readonly ICommandHandler<T, TResult> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly CategoriesContext _categoriesContext;
+    private readonly IUnitOfWork<CategoriesContext> _unitOfWork;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
-        IUnitOfWork unitOfWork,
-        CategoriesContext categoriesContext)
+        IUnitOfWork<CategoriesContext> unitOfWork)
     {
         _decorated = decorated;
         _unitOfWork = unitOfWork;
-        _categoriesContext = categoriesContext;
     }
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
@@ -35,12 +32,12 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
 internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
 {
     private readonly ICommandHandler<T> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork<CategoriesContext> _unitOfWork;
     private readonly CategoriesContext _categoriesContext;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T> decorated,
-        IUnitOfWork unitOfWork,
+        IUnitOfWork<CategoriesContext> unitOfWork,
         CategoriesContext categoriesContext)
     {
         _decorated = decorated;
