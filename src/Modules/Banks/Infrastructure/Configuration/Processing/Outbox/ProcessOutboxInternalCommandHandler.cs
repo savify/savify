@@ -24,12 +24,12 @@ public class ProcessOutboxInternalCommandHandler : ICommandHandler<ProcessOutbox
         IMediator mediator,
         ISqlConnectionFactory sqlConnectionFactory,
         IDomainNotificationsMapper<BanksContext> domainNotificationsMapper,
-        IBanksLoggerProvider banksLoggerProvider)
+        IBanksLoggerProvider loggerProvider)
     {
         _mediator = mediator;
         _sqlConnectionFactory = sqlConnectionFactory;
         _domainNotificationsMapper = domainNotificationsMapper;
-        _logger = banksLoggerProvider.Provide();
+        _logger = loggerProvider.Provide();
     }
 
     public async Task Handle(ProcessOutboxCommand command, CancellationToken cancellationToken)

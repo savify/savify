@@ -5,6 +5,7 @@ using App.Modules.Categories.Application.Contracts;
 using App.Modules.Categories.Infrastructure.Configuration.Domain;
 using App.Modules.Categories.Infrastructure.Configuration.EventBus;
 using App.Modules.Categories.Infrastructure.Configuration.Integration;
+using App.Modules.Categories.Infrastructure.Configuration.Logging;
 using App.Modules.Categories.Infrastructure.Configuration.Mediation;
 using App.Modules.Categories.Infrastructure.Configuration.Processing;
 using App.Modules.Categories.Infrastructure.Configuration.Processing.Outbox;
@@ -46,6 +47,7 @@ public static class CategoriesModuleCollectionExtensions
         DataAccessModule<CategoriesContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
         QuartzModule.Configure(services);
+        LoggingModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
         IntegrationModule.Configure(services);

@@ -17,11 +17,11 @@ public class ProcessInboxInternalCommandHandler : ICommandHandler<ProcessInboxCo
     public ProcessInboxInternalCommandHandler(
         IMediator mediator,
         ISqlConnectionFactory sqlConnectionFactory,
-        IBanksLoggerProvider banksLoggerProvider)
+        IBanksLoggerProvider loggerProvider)
     {
         _mediator = mediator;
         _sqlConnectionFactory = sqlConnectionFactory;
-        _logger = banksLoggerProvider.Provide();
+        _logger = loggerProvider.Provide();
     }
 
 

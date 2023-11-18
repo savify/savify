@@ -19,11 +19,11 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
 
     public LoggingCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
-        IBanksLoggerProvider banksLoggerProvider,
+        IBanksLoggerProvider loggerProvider,
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = banksLoggerProvider.Provide();
+        _logger = loggerProvider.Provide();
         _executionContextAccessor = executionContextAccessor;
     }
 
@@ -77,11 +77,11 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
 
     public LoggingCommandHandlerDecorator(
         ICommandHandler<T> decorated,
-        IBanksLoggerProvider banksLoggerProvider,
+        IBanksLoggerProvider loggerProvider,
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = banksLoggerProvider.Provide();
+        _logger = loggerProvider.Provide();
         _executionContextAccessor = executionContextAccessor;
     }
 
