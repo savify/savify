@@ -4,6 +4,7 @@ using App.Modules.Transactions.Application.Contracts;
 using App.Modules.Transactions.Infrastructure.Configuration.Domain;
 using App.Modules.Transactions.Infrastructure.Configuration.EventBus;
 using App.Modules.Transactions.Infrastructure.Configuration.Integration;
+using App.Modules.Transactions.Infrastructure.Configuration.Logging;
 using App.Modules.Transactions.Infrastructure.Configuration.Mediation;
 using App.Modules.Transactions.Infrastructure.Configuration.Processing;
 using App.Modules.Transactions.Infrastructure.Configuration.Processing.Outbox;
@@ -45,6 +46,7 @@ public static class TransactionsModuleCollectionExtensions
         DataAccessModule<TransactionsContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
         QuartzModule.Configure(services);
+        LoggingModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
         IntegrationModule.Configure(services);
