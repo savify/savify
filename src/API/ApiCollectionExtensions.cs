@@ -3,6 +3,7 @@ using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using ILogger = Serilog.ILogger;
 
 namespace App.API;
 
@@ -38,6 +39,13 @@ public static class ApiCollectionExtensions
     public static IServiceCollection AddEventBus(this IServiceCollection services)
     {
         services.AddSingleton<IEventBus, InMemoryEventBusClient>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddLogger(this IServiceCollection services, ILogger logger)
+    {
+        services.AddSingleton(logger);
 
         return services;
     }

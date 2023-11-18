@@ -33,6 +33,8 @@ public class Program
 
     private static ILogger _loggerForApi;
 
+    private static LoggerConfiguration _loggerConfiguration;
+
     public static void Main(string[] args)
     {
         ConfigureLogger();
@@ -73,6 +75,7 @@ public class Program
         });
 
         builder.Services.AddEventBus();
+        builder.Services.AddLogger(_logger);
         builder.Services.AddSaltEdgeIntegration(builder.Configuration);
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
@@ -130,13 +133,14 @@ public class Program
     {
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
 
-        _logger = new LoggerConfiguration()
+        _loggerConfiguration = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .Enrich.WithSensitiveDataMasking()
             .Destructure.UsingAttributes()
             .Enrich.WithProperty("Environment", environment!)
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
-            .CreateLogger();
+            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}");
+
+        _logger = _loggerConfiguration.CreateLogger();
 
         _loggerForApi = _logger.ForContext("Module", "API");
         _loggerForApi.Information("Logger configured");

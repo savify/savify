@@ -5,7 +5,6 @@ using App.Modules.Categories.Application.Contracts;
 using App.Modules.Categories.Infrastructure.Configuration.Domain;
 using App.Modules.Categories.Infrastructure.Configuration.EventBus;
 using App.Modules.Categories.Infrastructure.Configuration.Integration;
-using App.Modules.Categories.Infrastructure.Configuration.Logging;
 using App.Modules.Categories.Infrastructure.Configuration.Mediation;
 using App.Modules.Categories.Infrastructure.Configuration.Processing;
 using App.Modules.Categories.Infrastructure.Configuration.Processing.Outbox;
@@ -25,10 +24,7 @@ public static class CategoriesModuleCollectionExtensions
     {
         var moduleLogger = logger.ForContext("Module", "Categories");
 
-        ConfigureCompositionRoot(
-            services,
-            configuration.GetConnectionString("Savify"),
-            moduleLogger);
+        ConfigureModules(services, configuration.GetConnectionString("Savify"));
 
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
@@ -38,11 +34,9 @@ public static class CategoriesModuleCollectionExtensions
         return services;
     }
 
-    private static void ConfigureCompositionRoot(
+    private static void ConfigureModules(
         this IServiceCollection services,
-        string connectionString,
-        ILogger logger,
-        IEventBus? eventBus = null)
+        string connectionString)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
 
@@ -51,7 +45,6 @@ public static class CategoriesModuleCollectionExtensions
         OutboxModule.Configure(services, domainNotificationsMap);
         DataAccessModule<CategoriesContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
-        LoggingModule.Configure(services, logger);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);

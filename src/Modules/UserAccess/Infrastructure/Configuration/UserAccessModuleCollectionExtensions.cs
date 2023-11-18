@@ -1,6 +1,5 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
 using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
@@ -14,7 +13,6 @@ using App.Modules.UserAccess.Infrastructure.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.Domain;
 using App.Modules.UserAccess.Infrastructure.Configuration.EventBus;
-using App.Modules.UserAccess.Infrastructure.Configuration.Logging;
 using App.Modules.UserAccess.Infrastructure.Configuration.Mediation;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
@@ -34,11 +32,10 @@ public static class UserAccessModuleCollectionExtensions
     {
         var moduleLogger = logger.ForContext("Module", "UserAccess");
 
-        ConfigureCompositionRoot(
+        ConfigureModules(
             services,
             configuration.GetConnectionString("Savify"),
-            configuration.GetSection("Authentication").Get<AuthenticationConfiguration>(),
-            moduleLogger);
+            configuration.GetSection("Authentication").Get<AuthenticationConfiguration>());
 
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
@@ -48,12 +45,10 @@ public static class UserAccessModuleCollectionExtensions
         return services;
     }
 
-    private static void ConfigureCompositionRoot(
+    private static void ConfigureModules(
         this IServiceCollection services,
         string connectionString,
-        AuthenticationConfiguration authenticationConfiguration,
-        ILogger logger,
-        IEventBus? eventBus = null)
+        AuthenticationConfiguration authenticationConfiguration)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
 
@@ -67,7 +62,6 @@ public static class UserAccessModuleCollectionExtensions
         OutboxModule.Configure(services, domainNotificationsMap);
         AuthenticationModule.Configure(services, authenticationConfiguration);
         DomainModule.Configure(services);
-        LoggingModule.Configure(services, logger);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);

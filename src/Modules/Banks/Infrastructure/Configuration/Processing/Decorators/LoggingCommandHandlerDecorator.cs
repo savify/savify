@@ -22,7 +22,7 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = logger;
+        _logger = logger.ForContext("Module", "Banks");
         _executionContextAccessor = executionContextAccessor;
     }
 
@@ -80,7 +80,7 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = logger;
+        _logger = logger.ForContext("Module", "Banks");
         _executionContextAccessor = executionContextAccessor;
     }
 

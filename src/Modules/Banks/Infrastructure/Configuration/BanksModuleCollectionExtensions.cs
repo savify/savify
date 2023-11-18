@@ -4,7 +4,6 @@ using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure.Configuration.Domain;
 using App.Modules.Banks.Infrastructure.Configuration.EventBus;
 using App.Modules.Banks.Infrastructure.Configuration.Integration;
-using App.Modules.Banks.Infrastructure.Configuration.Logging;
 using App.Modules.Banks.Infrastructure.Configuration.Mediation;
 using App.Modules.Banks.Infrastructure.Configuration.Processing;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
@@ -28,7 +27,6 @@ public static class BanksModuleCollectionExtensions
         ConfigureModules(
             services,
             configuration.GetConnectionString("Savify"),
-            moduleLogger,
             isProduction);
 
         QuartzInitialization.Initialize(moduleLogger);
@@ -42,7 +40,6 @@ public static class BanksModuleCollectionExtensions
     private static void ConfigureModules(
         this IServiceCollection services,
         string connectionString,
-        ILogger logger,
         bool isProduction)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
@@ -52,7 +49,6 @@ public static class BanksModuleCollectionExtensions
         DataAccessModule<BanksContext>.Configure(services, connectionString);
         OutboxModule.Configure(services, domainNotificationsMap);
         DomainModule.Configure(services);
-        LoggingModule.Configure(services, logger);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);

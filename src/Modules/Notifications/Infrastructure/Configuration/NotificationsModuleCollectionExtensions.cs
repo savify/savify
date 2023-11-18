@@ -5,7 +5,6 @@ using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Infrastructure.Configuration.Domain;
 using App.Modules.Notifications.Infrastructure.Configuration.Email;
 using App.Modules.Notifications.Infrastructure.Configuration.EventBus;
-using App.Modules.Notifications.Infrastructure.Configuration.Logging;
 using App.Modules.Notifications.Infrastructure.Configuration.Mediation;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing;
 using App.Modules.Notifications.Infrastructure.Configuration.Quartz;
@@ -25,7 +24,7 @@ public static class NotificationsModuleCollectionExtensions
     {
         var moduleLogger = logger.ForContext("Module", "Notifications");
 
-        ConfigureCompositionRoot(
+        ConfigureModules(
             services,
             configuration.GetConnectionString("Savify"),
             configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>(),
@@ -39,19 +38,17 @@ public static class NotificationsModuleCollectionExtensions
         return services;
     }
 
-    private static void ConfigureCompositionRoot(
+    private static void ConfigureModules(
         this IServiceCollection services,
         string connectionString,
         EmailConfiguration emailConfiguration,
         ILogger logger,
         IEmailSender? emailSender = null,
-        IEmailMessageFactory? emailMessageFactory = null,
-        IEventBus? eventBus = null)
+        IEmailMessageFactory? emailMessageFactory = null)
     {
         DataAccessModule<NotificationsContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
         EmailModule.Configure(services, emailConfiguration, emailSender, emailMessageFactory);
-        LoggingModule.Configure(services, logger);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);

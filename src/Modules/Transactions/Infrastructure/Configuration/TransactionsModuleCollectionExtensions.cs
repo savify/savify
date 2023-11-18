@@ -1,11 +1,9 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Integration;
 using App.Modules.Transactions.Application.Contracts;
 using App.Modules.Transactions.Infrastructure.Configuration.Domain;
 using App.Modules.Transactions.Infrastructure.Configuration.EventBus;
 using App.Modules.Transactions.Infrastructure.Configuration.Integration;
-using App.Modules.Transactions.Infrastructure.Configuration.Logging;
 using App.Modules.Transactions.Infrastructure.Configuration.Mediation;
 using App.Modules.Transactions.Infrastructure.Configuration.Processing;
 using App.Modules.Transactions.Infrastructure.Configuration.Processing.Outbox;
@@ -25,10 +23,7 @@ public static class TransactionsModuleCollectionExtensions
     {
         var moduleLogger = logger.ForContext("Module", "Transactions");
 
-        ConfigureCompositionRoot(
-            services,
-            configuration.GetConnectionString("Savify"),
-            moduleLogger);
+        ConfigureModules(services, configuration.GetConnectionString("Savify"));
 
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
@@ -38,11 +33,9 @@ public static class TransactionsModuleCollectionExtensions
         return services;
     }
 
-    private static void ConfigureCompositionRoot(
+    private static void ConfigureModules(
         this IServiceCollection services,
-        string connectionString,
-        ILogger logger,
-        IEventBus? eventBus = null)
+        string connectionString)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
 
@@ -51,7 +44,6 @@ public static class TransactionsModuleCollectionExtensions
         OutboxModule.Configure(services, domainNotificationsMap);
         DataAccessModule<TransactionsContext>.Configure(services, connectionString);
         DomainModule.Configure(services);
-        LoggingModule.Configure(services, logger);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);

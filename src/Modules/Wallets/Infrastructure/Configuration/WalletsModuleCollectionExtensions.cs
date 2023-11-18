@@ -1,11 +1,9 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Integration;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Infrastructure.Configuration.Domain;
 using App.Modules.Wallets.Infrastructure.Configuration.EventBus;
 using App.Modules.Wallets.Infrastructure.Configuration.Integration;
-using App.Modules.Wallets.Infrastructure.Configuration.Logging;
 using App.Modules.Wallets.Infrastructure.Configuration.Mediation;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing;
 using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
@@ -25,10 +23,7 @@ public static class WalletsModuleCollectionExtensions
     {
         var moduleLogger = logger.ForContext("Module", "Wallets");
 
-        ConfigureCompositionRoot(
-            services,
-            configuration.GetConnectionString("Savify"),
-            moduleLogger);
+        ConfigureCompositionRoot(services, configuration.GetConnectionString("Savify"));
 
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
@@ -40,9 +35,7 @@ public static class WalletsModuleCollectionExtensions
 
     private static void ConfigureCompositionRoot(
         this IServiceCollection services,
-        string connectionString,
-        ILogger logger,
-        IEventBus? eventBus = null)
+        string connectionString)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
 
@@ -51,7 +44,6 @@ public static class WalletsModuleCollectionExtensions
         DataAccessModule<WalletsContext>.Configure(services, connectionString);
         OutboxModule.Configure(services, domainNotificationsMap);
         DomainModule.Configure(services);
-        LoggingModule.Configure(services, logger);
         QuartzModule.Configure(services);
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
