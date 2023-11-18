@@ -57,6 +57,6 @@ public static class CategoriesModuleCollectionExtensions
         ProcessingModule.Configure(services);
         IntegrationModule.Configure(services);
 
-        CategoriesCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
 }

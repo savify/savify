@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Wallets.Infrastructure.Configuration;
+namespace App.BuildingBlocks.Infrastructure.Configuration;
 
-public class WalletsCompositionRoot
+public static class CompositionRoot
 {
     private static IServiceProvider _serviceProvider;
 
@@ -11,7 +11,7 @@ public class WalletsCompositionRoot
         _serviceProvider = serviceProvider;
     }
 
-    internal static IServiceScope BeginScope()
+    public static IServiceScope BeginScope()
     {
         return _serviceProvider.CreateScope();
     }

@@ -1,5 +1,6 @@
 using System.Data;
 using App.API;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.UserAccess.Application.Contracts;
@@ -36,7 +37,7 @@ public class TestBase
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
-        UserAccessCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
     }
 
     [OneTimeTearDown]

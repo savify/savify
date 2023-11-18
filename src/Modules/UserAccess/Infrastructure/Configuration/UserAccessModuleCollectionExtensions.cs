@@ -72,6 +72,6 @@ public static class UserAccessModuleCollectionExtensions
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
 
-        UserAccessCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
 }

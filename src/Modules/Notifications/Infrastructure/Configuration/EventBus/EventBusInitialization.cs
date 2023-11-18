@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Integration;
 using App.Modules.UserAccess.IntegrationEvents;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +15,7 @@ public static class EventBusInitialization
 
     private static void SubscribeToIntegrationEvents(ILogger logger)
     {
-        var eventBus = NotificationsCompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
+        var eventBus = CompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
 
         SubscribeToIntegrationEvent<NewUserRegisteredIntegrationEvent>(eventBus, logger);
         SubscribeToIntegrationEvent<UserRegistrationRenewedIntegrationEvent>(eventBus, logger);

@@ -1,6 +1,5 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Integration;
 using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure.Configuration.Domain;
 using App.Modules.Banks.Infrastructure.Configuration.EventBus;
@@ -26,7 +25,7 @@ public static class BanksModuleCollectionExtensions
     {
         var moduleLogger = logger.ForContext("Module", "Banks");
 
-        ConfigureCompositionRoot(
+        ConfigureModules(
             services,
             configuration.GetConnectionString("Savify"),
             moduleLogger,
@@ -40,12 +39,11 @@ public static class BanksModuleCollectionExtensions
         return services;
     }
 
-    private static void ConfigureCompositionRoot(
+    private static void ConfigureModules(
         this IServiceCollection services,
         string connectionString,
         ILogger logger,
-        bool isProduction,
-        IEventBus? eventBus = null)
+        bool isProduction)
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
 
@@ -60,6 +58,6 @@ public static class BanksModuleCollectionExtensions
         ProcessingModule.Configure(services);
         IntegrationModule.Configure(services, isProduction);
 
-        BanksCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
 }

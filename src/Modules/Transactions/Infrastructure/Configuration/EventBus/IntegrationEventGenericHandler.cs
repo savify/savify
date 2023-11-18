@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Serialization;
 using App.BuildingBlocks.Integration;
 using Dapper;
@@ -11,7 +12,7 @@ internal class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> w
 {
     public async Task Handle(T @event)
     {
-        using var scope = TransactionsCompositionRoot.BeginScope();
+        using var scope = CompositionRoot.BeginScope();
         using var connection = scope.ServiceProvider.GetRequiredService<ISqlConnectionFactory>().GetOpenConnection();
 
         string type = @event.GetType().FullName;

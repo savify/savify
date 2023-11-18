@@ -21,8 +21,6 @@ public static class DataAccessModule<TContext> where TContext : DbContext
             options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
         });
 
-        services.AddScoped<DbContext, TContext>();
-
         services.Scan(scan =>
         {
             scan.FromAssemblies(typeof(TContext).Assembly)

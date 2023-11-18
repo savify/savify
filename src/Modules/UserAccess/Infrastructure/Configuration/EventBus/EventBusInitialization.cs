@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Integration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -13,7 +14,7 @@ public static class EventBusInitialization
 
     private static void SubscribeToIntegrationEvents(ILogger logger)
     {
-        var eventBus = UserAccessCompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
+        var eventBus = CompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
 
         // SubscribeToIntegrationEvent<SomeIntegrationEvent>(eventBus, logger);
     }

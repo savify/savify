@@ -57,6 +57,6 @@ public static class WalletsModuleCollectionExtensions
         ProcessingModule.Configure(services);
         IntegrationModule.Configure(services);
 
-        WalletsCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
 }

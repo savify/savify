@@ -57,6 +57,6 @@ public static class TransactionsModuleCollectionExtensions
         ProcessingModule.Configure(services);
         IntegrationModule.Configure(services);
 
-        TransactionsCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
 }

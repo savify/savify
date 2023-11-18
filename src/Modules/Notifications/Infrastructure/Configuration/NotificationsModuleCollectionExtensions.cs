@@ -56,6 +56,6 @@ public static class NotificationsModuleCollectionExtensions
         MediatorModule.Configure(services);
         ProcessingModule.Configure(services);
 
-        NotificationsCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
 }

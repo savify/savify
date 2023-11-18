@@ -1,5 +1,6 @@
 using System.Data;
 using App.API;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.Wallets.Application.Contracts;
@@ -40,7 +41,7 @@ public class TestBase
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
-        WalletsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
     }

@@ -1,5 +1,6 @@
 using System.Data;
 using App.API;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.Banks.Application.Contracts;
@@ -37,10 +38,10 @@ public class TestBase
         }
 
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
+        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         BanksModule = scope.ServiceProvider.GetRequiredService<IBanksModule>();
-        BanksCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
     }
