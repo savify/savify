@@ -14,5 +14,8 @@ public record Source
         Amount = amount;
     }
 
+    public Source()
+    { }
+
     public static Source With(Sender sender, Money amount) => new(sender, amount);
 }

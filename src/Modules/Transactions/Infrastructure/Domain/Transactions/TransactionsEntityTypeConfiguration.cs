@@ -1,6 +1,8 @@
 ﻿using App.Modules.Transactions.Domain.Transactions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using App.Modules.Transactions.Infrastructure.Domain.Finance;
 
 namespace App.Modules.Transactions.Infrastructure.Domain.Transactions;
 
@@ -20,17 +22,34 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
 
         builder.OwnsOne<Source>("_source", b =>
         {
-            b.Property(p => p.Sender.Address).HasColumnName("sourceSenderAddress");
-            b.Property(p => p.Amount.Amount).HasColumnName("sourceAmount");
-            b.Property(p => p.Amount.Currency).HasColumnName("sourceAmmountCurrency");
+            b.WithOwner().HasForeignKey("transaction_id");
+            b.ToTable("transaction_sources", "transactions");
+
+            b.OwnsOne(p => p.Sender, s =>
+            {
+                s.Property(o => o.Address).HasColumnName("source_sender_address");
+            });
+
+            b.OwnsOne(p => p.Amount, s =>
+            {
+                s.OwnsOneMoney("source_amount", "source_amount_currency");
+            });
         });
 
         builder.OwnsOne<Target>("_target", b =>
         {
-            b.Property(p => p.Recipient.Address).HasColumnName("targetRecipientAddress");
-            b.Property(p => p.Amount.Amount).HasColumnName("targetAmmount");
-            b.Property(p => p.Amount.Currency).HasColumnName("targetCurrency");
+            b.WithOwner().HasForeignKey("transaction_id");
+            b.ToTable("transaction_targets", "transactions");
 
+            b.OwnsOne(p => p.Recipient, s =>
+            {
+                s.Property(o => o.Address).HasColumnName("target_recipient_address");
+            });
+
+            b.OwnsOne(p => p.Amount, s =>
+            {
+                s.OwnsOneMoney("target_amount", "target_amount_currency");
+            });
         });
 
         builder.Property<DateTime>("_madeOn");
@@ -40,7 +59,13 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
         builder.Property<ICollection<string>>("_tags")
             .HasColumnName("tags")
             .HasConversion(
-                v => v.ToArray(),
-                v => v);
+                a => string.Join(',', a),
+                a => a.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
+            .HasColumnType("text[]")
+            .Metadata.SetValueComparer(
+        new ValueComparer<ICollection<string>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToHashSet())); ;
     }
 }

@@ -14,5 +14,8 @@ public record Target
         Amount = amount;
     }
 
+    public Target()
+    { }
+
     public static Target With(Recipient recipient, Money amount) => new(recipient, amount);
 }

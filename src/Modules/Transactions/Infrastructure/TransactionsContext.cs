@@ -1,7 +1,7 @@
-using System.Transactions;
 using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.Modules.Transactions.Domain.Transactions;
 using App.Modules.Transactions.Infrastructure.Domain.Transactions;
 using App.Modules.Transactions.Infrastructure.Inbox;
 using App.Modules.Transactions.Infrastructure.InternalCommands;
