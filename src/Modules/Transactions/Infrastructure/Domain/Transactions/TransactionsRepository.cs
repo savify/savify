@@ -13,6 +13,6 @@ internal class TransactionsRepository : ITransactionsRepository
 
     public async Task AddAsync(Transaction transaction)
     {
-        await _transactionsContext.AddAsync(transaction); 
+        await _transactionsContext.AddAsync(transaction);
     }
 }

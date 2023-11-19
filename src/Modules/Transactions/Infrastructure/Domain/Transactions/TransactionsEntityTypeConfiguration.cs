@@ -1,8 +1,8 @@
 ﻿using App.Modules.Transactions.Domain.Transactions;
+using App.Modules.Transactions.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using App.Modules.Transactions.Infrastructure.Domain.Finance;
 
 namespace App.Modules.Transactions.Infrastructure.Domain.Transactions;
 

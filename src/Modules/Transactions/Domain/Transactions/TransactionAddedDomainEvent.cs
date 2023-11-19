@@ -2,7 +2,7 @@
 
 namespace App.Modules.Transactions.Domain.Transactions;
 
-public class TransactionAddedDomainEvent: DomainEventBase
+public class TransactionAddedDomainEvent : DomainEventBase
 {
     public TransactionId TransactionId { get; }
 
