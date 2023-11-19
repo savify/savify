@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Modules.Transactions.Infrastructure.Domain.Finance;
 
-internal static class OwnsOneMoneyConfiguration
+internal static class MoneyPropertyBuilderConfiguration
 {
-    public static void OwnsOneMoney<TOwnerEntity>(this OwnedNavigationBuilder<TOwnerEntity, Money> builder, string amountColumnName, string currencyColumnName)
+    public static void MoneyProperty<TOwnerEntity>(this OwnedNavigationBuilder<TOwnerEntity, Money> builder, string amountColumnName, string currencyColumnName)
         where TOwnerEntity : class
     {
         builder.OwnsOne(o => o.Currency, k =>

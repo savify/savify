@@ -30,10 +30,7 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
                 s.Property(o => o.Address).HasColumnName("source_sender_address");
             });
 
-            b.OwnsOne(p => p.Amount, s =>
-            {
-                s.OwnsOneMoney("source_amount", "source_amount_currency");
-            });
+            b.OwnsOne(p => p.Amount, s => s.MoneyProperty("source_amount", "source_amount_currency"));
         });
 
         builder.OwnsOne<Target>("_target", b =>
@@ -46,10 +43,7 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
                 s.Property(o => o.Address).HasColumnName("target_recipient_address");
             });
 
-            b.OwnsOne(p => p.Amount, s =>
-            {
-                s.OwnsOneMoney("target_amount", "target_amount_currency");
-            });
+            b.OwnsOne(p => p.Amount, s => s.MoneyProperty("target_amount", "target_amount_currency"));
         });
 
         builder.Property<DateTime>("_madeOn");
