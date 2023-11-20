@@ -1,28 +1,18 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
-using App.BuildingBlocks.Infrastructure.Localization;
 using App.Modules.Transactions.Application.Configuration.Commands;
-using App.Modules.Transactions.Infrastructure.Configuration.Localization;
 using App.Modules.Transactions.Infrastructure.Configuration.Processing.Decorators;
 using App.Modules.Transactions.Infrastructure.Configuration.Processing.InternalCommands;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 
-namespace App.Modules.Transactions.Infrastructure.Configuration.Processing;
+namespace App.Modules.Transactions.Infrastructure.Configuration.Extensions;
 
-internal static class ProcessingModule
+internal static class ProcessingServiceCollectionExtensions
 {
-    internal static void Configure(IServiceCollection services)
+    internal static IServiceCollection AddProcessingServices(this IServiceCollection services)
     {
-        services.AddSingleton<IStringLocalizer>(provider =>
-        {
-            var localizerFactory = provider.GetRequiredService<ILocalizerFactory>();
-
-            return localizerFactory.Create<TransactionsLocalizationResource>();
-        });
-
         services.AddScoped<IDomainEventsAccessor<TransactionsContext>, DomainEventsAccessor<TransactionsContext>>();
         services.AddScoped<IDomainEventsDispatcher<TransactionsContext>, DomainEventsDispatcher<TransactionsContext>>();
         services.AddScoped<IUnitOfWork<TransactionsContext>, UnitOfWork<TransactionsContext>>();
@@ -31,16 +21,17 @@ internal static class ProcessingModule
 
         services.AddScoped<IList<IValidator>>(provider => provider.GetServices<IValidator>().ToList());
 
-        // TODO: uncomment when any command without result will be added
-        // services.Decorate(typeof(IRequestHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
-        // services.Decorate(typeof(IRequestHandler<>), typeof(ValidationCommandHandlerDecorator<>));
-        // services.Decorate(typeof(IRequestHandler<>), typeof(LoggingCommandHandlerDecorator<>));
-        // services.Decorate(typeof(IRequestHandler<>), typeof(BusinessRuleExceptionLocalizationCommandHandlerDecorator<>));
+        services.Decorate(typeof(IRequestHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
+        services.Decorate(typeof(IRequestHandler<>), typeof(ValidationCommandHandlerDecorator<>));
+        services.Decorate(typeof(IRequestHandler<>), typeof(LoggingCommandHandlerDecorator<>));
+        services.Decorate(typeof(IRequestHandler<>), typeof(BusinessRuleExceptionLocalizationCommandHandlerDecorator<>));
 
         // TODO: uncomment when any command with result will be added
         // services.Decorate(typeof(IRequestHandler<,>), typeof(UnitOfWorkCommandHandlerDecorator<,>));
         // services.Decorate(typeof(IRequestHandler<,>), typeof(ValidationCommandHandlerDecorator<,>));
         // services.Decorate(typeof(IRequestHandler<,>), typeof(LoggingCommandHandlerDecorator<,>));
         // services.Decorate(typeof(IRequestHandler<,>), typeof(BusinessRuleExceptionLocalizationCommandHandlerDecorator<,>));
+
+        return services;
     }
 }
