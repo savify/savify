@@ -1,4 +1,4 @@
-namespace App.Modules.Wallets.Infrastructure.Configuration.Processing.InternalCommands;
+namespace App.BuildingBlocks.Infrastructure.Configuration.InternalCommands;
 
 public class InternalCommandDto
 {
