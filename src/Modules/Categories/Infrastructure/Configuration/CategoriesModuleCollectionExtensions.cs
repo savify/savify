@@ -27,8 +27,8 @@ public static class CategoriesModuleCollectionExtensions
             .AddDomainServices()
             .AddIntegrationServices()
             .AddLocalizationServices()
-            .AddMediationServices()
             .AddLoggingServices()
+            .AddMediationServices()
             .AddOutboxServices(domainNotificationMap)
             .AddProcessingServices()
             .AddQuartzServices();

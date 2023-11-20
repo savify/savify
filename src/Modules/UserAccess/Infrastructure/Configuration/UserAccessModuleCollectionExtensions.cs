@@ -37,8 +37,8 @@ public static class UserAccessModuleCollectionExtensions
             .AddDataAccessServices<UserAccessContext>(connectionString)
             .AddDomainServices()
             .AddLocalizationServices()
-            .AddMediationServices()
             .AddLoggingServices()
+            .AddMediationServices()
             .AddOutboxServices(domainNotificationMap)
             .AddProcessingServices()
             .AddQuartzServices();

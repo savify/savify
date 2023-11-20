@@ -1,13 +1,9 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
+using App.BuildingBlocks.Infrastructure.Configuration.Extensions;
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Wallets.Infrastructure.Configuration.Domain;
 using App.Modules.Wallets.Infrastructure.Configuration.EventBus;
-using App.Modules.Wallets.Infrastructure.Configuration.Integration;
-using App.Modules.Wallets.Infrastructure.Configuration.Logging;
-using App.Modules.Wallets.Infrastructure.Configuration.Mediation;
-using App.Modules.Wallets.Infrastructure.Configuration.Processing;
-using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Wallets.Infrastructure.Configuration.Extensions;
 using App.Modules.Wallets.Infrastructure.Configuration.Quartz;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,9 +19,21 @@ public static class WalletsModuleCollectionExtensions
         ILogger logger)
     {
         var moduleLogger = logger.ForContext("Module", "Wallets");
+        var connectionString = configuration.GetConnectionString("Savify");
+        var domainNotificationMap = GetDomainNotificationMap();
 
-        ConfigureCompositionRoot(services, configuration.GetConnectionString("Savify"));
+        services
+            .AddDataAccessServices<WalletsContext>(connectionString)
+            .AddDomainServices()
+            .AddIntegrationServices()
+            .AddLocalizationServices()
+            .AddLoggingServices()
+            .AddMediationServices()
+            .AddOutboxServices(domainNotificationMap)
+            .AddProcessingServices()
+            .AddQuartzServices();
 
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
 
@@ -34,23 +42,12 @@ public static class WalletsModuleCollectionExtensions
         return services;
     }
 
-    private static void ConfigureCompositionRoot(
-        this IServiceCollection services,
-        string connectionString)
+    private static BiDictionary<string, Type> GetDomainNotificationMap()
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
 
         // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
 
-        DataAccessModule<WalletsContext>.Configure(services, connectionString);
-        OutboxModule.Configure(services, domainNotificationsMap);
-        DomainModule.Configure(services);
-        QuartzModule.Configure(services);
-        LoggingModule.Configure(services);
-        MediatorModule.Configure(services);
-        ProcessingModule.Configure(services);
-        IntegrationModule.Configure(services);
-
-        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        return domainNotificationsMap;
     }
 }

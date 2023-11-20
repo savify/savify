@@ -27,8 +27,8 @@ public static class NotificationsModuleCollectionExtensions
             .AddDomainServices()
             .AddEmailingServices(emailConfiguration, moduleLogger)
             .AddLocalizationServices()
-            .AddMediationServices()
             .AddLoggingServices()
+            .AddMediationServices()
             .AddProcessingServices()
             .AddQuartzServices();
 

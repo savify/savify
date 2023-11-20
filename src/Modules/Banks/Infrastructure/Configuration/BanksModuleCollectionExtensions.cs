@@ -28,8 +28,8 @@ public static class BanksModuleCollectionExtensions
             .AddDomainServices()
             .AddIntegrationServices(isProduction)
             .AddLocalizationServices()
-            .AddMediationServices()
             .AddLoggingServices()
+            .AddMediationServices()
             .AddOutboxServices(domainNotificationMap)
             .AddProcessingServices()
             .AddQuartzServices();
