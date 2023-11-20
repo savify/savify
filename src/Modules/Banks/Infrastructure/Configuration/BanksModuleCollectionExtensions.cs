@@ -1,10 +1,10 @@
-using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.Extensions;
 using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure.Configuration.EventBus;
 using App.Modules.Banks.Infrastructure.Configuration.Extensions;
 using App.Modules.Banks.Infrastructure.Configuration.Quartz;
+using App.Modules.Banks.Infrastructure.Outbox;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -21,7 +21,7 @@ public static class BanksModuleCollectionExtensions
     {
         var moduleLogger = logger.ForContext("Module", "Banks");
         var connectionString = configuration.GetConnectionString("Savify");
-        var domainNotificationMap = GetDomainNotificationMap();
+        var domainNotificationMap = DomainNotificationsMap.Build();
 
         services
             .AddDataAccessServices<BanksContext>(connectionString)
@@ -41,14 +41,5 @@ public static class BanksModuleCollectionExtensions
         services.AddScoped<IBanksModule, BanksModule>();
 
         return services;
-    }
-
-    private static BiDictionary<string, Type> GetDomainNotificationMap()
-    {
-        var domainNotificationsMap = new BiDictionary<string, Type>();
-
-        // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
-
-        return domainNotificationsMap;
     }
 }

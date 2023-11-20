@@ -1,10 +1,10 @@
-using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.Extensions;
 using App.Modules.Categories.Application.Contracts;
 using App.Modules.Categories.Infrastructure.Configuration.EventBus;
 using App.Modules.Categories.Infrastructure.Configuration.Extensions;
 using App.Modules.Categories.Infrastructure.Configuration.Quartz;
+using App.Modules.Categories.Infrastructure.Outbox;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -20,7 +20,7 @@ public static class CategoriesModuleCollectionExtensions
     {
         var moduleLogger = logger.ForContext("Module", "Categories");
         var connectionString = configuration.GetConnectionString("Savify");
-        var domainNotificationMap = GetDomainNotificationMap();
+        var domainNotificationMap = DomainNotificationsMap.Build();
 
         services
             .AddDataAccessServices<CategoriesContext>(connectionString)
@@ -40,14 +40,5 @@ public static class CategoriesModuleCollectionExtensions
         services.AddScoped<ICategoriesModule, CategoriesModule>();
 
         return services;
-    }
-
-    private static BiDictionary<string, Type> GetDomainNotificationMap()
-    {
-        var domainNotificationsMap = new BiDictionary<string, Type>();
-
-        // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
-
-        return domainNotificationsMap;
     }
 }

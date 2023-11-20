@@ -1,7 +1,4 @@
 using App.BuildingBlocks.Application;
-using App.BuildingBlocks.Infrastructure;
-using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
-using App.Modules.Transactions.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -17,13 +14,6 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         builder.ConfigureTestServices(services =>
         {
             services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
-
-            // TODO: find some solution to work with domain notifications maps without duplication in tests!
-            var domainNotificationsMap = new BiDictionary<string, Type>();
-
-            // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
-
-            services.Replace(ServiceDescriptor.Scoped<IDomainNotificationsMapper<TransactionsContext>>(_ => new DomainNotificationsMapper<TransactionsContext>(domainNotificationsMap)));
         });
     }
 }
