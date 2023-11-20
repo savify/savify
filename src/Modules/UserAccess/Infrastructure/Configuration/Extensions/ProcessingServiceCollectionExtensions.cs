@@ -1,28 +1,18 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
-using App.BuildingBlocks.Infrastructure.Localization;
 using App.Modules.UserAccess.Application.Configuration.Commands;
-using App.Modules.UserAccess.Infrastructure.Configuration.Localization;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Decorators;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.InternalCommands;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 
-namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing;
+namespace App.Modules.UserAccess.Infrastructure.Configuration.Extensions;
 
-internal static class ProcessingModule
+internal static class ProcessingServiceCollectionExtensions
 {
-    internal static void Configure(IServiceCollection services)
+    internal static IServiceCollection AddProcessingServices(this IServiceCollection services)
     {
-        services.AddSingleton<IStringLocalizer>(provider =>
-        {
-            var localizerFactory = provider.GetRequiredService<ILocalizerFactory>();
-
-            return localizerFactory.Create<UserAccessLocalizationResource>();
-        });
-
         services.AddScoped<IDomainEventsAccessor<UserAccessContext>, DomainEventsAccessor<UserAccessContext>>();
         services.AddScoped<IDomainEventsDispatcher<UserAccessContext>, DomainEventsDispatcher<UserAccessContext>>();
         services.AddScoped<IUnitOfWork<UserAccessContext>, UnitOfWork<UserAccessContext>>();
@@ -40,5 +30,7 @@ internal static class ProcessingModule
         services.Decorate(typeof(IRequestHandler<,>), typeof(ValidationCommandHandlerDecorator<,>));
         services.Decorate(typeof(IRequestHandler<,>), typeof(LoggingCommandHandlerDecorator<,>));
         services.Decorate(typeof(IRequestHandler<,>), typeof(BusinessRuleExceptionLocalizationCommandHandlerDecorator<,>));
+
+        return services;
     }
 }

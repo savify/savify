@@ -3,11 +3,11 @@ using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.UserAccess.Infrastructure.Configuration.Mediation;
+namespace App.Modules.UserAccess.Infrastructure.Configuration.Extensions;
 
-internal static class MediatorModule
+internal static class MediationServiceCollectionExtensions
 {
-    public static void Configure(IServiceCollection services)
+    internal static IServiceCollection AddMediationServices(this IServiceCollection services)
     {
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(Assemblies.Application, Assemblies.Infrastructure));
 
@@ -29,5 +29,7 @@ internal static class MediatorModule
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>));
+
+        return services;
     }
 }
