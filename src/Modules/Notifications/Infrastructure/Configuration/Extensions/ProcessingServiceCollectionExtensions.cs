@@ -1,28 +1,18 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
-using App.BuildingBlocks.Infrastructure.Localization;
 using App.Modules.Notifications.Application.Configuration.Commands;
-using App.Modules.Notifications.Infrastructure.Configuration.Localization;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing.Decorators;
 using App.Modules.Notifications.Infrastructure.Configuration.Processing.InternalCommands;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 
-namespace App.Modules.Notifications.Infrastructure.Configuration.Processing;
+namespace App.Modules.Notifications.Infrastructure.Configuration.Extensions;
 
-internal static class ProcessingModule
+internal static class ProcessingServiceCollectionExtensions
 {
-    internal static void Configure(IServiceCollection services)
+    internal static IServiceCollection AddProcessingServices(this IServiceCollection services)
     {
-        services.AddSingleton<IStringLocalizer>(provider =>
-        {
-            var localizerFactory = provider.GetRequiredService<ILocalizerFactory>();
-
-            return localizerFactory.Create<NotificationsLocalizationResource>();
-        });
-
         services.AddScoped<IDomainEventsAccessor<NotificationsContext>, DomainEventsAccessor<NotificationsContext>>();
         services.AddScoped<IDomainEventsDispatcher<NotificationsContext>, App.Modules.Notifications.Infrastructure.DomainEventsDispatching.DomainEventsDispatcher<NotificationsContext>>();
         services.AddScoped<IUnitOfWork<NotificationsContext>, UnitOfWork<NotificationsContext>>();
@@ -36,10 +26,12 @@ internal static class ProcessingModule
         services.Decorate(typeof(IRequestHandler<>), typeof(LoggingCommandHandlerDecorator<>));
         services.Decorate(typeof(IRequestHandler<>), typeof(BusinessRuleExceptionLocalizationCommandHandlerDecorator<>));
 
-        // TODO: uncomment when any commands with result will be available
+        // TODO: uncomment when any command with result will be added
         // services.Decorate(typeof(IRequestHandler<,>), typeof(UnitOfWorkCommandHandlerDecorator<,>));
         // services.Decorate(typeof(IRequestHandler<,>), typeof(ValidationCommandHandlerDecorator<,>));
         // services.Decorate(typeof(IRequestHandler<,>), typeof(LoggingCommandHandlerDecorator<,>));
         // services.Decorate(typeof(IRequestHandler<,>), typeof(BusinessRuleExceptionLocalizationCommandHandlerDecorator<,>));
+
+        return services;
     }
 }
