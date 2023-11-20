@@ -3,6 +3,7 @@ using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 using App.Modules.UserAccess.Application.Configuration.Commands;
 using App.Modules.UserAccess.Application.Configuration.Data;
+using App.Modules.UserAccess.Application.Configuration.Localization;
 using Dapper;
 using Microsoft.Extensions.Localization;
 
@@ -22,12 +23,12 @@ internal class AuthenticateUserByUserIdCommandHandler : ICommandHandler<Authenti
         ISqlConnectionFactory sqlConnectionFactory,
         IAuthenticationTokenGenerator tokenGenerator,
         IRefreshTokenRepository refreshTokenRepository,
-        IStringLocalizer localizer)
+        ILocalizerProvider localizerProvider)
     {
         _sqlConnectionFactory = sqlConnectionFactory;
         _tokenGenerator = tokenGenerator;
         _refreshTokenRepository = refreshTokenRepository;
-        _localizer = localizer;
+        _localizer = localizerProvider.GetLocalizer();
     }
 
     public async Task<TokensResult> Handle(AuthenticateUserByUserIdCommand command, CancellationToken cancellationToken)

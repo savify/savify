@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.UserAccess.Application.Configuration.Commands;
+using App.Modules.UserAccess.Application.Configuration.Localization;
 using App.Modules.UserAccess.Application.Contracts;
 using Microsoft.Extensions.Localization;
 
@@ -12,10 +13,12 @@ internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T, TResu
 
     private readonly IStringLocalizer _localizer;
 
-    public BusinessRuleExceptionLocalizationCommandHandlerDecorator(ICommandHandler<T, TResult> decorated, IStringLocalizer localizer)
+    public BusinessRuleExceptionLocalizationCommandHandlerDecorator(
+        ICommandHandler<T, TResult> decorated,
+        ILocalizerProvider localizerProvider)
     {
         _decorated = decorated;
-        _localizer = localizer;
+        _localizer = localizerProvider.GetLocalizer();
     }
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
@@ -42,10 +45,12 @@ internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T> : ICo
 
     private readonly IStringLocalizer _localizer;
 
-    public BusinessRuleExceptionLocalizationCommandHandlerDecorator(ICommandHandler<T> decorated, IStringLocalizer localizer)
+    public BusinessRuleExceptionLocalizationCommandHandlerDecorator(
+        ICommandHandler<T> decorated,
+        ILocalizerProvider localizerProvider)
     {
         _decorated = decorated;
-        _localizer = localizer;
+        _localizer = localizerProvider.GetLocalizer();
     }
 
     public async Task Handle(T command, CancellationToken cancellationToken)
