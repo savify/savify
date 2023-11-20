@@ -1,13 +1,9 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
+using App.BuildingBlocks.Infrastructure.Configuration.Extensions;
 using App.Modules.Banks.Application.Contracts;
-using App.Modules.Banks.Infrastructure.Configuration.Domain;
 using App.Modules.Banks.Infrastructure.Configuration.EventBus;
-using App.Modules.Banks.Infrastructure.Configuration.Integration;
-using App.Modules.Banks.Infrastructure.Configuration.Logging;
-using App.Modules.Banks.Infrastructure.Configuration.Mediation;
-using App.Modules.Banks.Infrastructure.Configuration.Processing;
-using App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Banks.Infrastructure.Configuration.Extensions;
 using App.Modules.Banks.Infrastructure.Configuration.Quartz;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,12 +20,21 @@ public static class BanksModuleCollectionExtensions
         bool isProduction)
     {
         var moduleLogger = logger.ForContext("Module", "Banks");
+        var connectionString = configuration.GetConnectionString("Savify");
+        var domainNotificationMap = GetDomainNotificationMap();
 
-        ConfigureModules(
-            services,
-            configuration.GetConnectionString("Savify"),
-            isProduction);
+        services
+            .AddDataAccessServices<BanksContext>(connectionString)
+            .AddDomainServices()
+            .AddIntegrationServices(isProduction)
+            .AddLocalizationServices()
+            .AddMediationServices()
+            .AddLoggingServices()
+            .AddOutboxServices(domainNotificationMap)
+            .AddProcessingServices()
+            .AddQuartzServices();
 
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
 
@@ -38,24 +43,12 @@ public static class BanksModuleCollectionExtensions
         return services;
     }
 
-    private static void ConfigureModules(
-        this IServiceCollection services,
-        string connectionString,
-        bool isProduction)
+    private static BiDictionary<string, Type> GetDomainNotificationMap()
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
 
         // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
 
-        DataAccessModule<BanksContext>.Configure(services, connectionString);
-        OutboxModule.Configure(services, domainNotificationsMap);
-        DomainModule.Configure(services);
-        QuartzModule.Configure(services);
-        LoggingModule.Configure(services);
-        MediatorModule.Configure(services);
-        ProcessingModule.Configure(services);
-        IntegrationModule.Configure(services, isProduction);
-
-        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        return domainNotificationsMap;
     }
 }

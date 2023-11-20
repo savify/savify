@@ -2,14 +2,16 @@ using App.Integrations.SaltEdge.Client;
 using App.Modules.Banks.Infrastructure.Integrations.SaltEdge;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Banks.Infrastructure.Configuration.Integration;
+namespace App.Modules.Banks.Infrastructure.Configuration.Extensions;
 
-public class IntegrationModule
+internal static class IntegrationServicesCollectionExtensions
 {
-    internal static void Configure(IServiceCollection services, bool isProduction)
+    internal static IServiceCollection AddIntegrationServices(this IServiceCollection services, bool isProduction)
     {
         services.AddScoped<ISaltEdgeIntegrationService>(provider => new SaltEdgeIntegrationService(
             provider.GetService<ISaltEdgeHttpClient>(),
             isProduction));
+
+        return services;
     }
 }
