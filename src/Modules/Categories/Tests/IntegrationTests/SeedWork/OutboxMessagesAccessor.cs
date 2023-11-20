@@ -1,8 +1,8 @@
 using System.Data;
 using System.Reflection;
+using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 using App.Modules.Categories.Application.Configuration.Data;
 using App.Modules.Categories.Application.Contracts;
-using App.Modules.Categories.Infrastructure.Configuration.Processing.Outbox;
 using Dapper;
 using MediatR;
 using Newtonsoft.Json;

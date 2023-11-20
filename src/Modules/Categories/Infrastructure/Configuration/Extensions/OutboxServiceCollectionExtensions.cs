@@ -15,6 +15,7 @@ internal static class OutboxServiceCollectionExtensions
         DomainNotificationMappingValidator.Validate(domainNotificationsMap, Assemblies.Application);
 
         services.AddSingleton<IDomainNotificationsMapper<CategoriesContext>>(_ => new DomainNotificationsMapper<CategoriesContext>(domainNotificationsMap));
+        services.AddScoped<OutboxCommandProcessor<CategoriesContext>>();
 
         return services;
     }

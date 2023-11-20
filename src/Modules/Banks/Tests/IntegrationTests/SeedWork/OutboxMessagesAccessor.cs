@@ -1,8 +1,8 @@
 using System.Data;
 using System.Reflection;
+using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 using App.Modules.Banks.Application.Configuration.Data;
 using App.Modules.Banks.Application.Contracts;
-using App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
 using Dapper;
 using MediatR;
 using Newtonsoft.Json;

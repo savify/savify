@@ -1,4 +1,4 @@
-namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
+namespace App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 
 public class OutboxMessageDto
 {

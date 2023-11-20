@@ -15,6 +15,7 @@ internal static class OutboxServiceCollectionExtensions
         DomainNotificationMappingValidator.Validate(domainNotificationsMap, Assemblies.Application);
 
         services.AddSingleton<IDomainNotificationsMapper<BanksContext>>(_ => new DomainNotificationsMapper<BanksContext>(domainNotificationsMap));
+        services.AddScoped<OutboxCommandProcessor<BanksContext>>();
 
         return services;
     }

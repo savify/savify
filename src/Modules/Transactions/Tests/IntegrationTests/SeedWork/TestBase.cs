@@ -1,11 +1,10 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Infrastructure.Configuration;
+using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.Transactions.Application.Contracts;
-using App.Modules.Transactions.Infrastructure.Configuration;
-using App.Modules.Transactions.Infrastructure.Configuration.Processing.Outbox;
 using App.Modules.Transactions.IntegrationTests.SeedData;
 using Dapper;
 using MediatR;
