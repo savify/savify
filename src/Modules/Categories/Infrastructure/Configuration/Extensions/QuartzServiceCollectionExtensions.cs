@@ -4,14 +4,16 @@ using App.Modules.Categories.Infrastructure.Configuration.Processing.Outbox;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
-namespace App.Modules.Categories.Infrastructure.Configuration.Quartz;
+namespace App.Modules.Categories.Infrastructure.Configuration.Extensions;
 
-internal static class QuartzModule
+internal static class QuartzServiceCollectionExtensions
 {
-    internal static void Configure(IServiceCollection services)
+    internal static IServiceCollection AddQuartzServices(this IServiceCollection services)
     {
         services.AddTransient<IJob, ProcessOutboxJob>();
         services.AddTransient<IJob, ProcessInboxJob>();
         services.AddTransient<IJob, ProcessInternalCommandsJob>();
+
+        return services;
     }
 }

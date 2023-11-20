@@ -1,14 +1,9 @@
 using App.BuildingBlocks.Infrastructure;
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Integration;
+using App.BuildingBlocks.Infrastructure.Configuration.Extensions;
 using App.Modules.Categories.Application.Contracts;
-using App.Modules.Categories.Infrastructure.Configuration.Domain;
 using App.Modules.Categories.Infrastructure.Configuration.EventBus;
-using App.Modules.Categories.Infrastructure.Configuration.Integration;
-using App.Modules.Categories.Infrastructure.Configuration.Logging;
-using App.Modules.Categories.Infrastructure.Configuration.Mediation;
-using App.Modules.Categories.Infrastructure.Configuration.Processing;
-using App.Modules.Categories.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.Categories.Infrastructure.Configuration.Extensions;
 using App.Modules.Categories.Infrastructure.Configuration.Quartz;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,9 +19,21 @@ public static class CategoriesModuleCollectionExtensions
         ILogger logger)
     {
         var moduleLogger = logger.ForContext("Module", "Categories");
+        var connectionString = configuration.GetConnectionString("Savify");
+        var domainNotificationMap = GetDomainNotificationMap();
 
-        ConfigureModules(services, configuration.GetConnectionString("Savify"));
+        services
+            .AddDataAccessServices<CategoriesContext>(connectionString)
+            .AddDomainServices()
+            .AddIntegrationServices()
+            .AddLocalizationServices()
+            .AddMediationServices()
+            .AddLoggingServices()
+            .AddOutboxServices(domainNotificationMap)
+            .AddProcessingServices()
+            .AddQuartzServices();
 
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
 
@@ -35,23 +42,12 @@ public static class CategoriesModuleCollectionExtensions
         return services;
     }
 
-    private static void ConfigureModules(
-        this IServiceCollection services,
-        string connectionString)
+    private static BiDictionary<string, Type> GetDomainNotificationMap()
     {
         var domainNotificationsMap = new BiDictionary<string, Type>();
 
         // domainNotificationsMap.Add(nameof(ExampleDomainEvent), typeof(ExampleNotification));
 
-        OutboxModule.Configure(services, domainNotificationsMap);
-        DataAccessModule<CategoriesContext>.Configure(services, connectionString);
-        DomainModule.Configure(services);
-        QuartzModule.Configure(services);
-        LoggingModule.Configure(services);
-        MediatorModule.Configure(services);
-        ProcessingModule.Configure(services);
-        IntegrationModule.Configure(services);
-
-        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
+        return domainNotificationsMap;
     }
 }

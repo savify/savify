@@ -1,13 +1,15 @@
 using App.Integrations.SaltEdge.Client;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace App.Modules.Categories.Infrastructure.Configuration.Integration;
+namespace App.Modules.Categories.Infrastructure.Configuration.Extensions;
 
-public class IntegrationModule
+internal static class IntegrationServicesCollectionExtensions
 {
-    internal static void Configure(IServiceCollection services)
+    internal static IServiceCollection AddIntegrationServices(this IServiceCollection services)
     {
         // services.AddScoped<ISaltEdgeIntegrationService>(provider => new SaltEdgeIntegrationService(
         //     provider.GetService<ISaltEdgeHttpClient>()));
+
+        return services;
     }
 }
