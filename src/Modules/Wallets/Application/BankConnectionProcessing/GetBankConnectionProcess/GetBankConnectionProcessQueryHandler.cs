@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.Modules.Wallets.Application.Configuration.Data;
 using App.Modules.Wallets.Application.Configuration.Queries;
 using Dapper;
 
@@ -17,11 +18,13 @@ internal class GetBankConnectionProcessQueryHandler : IQueryHandler<GetBankConne
     {
         using var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        var sql = @"SELECT p.id, p.user_id AS userId, p.bank_id AS bankId, p.wallet_id AS walletId, p.wallet_type AS walletType, 
-                    p.status, p.redirect_url AS redirectUrl, p.redirect_url_expires_at AS redirectUrlExpiresAt, 
-                    p.initiated_at AS initiatedAt, p.updated_at AS updatedAt
-                    FROM wallets.bank_connection_processes p
-                    WHERE p.id = @Id";
+        var sql = $"""
+                  SELECT p.id, p.user_id AS userId, p.bank_id AS bankId, p.wallet_id AS walletId, p.wallet_type AS walletType,
+                      p.status, p.redirect_url AS redirectUrl, p.redirect_url_expires_at AS redirectUrlExpiresAt,
+                      p.initiated_at AS initiatedAt, p.updated_at AS updatedAt
+                  FROM {DatabaseConfiguration.Schema.Name}.bank_connection_processes p
+                  WHERE p.id = @Id
+                  """;
 
         return await connection.QuerySingleOrDefaultAsync<BankConnectionProcessDto>(sql, new { Id = query.BankConnectionProcessId });
     }

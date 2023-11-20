@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.BuildingBlocks.Infrastructure.Outbox;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Domain.PasswordResetRequest;
 using App.Modules.UserAccess.Domain.UserRegistrations;
 using App.Modules.UserAccess.Domain.Users;
@@ -31,7 +32,7 @@ public class UserAccessContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema(UserAccessModule.DatabaseSchemaName);
+        modelBuilder.HasDefaultSchema(DatabaseConfiguration.Schema.Name);
 
         modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserRegistrationEntityTypeConfiguration());

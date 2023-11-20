@@ -5,8 +5,6 @@ namespace App.Modules.Wallets.Infrastructure;
 
 public class WalletsModule : IWalletsModule
 {
-    public static string DatabaseSchemaName => "wallets";
-
     public async Task ExecuteCommandAsync(ICommand command)
     {
         await CommandExecutor.Execute(command);

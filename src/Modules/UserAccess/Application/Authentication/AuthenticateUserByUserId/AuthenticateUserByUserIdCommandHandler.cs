@@ -2,6 +2,7 @@ using App.BuildingBlocks.Application.Data;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 using App.Modules.UserAccess.Application.Configuration.Commands;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using Dapper;
 using Microsoft.Extensions.Localization;
 
@@ -33,7 +34,7 @@ internal class AuthenticateUserByUserIdCommandHandler : ICommandHandler<Authenti
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT id, name, email, password, is_active AS isActive FROM user_access.users WHERE id = @userId";
+        var sql = $"SELECT id, name, email, password, is_active AS isActive FROM {DatabaseConfiguration.Schema.Name}.users WHERE id = @userId";
 
         var user = await connection.QuerySingleOrDefaultAsync<UserDto>(sql, new { command.UserId });
 

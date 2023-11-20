@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Data;
 using App.Modules.Wallets.Application.Configuration.Commands;
+using App.Modules.Wallets.Application.Configuration.Data;
 using App.Modules.Wallets.Infrastructure.Configuration.Logging;
 using Dapper;
 using MediatR;
@@ -31,20 +32,24 @@ public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        string sql = "SELECT " +
-                     $"message.id as {nameof(InboxMessageDto.Id)}, " +
-                     $"message.type as {nameof(InboxMessageDto.Type)}, " +
-                     $"message.data as {nameof(InboxMessageDto.Data)} " +
-                     "FROM wallets.inbox_messages AS message " +
-                     "WHERE message.processed_date IS NULL " +
-                     "ORDER BY message.occurred_on";
+        var sql = $"""
+                   SELECT
+                       message.id as {nameof(InboxMessageDto.Id)},
+                       message.type as {nameof(InboxMessageDto.Type)},
+                       message.data as {nameof(InboxMessageDto.Data)}
+                   FROM {DatabaseConfiguration.Schema.Name}.inbox_messages AS message
+                   WHERE message.processed_date IS NULL
+                   ORDER BY message.occurred_on
+                   """;
 
         var messages = await connection.QueryAsync<InboxMessageDto>(sql);
         var messagesList = messages.AsList();
 
-        const string sqlUpdateProcessedDate = "UPDATE wallets.inbox_messages " +
-                                              "SET processed_date = @Date " +
-                                              "WHERE id = @Id";
+        var sqlUpdateProcessedDate = $"""
+                                      UPDATE {DatabaseConfiguration.Schema.Name}.inbox_messages
+                                          SET processed_date = @Date
+                                          WHERE id = @Id
+                                      """;
 
         foreach (var message in messagesList)
         {

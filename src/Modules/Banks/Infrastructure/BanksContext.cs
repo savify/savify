@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.BuildingBlocks.Infrastructure.Outbox;
+using App.Modules.Banks.Application.Configuration.Data;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.Banks.BankRevisions;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
@@ -31,7 +32,7 @@ public class BanksContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema(BanksModule.DatabaseSchemaName);
+        modelBuilder.HasDefaultSchema(DatabaseConfiguration.Schema.Name);
 
         modelBuilder.ApplyConfiguration(new BankEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankRevisionEntityTypeConfiguration());

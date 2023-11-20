@@ -1,16 +1,17 @@
 using App.BuildingBlocks.Application.Data;
 using App.Modules.Banks.Application.Configuration.Commands;
+using App.Modules.Banks.Application.Configuration.Data;
 using Dapper;
 using Newtonsoft.Json;
 using Polly;
 
 namespace App.Modules.Banks.Infrastructure.Configuration.Processing.InternalCommands;
 
-internal class ProcessInternalInternalCommandsInternalCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
+internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-    public ProcessInternalInternalCommandsInternalCommandHandler(ISqlConnectionFactory sqlConnectionFactory)
+    public ProcessInternalCommandsCommandHandler(ISqlConnectionFactory sqlConnectionFactory)
     {
         _sqlConnectionFactory = sqlConnectionFactory;
     }
@@ -19,13 +20,15 @@ internal class ProcessInternalInternalCommandsInternalCommandHandler : ICommandH
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        string sql = "SELECT " +
-                     $"command.id AS {nameof(InternalCommandDto.Id)}, " +
-                     $"command.type AS {nameof(InternalCommandDto.Type)}, " +
-                     $"command.data AS {nameof(InternalCommandDto.Data)} " +
-                     "FROM banks.internal_commands AS command " +
-                     "WHERE command.processed_date IS NULL " +
-                     "ORDER BY command.enqueue_date";
+        var sql = $"""
+                      SELECT
+                          command.id AS {nameof(InternalCommandDto.Id)},
+                          command.type AS {nameof(InternalCommandDto.Type)},
+                          command.data AS {nameof(InternalCommandDto.Data)}
+                      FROM {DatabaseConfiguration.Schema.Name}.internal_commands AS command
+                      WHERE command.processed_date IS NULL
+                      ORDER BY command.enqueue_date
+                      """;
 
         var commands = await connection.QueryAsync<InternalCommandDto>(sql);
         var internalCommandsList = commands.AsList();
@@ -46,10 +49,7 @@ internal class ProcessInternalInternalCommandsInternalCommandHandler : ICommandH
             if (result.Outcome == OutcomeType.Failure)
             {
                 await connection.ExecuteScalarAsync(
-                    "UPDATE banks.internal_commands " +
-                    "SET processed_date = @NowDate, " +
-                    "error = @Error " +
-                    "WHERE id = @Id",
+                    $"UPDATE {DatabaseConfiguration.Schema.Name}.internal_commands SET processed_date = @NowDate, error = @Error WHERE id = @Id",
                     new
                     {
                         NowDate = DateTime.UtcNow,

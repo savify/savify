@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.BuildingBlocks.Infrastructure.Outbox;
+using App.Modules.Wallets.Application.Configuration.Data;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnections;
 using App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios;
@@ -57,7 +58,7 @@ public class WalletsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema(WalletsModule.DatabaseSchemaName);
+        modelBuilder.HasDefaultSchema(DatabaseConfiguration.Schema.Name);
 
         modelBuilder.ApplyConfiguration(new CashWalletEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new CreditWalletsEntityTypeConfiguration());

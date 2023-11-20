@@ -1,16 +1,22 @@
 using App.BuildingBlocks.Application.Data;
-using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Serialization;
 using App.BuildingBlocks.Integration;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace App.Modules.Notifications.Infrastructure.Configuration.EventBus;
+namespace App.BuildingBlocks.Infrastructure.Configuration.EventBus;
 
-internal class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> where T : IntegrationEvent
+public class IntegrationEventGenericHandler<TEvent> : IIntegrationEventHandler<TEvent> where TEvent : IntegrationEvent
 {
-    public async Task Handle(T @event)
+    private readonly DatabaseSchema _schema;
+
+    public IntegrationEventGenericHandler(DatabaseSchema schema)
+    {
+        _schema = schema;
+    }
+
+    public async Task Handle(TEvent @event)
     {
         using var scope = CompositionRoot.BeginScope();
         using var connection = scope.ServiceProvider.GetRequiredService<ISqlConnectionFactory>().GetOpenConnection();
@@ -21,7 +27,7 @@ internal class IntegrationEventGenericHandler<T> : IIntegrationEventHandler<T> w
             ContractResolver = new AllPropertiesContractResolver()
         });
 
-        var sql = "INSERT INTO notifications.inbox_messages (id, occurred_on, type, data) " +
+        var sql = $"INSERT INTO {_schema.Name}.inbox_messages (id, occurred_on, type, data) " +
                   "VALUES (@Id, @OccurredOn, @Type, @Data)";
 
         await connection.ExecuteScalarAsync(sql, new

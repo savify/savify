@@ -2,6 +2,7 @@ using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Application.Events;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.Modules.Banks.Application.Configuration.Commands;
+using App.Modules.Banks.Application.Configuration.Data;
 using App.Modules.Banks.Infrastructure.Configuration.Logging;
 using Dapper;
 using MediatR;
@@ -10,7 +11,7 @@ using Serilog;
 
 namespace App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;
 
-public class ProcessOutboxInternalCommandHandler : ICommandHandler<ProcessOutboxCommand>
+public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
 {
     private readonly IMediator _mediator;
 
@@ -20,7 +21,7 @@ public class ProcessOutboxInternalCommandHandler : ICommandHandler<ProcessOutbox
 
     private readonly ILogger _logger;
 
-    public ProcessOutboxInternalCommandHandler(
+    public ProcessOutboxCommandHandler(
         IMediator mediator,
         ISqlConnectionFactory sqlConnectionFactory,
         IDomainNotificationsMapper<BanksContext> domainNotificationsMapper,
@@ -36,20 +37,20 @@ public class ProcessOutboxInternalCommandHandler : ICommandHandler<ProcessOutbox
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        string sql = "SELECT " +
-                  $"message.id as {nameof(OutboxMessageDto.Id)}, " +
-                  $"message.type as {nameof(OutboxMessageDto.Type)}, " +
-                  $"message.data as {nameof(OutboxMessageDto.Data)} " +
-                  "FROM banks.outbox_messages AS message " +
-                  "WHERE message.processed_date IS NULL " +
-                  "ORDER BY message.occurred_on";
+        var sql = $"""
+                      SELECT
+                          message.id as {nameof(OutboxMessageDto.Id)},
+                          message.type as {nameof(OutboxMessageDto.Type)},
+                          message.data as {nameof(OutboxMessageDto.Data)}
+                      FROM {DatabaseConfiguration.Schema.Name}.outbox_messages AS message
+                      WHERE message.processed_date IS NULL
+                      ORDER BY message.occurred_on
+                      """;
 
         var messages = await connection.QueryAsync<OutboxMessageDto>(sql);
         var messagesList = messages.AsList();
 
-        const string sqlUpdateProcessedDate = "UPDATE banks.outbox_messages " +
-                                              "SET processed_date = @Date " +
-                                              "WHERE id = @Id";
+        var sqlUpdateProcessedDate = $"UPDATE {DatabaseConfiguration.Schema.Name}.outbox_messages SET processed_date = @Date WHERE id = @Id";
 
         foreach (var message in messagesList)
         {

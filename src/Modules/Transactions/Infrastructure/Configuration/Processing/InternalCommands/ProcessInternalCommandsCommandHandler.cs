@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Data;
 using App.Modules.Transactions.Application.Configuration.Commands;
+using App.Modules.Transactions.Application.Configuration.Data;
 using Dapper;
 using Newtonsoft.Json;
 using Polly;
@@ -19,13 +20,15 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        string sql = "SELECT " +
-                     $"command.id AS {nameof(InternalCommandDto.Id)}, " +
-                     $"command.type AS {nameof(InternalCommandDto.Type)}, " +
-                     $"command.data AS {nameof(InternalCommandDto.Data)} " +
-                     "FROM transactions.internal_commands AS command " +
-                     "WHERE command.processed_date IS NULL " +
-                     "ORDER BY command.enqueue_date";
+        var sql = $"""
+                   SELECT
+                       command.id AS {nameof(InternalCommandDto.Id)},
+                       command.type AS {nameof(InternalCommandDto.Type)},
+                       command.data AS {nameof(InternalCommandDto.Data)}
+                   FROM {DatabaseConfiguration.Schema.Name}.internal_commands AS command
+                   WHERE command.processed_date IS NULL
+                   ORDER BY command.enqueue_date
+                   """;
 
         var commands = await connection.QueryAsync<InternalCommandDto>(sql);
         var internalCommandsList = commands.AsList();
@@ -46,10 +49,7 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
             if (result.Outcome == OutcomeType.Failure)
             {
                 await connection.ExecuteScalarAsync(
-                    "UPDATE transactions.internal_commands " +
-                    "SET processed_date = @NowDate, " +
-                    "error = @Error " +
-                    "WHERE id = @Id",
+                    $"UPDATE {DatabaseConfiguration.Schema.Name}.internal_commands SET processed_date = @NowDate, error = @Error WHERE id = @Id",
                     new
                     {
                         NowDate = DateTime.UtcNow,

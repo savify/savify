@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Application.Queries;
+using App.Modules.Banks.Application.Configuration.Data;
 using App.Modules.Banks.Application.Configuration.Queries;
 using Dapper;
 
@@ -18,8 +19,10 @@ internal class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, IEnumerable<B
     {
         using var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        var sql = @"SELECT id, name, country_code AS countryCode, default_logo_url AS defaultLogoUrl, logo_url AS logoUrl 
-                    FROM banks.banks";
+        var sql = $"""
+                   SELECT id, name, country_code AS countryCode, default_logo_url AS defaultLogoUrl, logo_url AS logoUrl
+                   FROM {DatabaseConfiguration.Schema.Name}.banks
+                   """;
 
         var pagedSqlQuery = new PagedSqlQueryBuilder()
             .WithSql(sql)

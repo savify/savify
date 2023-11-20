@@ -6,6 +6,7 @@ using App.API.Configuration.Validation;
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Infrastructure.Configuration.Extensions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
 using App.Integrations.SaltEdge;
@@ -76,6 +77,7 @@ public class Program
 
         builder.Services.AddEventBus();
         builder.Services.AddLogger(_logger);
+        builder.Services.AddSqlConnectionFactory(builder.Configuration);
         builder.Services.AddSaltEdgeIntegration(builder.Configuration);
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);

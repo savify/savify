@@ -5,8 +5,6 @@ namespace App.Modules.Categories.Infrastructure;
 
 public class CategoriesModule : ICategoriesModule
 {
-    public static string DatabaseSchemaName => "categories";
-
     public async Task ExecuteCommandAsync(ICommand command)
     {
         await CommandExecutor.Execute(command);

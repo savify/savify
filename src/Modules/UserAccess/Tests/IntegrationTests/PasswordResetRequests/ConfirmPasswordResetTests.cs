@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.PasswordResetRequests.ConfirmPasswordReset;
 using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
@@ -48,11 +49,11 @@ public class ConfirmPasswordResetTests : TestBase
         return handler.ReadJwtToken(token);
     }
 
-    private async Task<string> GetPasswordResetRequestStatus(Guid passwordResetRequestId)
+    private async Task<string?> GetPasswordResetRequestStatus(Guid passwordResetRequestId)
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
-        var sql = "SELECT status FROM user_access.password_reset_requests p WHERE p.id = @passwordResetRequestId";
+        var sql = $"SELECT status FROM {DatabaseConfiguration.Schema.Name}.password_reset_requests p WHERE p.id = @passwordResetRequestId";
 
         return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { passwordResetRequestId });
     }

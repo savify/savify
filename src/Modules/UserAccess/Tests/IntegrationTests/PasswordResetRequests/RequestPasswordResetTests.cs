@@ -1,3 +1,4 @@
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.Domain.PasswordResetRequest;
@@ -35,7 +36,7 @@ public class RequestPasswordResetTests : TestBase
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
-        var sql = "SELECT status FROM user_access.password_reset_requests p WHERE p.id = @passwordResetRequestId";
+        var sql = $"SELECT status FROM {DatabaseConfiguration.Schema.Name}.password_reset_requests p WHERE p.id = @passwordResetRequestId";
 
         return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { passwordResetRequestId });
     }

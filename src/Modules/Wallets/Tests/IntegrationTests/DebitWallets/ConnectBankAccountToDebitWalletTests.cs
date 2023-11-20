@@ -1,4 +1,5 @@
 using App.Modules.Wallets.Application.BankConnectionProcessing.GetBankConnectionProcess;
+using App.Modules.Wallets.Application.Configuration.Data;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
@@ -57,7 +58,7 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
 
-        var sql = @"SELECT id, identifier FROM wallets.salt_edge_customers WHERE identifier = @UserId";
+        var sql = $"SELECT id, identifier FROM {DatabaseConfiguration.Schema.Name}.salt_edge_customers WHERE identifier = @UserId";
 
         return await connection.QuerySingleOrDefaultAsync<SaltEdgeCustomerDto>(sql, new { UserId = userId });
     }

@@ -5,8 +5,6 @@ namespace App.Modules.UserAccess.Infrastructure;
 
 public class UserAccessModule : IUserAccessModule
 {
-    public static string DatabaseSchemaName => "user_access";
-
     public async Task ExecuteCommandAsync(ICommand command)
     {
         await CommandExecutor.Execute(command);

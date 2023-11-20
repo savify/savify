@@ -2,6 +2,7 @@ using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Application.Events;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.Modules.Categories.Application.Configuration.Commands;
+using App.Modules.Categories.Application.Configuration.Data;
 using App.Modules.Categories.Infrastructure.Configuration.Logging;
 using Dapper;
 using MediatR;
@@ -36,20 +37,20 @@ public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        string sql = "SELECT " +
-                  $"message.id as {nameof(OutboxMessageDto.Id)}, " +
-                  $"message.type as {nameof(OutboxMessageDto.Type)}, " +
-                  $"message.data as {nameof(OutboxMessageDto.Data)} " +
-                  "FROM categories.outbox_messages AS message " +
-                  "WHERE message.processed_date IS NULL " +
-                  "ORDER BY message.occurred_on";
+        var sql = $"""
+                   SELECT
+                       message.id as {nameof(OutboxMessageDto.Id)},
+                       message.type as {nameof(OutboxMessageDto.Type)},
+                       message.data as {nameof(OutboxMessageDto.Data)}
+                   FROM {DatabaseConfiguration.Schema.Name}.outbox_messages AS message
+                   WHERE message.processed_date IS NULL
+                   ORDER BY message.occurred_on
+                   """;
 
         var messages = await connection.QueryAsync<OutboxMessageDto>(sql);
         var messagesList = messages.AsList();
 
-        const string sqlUpdateProcessedDate = "UPDATE categories.outbox_messages " +
-                                              "SET processed_date = @Date " +
-                                              "WHERE id = @Id";
+        var sqlUpdateProcessedDate = $"UPDATE {DatabaseConfiguration.Schema.Name}.outbox_messages SET processed_date = @Date WHERE id = @Id";
 
         foreach (var message in messagesList)
         {
