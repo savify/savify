@@ -1,4 +1,4 @@
-namespace App.Modules.Notifications.Infrastructure.Configuration.Processing.Inbox;
+namespace App.BuildingBlocks.Infrastructure.Configuration.Inbox;
 
 public class InboxMessageDto
 {

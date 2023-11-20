@@ -77,6 +77,7 @@ public class Program
 
         builder.Services.AddEventBus();
         builder.Services.AddLogger(_logger);
+        builder.Services.AddInternalProcessingServices();
         builder.Services.AddSqlConnectionFactory(builder.Configuration);
         builder.Services.AddSaltEdgeIntegration(builder.Configuration);
 
