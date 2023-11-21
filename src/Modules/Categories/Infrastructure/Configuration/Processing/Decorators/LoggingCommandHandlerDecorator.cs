@@ -87,6 +87,12 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
 
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
+        if (command is IRecurringCommand)
+        {
+            await _decorated.Handle(command, cancellationToken);
+            return;
+        }
+
         using (LogContext.Push(new RequestLogEnricher(_executionContextAccessor), new CommandLogEnricher(command)))
         {
             try

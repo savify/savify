@@ -2,6 +2,7 @@ using App.BuildingBlocks.Application;
 using App.Modules.Banks.Application.Configuration.Commands;
 using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure.Configuration.Logging;
+using MediatR;
 using Serilog;
 using Serilog.Context;
 using Serilog.Core;
@@ -87,6 +88,12 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
 
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
+        if (command is IRecurringCommand)
+        {
+            await _decorated.Handle(command, cancellationToken);
+            return;
+        }
+
         using (LogContext.Push(new RequestLogEnricher(_executionContextAccessor), new CommandLogEnricher(command)))
         {
             try
