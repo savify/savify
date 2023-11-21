@@ -29,7 +29,6 @@ public static class OutboxMessagesAccessor
 
     public static T Deserialize<T>(OutboxMessageDto message) where T : class, INotification
     {
-        // TODO: change to some notification if there'll be one
         Type type = Assembly.GetAssembly(typeof(CommandBase))?.GetType(typeof(T).FullName);
 
         return JsonConvert.DeserializeObject(message.Data, type) as T;
