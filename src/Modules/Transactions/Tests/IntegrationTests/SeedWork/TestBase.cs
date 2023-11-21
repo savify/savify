@@ -1,9 +1,11 @@
 using System.Data;
+using System.Reflection;
 using App.API;
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
+using App.Modules.Transactions.Application.Configuration.Data;
 using App.Modules.Transactions.Application.Contracts;
 using App.Modules.Transactions.IntegrationTests.SeedData;
 using Dapper;
@@ -23,6 +25,8 @@ public class TestBase
     protected ITransactionsModule TransactionsModule { get; private set; }
 
     protected string ConnectionString { get; private set; }
+
+    private static Assembly _applicationAssembly = Assembly.GetAssembly(typeof(CommandBase));
 
     [OneTimeSetUp]
     public void Init()
@@ -62,7 +66,7 @@ public class TestBase
     protected async Task<List<OutboxMessageDto>> GetOutboxMessages()
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
-        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection);
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, _applicationAssembly);
 
         return messages;
     }
@@ -70,9 +74,9 @@ public class TestBase
     protected async Task<T> GetLastOutboxMessage<T>() where T : class, INotification
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
-        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection);
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, _applicationAssembly);
 
-        return OutboxMessagesAccessor.Deserialize<T>(messages.Last());
+        return OutboxMessagesAccessor.Deserialize<T>(messages.Last(), _applicationAssembly);
     }
 
     private static async Task ClearDatabase(IDbConnection connection)

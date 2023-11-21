@@ -1,24 +1,23 @@
 using System.Data;
 using System.Reflection;
+using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
-using App.Modules.Categories.Application.Configuration.Data;
-using App.Modules.Categories.Application.Contracts;
 using Dapper;
 using MediatR;
 using Newtonsoft.Json;
 
-namespace App.Modules.Categories.IntegrationTests.SeedWork;
+namespace App.BuildingBlocks.Tests.IntegrationTests;
 
 public static class OutboxMessagesAccessor
 {
-    public static async Task<List<OutboxMessageDto>> GetOutboxMessages(IDbConnection connection)
+    public static async Task<List<OutboxMessageDto>> GetOutboxMessages(IDbConnection connection, DatabaseSchema schema, Assembly notificationsAssembly)
     {
         var sql = $"""
                    SELECT
                        message.id as {nameof(OutboxMessageDto.Id)},
                        message.type as {nameof(OutboxMessageDto.Type)},
                        message.data as {nameof(OutboxMessageDto.Data)}
-                   FROM {DatabaseConfiguration.Schema.Name}.outbox_messages AS message
+                   FROM {schema.Name}.outbox_messages AS message
                    ORDER BY message.occurred_on
                    """;
 
@@ -27,9 +26,9 @@ public static class OutboxMessagesAccessor
         return messages.AsList();
     }
 
-    public static T Deserialize<T>(OutboxMessageDto message) where T : class, INotification
+    public static T Deserialize<T>(OutboxMessageDto message, Assembly notificationsAssembly) where T : class, INotification
     {
-        Type type = Assembly.GetAssembly(typeof(CommandBase))?.GetType(typeof(T).FullName);
+        Type type = notificationsAssembly.GetType(typeof(T).FullName);
 
         return JsonConvert.DeserializeObject(message.Data, type) as T;
     }
