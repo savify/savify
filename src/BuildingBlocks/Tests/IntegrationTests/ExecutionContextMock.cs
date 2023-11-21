@@ -1,6 +1,6 @@
 using App.BuildingBlocks.Application;
 
-namespace App.Modules.Categories.IntegrationTests.SeedWork;
+namespace App.BuildingBlocks.Tests.IntegrationTests;
 
 public class ExecutionContextMock : IExecutionContextAccessor
 {
