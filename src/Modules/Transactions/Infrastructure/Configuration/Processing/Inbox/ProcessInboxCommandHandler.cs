@@ -17,7 +17,7 @@ public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
         ILoggerProvider loggerProvider)
     {
         _inboxCommandProcessor = inboxCommandProcessor;
-        _logger = loggerProvider.Provide();
+        _logger = loggerProvider.GetLogger();
     }
 
     public async Task Handle(ProcessInboxCommand command, CancellationToken cancellationToken)

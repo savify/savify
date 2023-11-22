@@ -11,7 +11,7 @@ public class LoggerProvider : ILoggerProvider
         _logger = logger;
     }
 
-    public ILogger Provide()
+    public ILogger GetLogger()
     {
         return _logger.ForContext("Module", "Notifications");
     }

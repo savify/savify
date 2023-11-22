@@ -4,5 +4,5 @@ namespace App.Modules.Transactions.Infrastructure.Configuration.Logging;
 
 public interface ILoggerProvider
 {
-    ILogger Provide();
+    ILogger GetLogger();
 }

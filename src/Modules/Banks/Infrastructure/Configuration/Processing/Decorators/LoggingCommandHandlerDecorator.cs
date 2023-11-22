@@ -24,7 +24,7 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = loggerProvider.Provide();
+        _logger = loggerProvider.GetLogger();
         _executionContextAccessor = executionContextAccessor;
     }
 
@@ -82,7 +82,7 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
         IExecutionContextAccessor executionContextAccessor)
     {
         _decorated = decorated;
-        _logger = loggerProvider.Provide();
+        _logger = loggerProvider.GetLogger();
         _executionContextAccessor = executionContextAccessor;
     }
 
