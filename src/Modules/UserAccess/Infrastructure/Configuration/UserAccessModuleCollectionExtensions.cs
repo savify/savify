@@ -30,7 +30,7 @@ public static class UserAccessModuleCollectionExtensions
             .AddDomainServices()
             .AddLocalizationServices()
             .AddLoggingServices()
-            .AddMediationServices()
+            .AddMediatRForAssemblies(Assemblies.Application, Assemblies.Infrastructure)
             .AddOutboxServices(domainNotificationMap)
             .AddProcessingServices()
             .AddQuartzServices();

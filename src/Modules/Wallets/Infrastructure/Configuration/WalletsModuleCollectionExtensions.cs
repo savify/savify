@@ -28,7 +28,7 @@ public static class WalletsModuleCollectionExtensions
             .AddIntegrationServices()
             .AddLocalizationServices()
             .AddLoggingServices()
-            .AddMediationServices()
+            .AddMediatRForAssemblies(Assemblies.Application, Assemblies.Infrastructure)
             .AddOutboxServices(domainNotificationMap)
             .AddProcessingServices()
             .AddQuartzServices();

@@ -29,7 +29,7 @@ public static class BanksModuleCollectionExtensions
             .AddIntegrationServices(isProduction)
             .AddLocalizationServices()
             .AddLoggingServices()
-            .AddMediationServices()
+            .AddMediatRForAssemblies(Assemblies.Application, Assemblies.Infrastructure)
             .AddOutboxServices(domainNotificationMap)
             .AddProcessingServices()
             .AddQuartzServices();
