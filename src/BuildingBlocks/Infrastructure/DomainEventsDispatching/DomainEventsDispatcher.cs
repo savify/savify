@@ -58,7 +58,10 @@ public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext
 
         foreach (var domainEvent in domainEvents)
         {
-            await _mediator.Publish(domainEvent);
+            await _mediator.Publish(domainEvent).ContinueWith(async _ =>
+            {
+                await this.DispatchEventsAsync();
+            });
         }
 
         foreach (var domainEventNotification in domainEventNotifications)
