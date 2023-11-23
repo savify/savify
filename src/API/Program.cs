@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
 using Serilog.Enrichers.Sensitive;
+using Serilog.Sinks.Elasticsearch;
 using ILogger = Serilog.ILogger;
 
 namespace App.API;
@@ -38,9 +39,9 @@ public class Program
 
     public static void Main(string[] args)
     {
-        ConfigureLogger();
-
         var builder = WebApplication.CreateBuilder(args);
+
+        ConfigureLogger(builder.Configuration);
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -132,16 +133,23 @@ public class Program
         app.Run();
     }
 
-    private static void ConfigureLogger()
+    private static void ConfigureLogger(IConfiguration configuration)
     {
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
+        var logTemplate = "[{Environment}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}";
 
         _loggerConfiguration = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .Enrich.WithSensitiveDataMasking()
             .Destructure.UsingAttributes()
-            .Enrich.WithProperty("Environment", environment!)
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}");
+            .Enrich.WithProperty("Environment", environment)
+            .WriteTo.Console(outputTemplate: logTemplate)
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Uri"]!))
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
+                IndexFormat = $"savify-{environment.ToLower().Replace(".", "-")}"
+            });
 
         _logger = _loggerConfiguration.CreateLogger();
 
