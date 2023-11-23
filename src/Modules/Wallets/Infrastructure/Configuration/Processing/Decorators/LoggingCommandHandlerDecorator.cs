@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application;
+using App.BuildingBlocks.Infrastructure.Configuration.Logging;
 using App.Modules.Wallets.Application.Configuration.Commands;
 using App.Modules.Wallets.Application.Contracts;
 using App.Modules.Wallets.Infrastructure.Configuration.Logging;
@@ -123,24 +124,6 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
             logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{_command.Id.ToString()}")));
-        }
-    }
-}
-
-internal class RequestLogEnricher : ILogEventEnricher
-{
-    private readonly IExecutionContextAccessor _executionContextAccessor;
-
-    public RequestLogEnricher(IExecutionContextAccessor executionContextAccessor)
-    {
-        _executionContextAccessor = executionContextAccessor;
-    }
-
-    public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-    {
-        if (_executionContextAccessor.IsAvailable)
-        {
-            logEvent.AddOrUpdateProperty(new LogEventProperty("CorrelationId", new ScalarValue(_executionContextAccessor.CorrelationId)));
         }
     }
 }
