@@ -95,7 +95,16 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
             return;
         }
 
-        using (LogContext.Push(new RequestLogEnricher(_executionContextAccessor), new CommandLogEnricher(command)))
+        var enrichers = new List<ILogEventEnricher>();
+        enrichers.Add(new CommandLogEnricher(command));
+        enrichers.Add(new RequestLogEnricher(_executionContextAccessor));
+
+        if (command is InternalCommandBase internalCommand)
+        {
+            enrichers.Add(new CorrelationIdLogEnricher(internalCommand.CorrelationId));
+        }
+
+        using (LogContext.Push(enrichers.ToArray()))
         {
             try
             {

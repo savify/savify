@@ -17,6 +17,7 @@ public class UserRegistrationRenewedPublishNotificationHandler : INotificationHa
     {
         await _eventBus.Publish(new UserRegistrationRenewedIntegrationEvent(
             notification.Id,
+            notification.CorrelationId,
             notification.DomainEvent.OccurredOn,
             notification.DomainEvent.Email,
             notification.DomainEvent.Name,

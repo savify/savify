@@ -13,7 +13,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
     {
         builder.ConfigureTestServices(services =>
         {
-            services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
+            services.Replace(ServiceDescriptor.Transient<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
         });
     }
 }

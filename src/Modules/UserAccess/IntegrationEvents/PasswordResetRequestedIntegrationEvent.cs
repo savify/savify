@@ -10,9 +10,10 @@ public class PasswordResetRequestedIntegrationEvent : IntegrationEvent
 
     public PasswordResetRequestedIntegrationEvent(
         Guid id,
+        Guid correlationId,
         DateTime occurredOn,
         string email,
-        string confirmationCode) : base(id, occurredOn)
+        string confirmationCode) : base(id, correlationId, occurredOn)
     {
         Email = email;
         ConfirmationCode = confirmationCode;

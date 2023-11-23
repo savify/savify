@@ -6,7 +6,13 @@ namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewa
 public class SendUserRegistrationRenewalEmailCommand : InternalCommandBase
 {
     [JsonConstructor]
-    public SendUserRegistrationRenewalEmailCommand(Guid id, string name, string email, string language, string confirmationCode) : base(id)
+    public SendUserRegistrationRenewalEmailCommand(
+        Guid id,
+        Guid correlationId,
+        string name,
+        string email,
+        string language,
+        string confirmationCode) : base(id, correlationId)
     {
         Name = name;
         Email = email;

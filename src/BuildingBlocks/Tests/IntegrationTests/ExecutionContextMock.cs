@@ -13,7 +13,7 @@ public class ExecutionContextMock : IExecutionContextAccessor
 
     public bool IsAvailable { get; }
 
-    public Guid CorrelationId { get; }
+    public Guid CorrelationId { get; set; }
 
     public void SetUserId(Guid userId)
     {
