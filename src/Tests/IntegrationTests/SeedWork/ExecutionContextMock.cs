@@ -11,12 +11,17 @@ public class ExecutionContextMock : IExecutionContextAccessor
 
     public Guid UserId { get; private set; }
 
-    public bool IsAvailable { get; }
+    public bool IsAvailable => true;
 
-    public Guid CorrelationId { get; }
+    public Guid CorrelationId { get; private set; }
 
     public void SetUserId(Guid userId)
     {
         UserId = userId;
+    }
+
+    public void SetCorrelationId(Guid correlationId)
+    {
+        CorrelationId = correlationId;
     }
 }

@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  db: 
+  db:
     container_name: savify-database
     image: postgres:15-alpine
     ports:
@@ -22,6 +22,41 @@ services:
       - "8888:1080"
       - "1025:1025"
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_STACK_VERSION}
+    container_name: savify-elastic
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - ${ES_PORT}:9200
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - http.host=0.0.0.0
+      - http.port=9200
+      - http.cors.allow-origin=http://localhost:8080
+      - http.cors.enabled=true
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  kibana:
+    depends_on:
+      - elasticsearch
+    image: docker.elastic.co/kibana/kibana:${ES_STACK_VERSION}
+    container_name: kibana
+    volumes:
+      - kibana-data:/usr/share/kibana/data
+    ports:
+      - ${KIBANA_PORT}:5601
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+
   adminer:
     container_name: savify-adminer
     image: adminer
@@ -31,8 +66,12 @@ services:
     networks:
       - savify
 
-volumes: 
+volumes:
   database_data:
+  elasticsearch-data:
+    driver: local
+  kibana-data:
+    driver: local
 
 networks:
   savify:

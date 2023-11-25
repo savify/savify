@@ -7,7 +7,7 @@ namespace App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 public class NewUserRegisteredNotification : DomainEventNotificationBase<NewUserRegisteredDomainEvent>
 {
     [JsonConstructor]
-    public NewUserRegisteredNotification(Guid id, NewUserRegisteredDomainEvent domainEvent) : base(id, domainEvent)
+    public NewUserRegisteredNotification(Guid id, Guid correlationId, NewUserRegisteredDomainEvent domainEvent) : base(id, correlationId, domainEvent)
     {
     }
 }

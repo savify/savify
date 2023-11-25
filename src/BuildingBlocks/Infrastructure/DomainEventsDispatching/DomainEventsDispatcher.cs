@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Events;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Outbox;
@@ -12,6 +13,8 @@ public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext
 {
     private readonly IMediator _mediator;
 
+    private readonly IExecutionContextAccessor _executionContextAccessor;
+
     private readonly IOutbox<TContext> _outbox;
 
     private readonly IDomainEventsAccessor<TContext> _domainEventsAccessor;
@@ -20,11 +23,13 @@ public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext
 
     public DomainEventsDispatcher(
         IMediator mediator,
+        IExecutionContextAccessor executionContextAccessor,
         IOutbox<TContext> outbox,
         IDomainEventsAccessor<TContext> domainEventsAccessor,
         IDomainNotificationsMapper<TContext> domainNotificationsMapper)
     {
         _mediator = mediator;
+        _executionContextAccessor = executionContextAccessor;
         _outbox = outbox;
         _domainEventsAccessor = domainEventsAccessor;
         _domainNotificationsMapper = domainNotificationsMapper;
@@ -45,6 +50,7 @@ public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext
                 domainNotification = Activator.CreateInstance(
                     domainNotificationType,
                     domainEvent.Id,
+                    _executionContextAccessor.CorrelationId,
                     domainEvent);
             }
 

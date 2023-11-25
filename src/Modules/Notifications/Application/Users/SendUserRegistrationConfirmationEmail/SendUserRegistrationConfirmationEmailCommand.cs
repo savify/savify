@@ -6,7 +6,13 @@ namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfir
 public class SendUserRegistrationConfirmationEmailCommand : InternalCommandBase
 {
     [JsonConstructor]
-    public SendUserRegistrationConfirmationEmailCommand(Guid id, string name, string email, string language, string confirmationCode) : base(id)
+    public SendUserRegistrationConfirmationEmailCommand(
+        Guid id,
+        Guid correlationId,
+        string name,
+        string email,
+        string language,
+        string confirmationCode) : base(id, correlationId)
     {
         Name = name;
         Email = email;

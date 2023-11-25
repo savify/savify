@@ -1,9 +1,9 @@
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Infrastructure.Configuration.Extensions;
+using App.BuildingBlocks.Infrastructure.Configuration.DependencyInjection;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Infrastructure.Authentication;
 using App.Modules.UserAccess.Infrastructure.Configuration.EventBus;
-using App.Modules.UserAccess.Infrastructure.Configuration.Extensions;
+using App.Modules.UserAccess.Infrastructure.Configuration.DependencyInjection;
 using App.Modules.UserAccess.Infrastructure.Configuration.Quartz;
 using App.Modules.UserAccess.Infrastructure.Outbox;
 using Microsoft.Extensions.Configuration;

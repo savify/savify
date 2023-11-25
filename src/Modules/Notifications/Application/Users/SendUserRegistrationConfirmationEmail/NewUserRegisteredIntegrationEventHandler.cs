@@ -17,6 +17,7 @@ public class NewUserRegisteredIntegrationEventHandler : INotificationHandler<New
     {
         await _commandScheduler.EnqueueAsync(new SendUserRegistrationConfirmationEmailCommand(
             @event.Id,
+            @event.CorrelationId,
             @event.Name,
             @event.Email,
             @event.PreferredLanguage,

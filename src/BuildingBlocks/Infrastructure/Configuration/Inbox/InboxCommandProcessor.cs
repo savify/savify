@@ -1,8 +1,11 @@
 using App.BuildingBlocks.Application.Data;
+using App.BuildingBlocks.Infrastructure.Configuration.Logging;
+using App.BuildingBlocks.Integration;
 using Dapper;
 using MediatR;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Context;
 
 namespace App.BuildingBlocks.Infrastructure.Configuration.Inbox;
 
@@ -49,25 +52,28 @@ public class InboxCommandProcessor
             Type type = messageAssembly.GetType(message.Type);
             var request = JsonConvert.DeserializeObject(message.Data, type);
 
-            logger.Information("Start processing inbox message of type {Type}", type);
-
-            try
+            using (LogContext.Push(new CorrelationIdLogEnricher(((IntegrationEvent)request).CorrelationId)))
             {
-                await _mediator.Publish((INotification)request, cancellationToken);
+                logger.Information("Start processing inbox message of type {Type}", type);
+
+                try
+                {
+                    await _mediator.Publish((INotification)request, cancellationToken);
+                }
+                catch (Exception exception)
+                {
+                    logger.Error(exception, "Inbox message of type {Type} processing failed; {Message}", type, exception.Message);
+                    continue;
+                }
+
+                await connection.ExecuteAsync(sqlUpdateProcessedDate, new
+                {
+                    Date = DateTime.UtcNow,
+                    message.Id
+                });
+
+                logger.Information("Inbox message of type {Type} processed successfully", type);
             }
-            catch (Exception exception)
-            {
-                logger.Error(exception, "Inbox message of type {Type} processing failed; {Message}", type, exception.Message);
-                continue;
-            }
-
-            await connection.ExecuteAsync(sqlUpdateProcessedDate, new
-            {
-                Date = DateTime.UtcNow,
-                message.Id
-            });
-
-            logger.Information("Inbox message of type {Type} processed successfully", type);
         }
     }
 }

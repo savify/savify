@@ -1,11 +1,13 @@
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Application.Events;
+using App.BuildingBlocks.Infrastructure.Configuration.Logging;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using Dapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Context;
 
 namespace App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 
@@ -51,25 +53,28 @@ public class OutboxCommandProcessor<TContext> where TContext : DbContext
             var type = _domainNotificationsMapper.GetType(message.Type);
             var @event = JsonConvert.DeserializeObject(message.Data, type) as IDomainEventNotification;
 
-            logger.Information("Start processing outbox message {Id} of type {Type}", message.Id, type);
-
-            try
+            using (LogContext.Push(new CorrelationIdLogEnricher(@event.CorrelationId)))
             {
-                await _mediator.Publish(@event, cancellationToken);
+                logger.Information("Start processing outbox message {Id} of type {Type}", message.Id, type);
+
+                try
+                {
+                    await _mediator.Publish(@event, cancellationToken);
+                }
+                catch (Exception exception)
+                {
+                    logger.Error(exception, "Outbox message {Id} of type {Type} processing failed; {Message}", message.Id, type, exception.Message);
+                    throw;
+                }
+
+                await connection.ExecuteAsync(sqlUpdateProcessedDate, new
+                {
+                    Date = DateTime.UtcNow,
+                    message.Id
+                });
+
+                logger.Information("Outbox message {Id} of type {Type} processed successfully", message.Id, type);
             }
-            catch (Exception exception)
-            {
-                logger.Error(exception, "Outbox message {Id} of type {Type} processing failed; {Message}", message.Id, type, exception.Message);
-                throw;
-            }
-
-            await connection.ExecuteAsync(sqlUpdateProcessedDate, new
-            {
-                Date = DateTime.UtcNow,
-                message.Id
-            });
-
-            logger.Information("Outbox message {Id} of type {Type} processed successfully", message.Id, type);
         }
     }
 }

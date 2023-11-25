@@ -6,13 +6,11 @@ public abstract class InternalCommandBase : ICommand
 {
     public Guid Id { get; }
 
-    protected InternalCommandBase()
-    {
-        Id = Guid.NewGuid();
-    }
+    public Guid CorrelationId { get; }
 
-    protected InternalCommandBase(Guid id)
+    protected InternalCommandBase(Guid id, Guid correlationId)
     {
         Id = id;
+        CorrelationId = correlationId;
     }
 }

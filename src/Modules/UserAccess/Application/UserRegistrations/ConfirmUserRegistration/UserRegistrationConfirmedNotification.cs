@@ -7,7 +7,7 @@ namespace App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegist
 public class UserRegistrationConfirmedNotification : DomainEventNotificationBase<UserRegistrationConfirmedDomainEvent>
 {
     [JsonConstructor]
-    public UserRegistrationConfirmedNotification(Guid id, UserRegistrationConfirmedDomainEvent domainEvent) : base(id, domainEvent)
+    public UserRegistrationConfirmedNotification(Guid id, Guid correlationId, UserRegistrationConfirmedDomainEvent domainEvent) : base(id, correlationId, domainEvent)
     {
     }
 }
