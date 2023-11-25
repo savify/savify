@@ -12,12 +12,12 @@ public static class DomainNotificationMappingValidator
             .Where(x => x.GetInterfaces().Contains(typeof(IDomainEventNotification)))
             .ToList();
 
-        List<Type> notMappedNotifications = new List<Type>();
+        var notMappedNotifications = new List<Type>();
         foreach (var domainEventNotification in domainEventNotifications)
         {
             domainNotificationsMap.TryGetBySecond(domainEventNotification, out var name);
 
-            if (name == null)
+            if (name is null)
             {
                 notMappedNotifications.Add(domainEventNotification);
             }
