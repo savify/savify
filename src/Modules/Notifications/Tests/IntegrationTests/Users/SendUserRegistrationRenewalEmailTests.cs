@@ -13,6 +13,7 @@ public class SendUserRegistrationRenewalEmailTests : TestBase
     {
         await NotificationsModule.ExecuteCommandAsync(new SendUserRegistrationRenewalEmailCommand(
             Guid.NewGuid(),
+            Guid.NewGuid(),
             "Name",
             "test@email.com",
             "en",

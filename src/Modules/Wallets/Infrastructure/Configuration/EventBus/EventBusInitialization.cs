@@ -1,4 +1,7 @@
+using App.BuildingBlocks.Infrastructure.Configuration;
+using App.BuildingBlocks.Infrastructure.Configuration.EventBus;
 using App.BuildingBlocks.Integration;
+using App.Modules.Wallets.Application.Configuration.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
@@ -13,7 +16,7 @@ public static class EventBusInitialization
 
     private static void SubscribeToIntegrationEvents(ILogger logger)
     {
-        var eventBus = WalletsCompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
+        var eventBus = CompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
 
         // SubscribeToIntegrationEvent<SomeIntegrationEvent>(eventBus, logger);
     }
@@ -21,6 +24,6 @@ public static class EventBusInitialization
     private static void SubscribeToIntegrationEvent<T>(IEventBus eventBus, ILogger logger) where T : IntegrationEvent
     {
         logger.Information("Subscribe to {@IntegrationEvent}", typeof(T).FullName);
-        eventBus.Subscribe(new IntegrationEventGenericHandler<T>());
+        eventBus.Subscribe(new IntegrationEventGenericHandler<T>(DatabaseConfiguration.Schema));
     }
 }

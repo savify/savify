@@ -1,9 +1,6 @@
-using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
-using App.Modules.Transactions.Infrastructure.Inbox;
-using App.Modules.Transactions.Infrastructure.InternalCommands;
-using App.Modules.Transactions.Infrastructure.Outbox;
+using App.BuildingBlocks.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Transactions.Infrastructure;
@@ -22,6 +19,8 @@ public class TransactionsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(TransactionsModule.DatabaseSchemaName);
+
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());

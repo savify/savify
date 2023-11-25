@@ -1,8 +1,8 @@
-using App.BuildingBlocks.Application.Outbox;
+using App.BuildingBlocks.Infrastructure.Outbox;
 
 namespace App.Modules.Categories.Infrastructure.Outbox;
 
-public class Outbox : IOutbox
+public class Outbox : IOutbox<CategoriesContext>
 {
     private readonly CategoriesContext _categoriesContext;
 

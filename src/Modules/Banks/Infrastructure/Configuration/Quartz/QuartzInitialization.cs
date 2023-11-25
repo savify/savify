@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using App.BuildingBlocks.Infrastructure.Configuration.Quartz;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Inbox;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.InternalCommands;
 using App.Modules.Banks.Infrastructure.Configuration.Processing.Outbox;

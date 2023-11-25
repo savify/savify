@@ -1,5 +1,6 @@
 using App.Modules.Wallets.Application.BankConnectionProcessing.CreateBankConnection;
 using App.Modules.Wallets.Application.BankConnectionProcessing.GetBankConnectionProcess;
+using App.Modules.Wallets.Application.Configuration.Data;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.GetDebitWallet;
@@ -75,7 +76,7 @@ public class CreateBankConnectionCommandTests : TestBase
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
 
-        var sql = @"SELECT COUNT(*) FROM wallets.bank_accounts a WHERE a.bank_connection_id = @ConnectionId";
+        var sql = $"SELECT COUNT(*) FROM {DatabaseConfiguration.Schema.Name}.bank_accounts a WHERE a.bank_connection_id = @ConnectionId";
 
         return await connection.QuerySingleAsync<int>(sql, new { ConnectionId = bankConnectionId });
     }

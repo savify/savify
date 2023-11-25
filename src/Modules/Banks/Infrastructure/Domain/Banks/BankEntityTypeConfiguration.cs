@@ -11,7 +11,7 @@ public class BankEntityTypeConfiguration : IEntityTypeConfiguration<Bank>
 {
     public void Configure(EntityTypeBuilder<Bank> builder)
     {
-        builder.ToTable("banks", "banks");
+        builder.ToTable("banks");
 
         builder.HasKey("Id");
         builder.HasIndex(x => x.ExternalId).IsUnique();

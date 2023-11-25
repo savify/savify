@@ -4,11 +4,11 @@ using App.BuildingBlocks.Domain;
 
 namespace App.BuildingBlocks.Tests.UnitTests;
 
-public class DomainEventsAccessor
+public static class DomainEventsAccessor
 {
     public static List<IDomainEvent> GetAllDomainEvents(Entity aggregate)
     {
-        List<IDomainEvent> domainEvents = new List<IDomainEvent>();
+        var domainEvents = new List<IDomainEvent>();
 
         if (aggregate.DomainEvents != null)
         {

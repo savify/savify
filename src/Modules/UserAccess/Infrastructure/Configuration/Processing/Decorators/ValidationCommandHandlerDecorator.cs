@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.UserAccess.Application.Configuration.Commands;
+using App.Modules.UserAccess.Application.Configuration.Localization;
 using App.Modules.UserAccess.Application.Contracts;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
@@ -18,11 +19,11 @@ internal class ValidationCommandHandlerDecorator<T, TResult> : ICommandHandler<T
     public ValidationCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
         IEnumerable<IValidator<T>> validators,
-        IStringLocalizer localizer)
+        ILocalizerProvider localizerProvider)
     {
         _decorated = decorated;
         _validators = validators;
-        _localizer = localizer;
+        _localizer = localizerProvider.GetLocalizer();
     }
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
@@ -44,11 +45,11 @@ internal class ValidationCommandHandlerDecorator<T> : ICommandHandler<T> where T
     public ValidationCommandHandlerDecorator(
         ICommandHandler<T> decorated,
         IEnumerable<IValidator<T>> validators,
-        IStringLocalizer localizer)
+        ILocalizerProvider localizerProvider)
     {
         _decorated = decorated;
         _validators = validators;
-        _localizer = localizer;
+        _localizer = localizerProvider.GetLocalizer();
     }
 
     public async Task Handle(T command, CancellationToken cancellationToken)

@@ -1,6 +1,7 @@
 using App.Modules.Wallets.Application.BankConnectionProcessing.ChooseBankAccountToConnect;
 using App.Modules.Wallets.Application.BankConnectionProcessing.CreateBankConnection;
 using App.Modules.Wallets.Application.BankConnectionProcessing.GetBankConnectionProcess;
+using App.Modules.Wallets.Application.Configuration.Data;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.Wallets.Application.Wallets.DebitWallets.GetDebitWallet;
@@ -68,7 +69,7 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
 
-        var sql = @"SELECT id FROM wallets.bank_accounts a WHERE a.external_id = @ExternalId";
+        var sql = $"SELECT id FROM {DatabaseConfiguration.Schema.Name}.bank_accounts a WHERE a.external_id = @ExternalId";
 
         return await connection.QuerySingleAsync<Guid>(sql, new { ExternalId = externalId });
     }

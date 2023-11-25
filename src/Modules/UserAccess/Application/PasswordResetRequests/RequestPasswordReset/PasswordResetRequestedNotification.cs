@@ -7,7 +7,7 @@ namespace App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswo
 public class PasswordResetRequestedNotification : DomainEventNotificationBase<PasswordResetRequestedDomainEvent>
 {
     [JsonConstructor]
-    public PasswordResetRequestedNotification(Guid id, PasswordResetRequestedDomainEvent domainEvent) : base(id, domainEvent)
+    public PasswordResetRequestedNotification(Guid id, Guid correlationId, PasswordResetRequestedDomainEvent domainEvent) : base(id, correlationId, domainEvent)
     {
     }
 }

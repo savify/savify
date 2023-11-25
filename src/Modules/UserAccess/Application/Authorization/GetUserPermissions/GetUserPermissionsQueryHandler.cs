@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.Configuration.Queries;
 using Dapper;
 
@@ -17,9 +18,11 @@ internal class GetUserPermissionsQueryHandler : IQueryHandler<GetUserPermissions
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT permission_code AS code " +
-                           "FROM user_access.user_permissions_view v " +
-                           "WHERE v.user_id = @UserId";
+        var sql = $"""
+                   SELECT permission_code AS code
+                   FROM {DatabaseConfiguration.Schema.Name}.user_permissions_view v
+                   WHERE v.user_id = @UserId
+                   """;
         var permissions = await connection.QueryAsync<UserPermissionDto>(sql, new { query.UserId });
 
         return permissions.AsList();

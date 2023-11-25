@@ -7,7 +7,7 @@ public class SaltEdgeCustomerEntityTypeConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<SaltEdgeCustomer> builder)
     {
-        builder.ToTable("salt_edge_customers", "wallets");
+        builder.ToTable("salt_edge_customers");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using App.Modules.UserAccess.Application.Authentication.AuthenticateUser;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.IntegrationTests.Users;
 using Dapper;
@@ -96,7 +97,7 @@ public class AuthenticateUserCommandTests : TestBase
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
-        var sql = "UPDATE user_access.users u SET is_active = false WHERE u.id = @userId";
+        var sql = $"UPDATE {DatabaseConfiguration.Schema.Name}.users u SET is_active = false WHERE u.id = @userId";
 
         await sqlConnection.ExecuteScalarAsync(sql, new { userId });
     }

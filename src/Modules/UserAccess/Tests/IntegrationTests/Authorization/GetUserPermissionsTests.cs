@@ -1,4 +1,5 @@
 using App.Modules.UserAccess.Application.Authorization.GetUserPermissions;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.IntegrationTests.Users;
 using Dapper;
@@ -31,8 +32,8 @@ public class GetUserPermissionsTests : TestBase
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
-        var sql = "INSERT INTO user_access.permissions VALUES ('SomePermission', 'SomePermission', 'SomePermission'); " +
-                        "INSERT INTO user_access.roles_permissions VALUES ('User', 'SomePermission');";
+        var sql = $"INSERT INTO {DatabaseConfiguration.Schema.Name}.permissions VALUES ('SomePermission', 'SomePermission', 'SomePermission'); " +
+                        $"INSERT INTO {DatabaseConfiguration.Schema.Name}.roles_permissions VALUES ('User', 'SomePermission');";
 
         await sqlConnection.ExecuteScalarAsync(sql);
     }
