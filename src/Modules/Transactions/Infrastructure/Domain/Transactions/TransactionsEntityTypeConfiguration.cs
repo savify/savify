@@ -1,8 +1,9 @@
 ﻿using App.Modules.Transactions.Domain.Transactions;
 using App.Modules.Transactions.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using App.BuildingBlocks.Infrastructure.Data.Postgres;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace App.Modules.Transactions.Infrastructure.Domain.Transactions;
 
@@ -10,7 +11,7 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
 {
     public void Configure(EntityTypeBuilder<Transaction> builder)
     {
-        builder.ToTable("transactions", "transactions");
+        builder.ToTable("transactions");
 
         builder.HasKey(t => t.Id);
         builder.Property(t => t.Id).HasColumnName("id");
@@ -24,7 +25,7 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
         builder.OwnsOne<Source>("_source", b =>
         {
             b.WithOwner().HasForeignKey("transaction_id");
-            b.ToTable("transaction_sources", "transactions");
+            b.ToTable("transaction_sources");
 
             b.OwnsOne(p => p.Sender, s =>
             {
@@ -37,7 +38,7 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
         builder.OwnsOne<Target>("_target", b =>
         {
             b.WithOwner().HasForeignKey("transaction_id");
-            b.ToTable("transaction_targets", "transactions");
+            b.ToTable("transaction_targets");
 
             b.OwnsOne(p => p.Recipient, s =>
             {
@@ -51,16 +52,14 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
 
         builder.Property<string>("_comment").HasColumnName("comment");
 
+        var tagsComparer = new ValueComparer<ICollection<string>>(
+            equalsExpression: (c1, c2) => (c1 == null && c2 == null) || (c1 != null && c2 != null && c1.SequenceEqual(c2)),
+            hashCodeExpression: c => c.Aggregate(0, (accumulator, item) => HashCode.Combine(accumulator, item.GetHashCode())),
+            snapshotExpression: c => c.ToList());
+
         builder.Property<ICollection<string>>("_tags")
             .HasColumnName("tags")
-            .HasConversion(
-                a => string.Join(',', a),
-                a => a.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
-            .HasColumnType("text[]")
-            .Metadata.SetValueComparer(
-        new ValueComparer<ICollection<string>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
-                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                    c => c.ToHashSet())); ;
+            .HasPostgresArrayConversion()
+            .Metadata.SetValueComparer(tagsComparer);
     }
 }

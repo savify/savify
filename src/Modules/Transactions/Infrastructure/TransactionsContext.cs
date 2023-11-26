@@ -3,9 +3,6 @@ using App.BuildingBlocks.Infrastructure.InternalCommands;
 using App.BuildingBlocks.Infrastructure.Outbox;
 using App.Modules.Transactions.Domain.Transactions;
 using App.Modules.Transactions.Infrastructure.Domain.Transactions;
-using App.Modules.Transactions.Infrastructure.Inbox;
-using App.Modules.Transactions.Infrastructure.InternalCommands;
-using App.Modules.Transactions.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Transactions.Infrastructure;

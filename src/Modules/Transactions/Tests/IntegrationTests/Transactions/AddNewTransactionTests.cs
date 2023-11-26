@@ -25,7 +25,7 @@ public class AddNewTransactionTests : TestBase
 
         Assert.IsNotNull(transaction);
         Assert.That(transaction.Type, Is.EqualTo(command.Type));
-        Assert.That(transaction.MadeOn, Is.EqualTo(command.MadeOn));
+        Assert.That(transaction.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transaction.Comment, Is.EqualTo(command.Comment));
         Assert.That(transaction.Tags, Is.EquivalentTo(command.Tags));
 

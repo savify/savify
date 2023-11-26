@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using App.Modules.Transactions.Application.Configuration.Commands;
+﻿using App.Modules.Transactions.Application.Configuration.Commands;
 using App.Modules.Transactions.Domain.Finance;
 using App.Modules.Transactions.Domain.Transactions;
 

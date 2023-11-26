@@ -145,7 +145,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.Transactions.Domain.Transactions.Transaction", b =>
                 {
-                    b.OwnsOne("App.Modules.Transactions.Domain.Transactions.Source", "_source", b1 =>
+                    b.OwnsOne("App.Modules.Transactions.Domain.Transactions.Transaction._source#App.Modules.Transactions.Domain.Transactions.Source", "_source", b1 =>
                         {
                             b1.Property<Guid>("transaction_id")
                                 .HasColumnType("uuid");
@@ -157,25 +157,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("transaction_id");
 
-                            b1.OwnsOne("App.Modules.Transactions.Domain.Transactions.Sender", "Sender", b2 =>
-                                {
-                                    b2.Property<Guid>("Sourcetransaction_id")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<string>("Address")
-                                        .IsRequired()
-                                        .HasColumnType("text")
-                                        .HasColumnName("sender_address");
-
-                                    b2.HasKey("Sourcetransaction_id");
-
-                                    b2.ToTable("transaction_sources", "transactions");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("Sourcetransaction_id");
-                                });
-
-                            b1.OwnsOne("App.Modules.Transactions.Domain.Finance.Money", "Amount", b2 =>
+                            b1.OwnsOne("App.Modules.Transactions.Domain.Transactions.Transaction._source#App.Modules.Transactions.Domain.Transactions.Source.Amount#App.Modules.Transactions.Domain.Finance.Money", "Amount", b2 =>
                                 {
                                     b2.Property<Guid>("Sourcetransaction_id")
                                         .HasColumnType("uuid");
@@ -191,7 +173,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                                     b2.WithOwner()
                                         .HasForeignKey("Sourcetransaction_id");
 
-                                    b2.OwnsOne("App.Modules.Transactions.Domain.Finance.Currency", "Currency", b3 =>
+                                    b2.OwnsOne("App.Modules.Transactions.Domain.Transactions.Transaction._source#App.Modules.Transactions.Domain.Transactions.Source.Amount#App.Modules.Transactions.Domain.Finance.Money.Currency#App.Modules.Transactions.Domain.Finance.Currency", "Currency", b3 =>
                                         {
                                             b3.Property<Guid>("MoneySourcetransaction_id")
                                                 .HasColumnType("uuid");
@@ -213,6 +195,24 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                                         .IsRequired();
                                 });
 
+                            b1.OwnsOne("App.Modules.Transactions.Domain.Transactions.Transaction._source#App.Modules.Transactions.Domain.Transactions.Source.Sender#App.Modules.Transactions.Domain.Transactions.Sender", "Sender", b2 =>
+                                {
+                                    b2.Property<Guid>("Sourcetransaction_id")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<string>("Address")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("sender_address");
+
+                                    b2.HasKey("Sourcetransaction_id");
+
+                                    b2.ToTable("transaction_sources", "transactions");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("Sourcetransaction_id");
+                                });
+
                             b1.Navigation("Amount")
                                 .IsRequired();
 
@@ -220,7 +220,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("App.Modules.Transactions.Domain.Transactions.Target", "_target", b1 =>
+                    b.OwnsOne("App.Modules.Transactions.Domain.Transactions.Transaction._target#App.Modules.Transactions.Domain.Transactions.Target", "_target", b1 =>
                         {
                             b1.Property<Guid>("transaction_id")
                                 .HasColumnType("uuid");
@@ -232,25 +232,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("transaction_id");
 
-                            b1.OwnsOne("App.Modules.Transactions.Domain.Transactions.Recipient", "Recipient", b2 =>
-                                {
-                                    b2.Property<Guid>("Targettransaction_id")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<string>("Address")
-                                        .IsRequired()
-                                        .HasColumnType("text")
-                                        .HasColumnName("recipient_address");
-
-                                    b2.HasKey("Targettransaction_id");
-
-                                    b2.ToTable("transaction_targets", "transactions");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("Targettransaction_id");
-                                });
-
-                            b1.OwnsOne("App.Modules.Transactions.Domain.Finance.Money", "Amount", b2 =>
+                            b1.OwnsOne("App.Modules.Transactions.Domain.Transactions.Transaction._target#App.Modules.Transactions.Domain.Transactions.Target.Amount#App.Modules.Transactions.Domain.Finance.Money", "Amount", b2 =>
                                 {
                                     b2.Property<Guid>("Targettransaction_id")
                                         .HasColumnType("uuid");
@@ -266,7 +248,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                                     b2.WithOwner()
                                         .HasForeignKey("Targettransaction_id");
 
-                                    b2.OwnsOne("App.Modules.Transactions.Domain.Finance.Currency", "Currency", b3 =>
+                                    b2.OwnsOne("App.Modules.Transactions.Domain.Transactions.Transaction._target#App.Modules.Transactions.Domain.Transactions.Target.Amount#App.Modules.Transactions.Domain.Finance.Money.Currency#App.Modules.Transactions.Domain.Finance.Currency", "Currency", b3 =>
                                         {
                                             b3.Property<Guid>("MoneyTargettransaction_id")
                                                 .HasColumnType("uuid");
@@ -286,6 +268,24 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
 
                                     b2.Navigation("Currency")
                                         .IsRequired();
+                                });
+
+                            b1.OwnsOne("App.Modules.Transactions.Domain.Transactions.Transaction._target#App.Modules.Transactions.Domain.Transactions.Target.Recipient#App.Modules.Transactions.Domain.Transactions.Recipient", "Recipient", b2 =>
+                                {
+                                    b2.Property<Guid>("Targettransaction_id")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<string>("Address")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("recipient_address");
+
+                                    b2.HasKey("Targettransaction_id");
+
+                                    b2.ToTable("transaction_targets", "transactions");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("Targettransaction_id");
                                 });
 
                             b1.Navigation("Amount")
