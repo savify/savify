@@ -21,9 +21,7 @@ public class ApplicationTests : TestBase
             .Or()
             .Inherit(typeof(CommandBase<>))
             .Or()
-            .Inherit(typeof(InternalCommandBase<>))
-            .Or()
-            .Inherit(typeof(InternalCommandBase<>))
+            .Inherit(typeof(InternalCommandBase))
             .Or()
             .ImplementInterface(typeof(ICommand))
             .Or()
@@ -115,7 +113,7 @@ public class ApplicationTests : TestBase
     {
         var types = Types.InAssembly(ApplicationAssembly)
             .That()
-            .Inherit(typeof(InternalCommandBase<>))
+            .Inherit(typeof(InternalCommandBase))
             .GetTypes();
 
         var failingTypes = new List<Type>();

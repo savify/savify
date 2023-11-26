@@ -8,7 +8,7 @@ public class BanksSynchronisationProcessEntityTypeConfiguration : IEntityTypeCon
 {
     public void Configure(EntityTypeBuilder<BanksSynchronisationProcess> builder)
     {
-        builder.ToTable("banks_synchronisation_processes", "banks");
+        builder.ToTable("banks_synchronisation_processes");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");

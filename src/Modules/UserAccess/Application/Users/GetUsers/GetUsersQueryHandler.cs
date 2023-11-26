@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.Configuration.Queries;
 using Dapper;
 
@@ -17,10 +18,12 @@ internal class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDto>
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT id, name, email, is_active AS isActive, created_at AS createdAt, array_agg(role_code) AS roles " +
-                           "FROM user_access.users u " +
-                           "INNER JOIN user_access.user_roles ur on u.id = ur.user_id " +
-                           "GROUP BY id";
+        var sql = $"""
+                    SELECT id, name, email, is_active AS isActive, created_at AS createdAt, array_agg(role_code) AS roles
+                    FROM {DatabaseConfiguration.Schema.Name}.users u
+                        INNER JOIN {DatabaseConfiguration.Schema.Name}.user_roles ur on u.id = ur.user_id
+                    GROUP BY id
+                   """;
         var users = await connection.QueryAsync<UserDto>(sql);
 
         return users.AsList();

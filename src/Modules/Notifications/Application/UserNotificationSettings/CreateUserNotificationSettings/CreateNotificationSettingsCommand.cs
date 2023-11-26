@@ -7,7 +7,13 @@ namespace App.Modules.Notifications.Application.UserNotificationSettings.CreateU
 public class CreateNotificationSettingsCommand : InternalCommandBase
 {
     [JsonConstructor]
-    public CreateNotificationSettingsCommand(Guid id, Guid userId, string name, string email, string preferredLanguage) : base(id)
+    public CreateNotificationSettingsCommand(
+        Guid id,
+        Guid correlationId,
+        Guid userId,
+        string name,
+        string email,
+        string preferredLanguage) : base(id, correlationId)
     {
         UserId = userId;
         Name = name;

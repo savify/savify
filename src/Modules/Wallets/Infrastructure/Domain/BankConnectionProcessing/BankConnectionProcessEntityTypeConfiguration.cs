@@ -11,7 +11,7 @@ public class BankConnectionProcessEntityTypeConfiguration : IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<BankConnectionProcess> builder)
     {
-        builder.ToTable("bank_connection_processes", "wallets");
+        builder.ToTable("bank_connection_processes");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");

@@ -1,6 +1,7 @@
 using App.Modules.UserAccess.Application.Authentication.AuthenticateUser;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.IntegrationTests.Users;
 using Dapper;
@@ -92,7 +93,7 @@ public class RefreshTokensCommandTests : TestBase
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
-        var sql = "UPDATE user_access.refresh_tokens r SET expires_at = @expiresAt WHERE r.user_id = @userId";
+        var sql = $"UPDATE {DatabaseConfiguration.Schema.Name}.refresh_tokens r SET expires_at = @expiresAt WHERE r.user_id = @userId";
 
         await sqlConnection.ExecuteScalarAsync(sql, new { expiresAt = DateTime.UtcNow.AddDays(-1), userId });
     }

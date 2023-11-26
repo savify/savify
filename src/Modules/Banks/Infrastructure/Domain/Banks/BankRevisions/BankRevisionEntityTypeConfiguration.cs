@@ -9,7 +9,7 @@ public class BankRevisionEntityTypeConfiguration : IEntityTypeConfiguration<Bank
 {
     public void Configure(EntityTypeBuilder<BankRevision> builder)
     {
-        builder.ToTable("bank_revisions", "banks");
+        builder.ToTable("bank_revisions");
 
         builder.HasKey("Id", "BankId");
         builder.Property(x => x.Id).HasColumnName("id");

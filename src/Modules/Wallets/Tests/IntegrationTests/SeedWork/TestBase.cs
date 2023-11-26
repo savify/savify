@@ -1,10 +1,12 @@
 using System.Data;
+using System.Reflection;
 using App.API;
+using App.BuildingBlocks.Infrastructure.Configuration;
+using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
+using App.Modules.Wallets.Application.Configuration.Data;
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Wallets.Infrastructure.Configuration;
-using App.Modules.Wallets.Infrastructure.Configuration.Processing.Outbox;
 using App.Modules.Wallets.IntegrationTests.SeedData;
 using Dapper;
 using MediatR;
@@ -24,6 +26,8 @@ public class TestBase
 
     protected string ConnectionString { get; private set; }
 
+    private static Assembly _applicationAssembly = Assembly.GetAssembly(typeof(CommandBase));
+
     [OneTimeSetUp]
     public void Init()
     {
@@ -40,7 +44,7 @@ public class TestBase
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
-        WalletsCompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
     }
@@ -62,7 +66,7 @@ public class TestBase
     protected async Task<List<OutboxMessageDto>> GetOutboxMessages()
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
-        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection);
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, _applicationAssembly);
 
         return messages;
     }
@@ -70,9 +74,9 @@ public class TestBase
     protected async Task<T> GetLastOutboxMessage<T>() where T : class, INotification
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
-        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection);
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, _applicationAssembly);
 
-        return OutboxMessagesAccessor.Deserialize<T>(messages.Last());
+        return OutboxMessagesAccessor.Deserialize<T>(messages.Last(), _applicationAssembly);
     }
 
     private static async Task ClearDatabase(IDbConnection connection)

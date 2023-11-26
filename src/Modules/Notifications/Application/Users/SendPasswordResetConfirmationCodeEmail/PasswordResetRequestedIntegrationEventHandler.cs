@@ -17,6 +17,7 @@ public class PasswordResetRequestedIntegrationEventHandler : INotificationHandle
     {
         await _commandScheduler.EnqueueAsync(new SendPasswordResetConfirmationCodeEmailCommand(
             @event.Id,
+            @event.CorrelationId,
             @event.Email,
             @event.ConfirmationCode));
     }

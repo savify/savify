@@ -19,10 +19,7 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
         {
             var user = _httpContextAccessor.HttpContext?.User;
 
-            if (_httpContextAccessor
-                    .HttpContext?
-                    .User
-                    .FindFirst(ClaimTypes.NameIdentifier)?.Value != null)
+            if (user.FindFirst(ClaimTypes.NameIdentifier)?.Value != null)
             {
                 return Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             }

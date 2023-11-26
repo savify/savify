@@ -9,27 +9,19 @@ namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing.Decorat
 internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {
     private readonly ICommandHandler<T, TResult> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly UserAccessContext _userAccessContext;
+    private readonly IUnitOfWork<UserAccessContext> _unitOfWork;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
-        IUnitOfWork unitOfWork,
-        UserAccessContext userAccessContext)
+        IUnitOfWork<UserAccessContext> unitOfWork)
     {
         _decorated = decorated;
         _unitOfWork = unitOfWork;
-        _userAccessContext = userAccessContext;
     }
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
         var result = await _decorated.Handle(command, cancellationToken);
-
-        if (command is InternalCommandBase<TResult>)
-        {
-            await SetInternalCommandAsProcessedAsync(_userAccessContext, command.Id, cancellationToken);
-        }
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -40,12 +32,12 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
 internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
 {
     private readonly ICommandHandler<T> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork<UserAccessContext> _unitOfWork;
     private readonly UserAccessContext _userAccessContext;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T> decorated,
-        IUnitOfWork unitOfWork,
+        IUnitOfWork<UserAccessContext> unitOfWork,
         UserAccessContext userAccessContext)
     {
         _decorated = decorated;

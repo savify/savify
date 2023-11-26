@@ -17,6 +17,7 @@ public class PasswordResetRequestedPublishNotificationHandler : INotificationHan
     {
         await _eventBus.Publish(new PasswordResetRequestedIntegrationEvent(
             notification.Id,
+            notification.CorrelationId,
             notification.DomainEvent.OccurredOn,
             notification.DomainEvent.UserEmail,
             notification.DomainEvent.ConfirmationCode.Value));

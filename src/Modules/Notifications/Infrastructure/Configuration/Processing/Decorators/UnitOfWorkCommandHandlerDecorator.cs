@@ -9,27 +9,19 @@ namespace App.Modules.Notifications.Infrastructure.Configuration.Processing.Deco
 internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {
     private readonly ICommandHandler<T, TResult> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly NotificationsContext _notificationsContext;
+    private readonly IUnitOfWork<NotificationsContext> _unitOfWork;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
-        IUnitOfWork unitOfWork,
-        NotificationsContext notificationsContext)
+        IUnitOfWork<NotificationsContext> unitOfWork)
     {
         _decorated = decorated;
         _unitOfWork = unitOfWork;
-        _notificationsContext = notificationsContext;
     }
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
         var result = await _decorated.Handle(command, cancellationToken);
-
-        if (command is InternalCommandBase<TResult>)
-        {
-            await SetInternalCommandAsProcessedAsync(_notificationsContext, command.Id, cancellationToken);
-        }
 
         await _unitOfWork.CommitAsync(cancellationToken);
 
@@ -40,12 +32,12 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
 internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
 {
     private readonly ICommandHandler<T> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork<NotificationsContext> _unitOfWork;
     private readonly NotificationsContext _notificationsContext;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T> decorated,
-        IUnitOfWork unitOfWork,
+        IUnitOfWork<NotificationsContext> unitOfWork,
         NotificationsContext notificationsContext)
     {
         _decorated = decorated;

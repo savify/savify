@@ -6,7 +6,11 @@ namespace App.Modules.Notifications.Application.Users.SendPasswordResetConfirmat
 public class SendPasswordResetConfirmationCodeEmailCommand : InternalCommandBase
 {
     [JsonConstructor]
-    public SendPasswordResetConfirmationCodeEmailCommand(Guid id, string email, string confirmationCode) : base(id)
+    public SendPasswordResetConfirmationCodeEmailCommand(
+        Guid id,
+        Guid correlationId,
+        string email,
+        string confirmationCode) : base(id, correlationId)
     {
         Email = email;
         ConfirmationCode = confirmationCode;

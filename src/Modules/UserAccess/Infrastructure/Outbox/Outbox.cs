@@ -1,8 +1,8 @@
-using App.BuildingBlocks.Application.Outbox;
+using App.BuildingBlocks.Infrastructure.Outbox;
 
 namespace App.Modules.UserAccess.Infrastructure.Outbox;
 
-public class Outbox : IOutbox
+public class Outbox : IOutbox<UserAccessContext>
 {
     private readonly UserAccessContext _userAccessContext;
 

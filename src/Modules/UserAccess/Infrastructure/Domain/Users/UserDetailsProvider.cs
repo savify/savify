@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Domain;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Domain.Users;
 using Dapper;
 
@@ -18,7 +19,7 @@ public class UserDetailsProvider : IUserDetailsProvider
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        var sql = "SELECT id FROM user_access.users u WHERE u.email = @Email";
+        var sql = $"SELECT id FROM {DatabaseConfiguration.Schema.Name}.users u WHERE u.email = @Email";
 
         var userId = connection.QuerySingleOrDefault<Guid>(sql, new { email });
 

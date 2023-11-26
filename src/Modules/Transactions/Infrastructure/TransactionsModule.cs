@@ -5,6 +5,8 @@ namespace App.Modules.Transactions.Infrastructure;
 
 public class TransactionsModule : ITransactionsModule
 {
+    public static string DatabaseSchemaName => "transactions";
+
     public async Task ExecuteCommandAsync(ICommand command)
     {
         await CommandExecutor.Execute(command);

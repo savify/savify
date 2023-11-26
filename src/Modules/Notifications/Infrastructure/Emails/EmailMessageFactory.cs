@@ -1,4 +1,5 @@
 using System.Globalization;
+using App.Modules.Notifications.Application.Configuration.Localization;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Application.Emails.Templates;
 using Microsoft.Extensions.Localization;
@@ -11,10 +12,10 @@ public class EmailMessageFactory : IEmailMessageFactory
 
     private readonly IStringLocalizer _localizer;
 
-    public EmailMessageFactory(IEmailTemplateGenerator emailTemplateGenerator, IStringLocalizer localizer)
+    public EmailMessageFactory(IEmailTemplateGenerator emailTemplateGenerator, ILocalizerProvider localizerProvider)
     {
         _emailTemplateGenerator = emailTemplateGenerator;
-        _localizer = localizer;
+        _localizer = localizerProvider.GetLocalizer();
     }
 
     public EmailMessage CreateLocalizedEmailMessage<T>(string receiverEmail, string subject, T templateModel, string culture) where T : IEmailTemplateModel

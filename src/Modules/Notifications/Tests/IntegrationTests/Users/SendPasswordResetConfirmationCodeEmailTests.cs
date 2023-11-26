@@ -16,11 +16,13 @@ public class SendPasswordResetConfirmationCodeEmailTests : TestBase
         await NotificationsModule.ExecuteCommandAsync(new CreateNotificationSettingsCommand(
             Guid.NewGuid(),
             Guid.NewGuid(),
+            Guid.NewGuid(),
             "Name",
             "test@email.com",
             "en"));
 
         await NotificationsModule.ExecuteCommandAsync(new SendPasswordResetConfirmationCodeEmailCommand(
+            Guid.NewGuid(),
             Guid.NewGuid(),
             "test@email.com",
             "ABC123"));
@@ -35,6 +37,7 @@ public class SendPasswordResetConfirmationCodeEmailTests : TestBase
             async Task () =>
             {
                 await NotificationsModule.ExecuteCommandAsync(new SendPasswordResetConfirmationCodeEmailCommand(
+                    Guid.NewGuid(),
                     Guid.NewGuid(),
                     "test@email.com",
                     "ABC123"));

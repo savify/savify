@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 
-public class DomainNotificationsMapper : IDomainNotificationsMapper
+public class DomainNotificationsMapper<TContext> : IDomainNotificationsMapper<TContext> where TContext : DbContext
 {
     private readonly BiDictionary<string, Type> _domainNotificationsMap;
 

@@ -1,6 +1,6 @@
-using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.BuildingBlocks.Infrastructure.Outbox;
 using App.Modules.Transactions.Domain.Transactions;
 using App.Modules.Transactions.Infrastructure.Domain.Transactions;
 using App.Modules.Transactions.Infrastructure.Inbox;
@@ -26,6 +26,8 @@ public class TransactionsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(TransactionsModule.DatabaseSchemaName);
+
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
