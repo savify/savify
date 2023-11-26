@@ -14,11 +14,12 @@ public class UserRegistrationConfirmedIntegrationEvent : IntegrationEvent
 
     public UserRegistrationConfirmedIntegrationEvent(
         Guid id,
+        Guid correlationId,
         DateTime occurredOn,
         Guid userId,
         string email,
         string name,
-        string preferredLanguage) : base(id, occurredOn)
+        string preferredLanguage) : base(id, correlationId, occurredOn)
     {
         UserId = userId;
         Email = email;

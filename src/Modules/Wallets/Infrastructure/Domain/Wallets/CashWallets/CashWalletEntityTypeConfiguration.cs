@@ -10,7 +10,7 @@ internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<Cash
 {
     public void Configure(EntityTypeBuilder<CashWallet> builder)
     {
-        builder.ToTable("cash_wallets", "wallets");
+        builder.ToTable("cash_wallets");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");

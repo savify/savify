@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.BuildingBlocks.Infrastructure;
 
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
 {
-    private readonly DbContext _context;
+    private readonly TContext _context;
 
-    private readonly IDomainEventsDispatcher _domainEventsDispatcher;
+    private readonly IDomainEventsDispatcher<TContext> _domainEventsDispatcher;
 
-    public UnitOfWork(DbContext context, IDomainEventsDispatcher domainEventsDispatcher)
+    public UnitOfWork(TContext context, IDomainEventsDispatcher<TContext> domainEventsDispatcher)
     {
         _context = context;
         _domainEventsDispatcher = domainEventsDispatcher;

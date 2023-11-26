@@ -18,6 +18,7 @@ public class UserRegistrationConfirmedIntegrationEventHandler : INotificationHan
     {
         await _commandScheduler.EnqueueAsync(new CreateNotificationSettingsCommand(
             @event.Id,
+            @event.CorrelationId,
             @event.UserId,
             @event.Name,
             @event.Email,
@@ -25,6 +26,7 @@ public class UserRegistrationConfirmedIntegrationEventHandler : INotificationHan
 
         await _commandScheduler.EnqueueAsync(new SendUserRegistrationConfirmedEmailCommand(
             Guid.NewGuid(),
+            @event.CorrelationId,
             @event.Name,
             @event.Email,
             @event.PreferredLanguage));

@@ -6,6 +6,7 @@ using App.API.Configuration.Validation;
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Infrastructure.Configuration.DependencyInjection;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Infrastructure.Localization;
 using App.Integrations.SaltEdge;
@@ -23,6 +24,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Serilog;
 using Serilog.Enrichers.Sensitive;
+using Serilog.Sinks.Elasticsearch;
 using ILogger = Serilog.ILogger;
 
 namespace App.API;
@@ -33,11 +35,13 @@ public class Program
 
     private static ILogger _loggerForApi;
 
+    private static LoggerConfiguration _loggerConfiguration;
+
     public static void Main(string[] args)
     {
-        ConfigureLogger();
-
         var builder = WebApplication.CreateBuilder(args);
+
+        ConfigureLogger(builder.Configuration);
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -72,6 +76,10 @@ public class Program
             });
         });
 
+        builder.Services.AddEventBus();
+        builder.Services.AddLogger(_logger);
+        builder.Services.AddInternalProcessingServices();
+        builder.Services.AddSqlConnectionFactory(builder.Configuration);
         builder.Services.AddSaltEdgeIntegration(builder.Configuration);
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
@@ -125,17 +133,25 @@ public class Program
         app.Run();
     }
 
-    private static void ConfigureLogger()
+    private static void ConfigureLogger(IConfiguration configuration)
     {
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
+        var logTemplate = "[{Environment}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}";
 
-        _logger = new LoggerConfiguration()
+        _loggerConfiguration = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .Enrich.WithSensitiveDataMasking()
             .Destructure.UsingAttributes()
-            .Enrich.WithProperty("Environment", environment!)
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
-            .CreateLogger();
+            .Enrich.WithProperty("Environment", environment)
+            .WriteTo.Console(outputTemplate: logTemplate)
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Uri"]!))
+            {
+                AutoRegisterTemplate = true,
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
+                IndexFormat = $"savify-{environment.ToLower().Replace(".", "-")}"
+            });
+
+        _logger = _loggerConfiguration.CreateLogger();
 
         _loggerForApi = _logger.ForContext("Module", "API");
         _loggerForApi.Information("Logger configured");

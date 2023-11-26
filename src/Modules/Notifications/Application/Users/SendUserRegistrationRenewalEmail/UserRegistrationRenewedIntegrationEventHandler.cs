@@ -17,6 +17,7 @@ public class UserRegistrationRenewedIntegrationEventHandler : INotificationHandl
     {
         await _commandScheduler.EnqueueAsync(new SendUserRegistrationRenewalEmailCommand(
             @event.Id,
+            @event.CorrelationId,
             @event.Name,
             @event.Email,
             @event.PreferredLanguage,

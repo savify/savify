@@ -1,29 +1,35 @@
+using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Events;
-using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Infrastructure.Outbox;
 using App.BuildingBlocks.Infrastructure.Serialization;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 
-public class DomainEventsDispatcher : IDomainEventsDispatcher
+public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext> where TContext : DbContext
 {
     private readonly IMediator _mediator;
 
-    private readonly IOutbox _outbox;
+    private readonly IExecutionContextAccessor _executionContextAccessor;
 
-    private readonly IDomainEventsAccessor _domainEventsAccessor;
+    private readonly IOutbox<TContext> _outbox;
 
-    private readonly IDomainNotificationsMapper _domainNotificationsMapper;
+    private readonly IDomainEventsAccessor<TContext> _domainEventsAccessor;
+
+    private readonly IDomainNotificationsMapper<TContext> _domainNotificationsMapper;
 
     public DomainEventsDispatcher(
         IMediator mediator,
-        IOutbox outbox,
-        IDomainEventsAccessor domainEventsAccessor,
-        IDomainNotificationsMapper domainNotificationsMapper)
+        IExecutionContextAccessor executionContextAccessor,
+        IOutbox<TContext> outbox,
+        IDomainEventsAccessor<TContext> domainEventsAccessor,
+        IDomainNotificationsMapper<TContext> domainNotificationsMapper)
     {
         _mediator = mediator;
+        _executionContextAccessor = executionContextAccessor;
         _outbox = outbox;
         _domainEventsAccessor = domainEventsAccessor;
         _domainNotificationsMapper = domainNotificationsMapper;
@@ -44,6 +50,7 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
                 domainNotification = Activator.CreateInstance(
                     domainNotificationType,
                     domainEvent.Id,
+                    _executionContextAccessor.CorrelationId,
                     domainEvent);
             }
 
@@ -57,7 +64,10 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
 
         foreach (var domainEvent in domainEvents)
         {
-            await _mediator.Publish(domainEvent);
+            await _mediator.Publish(domainEvent).ContinueWith(async _ =>
+            {
+                await this.DispatchEventsAsync();
+            });
         }
 
         foreach (var domainEventNotification in domainEventNotifications)

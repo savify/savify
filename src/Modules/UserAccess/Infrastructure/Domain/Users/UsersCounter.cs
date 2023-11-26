@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Domain.Users;
 using Dapper;
 
@@ -17,7 +18,7 @@ public class UsersCounter : IUsersCounter
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT COUNT(*) FROM user_access.users WHERE email = @email";
+        var sql = $"SELECT COUNT(*) FROM {DatabaseConfiguration.Schema.Name}.users WHERE email = @email";
 
         return connection.QuerySingle<int>(sql, new { email });
     }

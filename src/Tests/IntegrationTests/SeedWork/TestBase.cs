@@ -1,6 +1,7 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Domain;
+using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Tests.IntegrationTests;
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
 using App.Database.Scripts.Clear;
@@ -35,6 +36,7 @@ public class TestBase
         }
 
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
+        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();

@@ -16,6 +16,7 @@ public class UserNotificationSettingsCounterTests : TestBase
 
         await NotificationsModule.ExecuteCommandAsync(new CreateNotificationSettingsCommand(
             Guid.NewGuid(),
+            Guid.NewGuid(),
             userId,
             "Name",
             "test@email.com",

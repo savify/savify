@@ -68,7 +68,7 @@ public class ConfirmUserRegistrationTests : TestBase
             }
         }
 
-        public string DescribeFailureTo() => $"Notification settings for user with id '{_expectedUserId}' was not created";
+        public string DescribeFailureTo() => $"Notification settings for user with id '{_expectedUserId}' were not created";
     }
 
     private async Task<string> GetUserRegistrationConfirmationCode(Guid userRegistrationId)

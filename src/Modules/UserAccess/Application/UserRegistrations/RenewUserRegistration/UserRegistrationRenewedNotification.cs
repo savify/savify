@@ -7,7 +7,7 @@ namespace App.Modules.UserAccess.Application.UserRegistrations.RenewUserRegistra
 public class UserRegistrationRenewedNotification : DomainEventNotificationBase<UserRegistrationRenewedDomainEvent>
 {
     [JsonConstructor]
-    public UserRegistrationRenewedNotification(Guid id, UserRegistrationRenewedDomainEvent domainEvent) : base(id, domainEvent)
+    public UserRegistrationRenewedNotification(Guid id, Guid correlationId, UserRegistrationRenewedDomainEvent domainEvent) : base(id, correlationId, domainEvent)
     {
     }
 }

@@ -1,5 +1,6 @@
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Application.Configuration.Commands;
+using App.Modules.UserAccess.Application.Configuration.Localization;
 using Microsoft.Extensions.Localization;
 
 namespace App.Modules.UserAccess.Application.Authentication.RefreshTokens;
@@ -12,9 +13,12 @@ internal class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensComman
 
     private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-    public RefreshTokensCommandHandler(IStringLocalizer localizer, IAuthenticationTokenGenerator tokenGenerator, IRefreshTokenRepository refreshTokenRepository)
+    public RefreshTokensCommandHandler(
+        ILocalizerProvider localizerProvider,
+        IAuthenticationTokenGenerator tokenGenerator,
+        IRefreshTokenRepository refreshTokenRepository)
     {
-        _localizer = localizer;
+        _localizer = localizerProvider.GetLocalizer();
         _tokenGenerator = tokenGenerator;
         _refreshTokenRepository = refreshTokenRepository;
     }

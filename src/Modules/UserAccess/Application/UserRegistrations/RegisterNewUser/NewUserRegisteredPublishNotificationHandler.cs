@@ -17,6 +17,7 @@ public class NewUserRegisteredPublishNotificationHandler : INotificationHandler<
     {
         await _eventBus.Publish(new NewUserRegisteredIntegrationEvent(
             notification.Id,
+            notification.CorrelationId,
             notification.DomainEvent.OccurredOn,
             notification.DomainEvent.Email,
             notification.DomainEvent.Name,

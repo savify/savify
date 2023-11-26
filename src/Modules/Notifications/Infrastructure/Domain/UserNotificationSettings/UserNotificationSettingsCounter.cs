@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.Modules.Notifications.Application.Configuration.Data;
 using App.Modules.Notifications.Domain.UserNotificationSettings;
 using Dapper;
 
@@ -17,7 +18,7 @@ public class UserNotificationSettingsCounter : IUserNotificationSettingsCounter
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        const string sql = "SELECT COUNT(*) FROM notifications.user_notification_settings WHERE user_id = @userId";
+        var sql = $"SELECT COUNT(*) FROM {DatabaseConfiguration.Schema.Name}.user_notification_settings WHERE user_id = @userId";
 
         return connection.QuerySingle<int>(sql, new { userId = userId.Value });
     }

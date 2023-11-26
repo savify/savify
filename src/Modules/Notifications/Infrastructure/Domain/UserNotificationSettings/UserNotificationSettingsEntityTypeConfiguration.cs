@@ -8,7 +8,7 @@ public class UserNotificationSettingsEntityTypeConfiguration : IEntityTypeConfig
 {
     public void Configure(EntityTypeBuilder<Notifications.Domain.UserNotificationSettings.UserNotificationSettings> builder)
     {
-        builder.ToTable("user_notification_settings", "notifications");
+        builder.ToTable("user_notification_settings");
 
         builder.HasKey(x => x.Id);
         builder.Property(b => b.Id).HasColumnName("id");

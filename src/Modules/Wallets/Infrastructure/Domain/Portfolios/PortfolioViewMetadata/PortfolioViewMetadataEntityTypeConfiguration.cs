@@ -6,7 +6,7 @@ internal class PortfolioViewMetadataEntityTypeConfiguration : IEntityTypeConfigu
 {
     public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Modules.Wallets.Domain.Portfolios.PortfolioViewMetadata.PortfolioViewMetadata> builder)
     {
-        builder.ToTable("portfolio_view_matadata", "wallets");
+        builder.ToTable("portfolio_view_matadata");
 
         builder.HasKey(x => x.PortfolioId);
         builder.Property(x => x.PortfolioId).HasColumnName("portfolio_id");

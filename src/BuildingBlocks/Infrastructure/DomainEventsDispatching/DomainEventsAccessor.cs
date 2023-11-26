@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 
-public class DomainEventsAccessor : IDomainEventsAccessor
+public class DomainEventsAccessor<TContext> : IDomainEventsAccessor<TContext> where TContext : DbContext
 {
-    private readonly DbContext _context;
+    private readonly TContext _context;
 
-    public DomainEventsAccessor(DbContext context)
+    public DomainEventsAccessor(TContext context)
     {
         _context = context;
     }

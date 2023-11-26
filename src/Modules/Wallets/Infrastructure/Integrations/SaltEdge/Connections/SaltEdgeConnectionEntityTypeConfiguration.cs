@@ -7,7 +7,7 @@ public class SaltEdgeConnectionEntityTypeConfiguration : IEntityTypeConfiguratio
 {
     public void Configure(EntityTypeBuilder<SaltEdgeConnection> builder)
     {
-        builder.ToTable("salt_edge_connections", "wallets");
+        builder.ToTable("salt_edge_connections");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("id");

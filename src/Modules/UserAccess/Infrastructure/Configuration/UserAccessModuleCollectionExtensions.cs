@@ -1,24 +1,11 @@
-using App.BuildingBlocks.Infrastructure;
-using App.BuildingBlocks.Integration;
+using App.BuildingBlocks.Infrastructure.Configuration;
+using App.BuildingBlocks.Infrastructure.Configuration.DependencyInjection;
 using App.Modules.UserAccess.Application.Contracts;
-using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
-using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
-using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
-using App.Modules.UserAccess.Application.UserRegistrations.RenewUserRegistration;
-using App.Modules.UserAccess.Application.Users.CreateNewUser;
-using App.Modules.UserAccess.Domain.PasswordResetRequest.Events;
-using App.Modules.UserAccess.Domain.UserRegistrations.Events;
-using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Infrastructure.Authentication;
-using App.Modules.UserAccess.Infrastructure.Configuration.Authentication;
-using App.Modules.UserAccess.Infrastructure.Configuration.DataAccess;
-using App.Modules.UserAccess.Infrastructure.Configuration.Domain;
 using App.Modules.UserAccess.Infrastructure.Configuration.EventBus;
-using App.Modules.UserAccess.Infrastructure.Configuration.Logging;
-using App.Modules.UserAccess.Infrastructure.Configuration.Mediation;
-using App.Modules.UserAccess.Infrastructure.Configuration.Processing;
-using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
+using App.Modules.UserAccess.Infrastructure.Configuration.DependencyInjection;
 using App.Modules.UserAccess.Infrastructure.Configuration.Quartz;
+using App.Modules.UserAccess.Infrastructure.Outbox;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -33,46 +20,27 @@ public static class UserAccessModuleCollectionExtensions
         ILogger logger)
     {
         var moduleLogger = logger.ForContext("Module", "UserAccess");
+        var connectionString = configuration.GetConnectionString("Savify");
+        var domainNotificationMap = DomainNotificationsMap.Build();
+        var authenticationConfiguration = configuration.GetSection("Authentication").Get<AuthenticationConfiguration>();
 
-        ConfigureCompositionRoot(
-            services,
-            configuration.GetConnectionString("Savify"),
-            configuration.GetSection("Authentication").Get<AuthenticationConfiguration>(),
-            moduleLogger);
+        services
+            .AddAuthenticationServices(authenticationConfiguration)
+            .AddDataAccessServices<UserAccessContext>(connectionString)
+            .AddDomainServices()
+            .AddLocalizationServices()
+            .AddLoggingServices()
+            .AddMediatRForAssemblies(Assemblies.Application, Assemblies.Infrastructure)
+            .AddOutboxServices(domainNotificationMap)
+            .AddProcessingServices()
+            .AddQuartzServices();
 
+        CompositionRoot.SetServiceProvider(services.BuildServiceProvider());
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
 
         services.AddScoped<IUserAccessModule, UserAccessModule>();
 
         return services;
-    }
-
-    private static void ConfigureCompositionRoot(
-        this IServiceCollection services,
-        string connectionString,
-        AuthenticationConfiguration authenticationConfiguration,
-        ILogger logger,
-        IEventBus? eventBus = null)
-    {
-        var domainNotificationsMap = new BiDictionary<string, Type>();
-
-        domainNotificationsMap.Add(nameof(UserCreatedDomainEvent), typeof(UserCreatedNotification));
-        domainNotificationsMap.Add(nameof(NewUserRegisteredDomainEvent), typeof(NewUserRegisteredNotification));
-        domainNotificationsMap.Add(nameof(UserRegistrationConfirmedDomainEvent), typeof(UserRegistrationConfirmedNotification));
-        domainNotificationsMap.Add(nameof(UserRegistrationRenewedDomainEvent), typeof(UserRegistrationRenewedNotification));
-        domainNotificationsMap.Add(nameof(PasswordResetRequestedDomainEvent), typeof(PasswordResetRequestedNotification));
-
-        OutboxModule.Configure(services, domainNotificationsMap);
-        AuthenticationModule.Configure(services, authenticationConfiguration);
-        DataAccessModule.Configure(services, connectionString);
-        DomainModule.Configure(services);
-        LoggingModule.Configure(services, logger);
-        EventBusModule.Configure(services, eventBus);
-        QuartzModule.Configure(services);
-        MediatorModule.Configure(services);
-        ProcessingModule.Configure(services);
-
-        UserAccessCompositionRoot.SetServiceProvider(services.BuildServiceProvider());
     }
 }

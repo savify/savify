@@ -13,6 +13,7 @@ public class SendUserRegistrationConfirmationEmailTests : TestBase
     {
         await NotificationsModule.ExecuteCommandAsync(new SendUserRegistrationConfirmationEmailCommand(
             Guid.NewGuid(),
+            Guid.NewGuid(),
             "Name",
             "test@email.com",
             "en",

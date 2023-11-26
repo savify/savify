@@ -1,6 +1,7 @@
-using App.BuildingBlocks.Application.Outbox;
 using App.BuildingBlocks.Infrastructure.Inbox;
 using App.BuildingBlocks.Infrastructure.InternalCommands;
+using App.BuildingBlocks.Infrastructure.Outbox;
+using App.Modules.Wallets.Application.Configuration.Data;
 using App.Modules.Wallets.Domain.BankConnectionProcessing;
 using App.Modules.Wallets.Domain.BankConnections;
 using App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios;
@@ -17,11 +18,8 @@ using App.Modules.Wallets.Infrastructure.Domain.Wallets.CashWallets;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.CreditWallets;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.DebitWallets;
 using App.Modules.Wallets.Infrastructure.Domain.Wallets.WalletViewMetadata;
-using App.Modules.Wallets.Infrastructure.Inbox;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections;
 using App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Customers;
-using App.Modules.Wallets.Infrastructure.InternalCommands;
-using App.Modules.Wallets.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Wallets.Infrastructure;
@@ -60,18 +58,20 @@ public class WalletsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema(DatabaseConfiguration.Schema.Name);
+
         modelBuilder.ApplyConfiguration(new CashWalletEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new CreditWalletsEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new DebitWalletEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new WalletViewMetadataEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InvestmentPortfolioEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new PortfolioViewMetadataEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankConnectionProcessEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankConnectionEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeCustomerEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeConnectionEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());
     }
 }
