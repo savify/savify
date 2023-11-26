@@ -18,12 +18,12 @@ public class Transaction : Entity, IAggregateRoot
 
     private ICollection<string> _tags;
 
-    public static Transaction AddNew(TransactionType type, Source source, Target target, DateTime madeOn, string comment, ICollection<string> tags)
+    public static Transaction AddNew(TransactionType type, Source source, Target target, DateTime madeOn, string comment, IEnumerable<string> tags)
     {
         return new Transaction(type, source, target, madeOn, comment, tags);
     }
 
-    public Transaction(TransactionType type, Source source, Target target, DateTime madeOn, string comment, ICollection<string> tags)
+    public Transaction(TransactionType type, Source source, Target target, DateTime madeOn, string comment, IEnumerable<string> tags)
     {
         Id = new TransactionId(Guid.NewGuid());
         _type = type;
@@ -31,7 +31,7 @@ public class Transaction : Entity, IAggregateRoot
         _target = target;
         _madeOn = madeOn;
         _comment = comment;
-        _tags = tags;
+        _tags = tags.ToList();
 
         AddDomainEvent(new TransactionAddedDomainEvent(Id, _type, _source, _target));
     }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.Transactions.Infrastructure.Migrations
 {
     [DbContext(typeof(TransactionsContext))]
-    [Migration("20231112110103_AddTransactions")]
+    [Migration("20231126131603_AddTransactions")]
     partial class AddTransactions
     {
         /// <inheritdoc />
@@ -119,7 +119,8 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
             modelBuilder.Entity("App.Modules.Transactions.Domain.Transactions.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("_comment")
                         .IsRequired()
@@ -127,7 +128,8 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                         .HasColumnName("comment");
 
                     b.Property<DateTime>("_madeOn")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("made_on");
 
                     b.Property<string>("_tags")
                         .IsRequired()
@@ -166,7 +168,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                                     b2.Property<string>("Address")
                                         .IsRequired()
                                         .HasColumnType("text")
-                                        .HasColumnName("source_sender_address");
+                                        .HasColumnName("sender_address");
 
                                     b2.HasKey("Sourcetransaction_id");
 
@@ -183,7 +185,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
 
                                     b2.Property<int>("Amount")
                                         .HasColumnType("integer")
-                                        .HasColumnName("source_amount");
+                                        .HasColumnName("amount");
 
                                     b2.HasKey("Sourcetransaction_id");
 
@@ -200,7 +202,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                                             b3.Property<string>("Value")
                                                 .IsRequired()
                                                 .HasColumnType("text")
-                                                .HasColumnName("source_amount_currency");
+                                                .HasColumnName("amount_currency");
 
                                             b3.HasKey("MoneySourcetransaction_id");
 
@@ -241,7 +243,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                                     b2.Property<string>("Address")
                                         .IsRequired()
                                         .HasColumnType("text")
-                                        .HasColumnName("target_recipient_address");
+                                        .HasColumnName("recipient_address");
 
                                     b2.HasKey("Targettransaction_id");
 
@@ -258,7 +260,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
 
                                     b2.Property<int>("Amount")
                                         .HasColumnType("integer")
-                                        .HasColumnName("target_amount");
+                                        .HasColumnName("amount");
 
                                     b2.HasKey("Targettransaction_id");
 
@@ -275,7 +277,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                                             b3.Property<string>("Value")
                                                 .IsRequired()
                                                 .HasColumnType("text")
-                                                .HasColumnName("target_amount_currency");
+                                                .HasColumnName("amount_currency");
 
                                             b3.HasKey("MoneyTargettransaction_id");
 

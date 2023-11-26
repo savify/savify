@@ -13,6 +13,7 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
         builder.ToTable("transactions", "transactions");
 
         builder.HasKey(t => t.Id);
+        builder.Property(t => t.Id).HasColumnName("id");
 
         builder.Property<TransactionType>("_type")
             .HasColumnName("type")
@@ -27,10 +28,10 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
 
             b.OwnsOne(p => p.Sender, s =>
             {
-                s.Property(o => o.Address).HasColumnName("source_sender_address");
+                s.Property(o => o.Address).HasColumnName("sender_address");
             });
 
-            b.OwnsOne(p => p.Amount, s => s.MoneyProperty("source_amount", "source_amount_currency"));
+            b.OwnsOne(p => p.Amount, s => s.MoneyProperty("amount", "amount_currency"));
         });
 
         builder.OwnsOne<Target>("_target", b =>
@@ -40,13 +41,13 @@ internal class TransactionsEntityTypeConfiguration : IEntityTypeConfiguration<Tr
 
             b.OwnsOne(p => p.Recipient, s =>
             {
-                s.Property(o => o.Address).HasColumnName("target_recipient_address");
+                s.Property(o => o.Address).HasColumnName("recipient_address");
             });
 
-            b.OwnsOne(p => p.Amount, s => s.MoneyProperty("target_amount", "target_amount_currency"));
+            b.OwnsOne(p => p.Amount, s => s.MoneyProperty("amount", "amount_currency"));
         });
 
-        builder.Property<DateTime>("_madeOn");
+        builder.Property<DateTime>("_madeOn").HasColumnName("made_on");
 
         builder.Property<string>("_comment").HasColumnName("comment");
 

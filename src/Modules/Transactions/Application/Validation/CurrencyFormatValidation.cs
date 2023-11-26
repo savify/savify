@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace App.Modules.Wallets.Application.Validation;
+namespace App.Modules.Transactions.Application.Validation;
 
 internal static class CurrencyFormatValidation
 {

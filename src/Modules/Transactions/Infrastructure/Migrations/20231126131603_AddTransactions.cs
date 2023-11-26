@@ -16,15 +16,15 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                 schema: "transactions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
                     comment = table.Column<string>(type: "text", nullable: false),
-                    _madeOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    made_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     tags = table.Column<string>(type: "text[]", nullable: false),
                     type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_transactions", x => x.Id);
+                    table.PrimaryKey("PK_transactions", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,9 +33,9 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                 columns: table => new
                 {
                     transaction_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    source_sender_address = table.Column<string>(type: "text", nullable: false),
-                    source_amount = table.Column<int>(type: "integer", nullable: false),
-                    source_amount_currency = table.Column<string>(type: "text", nullable: false)
+                    sender_address = table.Column<string>(type: "text", nullable: false),
+                    amount = table.Column<int>(type: "integer", nullable: false),
+                    amount_currency = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +45,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                         column: x => x.transaction_id,
                         principalSchema: "transactions",
                         principalTable: "transactions",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -55,9 +55,9 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                 columns: table => new
                 {
                     transaction_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    target_recipient_address = table.Column<string>(type: "text", nullable: false),
-                    target_amount = table.Column<int>(type: "integer", nullable: false),
-                    target_amount_currency = table.Column<string>(type: "text", nullable: false)
+                    recipient_address = table.Column<string>(type: "text", nullable: false),
+                    amount = table.Column<int>(type: "integer", nullable: false),
+                    amount_currency = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +67,7 @@ namespace App.Modules.Transactions.Infrastructure.Migrations
                         column: x => x.transaction_id,
                         principalSchema: "transactions",
                         principalTable: "transactions",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
         }
