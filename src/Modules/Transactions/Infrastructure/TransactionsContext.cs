@@ -15,7 +15,7 @@ public class TransactionsContext : DbContext
 
     public DbSet<InternalCommand>? InternalCommands { get; set; }
 
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Transaction>? Transactions { get; set; }
 
     public TransactionsContext(DbContextOptions<TransactionsContext> options) : base(options)
     {

@@ -2,5 +2,7 @@
 
 public interface ITransactionsRepository
 {
-    public Task AddAsync(Transaction transaction);
+    Task AddAsync(Transaction transaction);
+
+    Task<Transaction> GetByIdAsync(TransactionId id);
 }

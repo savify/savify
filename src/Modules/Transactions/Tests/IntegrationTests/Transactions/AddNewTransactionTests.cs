@@ -17,7 +17,7 @@ public class AddNewTransactionTests : TestBase
             new TargetDto("MyMilleniumEURAccount", 100000, "EUR"),
             madeOn: DateTime.UtcNow,
             comment: "Accomodation in Slovakia",
-            tags: new[] { "trip", "skiis", "fun", "vacations" });
+            tags: new[] { "trip", "skis", "fun", "vacations" });
 
         var transactionId = await TransactionsModule.ExecuteCommandAsync(command);
 

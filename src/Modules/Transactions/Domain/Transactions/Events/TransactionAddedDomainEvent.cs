@@ -1,6 +1,6 @@
 ﻿using App.BuildingBlocks.Domain;
 
-namespace App.Modules.Transactions.Domain.Transactions;
+namespace App.Modules.Transactions.Domain.Transactions.Events;
 
 public class TransactionAddedDomainEvent : DomainEventBase
 {
@@ -20,3 +20,4 @@ public class TransactionAddedDomainEvent : DomainEventBase
         Target = target;
     }
 }
+

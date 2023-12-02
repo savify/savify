@@ -1,4 +1,5 @@
-﻿using App.Modules.Transactions.Domain.Transactions;
+﻿using App.BuildingBlocks.Infrastructure.Exceptions;
+using App.Modules.Transactions.Domain.Transactions;
 
 namespace App.Modules.Transactions.Infrastructure.Domain.Transactions;
 
@@ -14,5 +15,16 @@ internal class TransactionsRepository : ITransactionsRepository
     public async Task AddAsync(Transaction transaction)
     {
         await _transactionsContext.AddAsync(transaction);
+    }
+
+    public async Task<Transaction> GetByIdAsync(TransactionId id)
+    {
+        var transaction = await _transactionsContext.Transactions.FindAsync(id);
+        if (transaction is null)
+        {
+            throw new NotFoundRepositoryException<Transaction>(id.Value);
+        }
+
+        return transaction;
     }
 }

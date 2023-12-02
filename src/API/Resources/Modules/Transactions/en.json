@@ -8,5 +8,6 @@
   "Target transaction amount should be greater than 0": "Target transaction amount should be greater than 0",
   "Please provide target currency": "Please provide target currency",
   "Comment should have any value or be empty": "Comment should have any value or be empty",
-  "Tags collection should have items or be empty": "Tags collection should have items or be empty"
+  "Tags collection should have items or be empty": "Tags collection should have items or be empty",
+  "Please provide transaction id": "Please provide transaction id",
 }
