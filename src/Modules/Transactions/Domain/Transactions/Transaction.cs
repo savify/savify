@@ -7,21 +7,15 @@ public class Transaction : Entity, IAggregateRoot
 {
     public TransactionId Id { get; }
 
-
     private TransactionType _type;
-
 
     private Source _source;
 
-
     private Target _target;
-
 
     private DateTime _madeOn;
 
-
     private string _comment;
-
 
     private ICollection<string> _tags;
 

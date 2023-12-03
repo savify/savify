@@ -1,8 +1,8 @@
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.DependencyInjection;
 using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Wallets.Infrastructure.Configuration.EventBus;
 using App.Modules.Wallets.Infrastructure.Configuration.DependencyInjection;
+using App.Modules.Wallets.Infrastructure.Configuration.EventBus;
 using App.Modules.Wallets.Infrastructure.Configuration.Quartz;
 using App.Modules.Wallets.Infrastructure.Outbox;
 using Microsoft.Extensions.Configuration;

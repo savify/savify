@@ -1,9 +1,9 @@
-﻿using App.Modules.Transactions.Domain.Transactions;
+﻿using App.BuildingBlocks.Infrastructure.Data.Postgres;
+using App.Modules.Transactions.Domain.Transactions;
 using App.Modules.Transactions.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using App.BuildingBlocks.Infrastructure.Data.Postgres;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Modules.Transactions.Infrastructure.Domain.Transactions;
 
