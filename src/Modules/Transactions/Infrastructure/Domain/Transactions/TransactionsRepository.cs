@@ -27,4 +27,9 @@ internal class TransactionsRepository : ITransactionsRepository
 
         return transaction;
     }
+
+    public void Remove(Transaction transaction)
+    {
+        _transactionsContext.Remove(transaction);
+    }
 }

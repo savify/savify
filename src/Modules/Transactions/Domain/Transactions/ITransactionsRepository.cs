@@ -5,4 +5,6 @@ public interface ITransactionsRepository
     Task AddAsync(Transaction transaction);
 
     Task<Transaction> GetByIdAsync(TransactionId id);
+
+    void Remove(Transaction transaction);
 }

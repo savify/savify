@@ -8,10 +8,6 @@ internal class EditTransactionCommandValidator : Validator<EditTransactionComman
 {
     public EditTransactionCommandValidator()
     {
-        RuleFor(c => c.TransactionId)
-            .NotEmpty()
-            .WithMessage("Please provide transaction id");
-
         RuleFor(c => c.Source)
             .NotEmpty()
             .WithMessage("Please provide a transaction source");

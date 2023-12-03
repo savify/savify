@@ -45,6 +45,11 @@ public class Transaction : Entity, IAggregateRoot
         AddDomainEvent(new TransactionEditedDomainEvent(Id, _type, oldSource, _source, oldTarget, _target));
     }
 
+    public void Remove()
+    {
+        AddDomainEvent(new TransactionRemovedDomainEvent(Id, _type, _source, _target));
+    }
+
     public Transaction(TransactionType type, Source source, Target target, DateTime madeOn, string comment, IEnumerable<string> tags)
     {
         Id = new TransactionId(Guid.NewGuid());

@@ -39,7 +39,7 @@ public class TransactionTests : UnitTestBase
     [Test]
     public void EditingTransaction_IsSuccessful()
     {
-        var (transaction, oldSource, oldTarget) = AddNewTransaction();
+        var (transaction, type, oldSource, oldTarget) = AddNewTransaction();
 
         var newType = TransactionType.Transfer();
 
@@ -71,8 +71,27 @@ public class TransactionTests : UnitTestBase
         });
     }
 
-    private static (Transaction transaction, Source source, Target target) AddNewTransaction()
+    [Test]
+    public void RemovingTransaction_IsSuccessful()
     {
+        var (transaction, type, source, target) = AddNewTransaction();
+
+        transaction.Remove();
+
+        var domainEvent = AssertPublishedDomainEvent<TransactionRemovedDomainEvent>(transaction);
+        Assert.Multiple(() =>
+        {
+            Assert.That(domainEvent.TransactionId, Is.EqualTo(transaction.Id));
+            Assert.That(domainEvent.Type, Is.EqualTo(type));
+            Assert.That(domainEvent.Source, Is.EqualTo(source));
+            Assert.That(domainEvent.Target, Is.EqualTo(target));
+        });
+    }
+
+    private static (Transaction transaction, TransactionType type, Source source, Target target) AddNewTransaction()
+    {
+        var type = TransactionType.Expense();
+
         var source = Source.With(
                 Sender.WhoHas("1234-5678-address"),
                 Money.From(42500, "PLN"));
@@ -82,13 +101,13 @@ public class TransactionTests : UnitTestBase
                 Money.From(10000, "USD"));
 
         var transaction = Transaction.AddNew(
-            TransactionType.Expense(),
+            type,
             source,
             target,
             madeOn: new DateTime(year: 2024, month: 01, day: 15),
             comment: "For ski pass.",
             tags: new[] { "Skis", "Vacations", "Love" });
 
-        return (transaction, source, target);
+        return (transaction, type, source, target);
     }
 }
