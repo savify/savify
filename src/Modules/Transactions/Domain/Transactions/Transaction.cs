@@ -39,8 +39,10 @@ public class Transaction : Entity, IAggregateRoot
         AddDomainEvent(new TransactionEditedDomainEvent(Id, _type, oldSource, _source, oldTarget, _target));
     }
 
-    public void Remove()
+    public void Remove(ITransactionsRepository repository)
     {
+        repository.Remove(this);
+
         AddDomainEvent(new TransactionRemovedDomainEvent(Id, _type, _source, _target));
     }
 

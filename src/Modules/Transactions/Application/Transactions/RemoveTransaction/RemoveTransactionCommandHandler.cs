@@ -16,8 +16,6 @@ internal class RemoveTransactionCommandHandler : ICommandHandler<RemoveTransacti
     {
         var transaction = await _repository.GetByIdAsync(new TransactionId(request.TransactionId));
 
-        transaction.Remove();
-
-        _repository.Remove(transaction);
+        transaction.Remove(_repository);
     }
 }
