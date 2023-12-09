@@ -14,7 +14,7 @@ notifications-migrations:
 
 # make finance-tracking-migrations name=MigrationName
 finance-tracking-migrations:
-	dotnet ef migrations add $(name) --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context financeTrackingContext
+	dotnet ef migrations add $(name) --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context FinanceTrackingContext
 
 # make banks-migrations name=MigrationName
 banks-migrations:
@@ -37,7 +37,7 @@ notifications-db-update:
 	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext
 
 finance-tracking-db-update:
-	dotnet ef database update --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context financeTrackingContext
+	dotnet ef database update --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context FinanceTrackingContext
 
 banks-db-update:
 	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext
@@ -57,7 +57,7 @@ notifications-test-db-update:
 	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext -- --environment Testing
 
 finance-tracking-test-db-update:
-	dotnet ef database update --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context financeTrackingContext -- --environment Testing
+	dotnet ef database update --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context FinanceTrackingContext -- --environment Testing
 
 banks-test-db-update:
 	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext -- --environment Testing

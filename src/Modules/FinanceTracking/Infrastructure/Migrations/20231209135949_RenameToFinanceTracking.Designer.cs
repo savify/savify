@@ -3,6 +3,7 @@ using System;
 using App.Modules.FinanceTracking.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,45 +12,19 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceTrackingContext))]
-    partial class financeTrackingContextModelSnapshot : ModelSnapshot
+    [Migration("20231209135949_RenameToFinanceTracking")]
+    partial class RenameToFinanceTracking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasDefaultSchema("finance_tracking")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("App.BuildingBlocks.Application.Outbox.OutboxMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("data");
-
-                    b.Property<DateTime>("OccurredOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("occurred_on");
-
-                    b.Property<DateTime?>("ProcessedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("processed_date");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("type");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("outbox_messages", "wallets");
-                });
 
             modelBuilder.Entity("App.BuildingBlocks.Infrastructure.Inbox.InboxMessage", b =>
                 {
@@ -77,7 +52,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("inbox_messages", "wallets");
+                    b.ToTable("inbox_messages", "finance_tracking");
                 });
 
             modelBuilder.Entity("App.BuildingBlocks.Infrastructure.InternalCommands.InternalCommand", b =>
@@ -110,10 +85,39 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("internal_commands", "wallets");
+                    b.ToTable("internal_commands", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
+            modelBuilder.Entity("App.BuildingBlocks.Infrastructure.Outbox.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("data");
+
+                    b.Property<DateTime>("OccurredOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occurred_on");
+
+                    b.Property<DateTime?>("ProcessedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_date");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("outbox_messages", "finance_tracking");
+                });
+
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -149,10 +153,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("bank_connection_processes", "wallets");
+                    b.ToTable("bank_connection_processes", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnections.BankConnection", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.BankConnections.BankConnection", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -176,10 +180,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("bank_connections", "wallets");
+                    b.ToTable("bank_connections", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -192,10 +196,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("investment_portfolios", "wallets");
+                    b.ToTable("investment_portfolios", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Portfolios.PortfolioViewMetadata.PortfolioViewMetadata", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Portfolios.PortfolioViewMetadata.PortfolioViewMetadata", b =>
                 {
                     b.Property<Guid>("PortfolioId")
                         .HasColumnType("uuid")
@@ -215,10 +219,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("PortfolioId");
 
-                    b.ToTable("portfolio_view_matadata", "wallets");
+                    b.ToTable("portfolio_view_matadata", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CashWallets.CashWallet", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.CashWallets.CashWallet", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -255,10 +259,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("cash_wallets", "wallets");
+                    b.ToTable("cash_wallets", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CreditWallets.CreditWallet", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.CreditWallet", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -299,10 +303,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("credit_wallets", "wallets");
+                    b.ToTable("credit_wallets", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.DebitWallets.DebitWallet", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.DebitWallet", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -339,10 +343,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("debit_wallets", "wallets");
+                    b.ToTable("debit_wallets", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.WalletViewMetadata.WalletViewMetadata", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata.WalletViewMetadata", b =>
                 {
                     b.Property<Guid>("WalletId")
                         .HasColumnType("uuid")
@@ -362,10 +366,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("WalletId");
 
-                    b.ToTable("wallet_view_metadata", "wallets");
+                    b.ToTable("wallet_view_metadata", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Connections.SaltEdgeConnection", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Connections.SaltEdgeConnection", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -402,10 +406,10 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("salt_edge_connections", "wallets");
+                    b.ToTable("salt_edge_connections", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Infrastructure.Integrations.SaltEdge.Customers.SaltEdgeCustomer", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Customers.SaltEdgeCustomer", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -417,12 +421,12 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("salt_edge_customers", "wallets");
+                    b.ToTable("salt_edge_customers", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.BankConnectionProcessing.BankConnectionProcess", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnectionProcessing.BankConnectionProcessStatus", "_status", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.BankConnectionProcessing.BankConnectionProcessStatus", "_status", b1 =>
                         {
                             b1.Property<Guid>("BankConnectionProcessId")
                                 .HasColumnType("uuid");
@@ -434,13 +438,13 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasKey("BankConnectionProcessId");
 
-                            b1.ToTable("bank_connection_processes", "wallets");
+                            b1.ToTable("bank_connection_processes", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("BankConnectionProcessId");
                         });
 
-                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.WalletType", "_walletType", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Wallets.WalletType", "_walletType", b1 =>
                         {
                             b1.Property<Guid>("BankConnectionProcessId")
                                 .HasColumnType("uuid");
@@ -452,7 +456,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasKey("BankConnectionProcessId");
 
-                            b1.ToTable("bank_connection_processes", "wallets");
+                            b1.ToTable("bank_connection_processes", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("BankConnectionProcessId");
@@ -463,9 +467,9 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     b.Navigation("_walletType");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.BankConnections.BankConnection", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.BankConnections.BankConnection", b =>
                 {
-                    b.OwnsMany("App.Modules.Wallets.Domain.BankConnections.BankAccounts.BankAccount", "_accounts", b1 =>
+                    b.OwnsMany("App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts.BankAccount", "_accounts", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -493,12 +497,12 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasIndex("BankConnectionId");
 
-                            b1.ToTable("bank_accounts", "wallets");
+                            b1.ToTable("bank_accounts", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("BankConnectionId");
 
-                            b1.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "Currency", b2 =>
+                            b1.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "Currency", b2 =>
                                 {
                                     b2.Property<Guid>("BankAccountId")
                                         .HasColumnType("uuid");
@@ -513,7 +517,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                                     b2.HasKey("BankAccountId", "BankAccountBankConnectionId");
 
-                                    b2.ToTable("bank_accounts", "wallets");
+                                    b2.ToTable("bank_accounts", "finance_tracking");
 
                                     b2.WithOwner()
                                         .HasForeignKey("BankAccountId", "BankAccountBankConnectionId");
@@ -523,7 +527,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("App.Modules.Wallets.Domain.BankConnections.Consent", "_consent", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.BankConnections.Consent", "_consent", b1 =>
                         {
                             b1.Property<Guid>("BankConnectionId")
                                 .HasColumnType("uuid");
@@ -534,7 +538,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasKey("BankConnectionId");
 
-                            b1.ToTable("bank_connections", "wallets");
+                            b1.ToTable("bank_connections", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("BankConnectionId");
@@ -545,9 +549,9 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     b.Navigation("_consent");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
                 {
-                    b.OwnsMany("App.Modules.Wallets.Domain.Portfolios.InvestmentPortfolios.Assets.Asset", "_assets", b1 =>
+                    b.OwnsMany("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.Assets.Asset", "_assets", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -588,12 +592,12 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasIndex("investment_portfolio_id");
 
-                            b1.ToTable("investment_portfolio_assets", "wallets");
+                            b1.ToTable("investment_portfolio_assets", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("investment_portfolio_id");
 
-                            b1.OwnsOne("App.Modules.Wallets.Domain.Finance.Money", "_purchasePrice", b2 =>
+                            b1.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Money", "_purchasePrice", b2 =>
                                 {
                                     b2.Property<Guid>("AssetId")
                                         .HasColumnType("uuid");
@@ -604,12 +608,12 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                                     b2.HasKey("AssetId");
 
-                                    b2.ToTable("investment_portfolio_assets", "wallets");
+                                    b2.ToTable("investment_portfolio_assets", "finance_tracking");
 
                                     b2.WithOwner()
                                         .HasForeignKey("AssetId");
 
-                                    b2.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "Currency", b3 =>
+                                    b2.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "Currency", b3 =>
                                         {
                                             b3.Property<Guid>("MoneyAssetId")
                                                 .HasColumnType("uuid");
@@ -621,7 +625,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                                             b3.HasKey("MoneyAssetId");
 
-                                            b3.ToTable("investment_portfolio_assets", "wallets");
+                                            b3.ToTable("investment_portfolio_assets", "finance_tracking");
 
                                             b3.WithOwner()
                                                 .HasForeignKey("MoneyAssetId");
@@ -637,9 +641,9 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     b.Navigation("_assets");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CashWallets.CashWallet", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.CashWallets.CashWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("CashWalletId")
                                 .HasColumnType("uuid");
@@ -651,7 +655,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasKey("CashWalletId");
 
-                            b1.ToTable("cash_wallets", "wallets");
+                            b1.ToTable("cash_wallets", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("CashWalletId");
@@ -660,9 +664,9 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     b.Navigation("_currency");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.CreditWallets.CreditWallet", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.CreditWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("CreditWalletId")
                                 .HasColumnType("uuid");
@@ -674,7 +678,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasKey("CreditWalletId");
 
-                            b1.ToTable("credit_wallets", "wallets");
+                            b1.ToTable("credit_wallets", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("CreditWalletId");
@@ -683,9 +687,9 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     b.Navigation("_currency");
                 });
 
-            modelBuilder.Entity("App.Modules.Wallets.Domain.Wallets.DebitWallets.DebitWallet", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.DebitWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.Wallets.Domain.Wallets.BankAccountConnections.BankAccountConnection", "_bankAccountConnection", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections.BankAccountConnection", "_bankAccountConnection", b1 =>
                         {
                             b1.Property<Guid>("DebitWalletId")
                                 .HasColumnType("uuid");
@@ -700,13 +704,13 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasKey("DebitWalletId");
 
-                            b1.ToTable("debit_wallets", "wallets");
+                            b1.ToTable("debit_wallets", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("DebitWalletId");
                         });
 
-                    b.OwnsOne("App.Modules.Wallets.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("DebitWalletId")
                                 .HasColumnType("uuid");
@@ -718,7 +722,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                             b1.HasKey("DebitWalletId");
 
-                            b1.ToTable("debit_wallets", "wallets");
+                            b1.ToTable("debit_wallets", "finance_tracking");
 
                             b1.WithOwner()
                                 .HasForeignKey("DebitWalletId");
