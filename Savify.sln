@@ -48,6 +48,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{29792374-3E5F-485C-90CD-773DAA420286}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.env = .env
+		.env.dist = .env.dist
 		.env.test = .env.test
 		.gitignore = .gitignore
 		docker-compose.yaml = docker-compose.yaml
@@ -55,8 +57,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{29792374
 		README.md = README.md
 		Savify.sln.DotSettings.user = Savify.sln.DotSettings.user
 		TestSettings.runsettings = TestSettings.runsettings
-		.env.dist = .env.dist
-		.env = .env
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{EA2D5034-E5D8-4660-ADAC-52599317D4AB}"
@@ -77,21 +77,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BEE875FA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{77C71F41-06F2-4E66-9810-CB98B5A59A94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.Application", "src\Modules\Wallets\Application\App.Modules.Wallets.Application.csproj", "{8CD80D28-2647-47B7-9206-2FA4446B9C92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.FinanceTracking.Application", "src\Modules\FinanceTracking\Application\App.Modules.FinanceTracking.Application.csproj", "{8CD80D28-2647-47B7-9206-2FA4446B9C92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.Domain", "src\Modules\Wallets\Domain\App.Modules.Wallets.Domain.csproj", "{CA815CC1-CF0F-4B68-833B-F72569F5DB7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.FinanceTracking.Domain", "src\Modules\FinanceTracking\Domain\App.Modules.FinanceTracking.Domain.csproj", "{CA815CC1-CF0F-4B68-833B-F72569F5DB7B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.Infrastructure", "src\Modules\Wallets\Infrastructure\App.Modules.Wallets.Infrastructure.csproj", "{8B049133-B324-4E25-B896-F0EE02A91B44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.FinanceTracking.Infrastructure", "src\Modules\FinanceTracking\Infrastructure\App.Modules.FinanceTracking.Infrastructure.csproj", "{8B049133-B324-4E25-B896-F0EE02A91B44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.IntegrationEvents", "src\Modules\Wallets\IntegrationEvents\App.Modules.Wallets.IntegrationEvents.csproj", "{1A15C488-F52F-4B36-B9D6-A39879789D28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.FinanceTracking.IntegrationEvents", "src\Modules\FinanceTracking\IntegrationEvents\App.Modules.FinanceTracking.IntegrationEvents.csproj", "{1A15C488-F52F-4B36-B9D6-A39879789D28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.ArchTests", "src\Modules\Wallets\Tests\ArchTests\App.Modules.Wallets.ArchTests.csproj", "{2D4B364D-47F8-403A-80FC-887E03F024DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.FinanceTracking.ArchTests", "src\Modules\FinanceTracking\Tests\ArchTests\App.Modules.FinanceTracking.ArchTests.csproj", "{2D4B364D-47F8-403A-80FC-887E03F024DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.IntegrationTests", "src\Modules\Wallets\Tests\IntegrationTests\App.Modules.Wallets.IntegrationTests.csproj", "{936345AF-742F-4292-9A33-6B59B2CC3787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.FinanceTracking.IntegrationTests", "src\Modules\FinanceTracking\Tests\IntegrationTests\App.Modules.FinanceTracking.IntegrationTests.csproj", "{936345AF-742F-4292-9A33-6B59B2CC3787}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Wallets.UnitTests", "src\Modules\Wallets\Tests\UnitTests\App.Modules.Wallets.UnitTests.csproj", "{CE76C341-38B9-4FA8-A5AB-37E102A9B838}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.FinanceTracking.UnitTests", "src\Modules\FinanceTracking\Tests\UnitTests\App.Modules.FinanceTracking.UnitTests.csproj", "{CE76C341-38B9-4FA8-A5AB-37E102A9B838}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wallets", "Wallets", "{345FEA79-1699-4B15-BF2C-FDAFCFAE1572}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FinanceTracking", "FinanceTracking", "{345FEA79-1699-4B15-BF2C-FDAFCFAE1572}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Integrations.SaltEdge", "src\Integrations\SaltEdge\App.Integrations.SaltEdge.csproj", "{CCE8C87B-F5E4-462B-9670-E43CBE97CBCC}"
 EndProject
@@ -157,7 +157,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C47476F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{7F001996-E68C-46A2-BED8-D603499A251F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Database.Scripts", "src\Database\Scripts\App.Database.Scripts.csproj", "{1643411A-E39D-4779-9FBB-7747A2F646A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Database.Scripts", "src\Database\Scripts\App.Database.Scripts.csproj", "{1643411A-E39D-4779-9FBB-7747A2F646A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

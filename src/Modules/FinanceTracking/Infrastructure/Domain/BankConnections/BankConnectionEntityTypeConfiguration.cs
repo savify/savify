@@ -1,0 +1,49 @@
+using App.Modules.FinanceTracking.Domain;
+using App.Modules.FinanceTracking.Domain.BankConnections;
+using App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts;
+using App.Modules.FinanceTracking.Domain.Finance;
+using App.Modules.FinanceTracking.Domain.Users;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace App.Modules.FinanceTracking.Infrastructure.Domain.BankConnections;
+
+public class BankConnectionEntityTypeConfiguration : IEntityTypeConfiguration<BankConnection>
+{
+    public void Configure(EntityTypeBuilder<BankConnection> builder)
+    {
+        builder.ToTable("bank_connections");
+
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).HasColumnName("id");
+
+        builder.Property<BankId>("_bankId").HasColumnName("bank_id");
+        builder.Property<UserId>("_userId").HasColumnName("user_id");
+        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
+        builder.Property<DateTime?>("_refreshedAt").HasColumnName("refreshed_at");
+
+        builder.OwnsMany<BankAccount>("_accounts", b =>
+        {
+            b.WithOwner().HasForeignKey("BankConnectionId");
+            b.ToTable("bank_accounts", "wallets");
+
+            b.Property<BankAccountId>("Id").HasColumnName("id");
+            b.Property<BankConnectionId>("BankConnectionId").HasColumnName("bank_connection_id");
+            b.HasKey("Id", "BankConnectionId");
+
+            b.Property<string>("_externalId").HasColumnName("external_id");
+            b.Property<string>("_name").HasColumnName("name");
+            b.Property<int>("Balance").HasColumnName("balance");
+
+            b.OwnsOne<Currency>("Currency", c =>
+            {
+                c.Property(x => x.Value).HasColumnName("currency");
+            });
+        });
+
+        builder.OwnsOne<Consent>("_consent", b =>
+        {
+            b.Property(x => x.ExpiresAt).HasColumnName("consent_expires_at");
+        });
+    }
+}

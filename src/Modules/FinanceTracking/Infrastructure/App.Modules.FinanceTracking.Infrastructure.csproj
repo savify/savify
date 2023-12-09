@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure\App.BuildingBlocks.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\..\BuildingBlocks\Integration\App.BuildingBlocks.Integration.csproj" />
+        <ProjectReference Include="..\..\..\Integrations\SaltEdge\App.Integrations.SaltEdge.csproj" />
+        <ProjectReference Include="..\Application\App.Modules.FinanceTracking.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Dapper" Version="2.1.21" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+        <PackageReference Include="Polly" Version="8.0.0" />
+        <PackageReference Include="Quartz" Version="3.7.0" />
+        <PackageReference Include="Scrutor" Version="4.2.2" />
+    </ItemGroup>
+
+
+</Project>
