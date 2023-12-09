@@ -25,7 +25,7 @@ public class BankConnectionEntityTypeConfiguration : IEntityTypeConfiguration<Ba
         builder.OwnsMany<BankAccount>("_accounts", b =>
         {
             b.WithOwner().HasForeignKey("BankConnectionId");
-            b.ToTable("bank_accounts", "wallets");
+            b.ToTable("bank_accounts");
 
             b.Property<BankAccountId>("Id").HasColumnName("id");
             b.Property<BankConnectionId>("BankConnectionId").HasColumnName("bank_connection_id");

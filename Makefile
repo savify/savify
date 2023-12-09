@@ -12,9 +12,9 @@ user-access-migrations:
 notifications-migrations:
 	dotnet ef migrations add $(name) --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext
 
-# make wallets-migrations name=MigrationName
-wallets-migrations:
-	dotnet ef migrations add $(name) --project src/Modules/Wallets/Infrastructure --startup-project src/API --context financeTrackingContext
+# make finance-tracking-migrations name=MigrationName
+finance-tracking-migrations:
+	dotnet ef migrations add $(name) --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context financeTrackingContext
 
 # make banks-migrations name=MigrationName
 banks-migrations:
@@ -28,7 +28,7 @@ categories-migrations:
 transactions-migrations:
 	dotnet ef migrations add $(name) --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext
 
-db-update: user-access-db-update notifications-db-update wallets-db-update banks-db-update categories-db-update transactions-db-update
+db-update: user-access-db-update notifications-db-update finance-tracking-db-update banks-db-update categories-db-update transactions-db-update
 
 user-access-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext
@@ -36,8 +36,8 @@ user-access-db-update:
 notifications-db-update:
 	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext
 
-wallets-db-update:
-	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context financeTrackingContext
+finance-tracking-db-update:
+	dotnet ef database update --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context financeTrackingContext
 
 banks-db-update:
 	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext
@@ -48,7 +48,7 @@ categories-db-update:
 transactions-db-update:
 	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext
 
-test-db-update: user-access-test-db-update notifications-test-db-update wallets-test-db-update banks-test-db-update categories-test-db-update
+test-db-update: user-access-test-db-update notifications-test-db-update finance-tracking-test-db-update banks-test-db-update categories-test-db-update
 
 user-access-test-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext -- --environment Testing
@@ -56,8 +56,8 @@ user-access-test-db-update:
 notifications-test-db-update:
 	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext -- --environment Testing
 
-wallets-test-db-update:
-	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context financeTrackingContext -- --environment Testing
+finance-tracking-test-db-update:
+	dotnet ef database update --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context financeTrackingContext -- --environment Testing
 
 banks-test-db-update:
 	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext -- --environment Testing
