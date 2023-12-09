@@ -12,7 +12,7 @@ namespace App.API.Modules.FinanceTracking.CashWallets;
 
 [Authorize]
 [ApiController]
-[Route("wallets/cash-wallets")]
+[Route("finance-tracking/cash-wallets")]
 public class CashWalletsController : ControllerBase
 {
     private readonly IFinanceTrackingModule _financeTrackingModule;

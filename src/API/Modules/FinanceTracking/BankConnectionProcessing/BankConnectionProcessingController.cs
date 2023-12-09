@@ -10,7 +10,7 @@ namespace App.API.Modules.FinanceTracking.BankConnectionProcessing;
 
 [Authorize]
 [ApiController]
-[Route("wallets/bank-connection-processing")]
+[Route("finance-tracking/bank-connection-processing")]
 public class BankConnectionProcessingController : ControllerBase
 {
     private readonly IFinanceTrackingModule _financeTrackingModule;

@@ -14,7 +14,7 @@ namespace App.API.Modules.FinanceTracking.DebitWallets;
 
 [Authorize]
 [ApiController]
-[Route("wallets/debit-wallets")]
+[Route("finance-tracking/debit-wallets")]
 public class DebitWalletsController : ControllerBase
 {
     private readonly IFinanceTrackingModule _financeTrackingModule;

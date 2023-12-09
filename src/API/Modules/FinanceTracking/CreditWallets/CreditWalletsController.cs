@@ -12,7 +12,7 @@ namespace App.API.Modules.FinanceTracking.CreditWallets;
 
 [Authorize]
 [ApiController]
-[Route("wallets/credit-wallets")]
+[Route("finance-tracking/credit-wallets")]
 public class CreditWalletsController : ControllerBase
 {
     private readonly IFinanceTrackingModule _financeTrackingModule;
