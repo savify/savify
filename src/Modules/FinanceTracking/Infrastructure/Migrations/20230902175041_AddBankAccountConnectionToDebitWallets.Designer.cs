@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 {
-    [DbContext(typeof(WalletsContext))]
+    [DbContext(typeof(FinanceTrackingContext))]
     [Migration("20230902175041_AddBankAccountConnectionToDebitWallets")]
     partial class AddBankAccountConnectionToDebitWallets
     {

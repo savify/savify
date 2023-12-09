@@ -7,21 +7,21 @@ namespace App.Modules.FinanceTracking.Infrastructure.Domain.Portfolios.Investmen
 
 internal class InvestmentPortfolioRepository : IInvestmentPortfolioRepository
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public InvestmentPortfolioRepository(WalletsContext walletsContext)
+    public InvestmentPortfolioRepository(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task AddAsync(InvestmentPortfolio portfolio)
     {
-        await _walletsContext.AddAsync(portfolio);
+        await _financeTrackingContext.AddAsync(portfolio);
     }
 
     public async Task<InvestmentPortfolio> GetByIdAsync(PortfolioId id)
     {
-        var investmentPortfolio = await _walletsContext.InvestmentPortfolios.SingleOrDefaultAsync(x => x.Id == id);
+        var investmentPortfolio = await _financeTrackingContext.InvestmentPortfolios.SingleOrDefaultAsync(x => x.Id == id);
 
         if (investmentPortfolio is null)
         {

@@ -8,21 +8,21 @@ namespace App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CreditWallet
 
 internal class CreditWalletRepository : ICreditWalletRepository
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public CreditWalletRepository(WalletsContext walletsContext)
+    public CreditWalletRepository(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task AddAsync(CreditWallet wallet)
     {
-        await _walletsContext.AddAsync(wallet);
+        await _financeTrackingContext.AddAsync(wallet);
     }
 
     public async Task<CreditWallet> GetByIdAsync(WalletId id)
     {
-        var wallet = await _walletsContext.CreditWallets.SingleOrDefaultAsync(wallet => wallet.Id == id);
+        var wallet = await _financeTrackingContext.CreditWallets.SingleOrDefaultAsync(wallet => wallet.Id == id);
 
         if (wallet is null)
         {
@@ -34,7 +34,7 @@ internal class CreditWalletRepository : ICreditWalletRepository
 
     public async Task<CreditWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId)
     {
-        var wallet = await _walletsContext.CreditWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var wallet = await _financeTrackingContext.CreditWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (wallet == null)
         {

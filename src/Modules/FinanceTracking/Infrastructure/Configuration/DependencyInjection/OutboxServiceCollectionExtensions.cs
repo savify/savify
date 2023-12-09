@@ -10,12 +10,12 @@ internal static class OutboxServiceCollectionExtensions
 {
     internal static IServiceCollection AddOutboxServices(this IServiceCollection services, BiDictionary<string, Type> domainNotificationsMap)
     {
-        services.AddScoped<IOutbox<WalletsContext>, Infrastructure.Outbox.Outbox>();
+        services.AddScoped<IOutbox<FinanceTrackingContext>, Infrastructure.Outbox.Outbox>();
 
         DomainNotificationMappingValidator.Validate(domainNotificationsMap, Assemblies.Application);
 
-        services.AddSingleton<IDomainNotificationsMapper<WalletsContext>>(_ => new DomainNotificationsMapper<WalletsContext>(domainNotificationsMap));
-        services.AddScoped<OutboxCommandProcessor<WalletsContext>>();
+        services.AddSingleton<IDomainNotificationsMapper<FinanceTrackingContext>>(_ => new DomainNotificationsMapper<FinanceTrackingContext>(domainNotificationsMap));
+        services.AddScoped<OutboxCommandProcessor<FinanceTrackingContext>>();
 
         return services;
     }

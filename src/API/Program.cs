@@ -84,7 +84,7 @@ public class Program
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);
-        builder.Services.AddWalletsModule(builder.Configuration, _logger);
+        builder.Services.AddFinanceTrackingModule(builder.Configuration, _logger);
         builder.Services.AddBanksModule(builder.Configuration, _logger, builder.Environment.IsProduction());
         builder.Services.AddCategoriesModule(builder.Configuration, _logger);
         builder.Services.AddTransactionsModule(builder.Configuration, _logger);

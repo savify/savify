@@ -26,14 +26,14 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
 
         var bankAccountId = await GetBankAccountByExternalId(BankConnectionProcessingData.ExternalUSDAccountId);
 
-        await WalletsModule.ExecuteCommandAsync(new ChooseBankAccountToConnectCommand(
+        await FinanceTrackingModule.ExecuteCommandAsync(new ChooseBankAccountToConnectCommand(
             bankConnectionProcessId,
             BankConnectionProcessingData.UserId,
             bankAccountId
         ));
 
-        var bankConnectionProcess = await WalletsModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
-        var wallet = await WalletsModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId));
+        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId));
 
         Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
         Assert.That(wallet.BankConnectionId, Is.EqualTo(bankConnectionProcessId));
@@ -46,7 +46,7 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
         SaltEdgeHttpClientMocker.MockCreateConnectSessionSuccessfulResponse();
 
         _walletId = await AddDebitWalletFor(BankConnectionProcessingData.UserId);
-        var result = await WalletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
+        var result = await FinanceTrackingModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
             BankConnectionProcessingData.UserId,
             _walletId,
             BankConnectionProcessingData.BankId));
@@ -60,7 +60,7 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
         SaltEdgeHttpClientMocker.MockFetchConsentSuccessfulResponse();
         SaltEdgeHttpClientMocker.MockFetchAccountsSuccessfulResponse(hasMultipleAccounts: true);
 
-        await WalletsModule.ExecuteCommandAsync(new CreateBankConnectionCommand(
+        await FinanceTrackingModule.ExecuteCommandAsync(new CreateBankConnectionCommand(
             bankConnectionProcessId,
             BankConnectionProcessingData.ExternalConnectionId));
     }
@@ -85,6 +85,6 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
             "https://cdn.savify.localhost/icons/wallet.png",
             true);
 
-        return await WalletsModule.ExecuteCommandAsync(command);
+        return await FinanceTrackingModule.ExecuteCommandAsync(command);
     }
 }

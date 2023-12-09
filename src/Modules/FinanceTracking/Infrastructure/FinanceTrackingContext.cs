@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure;
 
-public class WalletsContext : DbContext
+public class FinanceTrackingContext : DbContext
 {
     public DbSet<CashWallet>? CashWallets { get; set; }
 
@@ -52,7 +52,7 @@ public class WalletsContext : DbContext
 
     public DbSet<SaltEdgeConnection>? SaltEdgeConnections { get; set; }
 
-    public WalletsContext(DbContextOptions<WalletsContext> options) : base(options)
+    public FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> options) : base(options)
     {
     }
 

@@ -4,20 +4,20 @@ namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Conne
 
 public class SaltEdgeConnectionRepository : ISaltEdgeConnectionRepository
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public SaltEdgeConnectionRepository(WalletsContext walletsContext)
+    public SaltEdgeConnectionRepository(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task AddAsync(SaltEdgeConnection connection)
     {
-        await _walletsContext.AddAsync(connection);
+        await _financeTrackingContext.AddAsync(connection);
     }
 
     public async Task<SaltEdgeConnection?> GetByInternalIdAsync(Guid internalConnectionId)
     {
-        return await _walletsContext.SaltEdgeConnections.SingleOrDefaultAsync(x => x.InternalConnectionId == internalConnectionId);
+        return await _financeTrackingContext.SaltEdgeConnections.SingleOrDefaultAsync(x => x.InternalConnectionId == internalConnectionId);
     }
 }

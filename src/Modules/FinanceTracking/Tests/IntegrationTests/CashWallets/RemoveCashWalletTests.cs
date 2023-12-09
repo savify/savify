@@ -12,7 +12,7 @@ public class RemoveCashWalletTests : TestBase
     public async Task RemoveCashWalletCommand_Tests()
     {
         var userId = Guid.NewGuid();
-        var walletId = await WalletsModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
+        var walletId = await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
             userId,
             "Cash wallet",
             "PLN",
@@ -21,9 +21,9 @@ public class RemoveCashWalletTests : TestBase
             "https://cdn.savify.localhost/icons/wallet.png",
             true));
 
-        await WalletsModule.ExecuteCommandAsync(new RemoveCashWalletCommand(userId, walletId));
+        await FinanceTrackingModule.ExecuteCommandAsync(new RemoveCashWalletCommand(userId, walletId));
 
-        var removedWallet = await WalletsModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
+        var removedWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
 
         Assert.That(removedWallet.Id, Is.EqualTo(walletId));
         Assert.That(removedWallet.UserId, Is.EqualTo(userId));

@@ -13,22 +13,22 @@ namespace App.API.Modules.FinanceTracking.BankConnectionProcessing;
 [Route("wallets/bank-connection-processing")]
 public class BankConnectionProcessingController : ControllerBase
 {
-    private readonly IWalletsModule _walletsModule;
+    private readonly IFinanceTrackingModule _financeTrackingModule;
 
     private readonly IExecutionContextAccessor _executionContextAccessor;
 
-    public BankConnectionProcessingController(IWalletsModule walletsModule, IExecutionContextAccessor executionContextAccessor)
+    public BankConnectionProcessingController(IFinanceTrackingModule financeTrackingModule, IExecutionContextAccessor executionContextAccessor)
     {
-        _walletsModule = walletsModule;
+        _financeTrackingModule = financeTrackingModule;
         _executionContextAccessor = executionContextAccessor;
     }
 
     [HttpPut("{bankConnectionProcessId}/choose-account")]
-    [HasPermission(WalletsPermissions.ConnectBankAccountsToWallets)]
+    [HasPermission(FinanceTrackingPermissions.ConnectBankAccountsToWallets)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> ChooseBankAccount(Guid bankConnectionProcessId, ChooseBankAccountRequest request)
     {
-        await _walletsModule.ExecuteCommandAsync(new ChooseBankAccountToConnectCommand(
+        await _financeTrackingModule.ExecuteCommandAsync(new ChooseBankAccountToConnectCommand(
             bankConnectionProcessId,
             _executionContextAccessor.UserId,
             request.BankAccountId));

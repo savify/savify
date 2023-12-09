@@ -13,6 +13,6 @@ public class LoggerProvider : ILoggerProvider
 
     public ILogger GetLogger()
     {
-        return _logger.ForContext("Module", "Wallets");
+        return _logger.ForContext("Module", "FinanceTracking");
     }
 }

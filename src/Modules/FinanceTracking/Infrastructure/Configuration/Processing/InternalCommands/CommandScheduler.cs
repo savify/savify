@@ -8,17 +8,17 @@ namespace App.Modules.FinanceTracking.Infrastructure.Configuration.Processing.In
 
 public class CommandScheduler : ICommandScheduler
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public CommandScheduler(WalletsContext walletsContext)
+    public CommandScheduler(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task EnqueueAsync(ICommand command)
     {
-        await _walletsContext.AddAsync(CreateInternalCommandFrom(command));
-        await _walletsContext.SaveChangesAsync();
+        await _financeTrackingContext.AddAsync(CreateInternalCommandFrom(command));
+        await _financeTrackingContext.SaveChangesAsync();
     }
 
     private InternalCommand CreateInternalCommandFrom(ICommand command)

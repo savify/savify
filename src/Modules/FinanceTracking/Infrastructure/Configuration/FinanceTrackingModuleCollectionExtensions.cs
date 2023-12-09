@@ -11,19 +11,19 @@ using Serilog;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Configuration;
 
-public static class WalletsModuleCollectionExtensions
+public static class FinanceTrackingModuleCollectionExtensions
 {
-    public static IServiceCollection AddWalletsModule(
+    public static IServiceCollection AddFinanceTrackingModule(
         this IServiceCollection services,
         IConfiguration configuration,
         ILogger logger)
     {
-        var moduleLogger = logger.ForContext("Module", "Wallets");
+        var moduleLogger = logger.ForContext("Module", "FinanceTracking");
         var connectionString = configuration.GetConnectionString("Savify");
         var domainNotificationMap = DomainNotificationsMap.Build();
 
         services
-            .AddDataAccessServices<WalletsContext>(connectionString)
+            .AddDataAccessServices<FinanceTrackingContext>(connectionString)
             .AddDomainServices()
             .AddIntegrationServices()
             .AddLocalizationServices()
@@ -37,7 +37,7 @@ public static class WalletsModuleCollectionExtensions
         QuartzInitialization.Initialize(moduleLogger);
         EventBusInitialization.Initialize(moduleLogger);
 
-        services.AddScoped<IWalletsModule, WalletsModule>();
+        services.AddScoped<IFinanceTrackingModule, FinanceTrackingModule>();
 
         return services;
     }

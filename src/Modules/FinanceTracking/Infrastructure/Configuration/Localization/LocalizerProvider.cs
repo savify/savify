@@ -27,6 +27,6 @@ public class LocalizerProvider : ILocalizerProvider
 
     private void CreateLocalizer()
     {
-        _localizer = _localizerFactory.Create<WalletsLocalizationResource>();
+        _localizer = _localizerFactory.Create<FinanceTrackingLocalizationResource>();
     }
 }

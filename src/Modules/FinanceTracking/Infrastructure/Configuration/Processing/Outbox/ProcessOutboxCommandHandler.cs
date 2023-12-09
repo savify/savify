@@ -8,12 +8,12 @@ namespace App.Modules.FinanceTracking.Infrastructure.Configuration.Processing.Ou
 
 public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
 {
-    private readonly OutboxCommandProcessor<WalletsContext> _outboxCommandProcessor;
+    private readonly OutboxCommandProcessor<FinanceTrackingContext> _outboxCommandProcessor;
 
     private readonly ILogger _logger;
 
     public ProcessOutboxCommandHandler(
-        OutboxCommandProcessor<WalletsContext> outboxCommandProcessor,
+        OutboxCommandProcessor<FinanceTrackingContext> outboxCommandProcessor,
         ILoggerProvider loggerProvider)
     {
         _outboxCommandProcessor = outboxCommandProcessor;

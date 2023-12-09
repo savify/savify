@@ -8,21 +8,21 @@ namespace App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CashWallets;
 
 public class CashWalletRepository : ICashWalletRepository
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public CashWalletRepository(WalletsContext walletsContext)
+    public CashWalletRepository(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task AddAsync(CashWallet wallet)
     {
-        await _walletsContext.AddAsync(wallet);
+        await _financeTrackingContext.AddAsync(wallet);
     }
 
     public async Task<CashWallet> GetByIdAsync(WalletId id)
     {
-        var wallet = await _walletsContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id);
+        var wallet = await _financeTrackingContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id);
 
         if (wallet == null)
         {
@@ -34,7 +34,7 @@ public class CashWalletRepository : ICashWalletRepository
 
     public async Task<CashWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId)
     {
-        var wallet = await _walletsContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var wallet = await _financeTrackingContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (wallet == null)
         {

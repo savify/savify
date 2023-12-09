@@ -14,7 +14,7 @@ notifications-migrations:
 
 # make wallets-migrations name=MigrationName
 wallets-migrations:
-	dotnet ef migrations add $(name) --project src/Modules/Wallets/Infrastructure --startup-project src/API --context WalletsContext
+	dotnet ef migrations add $(name) --project src/Modules/Wallets/Infrastructure --startup-project src/API --context financeTrackingContext
 
 # make banks-migrations name=MigrationName
 banks-migrations:
@@ -37,7 +37,7 @@ notifications-db-update:
 	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext
 
 wallets-db-update:
-	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context WalletsContext
+	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context financeTrackingContext
 
 banks-db-update:
 	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext
@@ -57,7 +57,7 @@ notifications-test-db-update:
 	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext -- --environment Testing
 
 wallets-test-db-update:
-	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context WalletsContext -- --environment Testing
+	dotnet ef database update --project src/Modules/Wallets/Infrastructure --startup-project src/API --context financeTrackingContext -- --environment Testing
 
 banks-test-db-update:
 	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext -- --environment Testing

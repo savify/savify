@@ -12,7 +12,7 @@ public class EditCashWalletTests : TestBase
     public async Task EditCashWalletCommand_Tests()
     {
         var userId = Guid.NewGuid();
-        var walletId = await WalletsModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
+        var walletId = await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
             userId,
             "Cash wallet",
             "PLN",
@@ -21,7 +21,7 @@ public class EditCashWalletTests : TestBase
             "https://cdn.savify.localhost/icons/wallet.png",
             true));
 
-        await WalletsModule.ExecuteCommandAsync(new EditCashWalletCommand(
+        await FinanceTrackingModule.ExecuteCommandAsync(new EditCashWalletCommand(
             userId,
             walletId,
             "New title",
@@ -31,7 +31,7 @@ public class EditCashWalletTests : TestBase
             "https://cdn.savify.localhost/icons/new-wallet.png",
             false));
 
-        var editedWallet = await WalletsModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
+        var editedWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
 
         Assert.That(editedWallet.UserId, Is.EqualTo(userId));
         Assert.That(editedWallet.Title, Is.EqualTo("New title"));

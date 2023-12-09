@@ -6,22 +6,22 @@ namespace App.Modules.FinanceTracking.Infrastructure.Domain.BankConnections;
 
 public class BankConnectionRepository : IBankConnectionRepository
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public BankConnectionRepository(WalletsContext walletsContext)
+    public BankConnectionRepository(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task AddAsync(BankConnection bankConnection)
     {
-        await _walletsContext.AddAsync(bankConnection);
+        await _financeTrackingContext.AddAsync(bankConnection);
     }
 
     public async Task<BankConnection> GetByIdAsync(BankConnectionId id)
     {
-        var bankConnection = _walletsContext.BankConnections.Local.SingleOrDefault(x => x.Id == id) ??
-                             await _walletsContext.BankConnections.SingleOrDefaultAsync(x => x.Id == id);
+        var bankConnection = _financeTrackingContext.BankConnections.Local.SingleOrDefault(x => x.Id == id) ??
+                             await _financeTrackingContext.BankConnections.SingleOrDefaultAsync(x => x.Id == id);
 
         if (bankConnection == null)
         {
@@ -33,6 +33,6 @@ public class BankConnectionRepository : IBankConnectionRepository
 
     public void Remove(BankConnection bankConnection)
     {
-        _walletsContext.Remove(bankConnection);
+        _financeTrackingContext.Remove(bankConnection);
     }
 }

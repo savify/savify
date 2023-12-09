@@ -11,7 +11,7 @@ public abstract class TestBase
 
     protected static Assembly ApplicationAssembly => typeof(CommandBase).Assembly;
 
-    protected static Assembly InfrastructureAssembly => typeof(WalletsContext).Assembly;
+    protected static Assembly InfrastructureAssembly => typeof(FinanceTrackingContext).Assembly;
 
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {

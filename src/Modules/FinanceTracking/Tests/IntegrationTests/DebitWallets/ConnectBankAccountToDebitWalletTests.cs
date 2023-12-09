@@ -23,8 +23,8 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
 
         var walletId = await AddDebitWalletFor(BankConnectionProcessingData.UserId);
 
-        var result = await WalletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(BankConnectionProcessingData.UserId, walletId, BankConnectionProcessingData.BankId));
-        var bankConnectionProcess = await WalletsModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(result.Success.Id));
+        var result = await FinanceTrackingModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(BankConnectionProcessingData.UserId, walletId, BankConnectionProcessingData.BankId));
+        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(result.Success.Id));
         var saltEdgeCustomer = await GetSaltEdgeCustomerByUserId(BankConnectionProcessingData.UserId);
 
         Assert.That(result.Success.RedirectUrl, Is.EqualTo(BankConnectionProcessingData.ExpectedRedirectUrl));
@@ -51,7 +51,7 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
             "https://cdn.savify.localhost/icons/wallet.png",
             true);
 
-        return await WalletsModule.ExecuteCommandAsync(command);
+        return await FinanceTrackingModule.ExecuteCommandAsync(command);
     }
 
     private async Task<SaltEdgeCustomerDto?> GetSaltEdgeCustomerByUserId(Guid userId)

@@ -1,6 +1,6 @@
 namespace App.API.Modules.FinanceTracking;
 
-public static class WalletsPermissions
+public static class FinanceTrackingPermissions
 {
     public const string AddNewWallet = nameof(AddNewWallet);
 

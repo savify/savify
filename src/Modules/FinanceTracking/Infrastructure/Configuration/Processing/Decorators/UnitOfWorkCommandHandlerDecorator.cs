@@ -9,11 +9,11 @@ namespace App.Modules.FinanceTracking.Infrastructure.Configuration.Processing.De
 internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
 {
     private readonly ICommandHandler<T, TResult> _decorated;
-    private readonly IUnitOfWork<WalletsContext> _unitOfWork;
+    private readonly IUnitOfWork<FinanceTrackingContext> _unitOfWork;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T, TResult> decorated,
-        IUnitOfWork<WalletsContext> unitOfWork)
+        IUnitOfWork<FinanceTrackingContext> unitOfWork)
     {
         _decorated = decorated;
         _unitOfWork = unitOfWork;
@@ -32,17 +32,17 @@ internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T
 internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
 {
     private readonly ICommandHandler<T> _decorated;
-    private readonly IUnitOfWork<WalletsContext> _unitOfWork;
-    private readonly WalletsContext _walletsContext;
+    private readonly IUnitOfWork<FinanceTrackingContext> _unitOfWork;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
     public UnitOfWorkCommandHandlerDecorator(
         ICommandHandler<T> decorated,
-        IUnitOfWork<WalletsContext> unitOfWork,
-        WalletsContext walletsContext)
+        IUnitOfWork<FinanceTrackingContext> unitOfWork,
+        FinanceTrackingContext financeTrackingContext)
     {
         _decorated = decorated;
         _unitOfWork = unitOfWork;
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task Handle(T command, CancellationToken cancellationToken)
@@ -51,7 +51,7 @@ internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T
 
         if (command is InternalCommandBase)
         {
-            await SetInternalCommandAsProcessedAsync(_walletsContext, command.Id, cancellationToken);
+            await SetInternalCommandAsProcessedAsync(_financeTrackingContext, command.Id, cancellationToken);
         }
 
         await _unitOfWork.CommitAsync(cancellationToken);
@@ -60,9 +60,9 @@ internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T
 
 internal static class UnitOfWorkCommandHandlerDecorator
 {
-    internal static async Task SetInternalCommandAsProcessedAsync(WalletsContext walletsContext, Guid commandId, CancellationToken cancellationToken)
+    internal static async Task SetInternalCommandAsProcessedAsync(FinanceTrackingContext financeTrackingContext, Guid commandId, CancellationToken cancellationToken)
     {
-        var internalCommand = await walletsContext.InternalCommands.SingleOrDefaultAsync(
+        var internalCommand = await financeTrackingContext.InternalCommands.SingleOrDefaultAsync(
             x => x.Id == commandId,
             cancellationToken: cancellationToken);
 

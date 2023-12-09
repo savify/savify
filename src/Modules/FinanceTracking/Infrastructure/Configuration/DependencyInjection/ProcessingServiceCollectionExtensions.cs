@@ -13,9 +13,9 @@ internal static class ProcessingServiceCollectionExtensions
 {
     internal static IServiceCollection AddProcessingServices(this IServiceCollection services)
     {
-        services.AddScoped<IDomainEventsAccessor<WalletsContext>, DomainEventsAccessor<WalletsContext>>();
-        services.AddScoped<IDomainEventsDispatcher<WalletsContext>, DomainEventsDispatcher<WalletsContext>>();
-        services.AddScoped<IUnitOfWork<WalletsContext>, UnitOfWork<WalletsContext>>();
+        services.AddScoped<IDomainEventsAccessor<FinanceTrackingContext>, DomainEventsAccessor<FinanceTrackingContext>>();
+        services.AddScoped<IDomainEventsDispatcher<FinanceTrackingContext>, DomainEventsDispatcher<FinanceTrackingContext>>();
+        services.AddScoped<IUnitOfWork<FinanceTrackingContext>, UnitOfWork<FinanceTrackingContext>>();
 
         services.AddScoped<ICommandScheduler, CommandScheduler>();
 

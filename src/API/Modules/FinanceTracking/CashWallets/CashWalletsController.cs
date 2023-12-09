@@ -15,22 +15,22 @@ namespace App.API.Modules.FinanceTracking.CashWallets;
 [Route("wallets/cash-wallets")]
 public class CashWalletsController : ControllerBase
 {
-    private readonly IWalletsModule _walletsModule;
+    private readonly IFinanceTrackingModule _financeTrackingModule;
 
     private readonly IExecutionContextAccessor _executionContextAccessor;
 
-    public CashWalletsController(IWalletsModule walletsModule, IExecutionContextAccessor executionContextAccessor)
+    public CashWalletsController(IFinanceTrackingModule financeTrackingModule, IExecutionContextAccessor executionContextAccessor)
     {
-        _walletsModule = walletsModule;
+        _financeTrackingModule = financeTrackingModule;
         _executionContextAccessor = executionContextAccessor;
     }
 
     [HttpPost("")]
-    [HasPermission(WalletsPermissions.AddNewWallet)]
+    [HasPermission(FinanceTrackingPermissions.AddNewWallet)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewCashWalletRequest request)
     {
-        var walletId = await _walletsModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
+        var walletId = await _financeTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
             _executionContextAccessor.UserId,
             request.Title,
             request.Currency,
@@ -46,11 +46,11 @@ public class CashWalletsController : ControllerBase
     }
 
     [HttpPatch("{walletId}")]
-    [HasPermission(WalletsPermissions.EditWallets)]
+    [HasPermission(FinanceTrackingPermissions.EditWallets)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Edit(Guid walletId, EditCashWalletRequest request)
     {
-        await _walletsModule.ExecuteCommandAsync(new EditCashWalletCommand(
+        await _financeTrackingModule.ExecuteCommandAsync(new EditCashWalletCommand(
             _executionContextAccessor.UserId,
             walletId,
             request.Title,
@@ -64,11 +64,11 @@ public class CashWalletsController : ControllerBase
     }
 
     [HttpDelete("{walletId}")]
-    [HasPermission(WalletsPermissions.RemoveWallets)]
+    [HasPermission(FinanceTrackingPermissions.RemoveWallets)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Remove(Guid walletId)
     {
-        await _walletsModule.ExecuteCommandAsync(new RemoveCashWalletCommand(_executionContextAccessor.UserId, walletId));
+        await _financeTrackingModule.ExecuteCommandAsync(new RemoveCashWalletCommand(_executionContextAccessor.UserId, walletId));
 
         return NoContent();
     }

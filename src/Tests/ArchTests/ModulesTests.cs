@@ -98,9 +98,9 @@ public class ModulesTests : TestBase
         };
         List<Assembly> walletsAssemblies = new List<Assembly>
         {
-            typeof(IWalletsModule).Assembly,
+            typeof(IFinanceTrackingModule).Assembly,
             typeof(DebitWallet).Assembly,
-            typeof(WalletsContext).Assembly
+            typeof(FinanceTrackingContext).Assembly
         };
 
         var result = Types.InAssemblies(walletsAssemblies)

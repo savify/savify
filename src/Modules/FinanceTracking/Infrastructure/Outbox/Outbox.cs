@@ -2,17 +2,17 @@ using App.BuildingBlocks.Infrastructure.Outbox;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Outbox;
 
-public class Outbox : IOutbox<WalletsContext>
+public class Outbox : IOutbox<FinanceTrackingContext>
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public Outbox(WalletsContext walletsContext)
+    public Outbox(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public void Add(OutboxMessage message)
     {
-        _walletsContext.OutboxMessages?.Add(message);
+        _financeTrackingContext.OutboxMessages?.Add(message);
     }
 }

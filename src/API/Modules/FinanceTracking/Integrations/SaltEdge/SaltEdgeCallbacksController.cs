@@ -11,13 +11,13 @@ namespace App.API.Modules.FinanceTracking.Integrations.SaltEdge;
 [Route("integrations/salt-edge")]
 public class SaltEdgeCallbacksController : ControllerBase
 {
-    private readonly IWalletsModule _walletsModule;
+    private readonly IFinanceTrackingModule _financeTrackingModule;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public SaltEdgeCallbacksController(IWalletsModule walletsModule, IHttpContextAccessor httpContextAccessor)
+    public SaltEdgeCallbacksController(IFinanceTrackingModule financeTrackingModule, IHttpContextAccessor httpContextAccessor)
     {
-        _walletsModule = walletsModule;
+        _financeTrackingModule = financeTrackingModule;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -32,7 +32,7 @@ public class SaltEdgeCallbacksController : ControllerBase
         // TODO: accept all stages and make it prettier
         if (request.Data.Stage == "finish")
         {
-            var result = await _walletsModule.ExecuteCommandAsync(new CreateBankConnectionCommand(
+            var result = await _financeTrackingModule.ExecuteCommandAsync(new CreateBankConnectionCommand(
                 request.Data.CustomFields.BankConnectionProcessId,
                 request.Data.ConnectionId));
 

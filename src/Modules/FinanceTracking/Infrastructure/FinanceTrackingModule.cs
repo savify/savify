@@ -3,7 +3,7 @@ using App.Modules.FinanceTracking.Infrastructure.Configuration.Processing;
 
 namespace App.Modules.FinanceTracking.Infrastructure;
 
-public class WalletsModule : IWalletsModule
+public class FinanceTrackingModule : IFinanceTrackingModule
 {
     public async Task ExecuteCommandAsync(ICommand command)
     {

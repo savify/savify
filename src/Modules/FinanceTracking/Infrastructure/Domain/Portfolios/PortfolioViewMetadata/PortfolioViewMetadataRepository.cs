@@ -7,21 +7,21 @@ namespace App.Modules.FinanceTracking.Infrastructure.Domain.Portfolios.Portfolio
 
 internal class PortfolioViewMetadataRepository : IPortfolioViewMetadataRepository
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public PortfolioViewMetadataRepository(WalletsContext walletsContext)
+    public PortfolioViewMetadataRepository(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task AddAsync(Modules.FinanceTracking.Domain.Portfolios.PortfolioViewMetadata.PortfolioViewMetadata viewMetadata)
     {
-        await _walletsContext.AddAsync(viewMetadata);
+        await _financeTrackingContext.AddAsync(viewMetadata);
     }
 
     public async Task<Modules.FinanceTracking.Domain.Portfolios.PortfolioViewMetadata.PortfolioViewMetadata> GetByIdAsync(PortfolioId portfolioId)
     {
-        var viewMetadata = await _walletsContext.PortfoliosViewMetadata.SingleOrDefaultAsync(x => x.PortfolioId == portfolioId);
+        var viewMetadata = await _financeTrackingContext.PortfoliosViewMetadata.SingleOrDefaultAsync(x => x.PortfolioId == portfolioId);
 
         if (viewMetadata is null)
         {

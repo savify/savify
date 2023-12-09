@@ -22,7 +22,7 @@ public class TestBase
 
     protected SaltEdgeHttpClientMocker SaltEdgeHttpClientMocker { get; private set; }
 
-    protected IWalletsModule WalletsModule { get; private set; }
+    protected IFinanceTrackingModule FinanceTrackingModule { get; private set; }
 
     protected string ConnectionString { get; private set; }
 
@@ -43,7 +43,7 @@ public class TestBase
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
-        WalletsModule = scope.ServiceProvider.GetRequiredService<IWalletsModule>();
+        FinanceTrackingModule = scope.ServiceProvider.GetRequiredService<IFinanceTrackingModule>();
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));

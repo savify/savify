@@ -1,6 +1,6 @@
 namespace App.Modules.FinanceTracking.Application.Contracts;
 
-public interface IWalletsModule
+public interface IFinanceTrackingModule
 {
     Task ExecuteCommandAsync(ICommand command);
 

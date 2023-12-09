@@ -17,22 +17,22 @@ namespace App.API.Modules.FinanceTracking.DebitWallets;
 [Route("wallets/debit-wallets")]
 public class DebitWalletsController : ControllerBase
 {
-    private readonly IWalletsModule _walletsModule;
+    private readonly IFinanceTrackingModule _financeTrackingModule;
 
     private readonly IExecutionContextAccessor _executionContextAccessor;
 
-    public DebitWalletsController(IWalletsModule walletsModule, IExecutionContextAccessor executionContextAccessor)
+    public DebitWalletsController(IFinanceTrackingModule financeTrackingModule, IExecutionContextAccessor executionContextAccessor)
     {
-        _walletsModule = walletsModule;
+        _financeTrackingModule = financeTrackingModule;
         _executionContextAccessor = executionContextAccessor;
     }
 
     [HttpPost("")]
-    [HasPermission(WalletsPermissions.AddNewWallet)]
+    [HasPermission(FinanceTrackingPermissions.AddNewWallet)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewDebitWalletRequest request)
     {
-        var walletId = await _walletsModule.ExecuteCommandAsync(new AddNewDebitWalletCommand(
+        var walletId = await _financeTrackingModule.ExecuteCommandAsync(new AddNewDebitWalletCommand(
             _executionContextAccessor.UserId,
             request.Title,
             request.Currency,
@@ -48,11 +48,11 @@ public class DebitWalletsController : ControllerBase
     }
 
     [HttpPatch("{walletId}")]
-    [HasPermission(WalletsPermissions.EditWallets)]
+    [HasPermission(FinanceTrackingPermissions.EditWallets)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Edit(Guid walletId, EditDebitWalletRequest request)
     {
-        await _walletsModule.ExecuteCommandAsync(new EditDebitWalletCommand(
+        await _financeTrackingModule.ExecuteCommandAsync(new EditDebitWalletCommand(
             _executionContextAccessor.UserId,
             walletId,
             request.Title,
@@ -66,21 +66,21 @@ public class DebitWalletsController : ControllerBase
     }
 
     [HttpDelete("{walletId}")]
-    [HasPermission(WalletsPermissions.RemoveWallets)]
+    [HasPermission(FinanceTrackingPermissions.RemoveWallets)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Remove(Guid walletId)
     {
-        await _walletsModule.ExecuteCommandAsync(new RemoveDebitWalletCommand(_executionContextAccessor.UserId, walletId));
+        await _financeTrackingModule.ExecuteCommandAsync(new RemoveDebitWalletCommand(_executionContextAccessor.UserId, walletId));
 
         return NoContent();
     }
 
     [HttpPost("{walletId}/bank-connection")]
-    [HasPermission(WalletsPermissions.ConnectBankAccountsToWallets)]
+    [HasPermission(FinanceTrackingPermissions.ConnectBankAccountsToWallets)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> ConnectBankAccount(Guid walletId, ConnectBankAccountToDebitWalletRequest request)
     {
-        var result = await _walletsModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
+        var result = await _financeTrackingModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
             _executionContextAccessor.UserId,
             walletId,
             request.BankId));

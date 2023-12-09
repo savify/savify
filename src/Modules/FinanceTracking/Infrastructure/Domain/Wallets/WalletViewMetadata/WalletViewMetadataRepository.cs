@@ -7,21 +7,21 @@ namespace App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletViewMe
 
 public class WalletViewMetadataRepository : IWalletViewMetadataRepository
 {
-    private readonly WalletsContext _walletsContext;
+    private readonly FinanceTrackingContext _financeTrackingContext;
 
-    public WalletViewMetadataRepository(WalletsContext walletsContext)
+    public WalletViewMetadataRepository(FinanceTrackingContext financeTrackingContext)
     {
-        _walletsContext = walletsContext;
+        _financeTrackingContext = financeTrackingContext;
     }
 
     public async Task AddAsync(Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata.WalletViewMetadata walletViewMetadata)
     {
-        await _walletsContext.AddAsync(walletViewMetadata);
+        await _financeTrackingContext.AddAsync(walletViewMetadata);
     }
 
     public async Task<Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata.WalletViewMetadata> GetByWalletIdAsync(WalletId walletId)
     {
-        var walletViewMetadata = await _walletsContext.WalletsViewMetadata.SingleOrDefaultAsync(x => x.WalletId == walletId);
+        var walletViewMetadata = await _financeTrackingContext.WalletsViewMetadata.SingleOrDefaultAsync(x => x.WalletId == walletId);
 
         if (walletViewMetadata == null)
         {

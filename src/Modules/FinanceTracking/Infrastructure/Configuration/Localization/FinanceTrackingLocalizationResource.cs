@@ -2,7 +2,7 @@ using App.BuildingBlocks.Infrastructure.Localization;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Configuration.Localization;
 
-public class WalletsLocalizationResource : ILocalizationResource
+public class FinanceTrackingLocalizationResource : ILocalizationResource
 {
-    public string Module => "Wallets";
+    public string Module => "FinanceTracking";
 }

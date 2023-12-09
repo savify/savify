@@ -19,9 +19,9 @@ public class AddNewCashWalletTests : TestBase
             "https://cdn.savify.localhost/icons/wallet.png",
             true);
 
-        var walletId = await WalletsModule.ExecuteCommandAsync(command);
+        var walletId = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
-        var wallet = await WalletsModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
 
         Assert.IsNotNull(wallet);
         Assert.That(wallet.UserId, Is.EqualTo(command.UserId));
