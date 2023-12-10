@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  db:
+    container_name: savify-database
+    image: postgres:15-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+    networks:
+      - savify
+
+  mailcatcher:
+    container_name: savify-mails
+    restart: on-failure
+    image: dockage/mailcatcher:0.8.2
+    ports:
+      - "1025:1025"
+
+volumes:
+  database_data:
+
+networks:
+  savify:
+    name: savify
