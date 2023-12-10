@@ -27,7 +27,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Publish
-        run: dotnet publish --no-build --output publish_output
+        run: dotnet publish --output publish_output
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
