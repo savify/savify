@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\..\BuildingBlocks\Tests\App.BuildingBlocks.Tests.csproj" />
         <ProjectReference Include="..\..\Application\App.Modules.Transactions.Application.csproj" />
         <ProjectReference Include="..\..\Domain\App.Modules.Transactions.Domain.csproj" />
         <ProjectReference Include="..\..\Infrastructure\App.Modules.Transactions.Infrastructure.csproj" />

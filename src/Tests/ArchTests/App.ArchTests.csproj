@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\API\App.API.csproj" />
+      <ProjectReference Include="..\..\BuildingBlocks\Tests\App.BuildingBlocks.Tests.csproj" />
     </ItemGroup>
 
 </Project>
