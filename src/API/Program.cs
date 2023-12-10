@@ -41,7 +41,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        ConfigureLogger(builder.Configuration);
+        ConfigureLogger(builder.Configuration, builder.Environment);
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -133,23 +133,27 @@ public class Program
         app.Run();
     }
 
-    private static void ConfigureLogger(IConfiguration configuration)
+    private static void ConfigureLogger(IConfiguration configuration, IWebHostEnvironment environment)
     {
-        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
         var logTemplate = "[{Environment}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}";
 
         _loggerConfiguration = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .Enrich.WithSensitiveDataMasking()
             .Destructure.UsingAttributes()
-            .Enrich.WithProperty("Environment", environment)
-            .WriteTo.Console(outputTemplate: logTemplate)
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Uri"]!))
-            {
-                AutoRegisterTemplate = true,
-                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
-                IndexFormat = $"savify-{environment.ToLower().Replace(".", "-")}"
-            });
+            .Enrich.WithProperty("Environment", environment.EnvironmentName)
+            .WriteTo.Console(outputTemplate: logTemplate);
+
+        if (environment.IsDevelopment() || environment.IsProduction())
+        {
+            _loggerConfiguration = _loggerConfiguration
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Uri"]!))
+                {
+                    AutoRegisterTemplate = true,
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
+                    IndexFormat = $"savify-{environment.EnvironmentName.ToLower().Replace(".", "-")}"
+                });
+        }
 
         _logger = _loggerConfiguration.CreateLogger();
 
