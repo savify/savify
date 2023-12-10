@@ -27,7 +27,7 @@ jobs:
         run: dotnet build --configuration Debug --no-restore
 
       - name: Publish
-        run: dotnet publish --configuration Debug --output publish_output
+        run: dotnet publish --configuration Debug --output dist
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
