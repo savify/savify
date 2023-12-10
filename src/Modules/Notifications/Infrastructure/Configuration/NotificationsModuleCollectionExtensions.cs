@@ -1,8 +1,8 @@
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.DependencyInjection;
 using App.Modules.Notifications.Application.Contracts;
-using App.Modules.Notifications.Infrastructure.Configuration.EventBus;
 using App.Modules.Notifications.Infrastructure.Configuration.DependencyInjection;
+using App.Modules.Notifications.Infrastructure.Configuration.EventBus;
 using App.Modules.Notifications.Infrastructure.Configuration.Quartz;
 using App.Modules.Notifications.Infrastructure.Emails;
 using Microsoft.Extensions.Configuration;

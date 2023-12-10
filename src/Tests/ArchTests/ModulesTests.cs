@@ -6,6 +6,9 @@ using App.Modules.Banks.Infrastructure;
 using App.Modules.Categories.Application.Contracts;
 using App.Modules.Categories.Domain.Categories;
 using App.Modules.Categories.Infrastructure;
+using App.Modules.FinanceTracking.Application.Contracts;
+using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
+using App.Modules.FinanceTracking.Infrastructure;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Domain.UserNotificationSettings;
 using App.Modules.Notifications.Infrastructure;
@@ -15,10 +18,7 @@ using App.Modules.Transactions.Infrastructure;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Infrastructure;
-using App.Modules.FinanceTracking.Infrastructure;
 using MediatR;
-using App.Modules.FinanceTracking.Application.Contracts;
-using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
 namespace App.ArchTests;
 
