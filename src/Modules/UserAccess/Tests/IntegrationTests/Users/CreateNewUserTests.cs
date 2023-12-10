@@ -27,6 +27,6 @@ public class CreateNewUserTests : TestBase
         Assert.That(user.Email, Is.EqualTo(UserSampleData.Email));
         Assert.That(user.Name, Is.EqualTo(UserSampleData.Name));
         Assert.That(user.IsActive, Is.True);
-        Assert.Contains(UserSampleData.Role.Value, user.Roles);
+        Assert.That(user.Roles, Has.Member(UserSampleData.Role.Value));
     }
 }

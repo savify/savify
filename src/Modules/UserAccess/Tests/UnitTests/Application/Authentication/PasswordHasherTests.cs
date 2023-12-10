@@ -1,4 +1,3 @@
-using App.BuildingBlocks.Tests.UnitTests;
 using App.Modules.UserAccess.Application.Authentication;
 
 namespace App.Modules.UserAccess.UnitTests.Application.Authentication;
@@ -13,7 +12,7 @@ public class PasswordHasherTests : UnitTestBase
 
         var hashedPassword = PasswordHasher.HashPassword(plainPassword);
 
-        Assert.True(PasswordHasher.IsPasswordValid(hashedPassword, plainPassword));
+        Assert.That(PasswordHasher.IsPasswordValid(hashedPassword, plainPassword), Is.True);
     }
 
     [Test]
@@ -23,6 +22,6 @@ public class PasswordHasherTests : UnitTestBase
 
         var hashedPassword = PasswordHasher.HashPassword(plainPassword);
 
-        Assert.False(PasswordHasher.IsPasswordValid(hashedPassword, "invalid-password"));
+        Assert.That(PasswordHasher.IsPasswordValid(hashedPassword, "invalid-password"), Is.False);
     }
 }
