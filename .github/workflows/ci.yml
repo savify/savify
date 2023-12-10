@@ -62,7 +62,10 @@ jobs:
         shell: bash
 
       - name: Make Database Migrations
-        run: make test-db-update
+        run: |
+          dotnet tool install --global dotnet-ef
+          dotnet tool restore
+          make test-db-update
 
       - name: Integration Tests
         run: dotnet test --no-build --verbosity normal --filter TestCategory=IntegrationTest
