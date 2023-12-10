@@ -49,4 +49,6 @@ jobs:
           name: build-artifact
 
       - name: Run Tests
-        run: dotnet test --no-build --verbosity normal --filter TestCategory=UnitTest
+        run: |
+          cd publish_output
+          dotnet test --no-build --verbosity normal --filter TestCategory=UnitTest
