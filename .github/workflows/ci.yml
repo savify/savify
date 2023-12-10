@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: publish_output
+          path: dist
 
   unit-tests:
     name: Unit Tests
@@ -47,8 +47,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-artifact
+          path: dist
+
+      - name: List contents of publish directory
+        run: ls -R dist
 
       - name: Run Tests
         run: |
-          cd publish_output
+          cd dist
           dotnet test --no-build --verbosity normal --filter TestCategory=UnitTest
