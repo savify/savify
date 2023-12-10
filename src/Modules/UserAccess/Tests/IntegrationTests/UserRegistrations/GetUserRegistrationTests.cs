@@ -12,7 +12,7 @@ public class GetUserRegistrationTests : TestBase
     {
         var userRegistration = await UserAccessModule.ExecuteQueryAsync(new GetUserRegistrationQuery(Guid.NewGuid()));
 
-        Assert.Null(userRegistration);
+        Assert.That(userRegistration, Is.Null);
     }
 
     [Test]
