@@ -1,4 +1,4 @@
-using App.Modules.Wallets.Infrastructure.Integrations.Exceptions;
+using App.Modules.FinanceTracking.Infrastructure.Integrations.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.API.Configuration.Validation;

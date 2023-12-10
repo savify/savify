@@ -15,10 +15,10 @@ using App.Modules.Transactions.Infrastructure;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Infrastructure;
-using App.Modules.Wallets.Application.Contracts;
-using App.Modules.Wallets.Domain.Wallets.DebitWallets;
-using App.Modules.Wallets.Infrastructure;
+using App.Modules.FinanceTracking.Infrastructure;
 using MediatR;
+using App.Modules.FinanceTracking.Application.Contracts;
+using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
 namespace App.ArchTests;
 
@@ -98,9 +98,9 @@ public class ModulesTests : TestBase
         };
         List<Assembly> walletsAssemblies = new List<Assembly>
         {
-            typeof(IWalletsModule).Assembly,
+            typeof(IFinanceTrackingModule).Assembly,
             typeof(DebitWallet).Assembly,
-            typeof(WalletsContext).Assembly
+            typeof(FinanceTrackingContext).Assembly
         };
 
         var result = Types.InAssemblies(walletsAssemblies)

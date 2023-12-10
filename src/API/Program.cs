@@ -16,8 +16,8 @@ using App.Modules.Notifications.Infrastructure.Configuration;
 using App.Modules.Transactions.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
-using App.Modules.Wallets.Infrastructure.Configuration;
-using App.Modules.Wallets.Infrastructure.Integrations.Exceptions;
+using App.Modules.FinanceTracking.Infrastructure.Configuration;
+using App.Modules.FinanceTracking.Infrastructure.Integrations.Exceptions;
 using Destructurama;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -84,7 +84,7 @@ public class Program
 
         builder.Services.AddUserAccessModule(builder.Configuration, _logger);
         builder.Services.AddNotificationsModule(builder.Configuration, _logger);
-        builder.Services.AddWalletsModule(builder.Configuration, _logger);
+        builder.Services.AddFinanceTrackingModule(builder.Configuration, _logger);
         builder.Services.AddBanksModule(builder.Configuration, _logger, builder.Environment.IsProduction());
         builder.Services.AddCategoriesModule(builder.Configuration, _logger);
         builder.Services.AddTransactionsModule(builder.Configuration, _logger);

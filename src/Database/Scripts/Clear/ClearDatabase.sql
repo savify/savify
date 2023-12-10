@@ -6,7 +6,7 @@ DO $$
         sql_query TEXT;
 
     BEGIN
-        schemas := ARRAY ['user_access', 'wallets', 'banks', 'notifications', 'transactions', 'categories'];
+        schemas := ARRAY ['user_access', 'finance_tracking', 'banks', 'notifications', 'transactions', 'categories'];
 
         FOR schema_name IN SELECT UNNEST(schemas)
             LOOP
