@@ -68,7 +68,7 @@ jobs:
           make test-db-update
 
       - name: Integration Tests
-        run: dotnet test --no-build --verbosity normal -e ASPNETCORE_ENVIRONMENT=Testing ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING="host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass" --filter TestCategory=IntegrationTest
+        run: dotnet test --no-build --verbosity normal -e ASPNETCORE_ENVIRONMENT=Testing -e ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING="host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass" --filter TestCategory=IntegrationTest
 
       - name: Module Integration Tests
-        run: dotnet test --no-build --verbosity normal -e ASPNETCORE_ENVIRONMENT=Testing ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING="host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass" --filter TestCategory=ModulesIntegrationTest
+        run: dotnet test --no-build --verbosity normal -e ASPNETCORE_ENVIRONMENT=Testing -e ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING="host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass" --filter TestCategory=ModulesIntegrationTest
