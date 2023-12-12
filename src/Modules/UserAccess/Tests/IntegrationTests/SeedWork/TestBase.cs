@@ -3,12 +3,13 @@ using System.Reflection;
 using App.API;
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
-using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Infrastructure;
 using Dapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
@@ -25,28 +26,26 @@ public class TestBase
     private static Assembly _applicationAssembly = Assembly.GetAssembly(typeof(CommandBase));
 
     [OneTimeSetUp]
-    public void Init()
+    public async Task Init()
     {
-        const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
-        ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
-
-        if (ConnectionString == null)
-        {
-            throw new ApplicationException(
-                $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
-        }
-
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
+
+        await WebApplicationFactory.InitialiseDbContainerAsync();
+        ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<UserAccessContext>();
+        await dbContext.Database.MigrateAsync();
     }
 
     [OneTimeTearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        WebApplicationFactory.Dispose();
+        await WebApplicationFactory.DisposeDbContainerAsync();
+        await WebApplicationFactory.DisposeAsync();
     }
 
     [SetUp]
