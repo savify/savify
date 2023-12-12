@@ -50,9 +50,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build
-        run: dotnet build --no-restore
-
       - name: Integration Tests
         run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=IntegrationTest
 
