@@ -24,7 +24,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         .WithPassword("pass")
         .Build();
 
-    public Task InitialiseDbContainerAsync() =>_dbContainer.StartAsync();
+    public Task InitialiseDbContainerAsync() => _dbContainer.StartAsync();
 
     public Task DisposeDbContainerAsync() => _dbContainer.StopAsync();
 
