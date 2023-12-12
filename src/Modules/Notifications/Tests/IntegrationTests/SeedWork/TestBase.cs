@@ -1,12 +1,12 @@
 using System.Data;
 using App.API;
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
-using App.Modules.Notifications.Infrastructure.Configuration;
+using App.Modules.Notifications.Infrastructure;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using NSubstitute;
@@ -24,29 +24,27 @@ public class TestBase
     protected IEmailSender EmailSender { get; private set; }
 
     [OneTimeSetUp]
-    public void Init()
+    public async Task Init()
     {
-        const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
-        ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
-
-        if (ConnectionString == null)
-        {
-            throw new ApplicationException(
-                $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
-        }
-
         EmailSender = Substitute.For<IEmailSender>();
         WebApplicationFactory = new CustomWebApplicationFactory<Program>(EmailSender);
+        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+
+        await WebApplicationFactory.InitialiseDbContainerAsync();
+        ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
-        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<NotificationsContext>();
+        await dbContext.Database.MigrateAsync();
     }
 
     [OneTimeTearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        WebApplicationFactory.Dispose();
+        await WebApplicationFactory.DisposeDbContainerAsync();
+        await WebApplicationFactory.DisposeAsync();
     }
 
     [SetUp]
