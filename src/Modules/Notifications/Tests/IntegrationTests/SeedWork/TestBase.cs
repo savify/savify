@@ -27,10 +27,9 @@ public class TestBase
     public async Task Init()
     {
         EmailSender = Substitute.For<IEmailSender>();
-        WebApplicationFactory = new CustomWebApplicationFactory<Program>(EmailSender);
+        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(EmailSender);
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
-        await WebApplicationFactory.InitialiseDbContainerAsync();
         ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();

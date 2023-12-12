@@ -1,12 +1,11 @@
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Data;
+using App.BuildingBlocks.Tests.IntegrationTests.DependencyInjection;
 using App.Modules.Banks.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.PostgreSql;
@@ -22,36 +21,27 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         .WithPassword("pass")
         .Build();
 
+    public Task InitialiseDbContainerAsync() =>_dbContainer.StartAsync();
+
+    public Task DisposeDbContainerAsync() => _dbContainer.StopAsync();
+
+    public string GetConnectionString() => _dbContainer.GetConnectionString();
+
+    public static async Task<CustomWebApplicationFactory<TProgram>> Create()
+    {
+        var factory = new CustomWebApplicationFactory<TProgram>();
+        await factory.InitialiseDbContainerAsync();
+
+        return factory;
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(services =>
         {
-            var dbContextDescriptor = services.SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<BanksContext>));
-
-            if (dbContextDescriptor is not null)
-            {
-                services.Remove(dbContextDescriptor);
-            }
-
-            services.AddDbContext<BanksContext>(options =>
-            {
-                options.UseNpgsql(_dbContainer.GetConnectionString());
-                options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
-            });
+            services.ReplaceDbContext<BanksContext>(_dbContainer.GetConnectionString());
             services.Replace(ServiceDescriptor.Scoped<ISqlConnectionFactory>(_ => new SqlConnectionFactory(_dbContainer.GetConnectionString())));
             services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
         });
     }
-
-    public Task InitialiseDbContainerAsync()
-    {
-        return _dbContainer.StartAsync();
-    }
-
-    public Task DisposeDbContainerAsync()
-    {
-        return _dbContainer.StopAsync();
-    }
-
-    public string GetConnectionString() => _dbContainer.GetConnectionString();
 }

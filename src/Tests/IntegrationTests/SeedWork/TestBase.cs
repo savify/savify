@@ -2,13 +2,19 @@ using System.Data;
 using App.API;
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Configuration;
-using App.BuildingBlocks.Tests.IntegrationTests;
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
 using App.Database.Scripts.Clear;
+using App.Modules.Banks.Infrastructure;
+using App.Modules.Categories.Infrastructure;
+using App.Modules.FinanceTracking.Infrastructure;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
+using App.Modules.Notifications.Infrastructure;
+using App.Modules.Transactions.Infrastructure;
 using App.Modules.UserAccess.Application.Contracts;
+using App.Modules.UserAccess.Infrastructure;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using NSubstitute;
@@ -28,30 +34,31 @@ public class TestBase
     protected string ConnectionString { get; private set; }
 
     [OneTimeSetUp]
-    public void Init()
+    public async Task Init()
     {
-        const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
-        ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
-
-        if (ConnectionString == null)
-        {
-            throw new ApplicationException(
-                $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
-        }
-
         EmailSender = Substitute.For<IEmailSender>();
-        WebApplicationFactory = new CustomWebApplicationFactory<Program>(EmailSender);
+        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(EmailSender);
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+
+        ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
+
+        await MigrateDb<BanksContext>(scope);
+        await MigrateDb<CategoriesContext>(scope);
+        await MigrateDb<FinanceTrackingContext>(scope);
+        await MigrateDb<NotificationsContext>(scope);
+        await MigrateDb<TransactionsContext>(scope);
+        await MigrateDb<UserAccessContext>(scope);
     }
 
     [OneTimeTearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        WebApplicationFactory.Dispose();
+        await WebApplicationFactory.DisposeDbContainerAsync();
+        await WebApplicationFactory.DisposeAsync();
     }
 
     [SetUp]
@@ -83,5 +90,11 @@ public class TestBase
         var sql = await ClearDatabaseCommandProvider.GetAsync();
 
         await connection.ExecuteScalarAsync(sql);
+    }
+
+    private async Task MigrateDb<TContext>(IServiceScope scope) where TContext : DbContext
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<TContext>();
+        await dbContext.Database.MigrateAsync();
     }
 }

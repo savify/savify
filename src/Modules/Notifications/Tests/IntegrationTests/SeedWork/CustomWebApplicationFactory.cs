@@ -1,13 +1,12 @@
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Data;
+using App.BuildingBlocks.Tests.IntegrationTests.DependencyInjection;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.PostgreSql;
@@ -25,42 +24,33 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         .WithPassword("pass")
         .Build();
 
-    public CustomWebApplicationFactory(IEmailSender emailSender)
+    public Task InitialiseDbContainerAsync() =>_dbContainer.StartAsync();
+
+    public Task DisposeDbContainerAsync() => _dbContainer.StopAsync();
+
+    public string GetConnectionString() => _dbContainer.GetConnectionString();
+
+    public static async Task<CustomWebApplicationFactory<TProgram>> Create(IEmailSender emailSender)
     {
-        _emailSender = emailSender;
+        var factory = new CustomWebApplicationFactory<TProgram>(emailSender);
+        await factory.InitialiseDbContainerAsync();
+
+        return factory;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(services =>
         {
-            var dbContextDescriptor = services.SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<NotificationsContext>));
-
-            if (dbContextDescriptor is not null)
-            {
-                services.Remove(dbContextDescriptor);
-            }
-
-            services.AddDbContext<NotificationsContext>(options =>
-            {
-                options.UseNpgsql(_dbContainer.GetConnectionString());
-                options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
-            });
+            services.ReplaceDbContext<NotificationsContext>(_dbContainer.GetConnectionString());
             services.Replace(ServiceDescriptor.Scoped<ISqlConnectionFactory>(_ => new SqlConnectionFactory(_dbContainer.GetConnectionString())));
             services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
             services.Replace(ServiceDescriptor.Scoped<IEmailSender>(_ => _emailSender));
         });
     }
 
-    public Task InitialiseDbContainerAsync()
+    private CustomWebApplicationFactory(IEmailSender emailSender)
     {
-        return _dbContainer.StartAsync();
+        _emailSender = emailSender;
     }
-
-    public Task DisposeDbContainerAsync()
-    {
-        return _dbContainer.StopAsync();
-    }
-
-    public string GetConnectionString() => _dbContainer.GetConnectionString();
 }

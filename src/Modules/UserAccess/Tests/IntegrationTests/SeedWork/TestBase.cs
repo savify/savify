@@ -28,10 +28,9 @@ public class TestBase
     [OneTimeSetUp]
     public async Task Init()
     {
-        WebApplicationFactory = new CustomWebApplicationFactory<Program>();
+        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create();
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
-        await WebApplicationFactory.InitialiseDbContainerAsync();
         ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
