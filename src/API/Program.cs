@@ -141,12 +141,12 @@ public class Program
             .Enrich.FromLogContext()
             .Enrich.WithSensitiveDataMasking()
             .Destructure.UsingAttributes()
-            .Enrich.WithProperty("Environment", environment.EnvironmentName)
-            .WriteTo.Console(outputTemplate: logTemplate);
+            .Enrich.WithProperty("Environment", environment.EnvironmentName);
 
         if (environment.IsDevelopment() || environment.IsProduction())
         {
             _loggerConfiguration = _loggerConfiguration
+                .WriteTo.Console(outputTemplate: logTemplate)
                 .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Uri"]!))
                 {
                     AutoRegisterTemplate = true,
