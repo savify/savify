@@ -6,10 +6,12 @@ using App.BuildingBlocks.Tests.IntegrationTests;
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
 using App.Database.Scripts.Clear;
 using App.Modules.Notifications.Application.Contracts;
+using App.Modules.Notifications.Application.Emails;
 using App.Modules.UserAccess.Application.Contracts;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using NSubstitute;
 
 namespace App.IntegrationTests.SeedWork;
 
@@ -20,6 +22,8 @@ public class TestBase
     protected IUserAccessModule UserAccessModule { get; private set; }
 
     protected INotificationsModule NotificationsModule { get; private set; }
+
+    protected IEmailSender EmailSender { get; private set; }
 
     protected string ConnectionString { get; private set; }
 
@@ -35,7 +39,8 @@ public class TestBase
                 $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
         }
 
-        WebApplicationFactory = new CustomWebApplicationFactory<Program>();
+        EmailSender = Substitute.For<IEmailSender>();
+        WebApplicationFactory = new CustomWebApplicationFactory<Program>(EmailSender);
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         using var scope = WebApplicationFactory.Services.CreateScope();
