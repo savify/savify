@@ -54,21 +54,8 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
 
-      - name: Run Containers
-        run: docker compose -f docker-compose.ci.yaml up -d
-
-      - name: Wait
-        run: sleep 5s
-        shell: bash
-
-      - name: Make Database Migrations
-        run: |
-          dotnet tool install --global dotnet-ef
-          dotnet tool restore
-          make test-db-update
-
       - name: Integration Tests
-        run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing -e ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING="host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass" --filter TestCategory=IntegrationTest
+        run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=IntegrationTest
 
       - name: Module Integration Tests
-        run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing -e ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING="host=localhost; Port=5433; Database=savify_test; Username=user; Password=pass" --filter TestCategory=ModulesIntegrationTest
+        run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=ModulesIntegrationTest
