@@ -29,13 +29,13 @@ public class TestBase
     public async Task Init()
     {
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
+        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         await WebApplicationFactory.InitialiseDbContainerAsync();
         ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
-        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         var dbContext = scope.ServiceProvider.GetRequiredService<UserAccessContext>();
         await dbContext.Database.MigrateAsync();

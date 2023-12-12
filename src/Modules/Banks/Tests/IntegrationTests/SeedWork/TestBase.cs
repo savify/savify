@@ -7,9 +7,11 @@ using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.Banks.Application.Configuration.Data;
 using App.Modules.Banks.Application.Contracts;
+using App.Modules.Banks.Infrastructure;
 using App.Modules.Banks.IntegrationTests.SeedData;
 using Dapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using WireMock.Server;
@@ -29,31 +31,29 @@ public class TestBase
     private static Assembly _applicationAssembly = Assembly.GetAssembly(typeof(CommandBase));
 
     [OneTimeSetUp]
-    public void Init()
+    public async Task Init()
     {
-        const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
-        ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
-
-        if (ConnectionString == null)
-        {
-            throw new ApplicationException(
-                $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
-        }
-
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+
+        await WebApplicationFactory.InitialiseDbContainerAsync();
+        ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         BanksModule = scope.ServiceProvider.GetRequiredService<IBanksModule>();
 
         SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<BanksContext>();
+        await dbContext.Database.MigrateAsync();
     }
 
     [OneTimeTearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
         SaltEdgeHttpClientMocker.StopWireMockServer();
-        WebApplicationFactory.Dispose();
+        await WebApplicationFactory.DisposeDbContainerAsync();
+        await WebApplicationFactory.DisposeAsync();
     }
 
     [SetUp]

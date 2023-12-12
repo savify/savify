@@ -1,7 +1,6 @@
 using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Data;
-using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Modules.UserAccess.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
