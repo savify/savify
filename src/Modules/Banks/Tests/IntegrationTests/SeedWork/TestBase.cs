@@ -3,7 +3,6 @@ using System.Reflection;
 using App.API;
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
-using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.Banks.Application.Configuration.Data;
 using App.Modules.Banks.Application.Contracts;

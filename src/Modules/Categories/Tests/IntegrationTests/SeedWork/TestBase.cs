@@ -3,13 +3,14 @@ using System.Reflection;
 using App.API;
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
-using App.BuildingBlocks.Tests.IntegrationTests;
 using App.Database.Scripts.Clear;
 using App.Modules.Categories.Application.Configuration.Data;
 using App.Modules.Categories.Application.Contracts;
+using App.Modules.Categories.Infrastructure;
 using App.Modules.Categories.IntegrationTests.SeedData;
 using Dapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using WireMock.Server;
@@ -29,31 +30,30 @@ public class TestBase
     private static Assembly _applicationAssembly = Assembly.GetAssembly(typeof(CommandBase));
 
     [OneTimeSetUp]
-    public void Init()
+    public async Task Init()
     {
-        const string connectionStringEnvironmentVariable = "ASPNETCORE_INTEGRATION_TESTS_CONNECTION_STRING";
-        ConnectionString = EnvironmentVariablesProvider.GetVariable(connectionStringEnvironmentVariable);
-
-        if (ConnectionString == null)
-        {
-            throw new ApplicationException(
-                $"Define connection string to integration tests database using environment variable: {connectionStringEnvironmentVariable}");
-        }
-
         WebApplicationFactory = new CustomWebApplicationFactory<Program>();
+        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
+
+        await WebApplicationFactory.InitialiseDbContainerAsync();
+        ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         CategoriesModule = scope.ServiceProvider.GetRequiredService<ICategoriesModule>();
-        CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<CategoriesContext>();
+        await dbContext.Database.MigrateAsync();
     }
 
     [OneTimeTearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
         SaltEdgeHttpClientMocker.StopWireMockServer();
-        WebApplicationFactory.Dispose();
+        await WebApplicationFactory.DisposeDbContainerAsync();
+        await WebApplicationFactory.DisposeAsync();
+
     }
 
     [SetUp]
