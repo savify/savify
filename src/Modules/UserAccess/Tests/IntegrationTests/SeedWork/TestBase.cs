@@ -43,7 +43,7 @@ public class TestBase
     [OneTimeTearDown]
     public async Task TearDown()
     {
-        await WebApplicationFactory.DisposeDbContainerAsync();
+        await WebApplicationFactory.StopDbContainerAsync();
         await WebApplicationFactory.DisposeAsync();
     }
 

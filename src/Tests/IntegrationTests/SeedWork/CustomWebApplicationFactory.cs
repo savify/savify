@@ -39,7 +39,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 
     public Task InitialiseDbContainerAsync() => _dbContainer.StartAsync();
 
-    public Task DisposeDbContainerAsync() => _dbContainer.StopAsync();
+    public Task StopDbContainerAsync() => _dbContainer.StopAsync();
 
     public string GetConnectionString() => _dbContainer.GetConnectionString();
 

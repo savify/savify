@@ -50,7 +50,7 @@ public class TestBase
     public async Task TearDown()
     {
         SaltEdgeHttpClientMocker.StopWireMockServer();
-        await WebApplicationFactory.DisposeDbContainerAsync();
+        await WebApplicationFactory.StopDbContainerAsync();
         await WebApplicationFactory.DisposeAsync();
     }
 
