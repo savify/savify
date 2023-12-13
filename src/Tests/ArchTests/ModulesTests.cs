@@ -31,7 +31,7 @@ public class ModulesTests : TestBase
         var otherModules = new List<string>
         {
             NotificationsNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             BanksNamespace,
             CategoriesNamespace,
             TransactionsNamespace
@@ -61,7 +61,7 @@ public class ModulesTests : TestBase
         var otherModules = new List<string>
         {
             UserAccessNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             BanksNamespace,
             CategoriesNamespace,
             TransactionsNamespace
@@ -122,7 +122,7 @@ public class ModulesTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             CategoriesNamespace,
             TransactionsNamespace
         };
@@ -152,7 +152,7 @@ public class ModulesTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             BanksNamespace,
             TransactionsNamespace
         };
@@ -182,7 +182,7 @@ public class ModulesTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             BanksNamespace,
             CategoriesNamespace
         };
