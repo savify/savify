@@ -11,13 +11,12 @@ public class UserNotificationSettingsEntityTypeConfiguration : IEntityTypeConfig
         builder.ToTable("user_notification_settings");
 
         builder.HasKey(x => x.Id);
-        builder.Property(b => b.Id).HasColumnName("id");
 
-        builder.Property<UserId>("UserId").HasColumnName("user_id");
-        builder.Property<string>("Email").HasColumnName("email");
-        builder.Property<string>("Name").HasColumnName("name");
+        builder.Property<UserId>(x => x.UserId);
+        builder.Property<string>(x => x.Email);
+        builder.Property<string>(x => x.Name);
 
-        builder.OwnsOne<Language>("PreferredLanguage", b =>
+        builder.ComplexProperty<Language>(x => x.PreferredLanguage, b =>
         {
             b.Property(x => x.Value).HasColumnName("preferred_language");
         });
