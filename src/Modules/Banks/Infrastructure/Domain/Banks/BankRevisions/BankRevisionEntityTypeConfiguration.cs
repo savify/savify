@@ -12,28 +12,25 @@ public class BankRevisionEntityTypeConfiguration : IEntityTypeConfiguration<Bank
         builder.ToTable("bank_revisions");
 
         builder.HasKey("Id", "BankId");
-        builder.Property(x => x.Id).HasColumnName("id");
 
-        builder.Property<BankId>("BankId").HasColumnName("bank_id");
+        builder.Property<BankId>("BankId");
 
-        builder.Property<string>("_name").HasColumnName("name");
-        builder.Property<bool>("_isRegulated").HasColumnName("is_regulated");
-        builder.Property<int?>("_maxConsentDays").HasColumnName("max_consent_days");
-        builder.Property<string?>("_logoUrl").HasColumnName("logo_url");
-        builder.Property<string>("_defaultLogoUrl").HasColumnName("default_logo_url");
-        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
+        builder.Property<string>("_name");
+        builder.Property<bool>("_isRegulated");
+        builder.Property<int?>("_maxConsentDays");
+        builder.Property<string?>("_logoUrl");
+        builder.Property<string>("_defaultLogoUrl");
+        builder.Property<DateTime>("_createdAt");
 
-        builder.Property<BankStatus>("_status")
-            .HasColumnName("status")
-            .HasConversion(
-                s => s.Value,
-                s => new BankStatus(s));
+        builder.ComplexProperty<BankStatus>("_status", b =>
+        {
+            b.Property<string>(s => s.Value).HasColumnName("status");
+        });
 
-        builder.Property<BankRevisionType>("_revisionType")
-            .HasColumnName("revision_type")
-            .HasConversion(
-                r => r.Value,
-                r => new BankRevisionType(r));
+        builder.ComplexProperty<BankRevisionType>("_revisionType", b =>
+        {
+            b.Property<string>(r => r.Value).HasColumnName("revision_type");
+        });
 
         builder.OwnsOne<BankRevisionCreator>("_createdBy", b =>
         {

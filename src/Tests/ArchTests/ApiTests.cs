@@ -11,7 +11,7 @@ public class ApiTests : TestBase
         var otherModules = new List<string>
         {
             NotificationsNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             BanksNamespace,
             CategoriesNamespace,
             TransactionsNamespace
@@ -32,7 +32,7 @@ public class ApiTests : TestBase
         var otherModules = new List<string>
         {
             UserAccessNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             BanksNamespace,
             CategoriesNamespace,
             TransactionsNamespace
@@ -60,7 +60,7 @@ public class ApiTests : TestBase
         };
         var result = Types.InAssembly(ApiAssembly)
             .That()
-            .ResideInNamespace("App.API.Modules.Wallets")
+            .ResideInNamespace("App.API.Modules.FinanceTracking")
             .Should()
             .NotHaveDependencyOnAny(otherModules.ToArray())
             .GetResult();
@@ -75,7 +75,7 @@ public class ApiTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             CategoriesNamespace,
             TransactionsNamespace
         };
@@ -96,7 +96,7 @@ public class ApiTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             BanksNamespace,
             TransactionsNamespace
         };
@@ -117,7 +117,7 @@ public class ApiTests : TestBase
         {
             UserAccessNamespace,
             NotificationsNamespace,
-            WalletsNamespace,
+            FinanceTrackingNamespace,
             BanksNamespace,
             CategoriesNamespace
         };

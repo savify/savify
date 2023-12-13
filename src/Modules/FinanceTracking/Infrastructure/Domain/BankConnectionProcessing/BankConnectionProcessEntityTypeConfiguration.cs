@@ -14,22 +14,21 @@ public class BankConnectionProcessEntityTypeConfiguration : IEntityTypeConfigura
         builder.ToTable("bank_connection_processes");
 
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasColumnName("id");
 
-        builder.Property<UserId>("UserId").HasColumnName("user_id");
-        builder.Property<BankId>("BankId").HasColumnName("bank_id");
-        builder.Property<WalletId>("WalletId").HasColumnName("wallet_id");
-        builder.Property<string>("_redirectUrl").HasColumnName("redirect_url");
-        builder.Property<DateTime>("_initiatedAt").HasColumnName("initiated_at");
-        builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
-        builder.Property<DateTime?>("_redirectUrlExpiresAt").HasColumnName("redirect_url_expires_at");
+        builder.Property<UserId>("UserId");
+        builder.Property<BankId>("BankId");
+        builder.Property<WalletId>("WalletId");
+        builder.Property<string>("_redirectUrl");
+        builder.Property<DateTime>("_initiatedAt");
+        builder.Property<DateTime?>("_updatedAt");
+        builder.Property<DateTime?>("_redirectUrlExpiresAt");
 
-        builder.OwnsOne<WalletType>("_walletType", b =>
+        builder.ComplexProperty<WalletType>("_walletType", b =>
         {
             b.Property(x => x.Value).HasColumnName("wallet_type");
         });
 
-        builder.OwnsOne<BankConnectionProcessStatus>("_status", b =>
+        builder.ComplexProperty<BankConnectionProcessStatus>("_status", b =>
         {
             b.Property(x => x.Value).HasConversion<string>().HasColumnName("status");
         });

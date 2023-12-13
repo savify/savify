@@ -1,4 +1,3 @@
-using App.Modules.FinanceTracking.Domain;
 using App.Modules.FinanceTracking.Domain.BankConnections;
 using App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts;
 using App.Modules.FinanceTracking.Domain.Finance;
@@ -15,25 +14,24 @@ public class BankConnectionEntityTypeConfiguration : IEntityTypeConfiguration<Ba
         builder.ToTable("bank_connections");
 
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasColumnName("id");
 
-        builder.Property<BankId>("_bankId").HasColumnName("bank_id");
-        builder.Property<UserId>("_userId").HasColumnName("user_id");
-        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
-        builder.Property<DateTime?>("_refreshedAt").HasColumnName("refreshed_at");
+        builder.Property<BankId>("_bankId");
+        builder.Property<UserId>("_userId");
+        builder.Property<DateTime>("_createdAt");
+        builder.Property<DateTime?>("_refreshedAt");
 
         builder.OwnsMany<BankAccount>("_accounts", b =>
         {
             b.WithOwner().HasForeignKey("BankConnectionId");
             b.ToTable("bank_accounts");
 
-            b.Property<BankAccountId>("Id").HasColumnName("id");
-            b.Property<BankConnectionId>("BankConnectionId").HasColumnName("bank_connection_id");
+            b.Property<BankAccountId>("Id");
+            b.Property<BankConnectionId>("BankConnectionId");
             b.HasKey("Id", "BankConnectionId");
 
-            b.Property<string>("_externalId").HasColumnName("external_id");
-            b.Property<string>("_name").HasColumnName("name");
-            b.Property<int>("Balance").HasColumnName("balance");
+            b.Property<string>("_externalId");
+            b.Property<string>("_name");
+            b.Property<int>("Balance");
 
             b.OwnsOne<Currency>("Currency", c =>
             {
@@ -41,7 +39,7 @@ public class BankConnectionEntityTypeConfiguration : IEntityTypeConfiguration<Ba
             });
         });
 
-        builder.OwnsOne<Consent>("_consent", b =>
+        builder.ComplexProperty<Consent>("_consent", b =>
         {
             b.Property(x => x.ExpiresAt).HasColumnName("consent_expires_at");
         });
