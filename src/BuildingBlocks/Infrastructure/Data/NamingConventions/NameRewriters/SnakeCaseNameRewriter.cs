@@ -16,6 +16,8 @@ internal class SnakeCaseNameRewriter(CultureInfo culture) : INameRewriter
 
             if (currentChar == '_')
             {
+                if (currentIndex == 0) continue;
+
                 builder.Append('_');
                 previousCategory = null;
 

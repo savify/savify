@@ -11,29 +11,29 @@ public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
         builder.ToTable("users");
 
         builder.HasKey(x => x.Id);
-        builder.Property(b => b.Id).HasColumnName("id");
+        builder.Property(b => b.Id);
 
-        builder.Property<string>("_email").HasColumnName("email");
-        builder.Property<string>("_password").HasColumnName("password");
-        builder.Property<string>("_name").HasColumnName("name");
-        builder.Property<bool>("_isActive").HasColumnName("is_active");
-        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
+        builder.Property<string>("_email");
+        builder.Property<string>("_password");
+        builder.Property<string>("_name");
+        builder.Property<bool>("_isActive");
+        builder.Property<DateTime>("_createdAt");
 
         builder.OwnsMany<UserRole>("_roles", b =>
         {
             b.WithOwner().HasForeignKey("UserId");
             b.ToTable("user_roles");
-            b.Property<UserId>("UserId").HasColumnName("user_id");
+            b.Property<UserId>("UserId");
             b.Property<string>("Value").HasColumnName("role_code");
             b.HasKey("UserId", "Value");
         });
 
-        builder.OwnsOne<Country>("_country", b =>
+        builder.ComplexProperty<Country>("_country", b =>
         {
             b.Property(x => x.Value).HasColumnName("country");
         });
 
-        builder.OwnsOne<Language>("_preferredLanguage", b =>
+        builder.ComplexProperty<Language>("_preferredLanguage", b =>
         {
             b.Property(x => x.Value).HasColumnName("preferred_language");
         });

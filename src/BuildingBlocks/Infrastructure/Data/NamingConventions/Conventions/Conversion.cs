@@ -22,7 +22,7 @@ internal static class Conversion
 
         property.Builder.HasNoAnnotation(RelationalAnnotationNames.ColumnName);
 
-        if (ignoreMigrationsTable && property.DeclaringType.ClrType.FullName == nameof(Microsoft.EntityFrameworkCore.Migrations.HistoryRow))
+        if (ignoreMigrationsTable && property.DeclaringType.ClrType.FullName == "Microsoft.EntityFrameworkCore.Migrations.HistoryRow")
         {
             return;
         }

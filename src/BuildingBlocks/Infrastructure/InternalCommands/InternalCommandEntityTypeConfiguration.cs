@@ -9,14 +9,13 @@ public class InternalCommandEntityTypeConfiguration : IEntityTypeConfiguration<I
     {
         builder.ToTable("internal_commands");
 
-        builder.HasKey(b => b.Id);
-        builder.Property(b => b.Id).HasColumnName("id");
-        builder.Property(b => b.Id).ValueGeneratedNever();
+        builder.HasKey(c => c.Id);
+        builder.Property(c => c.Id).ValueGeneratedNever();
 
-        builder.Property<string>("Type").HasColumnName("type");
-        builder.Property<string>("Data").HasColumnName("data");
-        builder.Property<DateTime>("EnqueueDate").HasColumnName("enqueue_date");
-        builder.Property<DateTime?>("ProcessedDate").HasColumnName("processed_date");
-        builder.Property<string?>("Error").HasColumnName("error");
+        builder.Property<string>(c => c.Type);
+        builder.Property<string>(c => c.Data);
+        builder.Property(c => c.EnqueueDate);
+        builder.Property(c => c.ProcessedDate);
+        builder.Property<string?>(c => c.Error);
     }
 }
