@@ -16,7 +16,7 @@ public class NamingConventionsOptionsExtension : IDbContextOptionsExtension
 
     private bool _ignoreMigrationsTable;
 
-    public NamingConventionsOptionsExtension() {}
+    public NamingConventionsOptionsExtension() { }
 
     public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
 
@@ -46,7 +46,7 @@ public class NamingConventionsOptionsExtension : IDbContextOptionsExtension
         return clone;
     }
 
-    public void Validate(IDbContextOptions options) {}
+    public void Validate(IDbContextOptions options) { }
 
     public void ApplyServices(IServiceCollection services) => services.AddEntityFrameworkNamingConventions();
 
