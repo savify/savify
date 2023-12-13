@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace App.BuildingBlocks.Infrastructure.Data.NamingConventions.Conventions;
 
-internal class EntityTypeAnnotationChangedConvention(INameRewriter nameRewriter) : ConversionBase(nameRewriter), IEntityTypeAnnotationChangedConvention
+internal class EntityTypeAnnotationChangedConvention(INameRewriter nameRewriter, bool ignoreMigrationsTable) : IEntityTypeAnnotationChangedConvention
 {
     public void ProcessEntityTypeAnnotationChanged(
         IConventionEntityTypeBuilder entityTypeBuilder,
@@ -79,7 +79,7 @@ internal class EntityTypeAnnotationChangedConvention(INameRewriter nameRewriter)
                          .Except(entityType.FindPrimaryKey()?.Properties ?? Array.Empty<IConventionProperty>())
                          .Where(p => p.Builder.CanSetColumnName(null)))
             {
-                RewriteColumnName(property.Builder);
+                Conversion.RewriteColumnName(property.Builder, nameRewriter, ignoreMigrationsTable);
             }
 
             if (entityType.FindPrimaryKey() is { } key

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace App.BuildingBlocks.Infrastructure.Data.NamingConventions.Conventions;
 
-internal class ForeignKeyOwnershipChangedConvention(INameRewriter nameRewriter) : ConversionBase(nameRewriter), IForeignKeyOwnershipChangedConvention
+internal class ForeignKeyOwnershipChangedConvention(INameRewriter nameRewriter, bool ignoreMigrationsTable) : IForeignKeyOwnershipChangedConvention
 {
     public void ProcessForeignKeyOwnershipChanged(IConventionForeignKeyBuilder relationshipBuilder, IConventionContext<bool?> context)
     {
@@ -24,7 +24,7 @@ internal class ForeignKeyOwnershipChangedConvention(INameRewriter nameRewriter) 
 
             foreach (var property in ownedEntityType.GetProperties())
             {
-                RewriteColumnName(property.Builder);
+                Conversion.RewriteColumnName(property.Builder, nameRewriter, ignoreMigrationsTable);
             }
         }
     }

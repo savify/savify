@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace App.BuildingBlocks.Infrastructure.Data.NamingConventions.Conventions;
 
-internal class PropertyAddedConvention(INameRewriter nameRewriter) : ConversionBase(nameRewriter), IPropertyAddedConvention
+internal class PropertyAddedConvention(INameRewriter nameRewriter, bool ignoreMigrationsTable) : IPropertyAddedConvention
 {
     public void ProcessPropertyAdded(
         IConventionPropertyBuilder propertyBuilder,
         IConventionContext<IConventionPropertyBuilder> context)
-        => RewriteColumnName(propertyBuilder);
+        => Conversion.RewriteColumnName(propertyBuilder, nameRewriter, ignoreMigrationsTable);
 }

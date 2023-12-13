@@ -14,6 +14,7 @@ internal class NamingConventionSetPlugin(IDbContextOptions options) : IConventio
         var extension = options.FindExtension<NamingConventionsOptionsExtension>()!;
         var namingStyle = extension.NamingConvention;
         var culture = extension.Culture;
+        var ignoreMigrationsTable = extension.IgnoreMigrationsTable;
 
         if (namingStyle == NamingConvention.None)
         {
@@ -27,9 +28,9 @@ internal class NamingConventionSetPlugin(IDbContextOptions options) : IConventio
         };
 
         conventionSet.EntityTypeAddedConventions.Add(new EntityTypeAddedConvention(namingRewriter));
-        conventionSet.EntityTypeAnnotationChangedConventions.Add(new EntityTypeAnnotationChangedConvention(namingRewriter));
-        conventionSet.PropertyAddedConventions.Add(new PropertyAddedConvention(namingRewriter));
-        conventionSet.ForeignKeyOwnershipChangedConventions.Add(new ForeignKeyOwnershipChangedConvention(namingRewriter));
+        conventionSet.EntityTypeAnnotationChangedConventions.Add(new EntityTypeAnnotationChangedConvention(namingRewriter, ignoreMigrationsTable));
+        conventionSet.PropertyAddedConventions.Add(new PropertyAddedConvention(namingRewriter, ignoreMigrationsTable));
+        conventionSet.ForeignKeyOwnershipChangedConventions.Add(new ForeignKeyOwnershipChangedConvention(namingRewriter, ignoreMigrationsTable));
         conventionSet.KeyAddedConventions.Add(new KeyAddedConvention(namingRewriter));
         conventionSet.ForeignKeyAddedConventions.Add(new ForeignKeyAddedConvention(namingRewriter));
         conventionSet.IndexAddedConventions.Add(new IndexAddedConvention(namingRewriter));

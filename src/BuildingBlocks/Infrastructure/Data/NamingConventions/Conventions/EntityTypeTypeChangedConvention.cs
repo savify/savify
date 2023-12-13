@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace App.BuildingBlocks.Infrastructure.Data.NamingConventions.Conventions;
 
-internal class EntityTypeTypeChangedConvention(INameRewriter nameRewriter) : ConversionBase(nameRewriter), IEntityTypeBaseTypeChangedConvention
+internal class EntityTypeTypeChangedConvention(INameRewriter nameRewriter) : IEntityTypeBaseTypeChangedConvention
 {
     public void ProcessEntityTypeBaseTypeChanged(IConventionEntityTypeBuilder entityTypeBuilder,
         IConventionEntityType? newBaseType, IConventionEntityType? oldBaseType, IConventionContext<IConventionEntityType> context)

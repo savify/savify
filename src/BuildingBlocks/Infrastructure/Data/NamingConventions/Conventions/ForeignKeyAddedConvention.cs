@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace App.BuildingBlocks.Infrastructure.Data.NamingConventions.Conventions;
 
-internal class ForeignKeyAddedConvention(INameRewriter nameRewriter) : ConversionBase(nameRewriter), IForeignKeyAddedConvention
+internal class ForeignKeyAddedConvention(INameRewriter nameRewriter) : IForeignKeyAddedConvention
 {
     public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
     {

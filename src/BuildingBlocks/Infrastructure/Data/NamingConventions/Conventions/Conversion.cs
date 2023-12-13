@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.BuildingBlocks.Infrastructure.Data.NamingConventions.Conventions;
 
-internal abstract class ConversionBase(INameRewriter nameRewriter)
+internal static class Conversion
 {
     private static readonly StoreObjectType[] StoreObjectTypes =
     {
@@ -15,12 +15,17 @@ internal abstract class ConversionBase(INameRewriter nameRewriter)
         StoreObjectType.SqlQuery
     };
 
-    internal void RewriteColumnName(IConventionPropertyBuilder propertyBuilder)
+    internal static void RewriteColumnName(IConventionPropertyBuilder propertyBuilder, INameRewriter nameRewriter, bool ignoreMigrationsTable)
     {
         var property = propertyBuilder.Metadata;
         var structuralType = property.DeclaringType;
 
         property.Builder.HasNoAnnotation(RelationalAnnotationNames.ColumnName);
+
+        if (ignoreMigrationsTable && property.DeclaringType.ClrType.FullName == nameof(Microsoft.EntityFrameworkCore.Migrations.HistoryRow))
+        {
+            return;
+        }
 
         var baseColumnName = StoreObjectIdentifier.Create(structuralType, StoreObjectType.Table) is { } tableIdentifier
             ? property.GetDefaultColumnName(tableIdentifier)

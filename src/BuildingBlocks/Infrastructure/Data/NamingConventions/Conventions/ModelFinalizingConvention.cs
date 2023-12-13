@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace App.BuildingBlocks.Infrastructure.Data.NamingConventions.Conventions;
 
-internal class ModelFinalizingConvention(INameRewriter nameRewriter) : ConversionBase(nameRewriter), IModelFinalizingConvention
+internal class ModelFinalizingConvention(INameRewriter nameRewriter) : IModelFinalizingConvention
 {
     public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
     {
