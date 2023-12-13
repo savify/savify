@@ -12,19 +12,19 @@ public class PasswordResetRequestEntityTypeConfiguration : IEntityTypeConfigurat
         builder.ToTable("password_reset_requests");
 
         builder.HasKey(x => x.Id);
-        builder.Property(b => b.Id).HasColumnName("id");
+        builder.Property(b => b.Id);
 
-        builder.Property<string>("_userEmail").HasColumnName("user_email");
-        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
-        builder.Property<DateTime>("_validTill").HasColumnName("valid_till");
-        builder.Property<DateTime?>("_confirmedAt").HasColumnName("confirmed_at");
+        builder.Property<string>("_userEmail");
+        builder.Property<DateTime>("_createdAt");
+        builder.Property<DateTime>("_validTill");
+        builder.Property<DateTime?>("_confirmedAt");
 
-        builder.OwnsOne<ConfirmationCode>("_confirmationCode", b =>
+        builder.ComplexProperty<ConfirmationCode>("_confirmationCode", b =>
         {
             b.Property(x => x.Value).HasColumnName("confirmation_code");
         });
 
-        builder.OwnsOne<PasswordResetRequestStatus>("_status", b =>
+        builder.ComplexProperty<PasswordResetRequestStatus>("_status", b =>
         {
             b.Property(x => x.Value).HasColumnName("status");
         });

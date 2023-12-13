@@ -13,31 +13,31 @@ public class UserRegistrationEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.ToTable("user_registrations");
 
         builder.HasKey(x => x.Id);
-        builder.Property(b => b.Id).HasColumnName("id");
+        builder.Property(b => b.Id);
 
-        builder.Property<string>("_email").HasColumnName("email");
-        builder.Property<string>("_password").HasColumnName("password");
-        builder.Property<string>("_name").HasColumnName("name");
-        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
-        builder.Property<DateTime>("_validTill").HasColumnName("valid_till");
-        builder.Property<DateTime?>("_confirmedAt").HasColumnName("confirmed_at");
+        builder.Property<string>("_email");
+        builder.Property<string>("_password");
+        builder.Property<string>("_name");
+        builder.Property<DateTime>("_createdAt");
+        builder.Property<DateTime>("_validTill");
+        builder.Property<DateTime?>("_confirmedAt");
 
-        builder.OwnsOne<ConfirmationCode>("_confirmationCode", b =>
+        builder.ComplexProperty<ConfirmationCode>("_confirmationCode", b =>
         {
             b.Property(x => x.Value).HasColumnName("confirmation_code");
         });
 
-        builder.OwnsOne<UserRegistrationStatus>("_status", b =>
+        builder.ComplexProperty<UserRegistrationStatus>("_status", b =>
         {
             b.Property(x => x.Value).HasColumnName("status");
         });
 
-        builder.OwnsOne<Country>("_country", b =>
+        builder.ComplexProperty<Country>("_country", b =>
         {
             b.Property(x => x.Value).HasColumnName("country");
         });
 
-        builder.OwnsOne<Language>("_preferredLanguage", b =>
+        builder.ComplexProperty<Language>("_preferredLanguage", b =>
         {
             b.Property(x => x.Value).HasColumnName("preferred_language");
         });

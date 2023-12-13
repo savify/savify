@@ -1,8 +1,8 @@
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.DependencyInjection;
 using App.Modules.FinanceTracking.Application.Contracts;
-using App.Modules.FinanceTracking.Infrastructure.Configuration.EventBus;
 using App.Modules.FinanceTracking.Infrastructure.Configuration.DependencyInjection;
+using App.Modules.FinanceTracking.Infrastructure.Configuration.EventBus;
 using App.Modules.FinanceTracking.Infrastructure.Configuration.Quartz;
 using App.Modules.FinanceTracking.Infrastructure.Outbox;
 using Microsoft.Extensions.Configuration;

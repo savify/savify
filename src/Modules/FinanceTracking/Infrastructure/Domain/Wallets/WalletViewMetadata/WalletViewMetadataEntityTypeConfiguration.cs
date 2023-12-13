@@ -10,10 +10,10 @@ public class WalletViewMetadataEntityTypeConfiguration : IEntityTypeConfiguratio
         builder.ToTable("wallet_view_metadata");
 
         builder.HasKey(x => x.WalletId);
-        builder.Property(x => x.WalletId).HasColumnName("wallet_id");
+        builder.Property(x => x.WalletId);
 
-        builder.Property(x => x.Color).HasColumnName("color");
-        builder.Property(x => x.Icon).HasColumnName("icon");
-        builder.Property(x => x.IsConsideredInTotalBalance).HasColumnName("is_considered_in_total_balance");
+        builder.Property(x => x.Color);
+        builder.Property(x => x.Icon);
+        builder.Property(x => x.IsConsideredInTotalBalance);
     }
 }

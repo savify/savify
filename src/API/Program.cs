@@ -12,12 +12,12 @@ using App.BuildingBlocks.Infrastructure.Localization;
 using App.Integrations.SaltEdge;
 using App.Modules.Banks.Infrastructure.Configuration;
 using App.Modules.Categories.Infrastructure.Configuration;
+using App.Modules.FinanceTracking.Infrastructure.Configuration;
+using App.Modules.FinanceTracking.Infrastructure.Integrations.Exceptions;
 using App.Modules.Notifications.Infrastructure.Configuration;
 using App.Modules.Transactions.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
-using App.Modules.FinanceTracking.Infrastructure.Configuration;
-using App.Modules.FinanceTracking.Infrastructure.Integrations.Exceptions;
 using Destructurama;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,7 +41,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        ConfigureLogger(builder.Configuration);
+        ConfigureLogger(builder.Configuration, builder.Environment);
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -133,23 +133,27 @@ public class Program
         app.Run();
     }
 
-    private static void ConfigureLogger(IConfiguration configuration)
+    private static void ConfigureLogger(IConfiguration configuration, IWebHostEnvironment environment)
     {
-        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
         var logTemplate = "[{Environment}] [{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] [CorrelationId:{CorrelationId}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}";
 
         _loggerConfiguration = new LoggerConfiguration()
             .Enrich.FromLogContext()
             .Enrich.WithSensitiveDataMasking()
             .Destructure.UsingAttributes()
-            .Enrich.WithProperty("Environment", environment)
-            .WriteTo.Console(outputTemplate: logTemplate)
-            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Uri"]!))
-            {
-                AutoRegisterTemplate = true,
-                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
-                IndexFormat = $"savify-{environment.ToLower().Replace(".", "-")}"
-            });
+            .Enrich.WithProperty("Environment", environment.EnvironmentName);
+
+        if (environment.IsDevelopment() || environment.IsProduction())
+        {
+            _loggerConfiguration = _loggerConfiguration
+                .WriteTo.Console(outputTemplate: logTemplate)
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Uri"]!))
+                {
+                    AutoRegisterTemplate = true,
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
+                    IndexFormat = $"savify-{environment.EnvironmentName.ToLower().Replace(".", "-")}"
+                });
+        }
 
         _logger = _loggerConfiguration.CreateLogger();
 

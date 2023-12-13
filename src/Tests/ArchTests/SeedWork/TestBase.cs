@@ -11,7 +11,7 @@ public abstract class TestBase
 
     public const string NotificationsNamespace = "App.Modules.Notifications";
 
-    public const string WalletsNamespace = "App.Modules.Wallets";
+    public const string FinanceTrackingNamespace = "App.Modules.FinanceTracking";
 
     public const string BanksNamespace = "App.Modules.Banks";
 

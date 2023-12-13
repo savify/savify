@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Data;
+using App.BuildingBlocks.Infrastructure.Data.NamingConventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,7 @@ public static class DataAccessServiceCollectionExtensions
         services.AddDbContext<TContext>(options =>
         {
             options.UseNpgsql(databaseConnectionString);
+            options.UseSnakeCaseNamingConvention();
             options.ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>();
         });
 

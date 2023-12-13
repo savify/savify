@@ -13,39 +13,35 @@ public class BankEntityTypeConfiguration : IEntityTypeConfiguration<Bank>
     {
         builder.ToTable("banks");
 
-        builder.HasKey("Id");
+        builder.HasKey(x => x.Id);
         builder.HasIndex(x => x.ExternalId).IsUnique();
+        ;
+        builder.Property(x => x.ExternalId);
+        builder.Property(x => x.LastBanksSynchronisationProcessId);
 
-        builder.Property(x => x.Id).HasColumnName("id");
-        builder.Property(x => x.ExternalId).HasColumnName("external_id");
-        builder.Property(x => x.LastBanksSynchronisationProcessId).HasColumnName("last_banks_synchronisation_process_id");
+        builder.Property<BankRevisionId>("CurrentRevisionId");
 
-        builder.Property<BankRevisionId>("CurrentRevisionId").HasColumnName("current_revision_id");
+        builder.Property<string>("_name");
+        builder.Property<bool>("_isRegulated");
+        builder.Property<int?>("_maxConsentDays");
+        builder.Property<string?>("_logoUrl");
+        builder.Property<string>("_defaultLogoUrl");
+        builder.Property<DateTime>("_createdAt");
+        builder.Property<DateTime?>("_updatedAt");
 
-        builder.Property<string>("_name").HasColumnName("name");
-        builder.Property<bool>("_isRegulated").HasColumnName("is_regulated");
-        builder.Property<int?>("_maxConsentDays").HasColumnName("max_consent_days");
-        builder.Property<string?>("_logoUrl").HasColumnName("logo_url");
-        builder.Property<string>("_defaultLogoUrl").HasColumnName("default_logo_url");
-        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
-        builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
+        builder.ComplexProperty<ExternalProviderName>("_externalProviderName", b =>
+        {
+            b.Property<string>(n => n.Value).HasColumnName("external_provider_name");
+        });
 
-        builder.Property<ExternalProviderName>("_externalProviderName")
-            .HasColumnName("external_provider_name")
-            .HasConversion(
-                n => n.Value,
-                n => new ExternalProviderName(n));
+        builder.ComplexProperty<Country>("_country", b =>
+        {
+            b.Property<string>(c => c.Code).HasColumnName("country_code");
+        });
 
-        builder.Property<Country>("_country")
-            .HasColumnName("country_code")
-            .HasConversion(
-                c => c.Code,
-                c => Country.From(c));
-
-        builder.Property<BankStatus>("_status")
-            .HasColumnName("status")
-            .HasConversion(
-                s => s.Value,
-                s => new BankStatus(s));
+        builder.ComplexProperty<BankStatus>("_status", b =>
+        {
+            b.Property<string>(s => s.Value).HasColumnName("status");
+        });
     }
 }

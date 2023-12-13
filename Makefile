@@ -45,26 +45,6 @@ categories-db-update:
 transactions-db-update:
 	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext
 
-test-db-update: user-access-test-db-update notifications-test-db-update finance-tracking-test-db-update banks-test-db-update categories-test-db-update
-
-user-access-test-db-update:
-	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext -- --environment Testing
-
-notifications-test-db-update:
-	dotnet ef database update --project src/Modules/Notifications/Infrastructure --startup-project src/API --context NotificationsContext -- --environment Testing
-
-finance-tracking-test-db-update:
-	dotnet ef database update --project src/Modules/FinanceTracking/Infrastructure --startup-project src/API --context FinanceTrackingContext -- --environment Testing
-
-banks-test-db-update:
-	dotnet ef database update --project src/Modules/Banks/Infrastructure --startup-project src/API --context BanksContext -- --environment Testing
-
-categories-test-db-update:
-	dotnet ef database update --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext -- --environment Testing
-
-transactions-test-db-update:
-	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext -- --environment Testing
-
 seed-database:
 	docker cp ./src/Database/Scripts/Clear/ClearDatabase.sql savify-database:/clear.sql
 	docker cp ./src/Database/Scripts/Seed/SeedDatabase.sql savify-database:/seed.sql
