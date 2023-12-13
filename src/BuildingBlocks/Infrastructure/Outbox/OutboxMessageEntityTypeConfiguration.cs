@@ -9,13 +9,12 @@ public class OutboxMessageEntityTypeConfiguration : IEntityTypeConfiguration<Out
     {
         builder.ToTable("outbox_messages");
 
-        builder.HasKey(b => b.Id);
-        builder.Property(b => b.Id).HasColumnName("id");
-        builder.Property(b => b.Id).ValueGeneratedNever();
+        builder.HasKey(m => m.Id);
+        builder.Property(m => m.Id).ValueGeneratedNever();
 
-        builder.Property<DateTime>("OccurredOn").HasColumnName("occurred_on");
-        builder.Property<string>("Type").HasColumnName("type");
-        builder.Property<string>("Data").HasColumnName("data");
-        builder.Property<DateTime?>("ProcessedDate").HasColumnName("processed_date");
+        builder.Property(m => m.OccurredOn);
+        builder.Property<string>(m => m.Type);
+        builder.Property<string>(m => m.Data);
+        builder.Property(m => m.ProcessedDate);
     }
 }

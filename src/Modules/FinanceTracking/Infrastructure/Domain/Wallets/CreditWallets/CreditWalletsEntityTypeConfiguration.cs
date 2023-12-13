@@ -12,21 +12,20 @@ internal class CreditWalletsEntityTypeConfiguration : IEntityTypeConfiguration<C
     {
         builder.ToTable("credit_wallets");
 
-        builder.HasKey(wallet => wallet.Id);
-        builder.Property(wallet => wallet.Id).HasColumnName("id");
+        builder.HasKey(w => w.Id);
 
-        builder.Property<UserId>("UserId").HasColumnName("user_id");
-        builder.Property<string>("_title").HasColumnName("title");
-        builder.Property<int>("_availableBalance").HasColumnName("available_balance");
-        builder.Property<int>("_creditLimit").HasColumnName("credit_limit");
-        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
-        builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
-        builder.Property<DateTime?>("_removedAt").HasColumnName("removed_at");
-        builder.Property<bool>("_isRemoved").HasColumnName("is_removed");
+        builder.Property<UserId>(w => w.UserId);
+        builder.Property<string>("_title");
+        builder.Property<int>("_availableBalance");
+        builder.Property<int>("_creditLimit");
+        builder.Property<DateTime>("_createdAt");
+        builder.Property<DateTime?>("_updatedAt");
+        builder.Property<DateTime?>("_removedAt");
+        builder.Property<bool>("_isRemoved");
 
-        builder.OwnsOne<Currency>("_currency", b =>
+        builder.ComplexProperty<Currency>("_currency", b =>
         {
-            b.Property(currency => currency.Value).HasColumnName("currency");
+            b.Property(c => c.Value).HasColumnName("currency");
         });
     }
 }

@@ -12,18 +12,17 @@ internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<Cash
     {
         builder.ToTable("cash_wallets");
 
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).HasColumnName("id");
+        builder.HasKey(w => w.Id);
 
-        builder.Property<UserId>("UserId").HasColumnName("user_id");
-        builder.Property<string>("_title").HasColumnName("title");
-        builder.Property<int>("_balance").HasColumnName("balance");
-        builder.Property<DateTime>("_createdAt").HasColumnName("created_at");
-        builder.Property<DateTime?>("_updatedAt").HasColumnName("updated_at");
-        builder.Property<DateTime?>("_removedAt").HasColumnName("removed_at");
-        builder.Property<bool>("_isRemoved").HasColumnName("is_removed");
+        builder.Property<UserId>(w => w.UserId);
+        builder.Property<string>("_title");
+        builder.Property<int>("_balance");
+        builder.Property<DateTime>("_createdAt");
+        builder.Property<DateTime?>("_updatedAt");
+        builder.Property<DateTime?>("_removedAt");
+        builder.Property<bool>("_isRemoved");
 
-        builder.OwnsOne<Currency>("_currency", b =>
+        builder.ComplexProperty<Currency>("_currency", b =>
         {
             b.Property(x => x.Value).HasColumnName("currency");
         });
