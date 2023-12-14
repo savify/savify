@@ -8,9 +8,9 @@ namespace App.Modules.FinanceTracking.Application.Wallets.CashWallets.EditCashWa
 
 internal class EditCashWalletCommandHandler(CashWalletEditingService cashWalletEditingService) : ICommandHandler<EditCashWalletCommand>
 {
-    public async Task Handle(EditCashWalletCommand command, CancellationToken cancellationToken)
+    public Task Handle(EditCashWalletCommand command, CancellationToken cancellationToken)
     {
-        await cashWalletEditingService.EditWallet(
+        return cashWalletEditingService.EditWallet(
             new UserId(command.UserId),
             new WalletId(command.WalletId),
             command.Title,

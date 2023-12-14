@@ -2,39 +2,22 @@ using App.Modules.FinanceTracking.Application.Configuration.Commands;
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
-using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCreditWallet;
 
-internal class AddNewCreditWalletCommandHandler : ICommandHandler<AddNewCreditWalletCommand, Guid>
+internal class AddNewCreditWalletCommandHandler(CreditWalletFactory creditWalletFactory) : ICommandHandler<AddNewCreditWalletCommand, Guid>
 {
-    private readonly ICreditWalletRepository _creditWalletRepository;
-    private readonly IWalletViewMetadataRepository _walletViewMetadataRepository;
-
-    public AddNewCreditWalletCommandHandler(ICreditWalletRepository creditWalletRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
-    {
-        _creditWalletRepository = creditWalletRepository;
-        _walletViewMetadataRepository = walletViewMetadataRepository;
-    }
-
     public async Task<Guid> Handle(AddNewCreditWalletCommand command, CancellationToken cancellationToken)
     {
-        var wallet = CreditWallet.AddNew(
+        var wallet = await creditWalletFactory.Create(
             new UserId(command.UserId),
             command.Title,
             Currency.From(command.Currency),
             command.CreditLimit,
-            command.AvailableBalance);
-
-        await _creditWalletRepository.AddAsync(wallet);
-
-        var viewMetadata = WalletViewMetadata.CreateForWallet(
-            wallet.Id,
+            command.AvailableBalance,
             command.Color,
             command.Icon,
             command.ConsiderInTotalBalance);
-
-        await _walletViewMetadataRepository.AddAsync(viewMetadata);
 
         return wallet.Id.Value;
     }
