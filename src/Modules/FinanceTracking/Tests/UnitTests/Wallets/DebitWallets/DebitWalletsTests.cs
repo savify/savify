@@ -8,7 +8,7 @@ using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Rules;
 
-namespace App.Modules.FinanceTracking.UnitTests.Wallets;
+namespace App.Modules.FinanceTracking.UnitTests.Wallets.DebitWallets;
 
 [TestFixture]
 public class DebitWalletsTests : UnitTestBase
