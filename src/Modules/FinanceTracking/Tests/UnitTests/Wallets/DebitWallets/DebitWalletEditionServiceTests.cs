@@ -1,34 +1,34 @@
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
-using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
-using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Events;
+using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
+using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 
-namespace App.Modules.FinanceTracking.UnitTests.Wallets.CashWallets;
+namespace App.Modules.FinanceTracking.UnitTests.Wallets.DebitWallets;
 
 [TestFixture]
-public class CashWalletEditingServiceTests : UnitTestBase
+public class DebitWalletEditionServiceTests : UnitTestBase
 {
     [Test]
     public async Task EditWallet_WhenWalletExists_ShouldEditWallet()
     {
         var userId = new UserId(Guid.NewGuid());
-        var wallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
+        var wallet = DebitWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
         var walletViewMetadata = WalletViewMetadata.CreateForWallet(
             wallet.Id,
             "#000000",
             "https://cdn.savify.localhost/icons/wallet.png",
             true);
 
-        var cashWalletRepository = Substitute.For<ICashWalletRepository>();
-        cashWalletRepository.GetByIdAndUserIdAsync(wallet.Id, userId).Returns(wallet);
+        var debitWalletRepository = Substitute.For<IDebitWalletRepository>();
+        debitWalletRepository.GetByIdAndUserIdAsync(wallet.Id, userId).Returns(wallet);
 
         var walletViewMetadataRepository = Substitute.For<IWalletViewMetadataRepository>();
         walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id).Returns(walletViewMetadata);
 
-        var cashWalletEditingService = new CashWalletEditingService(cashWalletRepository, walletViewMetadataRepository);
+        var debitWalletEditingService = new DebitWalletEditionService(debitWalletRepository, walletViewMetadataRepository);
 
-        await cashWalletEditingService.EditWallet(
+        await debitWalletEditingService.EditWallet(
             userId,
             wallet.Id,
             "New cash",
@@ -38,7 +38,7 @@ public class CashWalletEditingServiceTests : UnitTestBase
             "https://cdn.savify.localhost/icons/new-wallet.png",
             false);
 
-        var walletEditedDomainEvent = AssertPublishedDomainEvent<CashWalletEditedDomainEvent>(wallet);
+        var walletEditedDomainEvent = AssertPublishedDomainEvent<DebitWalletEditedDomainEvent>(wallet);
         Assert.That(walletEditedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(walletEditedDomainEvent.UserId, Is.EqualTo(userId));
         Assert.That(walletEditedDomainEvent.NewCurrency, Is.EqualTo(new Currency("GBP")));

@@ -7,7 +7,7 @@ using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 namespace App.Modules.FinanceTracking.UnitTests.Wallets.CreditWallets;
 
 [TestFixture]
-public class CreditWalletEditingServiceTests : UnitTestBase
+public class CreditWalletEditionServiceTests : UnitTestBase
 {
     [Test]
     public async Task EditWallet_WhenWalletExists_ShouldEditWallet()
@@ -26,7 +26,7 @@ public class CreditWalletEditingServiceTests : UnitTestBase
         var walletViewMetadataRepository = Substitute.For<IWalletViewMetadataRepository>();
         walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id).Returns(walletViewMetadata);
 
-        var creditWalletEditingService = new CreditWalletEditingService(creditWalletRepository, walletViewMetadataRepository);
+        var creditWalletEditingService = new CreditWalletEditionService(creditWalletRepository, walletViewMetadataRepository);
 
         await creditWalletEditingService.EditWallet(
             userId,

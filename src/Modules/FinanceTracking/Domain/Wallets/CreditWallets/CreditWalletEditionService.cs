@@ -2,17 +2,17 @@ using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 
-namespace App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
+namespace App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
 
-public class CashWalletEditingService
+public class CreditWalletEditionService
 {
-    private readonly ICashWalletRepository _cashWalletRepository;
+    private readonly ICreditWalletRepository _creditWalletRepository;
 
     private readonly IWalletViewMetadataRepository _walletViewMetadataRepository;
 
-    public CashWalletEditingService(ICashWalletRepository cashWalletRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
+    public CreditWalletEditionService(ICreditWalletRepository creditWalletRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
     {
-        _cashWalletRepository = cashWalletRepository;
+        _creditWalletRepository = creditWalletRepository;
         _walletViewMetadataRepository = walletViewMetadataRepository;
     }
 
@@ -21,13 +21,14 @@ public class CashWalletEditingService
         WalletId walletId,
         string? title,
         Currency? currency,
-        int? balance,
+        int? availableBalance,
+        int? creditLimit,
         string? color,
         string? icon,
         bool? considerInTotalBalance)
     {
-        var wallet = await _cashWalletRepository.GetByIdAndUserIdAsync(walletId, userId);
-        wallet.Edit(title, currency, balance);
+        var wallet = await _creditWalletRepository.GetByIdAndUserIdAsync(walletId, userId);
+        wallet.Edit(title, currency, availableBalance, creditLimit);
 
         var walletViewMetadata = await _walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id);
         walletViewMetadata.Edit(color, icon, considerInTotalBalance);

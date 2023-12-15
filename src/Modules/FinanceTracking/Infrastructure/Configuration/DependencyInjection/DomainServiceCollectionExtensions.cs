@@ -15,9 +15,9 @@ internal static class DomainServiceCollectionExtensions
         services.AddScoped<CashWalletFactory>();
         services.AddScoped<CreditWalletFactory>();
         services.AddScoped<DebitWalletFactory>();
-        services.AddScoped<CashWalletEditingService>();
-        services.AddScoped<CreditWalletEditingService>();
-        services.AddScoped<DebitWalletEditingService>();
+        services.AddScoped<CashWalletEditionService>();
+        services.AddScoped<CreditWalletEditionService>();
+        services.AddScoped<DebitWalletEditionService>();
         services.AddScoped<IBankConnectionProcessInitiationService, BankConnectionProcessInitiationService>();
         services.AddScoped<IBankConnectionProcessRedirectionService, BankConnectionProcessRedirectionService>();
         services.AddScoped<IBankConnectionProcessConnectionCreationService, BankConnectionProcessConnectionCreationService>();

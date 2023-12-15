@@ -4,13 +4,13 @@ using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
-public class DebitWalletEditingService
+public class DebitWalletEditionService
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 
     private readonly IWalletViewMetadataRepository _walletViewMetadataRepository;
 
-    public DebitWalletEditingService(IDebitWalletRepository debitWalletRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
+    public DebitWalletEditionService(IDebitWalletRepository debitWalletRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
     {
         _debitWalletRepository = debitWalletRepository;
         _walletViewMetadataRepository = walletViewMetadataRepository;

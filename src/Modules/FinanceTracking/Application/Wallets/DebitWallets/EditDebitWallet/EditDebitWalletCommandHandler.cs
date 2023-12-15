@@ -6,11 +6,11 @@ using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.FinanceTracking.Application.Wallets.DebitWallets.EditDebitWallet;
 
-internal class EditDebitWalletCommandHandler(DebitWalletEditingService debitWalletEditingService) : ICommandHandler<EditDebitWalletCommand>
+internal class EditDebitWalletCommandHandler(DebitWalletEditionService debitWalletEditionService) : ICommandHandler<EditDebitWalletCommand>
 {
     public Task Handle(EditDebitWalletCommand command, CancellationToken cancellationToken)
     {
-        return debitWalletEditingService.EditWallet(
+        return debitWalletEditionService.EditWallet(
             new UserId(command.UserId),
             new WalletId(command.WalletId),
             command.Title,
