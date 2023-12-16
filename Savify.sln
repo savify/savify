@@ -50,7 +50,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{29792374
 		.editorconfig = .editorconfig
 		.env = .env
 		.env.dist = .env.dist
-		.env.test = .env.test
 		.gitignore = .gitignore
 		docker-compose.yaml = docker-compose.yaml
 		Makefile = Makefile

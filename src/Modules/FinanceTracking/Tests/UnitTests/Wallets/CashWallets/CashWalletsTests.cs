@@ -4,7 +4,7 @@ using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Rules;
 
-namespace App.Modules.FinanceTracking.UnitTests.Wallets;
+namespace App.Modules.FinanceTracking.UnitTests.Wallets.CashWallets;
 
 [TestFixture]
 public class CashWalletsTests : UnitTestBase
