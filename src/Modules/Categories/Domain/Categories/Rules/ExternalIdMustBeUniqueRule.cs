@@ -7,4 +7,6 @@ public class ExternalIdMustBeUniqueRule(string externalId, ICategoriesCounter ca
     public bool IsBroken() => categoriesCounter.CountWithExternalId(externalId) > 0;
 
     public string MessageTemplate => "Category with external ID '{0}' already exists";
+
+    public object[] MessageArguments => new object[] { externalId };
 }

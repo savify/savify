@@ -14,8 +14,8 @@ public class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category
         builder.HasKey(x => x.Id);
 
         builder.Property<string>(x => x.ExternalId);
+        builder.Property<CategoryId?>(x => x.ParentId);
         builder.Property<string>("_title");
-        builder.Property<CategoryId?>("_parentId");
 
         builder.ComplexProperty<CategoryType>("_type", b =>
         {

@@ -10,11 +10,11 @@ public class Category : Entity, IAggregateRoot
 
     public string ExternalId { get; private set; }
 
+    public CategoryId? ParentId { get; private set; } = null;
+
     private string _title;
 
     private CategoryType _type;
-
-    private CategoryId? _parentId = null;
 
     private Url? _iconUrl = null;
 
@@ -34,10 +34,10 @@ public class Category : Entity, IAggregateRoot
 
         Id = new CategoryId(Guid.NewGuid());
         ExternalId = externalId;
+        ParentId = parentId;
 
         _title = title;
         _type = type;
-        _parentId = parentId;
         _iconUrl = iconUrl;
 
         AddDomainEvent(new NewCategoryCreatedDomainEvent(Id, externalId));
