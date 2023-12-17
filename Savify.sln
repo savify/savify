@@ -158,6 +158,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{7F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Database.Scripts", "src\Database\Scripts\App.Database.Scripts.csproj", "{1643411A-E39D-4779-9FBB-7747A2F646A5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "makefiles", "makefiles", "{F60181E9-0865-4CFD-8731-02F0DB3ADDC2}"
+	ProjectSection(SolutionItems) = preProject
+		makefiles\DatabaseUpdate.mk = makefiles\DatabaseUpdate.mk
+		makefiles\MigrationRemoval.mk = makefiles\MigrationRemoval.mk
+		makefiles\Migrations.mk = makefiles\Migrations.mk
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -442,6 +449,7 @@ Global
 		{75993048-A63B-404B-8B88-9A3A926B5CD9} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
 		{2C47476F-B8CA-4028-8A9D-FB03C3CC9449} = {75993048-A63B-404B-8B88-9A3A926B5CD9}
 		{1643411A-E39D-4779-9FBB-7747A2F646A5} = {7F001996-E68C-46A2-BED8-D603499A251F}
+		{F60181E9-0865-4CFD-8731-02F0DB3ADDC2} = {29792374-3E5F-485C-90CD-773DAA420286}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F51F7F7A-D302-4F30-97E8-A4EBC860CF6F}
