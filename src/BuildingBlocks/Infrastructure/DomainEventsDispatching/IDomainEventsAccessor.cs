@@ -1,4 +1,3 @@
-// ReSharper disable UnusedTypeParameter
 using App.BuildingBlocks.Domain;
 using Microsoft.EntityFrameworkCore;
 
