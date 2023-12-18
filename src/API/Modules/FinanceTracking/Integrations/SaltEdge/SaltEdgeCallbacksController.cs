@@ -29,6 +29,7 @@ public class SaltEdgeCallbacksController : ControllerBase
         // TODO: verify signature
         var signature = Signature.CreateFromHttpContext(_httpContextAccessor.HttpContext);
 
+
         // TODO: accept all stages and make it prettier
         if (request.Data.Stage == "finish")
         {

@@ -17,11 +17,11 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
     {
         get
         {
-            var user = _httpContextAccessor.HttpContext?.User;
+            var user = _httpContextAccessor.HttpContext?.User!;
 
             if (user.FindFirst(ClaimTypes.NameIdentifier)?.Value != null)
             {
-                return Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                return Guid.Parse(_httpContextAccessor.HttpContext!.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             }
 
             throw new UserContextIsNotAvailableException("User context is not available");
@@ -32,11 +32,11 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
     {
         get
         {
-            if (IsAvailable && _httpContextAccessor.HttpContext.Request.Headers.Keys.Any(
+            if (IsAvailable && _httpContextAccessor.HttpContext!.Request.Headers.Keys.Any(
                     x => x == CorrelationMiddleware.CorrelationHeaderKey))
             {
                 return Guid.Parse(
-                    _httpContextAccessor.HttpContext.Request.Headers[CorrelationMiddleware.CorrelationHeaderKey]);
+                    _httpContextAccessor.HttpContext.Request.Headers[CorrelationMiddleware.CorrelationHeaderKey]!);
             }
 
             throw new ApplicationException("Http context and correlation id is not available");

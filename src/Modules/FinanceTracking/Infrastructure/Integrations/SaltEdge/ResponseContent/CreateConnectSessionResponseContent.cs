@@ -4,5 +4,5 @@ public class CreateConnectSessionResponseContent
 {
     public DateTime ExpiresAt { get; set; }
 
-    public string ConnectUrl { get; set; }
+    public required string ConnectUrl { get; set; }
 }

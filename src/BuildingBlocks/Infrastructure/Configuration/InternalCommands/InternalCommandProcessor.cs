@@ -4,18 +4,11 @@ using Polly;
 
 namespace App.BuildingBlocks.Infrastructure.Configuration.InternalCommands;
 
-public class InternalCommandProcessor
+public class InternalCommandProcessor(ISqlConnectionFactory sqlConnectionFactory)
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public InternalCommandProcessor(ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public async Task Process(DatabaseSchema schema, Func<InternalCommandDto, Task> executeCommandAction, CancellationToken cancellationToken)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                    SELECT

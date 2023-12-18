@@ -13,11 +13,6 @@ public class Response
 
     public ResponseError? Error { get; private set; }
 
-    private Response(HttpStatusCode statusCode)
-    {
-        StatusCode = statusCode;
-    }
-
     private Response(HttpStatusCode statusCode, ResponseContent? content)
     {
         StatusCode = statusCode;
@@ -59,6 +54,6 @@ public class Response
 
     private class ErrorResponseContent
     {
-        public ResponseError Error { get; set; }
+        public required ResponseError Error { get; init; }
     }
 }

@@ -4,7 +4,7 @@ namespace App.BuildingBlocks.Infrastructure.Configuration;
 
 public static class CompositionRoot
 {
-    private static IServiceProvider _serviceProvider;
+    private static IServiceProvider _serviceProvider = null!;
 
     public static void SetServiceProvider(IServiceProvider serviceProvider)
     {

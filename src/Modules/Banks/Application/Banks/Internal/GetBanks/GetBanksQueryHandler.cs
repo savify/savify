@@ -6,7 +6,7 @@ using Dapper;
 
 namespace App.Modules.Banks.Application.Banks.Internal.GetBanks;
 
-internal class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, IEnumerable<BankDto>>
+internal class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, IList<BankDto>>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
@@ -15,7 +15,7 @@ internal class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, IEnumerable<B
         _sqlConnectionFactory = sqlConnectionFactory;
     }
 
-    public async Task<IEnumerable<BankDto>> Handle(GetBanksQuery query, CancellationToken cancellationToken)
+    public async Task<IList<BankDto>> Handle(GetBanksQuery query, CancellationToken cancellationToken)
     {
         using var connection = _sqlConnectionFactory.GetOpenConnection();
 
@@ -31,6 +31,8 @@ internal class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, IEnumerable<B
             .WithParametersFrom(query)
             .Build();
 
-        return await connection.QueryAsync<BankDto>(pagedSqlQuery.Sql, pagedSqlQuery.Parameters);
+        var banks = await connection.QueryAsync<BankDto>(pagedSqlQuery.Sql, pagedSqlQuery.Parameters);
+
+        return banks.ToList();
     }
 }

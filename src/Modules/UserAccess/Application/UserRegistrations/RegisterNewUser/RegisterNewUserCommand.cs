@@ -1,5 +1,4 @@
 using App.Modules.UserAccess.Application.Contracts;
-using App.Modules.UserAccess.Domain.Users;
 using Destructurama.Attributed;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;

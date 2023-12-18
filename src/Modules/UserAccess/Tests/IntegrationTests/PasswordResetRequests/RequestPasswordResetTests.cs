@@ -38,6 +38,6 @@ public class RequestPasswordResetTests : TestBase
 
         var sql = $"SELECT status FROM {DatabaseConfiguration.Schema.Name}.password_reset_requests p WHERE p.id = @passwordResetRequestId";
 
-        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { passwordResetRequestId });
+        return (await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { passwordResetRequestId }))!;
     }
 }

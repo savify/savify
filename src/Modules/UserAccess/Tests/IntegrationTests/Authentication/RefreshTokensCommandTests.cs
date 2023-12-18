@@ -35,7 +35,7 @@ public class RefreshTokensCommandTests : TestBase
         var newRefreshToken = await refreshTokenRepository.GetByUserIdAsync(userId);
 
         Assert.That(tokens.RefreshToken, Is.EqualTo(newTokens.RefreshToken));
-        Assert.That(newRefreshToken.ExpiresAt, Is.GreaterThan(refreshToken.ExpiresAt));
+        Assert.That(newRefreshToken!.ExpiresAt, Is.GreaterThan(refreshToken!.ExpiresAt));
     }
 
     [Test]

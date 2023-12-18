@@ -25,7 +25,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
         if (!response.IsSuccessful())
         {
-            throw new SaltEdgeIntegrationException(response.Error.Message);
+            throw new SaltEdgeIntegrationException(response.Error!.Message);
         }
 
         return response.Content?.As<CreateCustomerResponseContent>()!;
@@ -37,14 +37,14 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
             .WithContent(new CreateConnectSessionRequestContent(
                 customerId,
                 providerCode,
-                RequestContent.Consent.Default,
+                Consent.Default,
                 new Attempt(bankConnectionProcessId, returnToUrl)));
 
         var response = await _client.SendAsync(request);
 
         if (!response.IsSuccessful())
         {
-            throw new SaltEdgeIntegrationException(response.Error.Message);
+            throw new SaltEdgeIntegrationException(response.Error!.Message);
         }
 
         return response.Content?.As<CreateConnectSessionResponseContent>()!;
@@ -58,7 +58,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
         if (!response.IsSuccessful())
         {
-            throw new SaltEdgeIntegrationException(response.Error.Message);
+            throw new SaltEdgeIntegrationException(response.Error!.Message);
         }
 
         var connection = response.Content?.As<SaltEdgeConnection>();
@@ -79,7 +79,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
         if (!response.IsSuccessful())
         {
-            throw new SaltEdgeIntegrationException(response.Error.Message);
+            throw new SaltEdgeIntegrationException(response.Error!.Message);
         }
 
         var consent = response.Content?.As<SaltEdgeConsent>();
@@ -100,7 +100,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
         if (!response.IsSuccessful())
         {
-            throw new SaltEdgeIntegrationException(response.Error.Message);
+            throw new SaltEdgeIntegrationException(response.Error!.Message);
         }
 
         var accounts = response.Content?.As<List<SaltEdgeAccount>>();

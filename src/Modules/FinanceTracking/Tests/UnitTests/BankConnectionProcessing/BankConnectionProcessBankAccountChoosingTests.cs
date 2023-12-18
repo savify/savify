@@ -14,19 +14,19 @@ namespace App.Modules.FinanceTracking.UnitTests.BankConnectionProcessing;
 [TestFixture]
 public class BankConnectionProcessBankAccountChoosingTests : UnitTestBase
 {
-    private static UserId _userId;
+    private static UserId _userId = null!;
 
-    private static BankId _bankId;
+    private static BankId _bankId = null!;
 
-    private static WalletId _walletId;
+    private static WalletId _walletId = null!;
 
-    private static IBankConnectionProcessInitiationService _initiationService;
+    private static IBankConnectionProcessInitiationService _initiationService = null!;
 
-    private static IBankConnectionProcessRedirectionService _redirectionService;
+    private static IBankConnectionProcessRedirectionService _redirectionService = null!;
 
-    private static IBankConnectionProcessConnectionCreationService _connectionCreationService;
+    private static IBankConnectionProcessConnectionCreationService _connectionCreationService = null!;
 
-    private static IBankAccountConnector _bankAccountConnector;
+    private static IBankAccountConnector _bankAccountConnector = null!;
 
     [SetUp]
     public void SetUp()

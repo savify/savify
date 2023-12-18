@@ -6,7 +6,6 @@ using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWa
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing;
-using App.Modules.FinanceTracking.IntegrationTests.SeedData;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 using Dapper;
 using Npgsql;
@@ -24,7 +23,7 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
         var bankConnectionProcessId = await InitiateBankConnectionProcess();
         await CreateBankConnectionWithMultipleBankAccounts(bankConnectionProcessId);
 
-        var bankAccountId = await GetBankAccountByExternalId(BankConnectionProcessingData.ExternalUSDAccountId);
+        var bankAccountId = await GetBankAccountByExternalId(BankConnectionProcessingData.ExternalUsdAccountId);
 
         await FinanceTrackingModule.ExecuteCommandAsync(new ChooseBankAccountToConnectCommand(
             bankConnectionProcessId,
@@ -35,8 +34,8 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
         var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
         var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId));
 
-        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
-        Assert.That(wallet.BankConnectionId, Is.EqualTo(bankConnectionProcessId));
+        Assert.That(bankConnectionProcess!.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
+        Assert.That(wallet!.BankConnectionId, Is.EqualTo(bankConnectionProcessId));
         Assert.That(wallet.BankAccountId, Is.EqualTo(bankAccountId));
     }
 

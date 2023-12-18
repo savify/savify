@@ -59,6 +59,6 @@ internal class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUser
 
         await _refreshTokenRepository.UpdateAsync(user.Id, refreshToken.Value, refreshToken.Expires);
 
-        return new TokensResult(accessToken.Value, refreshToken.Value); ;
+        return new TokensResult(accessToken.Value, refreshToken.Value);
     }
 }

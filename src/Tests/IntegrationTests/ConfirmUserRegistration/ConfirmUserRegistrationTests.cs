@@ -77,6 +77,6 @@ public class ConfirmUserRegistrationTests : TestBase
 
         var sql = "SELECT confirmation_code FROM user_access.user_registrations u WHERE u.id = @userRegistrationId";
 
-        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { userRegistrationId });
+        return (await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { userRegistrationId }))!;
     }
 }

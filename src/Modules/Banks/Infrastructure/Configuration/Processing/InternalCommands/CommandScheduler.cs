@@ -26,7 +26,7 @@ public class CommandScheduler : ICommandScheduler
         var internalCommand = new InternalCommand();
 
         internalCommand.Id = command.Id;
-        internalCommand.Type = command.GetType().FullName;
+        internalCommand.Type = command.GetType().FullName!;
         internalCommand.Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings
         {
             ContractResolver = new AllPropertiesContractResolver()

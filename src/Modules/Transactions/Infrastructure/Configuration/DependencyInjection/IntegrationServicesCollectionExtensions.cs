@@ -1,4 +1,3 @@
-using App.Integrations.SaltEdge.Client;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Modules.Transactions.Infrastructure.Configuration.DependencyInjection;

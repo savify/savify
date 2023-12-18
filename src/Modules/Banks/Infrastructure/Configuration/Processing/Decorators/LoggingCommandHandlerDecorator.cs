@@ -3,7 +3,6 @@ using App.BuildingBlocks.Infrastructure.Configuration.Logging;
 using App.Modules.Banks.Application.Configuration.Commands;
 using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure.Configuration.Logging;
-using MediatR;
 using Serilog;
 using Serilog.Context;
 using Serilog.Core;
@@ -53,18 +52,11 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
         }
     }
 
-    private class CommandLogEnricher : ILogEventEnricher
+    private class CommandLogEnricher(ICommand<TResult> command) : ILogEventEnricher
     {
-        private readonly ICommand<TResult> _command;
-
-        public CommandLogEnricher(ICommand<TResult> command)
-        {
-            _command = command;
-        }
-
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-            logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{_command.Id.ToString()}")));
+            logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{command.Id.ToString()}")));
         }
     }
 }
@@ -122,18 +114,11 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
         }
     }
 
-    private class CommandLogEnricher : ILogEventEnricher
+    private class CommandLogEnricher(ICommand command) : ILogEventEnricher
     {
-        private readonly ICommand _command;
-
-        public CommandLogEnricher(ICommand command)
-        {
-            _command = command;
-        }
-
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-            logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{_command.Id.ToString()}")));
+            logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{command.Id.ToString()}")));
         }
     }
 }

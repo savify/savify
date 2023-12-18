@@ -60,10 +60,10 @@ public class JsonStringLocalizer : IStringLocalizer
         {
             if (reader.TokenType != JsonToken.PropertyName) continue;
 
-            var key = reader.Value as string;
+            var key = (reader.Value as string)!;
             reader.Read();
 
-            var value = _serializer.Deserialize<string>(reader);
+            var value = _serializer.Deserialize<string>(reader)!;
 
             yield return new LocalizedString(key, value, false);
         }

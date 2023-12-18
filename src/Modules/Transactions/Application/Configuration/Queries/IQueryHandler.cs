@@ -3,6 +3,4 @@ using MediatR;
 
 namespace App.Modules.Transactions.Application.Configuration.Queries;
 
-public interface IQueryHandler<in TQuery, TResult> : IRequestHandler<TQuery, TResult> where TQuery : IQuery<TResult>
-{
-}
+public interface IQueryHandler<in TQuery, TResult> : IRequestHandler<TQuery, TResult> where TQuery : IQuery<TResult>;

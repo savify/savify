@@ -6,17 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Categories.Infrastructure;
 
-public class CategoriesContext : DbContext
+public class CategoriesContext(DbContextOptions<CategoriesContext> options) : DbContext(options)
 {
-    public DbSet<OutboxMessage>? OutboxMessages { get; set; }
+    public required DbSet<OutboxMessage> OutboxMessages { get; set; }
 
-    public DbSet<InboxMessage>? InboxMessages { get; set; }
+    public required DbSet<InboxMessage> InboxMessages { get; set; }
 
-    public DbSet<InternalCommand>? InternalCommands { get; set; }
-
-    public CategoriesContext(DbContextOptions<CategoriesContext> options) : base(options)
-    {
-    }
+    public required DbSet<InternalCommand> InternalCommands { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

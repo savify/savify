@@ -15,7 +15,7 @@ public class BankEntityTypeConfiguration : IEntityTypeConfiguration<Bank>
 
         builder.HasKey(x => x.Id);
         builder.HasIndex(x => x.ExternalId).IsUnique();
-        ;
+
         builder.Property(x => x.ExternalId);
         builder.Property(x => x.LastBanksSynchronisationProcessId);
 

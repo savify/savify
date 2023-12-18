@@ -9,23 +9,14 @@ using App.Modules.Banks.Infrastructure.Integrations.SaltEdge.Providers;
 
 namespace App.Modules.Banks.Infrastructure.Domain.BanksSynchronisationProcessing;
 
-public class BanksSynchronisationService : IBanksSynchronisationService
+public class BanksSynchronisationService(
+    ISaltEdgeIntegrationService saltEdgeIntegrationService,
+    IBankRepository bankRepository)
+    : IBanksSynchronisationService
 {
-    private readonly ISaltEdgeIntegrationService _saltEdgeIntegrationService;
-
-    private readonly IBankRepository _bankRepository;
-
-    public BanksSynchronisationService(
-        ISaltEdgeIntegrationService saltEdgeIntegrationService,
-        IBankRepository bankRepository)
-    {
-        _saltEdgeIntegrationService = saltEdgeIntegrationService;
-        _bankRepository = bankRepository;
-    }
-
     public async Task SynchroniseAsync(BanksSynchronisationProcessId banksSynchronisationProcessId)
     {
-        var banks = await _bankRepository.GetAllAsync();
+        var banks = await bankRepository.GetAllAsync();
         var externalProviders = await GetExternalProviders();
 
         foreach (var bank in banks)
@@ -55,7 +46,7 @@ public class BanksSynchronisationService : IBanksSynchronisationService
                     externalProvider.MaxConsentDays,
                     externalProvider.LogoUrl);
 
-                await _bankRepository.AddAsync(bank);
+                await bankRepository.AddAsync(bank);
             }
             else
             {
@@ -72,11 +63,11 @@ public class BanksSynchronisationService : IBanksSynchronisationService
         }
     }
 
-    private async Task<IEnumerable<SaltEdgeProvider>> GetExternalProviders(DateTime? fromDate = null)
+    private async Task<List<SaltEdgeProvider>> GetExternalProviders(DateTime? fromDate = null)
     {
         try
         {
-            return await _saltEdgeIntegrationService.FetchProvidersAsync(fromDate);
+            return await saltEdgeIntegrationService.FetchProvidersAsync(fromDate);
         }
         catch (SaltEdgeIntegrationException exception)
         {

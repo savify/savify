@@ -4,13 +4,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.BuildingBlocks.Infrastructure.Data;
 
-public class StronglyTypedIdValueConverterSelector : ValueConverterSelector
+public class StronglyTypedIdValueConverterSelector(ValueConverterSelectorDependencies dependencies)
+    : ValueConverterSelector(dependencies)
 {
     private readonly ConcurrentDictionary<(Type ModelClrType, Type ProviderClrType), ValueConverterInfo> _converters = new();
-
-    public StronglyTypedIdValueConverterSelector(ValueConverterSelectorDependencies dependencies) : base(dependencies)
-    {
-    }
 
     public override IEnumerable<ValueConverterInfo> Select(Type modelClrType, Type? providerClrType = null)
     {

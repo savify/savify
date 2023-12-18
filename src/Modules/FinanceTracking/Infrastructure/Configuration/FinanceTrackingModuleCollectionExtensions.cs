@@ -19,7 +19,7 @@ public static class FinanceTrackingModuleCollectionExtensions
         ILogger logger)
     {
         var moduleLogger = logger.ForContext("Module", "FinanceTracking");
-        var connectionString = configuration.GetConnectionString("Savify");
+        var connectionString = configuration.GetConnectionString("Savify")!;
         var domainNotificationMap = DomainNotificationsMap.Build();
 
         services

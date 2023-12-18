@@ -1,5 +1,3 @@
 namespace App.Modules.Categories.Application.Contracts;
 
-public interface IRecurringCommand
-{
-}
+public interface IRecurringCommand;

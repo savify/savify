@@ -13,6 +13,6 @@ public class Outbox : IOutbox<CategoriesContext>
 
     public void Add(OutboxMessage message)
     {
-        _categoriesContext.OutboxMessages?.Add(message);
+        _categoriesContext.OutboxMessages.Add(message);
     }
 }

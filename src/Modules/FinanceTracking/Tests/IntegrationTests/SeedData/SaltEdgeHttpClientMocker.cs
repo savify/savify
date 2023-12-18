@@ -36,7 +36,8 @@ public class SaltEdgeHttpClientMocker
                         data = new
                         {
                             id = BankConnectionProcessingData.ExternalCustomerId,
-                            identifier = BankConnectionProcessingData.UserId.ToString()
+                            identifier = BankConnectionProcessingData.UserId.ToString(),
+                            secret = "secret"
                         }
                     }));
     }
@@ -122,11 +123,11 @@ public class SaltEdgeHttpClientMocker
             {
                 new
                 {
-                    id = BankConnectionProcessingData.ExternalUSDAccountId,
+                    id = BankConnectionProcessingData.ExternalUsdAccountId,
                     name = "USD Account",
                     nature = "account",
-                    balance = BankConnectionProcessingData.ExternalUSDAccountBalance,
-                    currency_code = BankConnectionProcessingData.ExternalUSDAccountCurrency,
+                    balance = BankConnectionProcessingData.ExternalUsdAccountBalance,
+                    currency_code = BankConnectionProcessingData.ExternalUsdAccountCurrency,
                 }
             }
         };
@@ -137,19 +138,19 @@ public class SaltEdgeHttpClientMocker
             {
                 new
                 {
-                    id = BankConnectionProcessingData.ExternalUSDAccountId,
+                    id = BankConnectionProcessingData.ExternalUsdAccountId,
                     name = "USD Account",
                     nature = "account",
-                    balance = BankConnectionProcessingData.ExternalUSDAccountBalance,
-                    currency_code = BankConnectionProcessingData.ExternalUSDAccountCurrency,
+                    balance = BankConnectionProcessingData.ExternalUsdAccountBalance,
+                    currency_code = BankConnectionProcessingData.ExternalUsdAccountCurrency,
                 },
                 new
                 {
-                    id = BankConnectionProcessingData.ExternalPLNAccountId,
+                    id = BankConnectionProcessingData.ExternalPlnAccountId,
                     name = "PLN Account",
                     nature = "account",
-                    balance = BankConnectionProcessingData.ExternalPLNAccountBalance,
-                    currency_code = BankConnectionProcessingData.ExternalPLNAccountCurrency,
+                    balance = BankConnectionProcessingData.ExternalPlnAccountBalance,
+                    currency_code = BankConnectionProcessingData.ExternalPlnAccountCurrency,
                 }
             }
         };

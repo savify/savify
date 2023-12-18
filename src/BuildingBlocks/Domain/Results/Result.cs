@@ -29,20 +29,14 @@ public class Result<TSuccess, TError>
     public static implicit operator Result<TSuccess, TError>(TError error) => new(error);
 }
 
-public class Result<TSuccess> where TSuccess : class
+public class Result<TSuccess>(TSuccess? success)
+    where TSuccess : class
 {
-    private readonly TSuccess? _success;
+    public TSuccess Success { get => success ?? throw new InvalidOperationException("Result is not successful"); }
 
-    public Result(TSuccess? success)
-    {
-        _success = success;
-    }
+    public bool IsSuccess => success is not null;
 
-    public TSuccess Success { get => _success ?? throw new InvalidOperationException("Result is not successful"); }
-
-    public bool IsSuccess => _success is not null;
-
-    public bool IsError => _success is null;
+    public bool IsError => success is null;
 
 
     public static implicit operator Result<TSuccess>(TSuccess success) => new(success);
@@ -53,20 +47,13 @@ public class Result<TSuccess> where TSuccess : class
 
 }
 
-public abstract class Result
+public abstract class Result(bool isSuccess)
 {
-    private readonly bool _isSuccess;
-
-    public Result(bool isSuccess)
-    {
-        _isSuccess = isSuccess;
-    }
-
     public static SuccessResult Success => new();
 
     public static ErrorResult Error => new();
 
-    public bool IsSuccess => _isSuccess;
+    public bool IsSuccess => isSuccess;
 
-    public bool IsError => !_isSuccess;
+    public bool IsError => !isSuccess;
 }

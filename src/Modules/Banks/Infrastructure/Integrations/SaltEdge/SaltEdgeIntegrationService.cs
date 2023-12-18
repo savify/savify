@@ -17,7 +17,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
     }
 
 
-    public async Task<IEnumerable<SaltEdgeProvider>> FetchProvidersAsync(DateTime? fromDate = null)
+    public async Task<List<SaltEdgeProvider>> FetchProvidersAsync(DateTime? fromDate = null)
     {
         var request = Request.Get("providers").WithQueryParameter("include_fake_providers", !_isProduction);
 
@@ -30,11 +30,11 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
 
         if (!response.IsSuccessful())
         {
-            throw new SaltEdgeIntegrationException(response.Error.Message);
+            throw new SaltEdgeIntegrationException(response.Error!.Message);
         }
 
-        var providers = response.Content?.As<IEnumerable<SaltEdgeProvider>>();
+        var providers = response.Content?.As<List<SaltEdgeProvider>>();
 
-        return providers ?? Enumerable.Empty<SaltEdgeProvider>();
+        return providers ?? new List<SaltEdgeProvider>();
     }
 }

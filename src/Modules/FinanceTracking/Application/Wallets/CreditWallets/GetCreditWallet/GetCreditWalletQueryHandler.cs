@@ -37,6 +37,6 @@ internal class GetCreditWalletQueryHandler : IQueryHandler<GetCreditWalletQuery,
         new { query.WalletId },
         splitOn: "walletId");
 
-        return creditWallets.SingleOrDefault(); ;
+        return creditWallets.SingleOrDefault();
     }
 }

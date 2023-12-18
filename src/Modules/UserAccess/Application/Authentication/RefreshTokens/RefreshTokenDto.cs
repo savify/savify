@@ -1,4 +1,4 @@
-namespace App.Modules.UserAccess.Application.Authentication;
+namespace App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 
 public class RefreshTokenDto
 {

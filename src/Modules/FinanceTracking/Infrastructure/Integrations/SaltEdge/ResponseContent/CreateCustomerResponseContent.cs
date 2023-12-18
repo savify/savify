@@ -2,11 +2,11 @@ namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Respo
 
 public class CreateCustomerResponseContent
 {
-    public string Id { get; set; }
+    public required string Id { get; set; }
 
-    public string Identifier { get; set; }
+    public required string Identifier { get; set; }
 
-    public string Secret { get; set; }
+    public required string Secret { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
