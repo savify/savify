@@ -6,19 +6,12 @@ using Newtonsoft.Json;
 
 namespace App.Modules.Banks.Infrastructure.Configuration.Processing.InternalCommands;
 
-public class CommandScheduler : ICommandScheduler
+public class CommandScheduler(BanksContext banksContext) : ICommandScheduler
 {
-    private readonly BanksContext _banksContext;
-
-    public CommandScheduler(BanksContext banksContext)
-    {
-        _banksContext = banksContext;
-    }
-
     public async Task EnqueueAsync<T>(ICommand<T> command)
     {
-        await _banksContext.AddAsync(CreateInternalCommandFrom(command));
-        await _banksContext.SaveChangesAsync();
+        await banksContext.AddAsync(CreateInternalCommandFrom(command));
+        await banksContext.SaveChangesAsync();
     }
 
     private InternalCommand CreateInternalCommandFrom<T>(ICommand<T> command)
