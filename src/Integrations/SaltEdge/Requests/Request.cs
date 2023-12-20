@@ -5,21 +5,15 @@ using App.Integrations.SaltEdge.Json;
 
 namespace App.Integrations.SaltEdge.Requests;
 
-public abstract class Request
+public abstract class Request(HttpMethod method, string path)
 {
-    public HttpMethod Method { get; }
+    public HttpMethod Method { get; } = method;
 
-    private string Path { get; }
+    private string Path { get; } = path;
 
     private IDictionary<string, object> _queryParameters = new Dictionary<string, object>();
 
     public HttpContent? Content { get; protected set; }
-
-    protected Request(HttpMethod method, string path)
-    {
-        Method = method;
-        Path = path;
-    }
 
     public Request WithQueryParameter(string key, object value)
     {
@@ -76,18 +70,10 @@ public abstract class Request
     }
 }
 
-public class GetRequest : Request
-{
-    public GetRequest(string path) : base(HttpMethod.Get, path)
-    {
-    }
-}
+public class GetRequest(string path) : Request(HttpMethod.Get, path);
 
-public class PostRequest : Request
+public class PostRequest(string path) : Request(HttpMethod.Post, path)
 {
-    public PostRequest(string path) : base(HttpMethod.Post, path)
-    { }
-
     public Request WithContent(object content)
     {
         Content = new StringContent(
@@ -102,12 +88,8 @@ public class PostRequest : Request
     }
 }
 
-public class PatchRequest : Request
+public class PatchRequest(string path) : Request(HttpMethod.Patch, path)
 {
-    public PatchRequest(string path) : base(HttpMethod.Patch, path)
-    {
-    }
-
     public Request WithContent(object content)
     {
         Content = new StringContent(
@@ -122,12 +104,8 @@ public class PatchRequest : Request
     }
 }
 
-public class PutRequest : Request
+public class PutRequest(string path) : Request(HttpMethod.Put, path)
 {
-    public PutRequest(string path) : base(HttpMethod.Put, path)
-    {
-    }
-
     public Request WithContent(object content)
     {
         Content = new StringContent(
@@ -142,9 +120,4 @@ public class PutRequest : Request
     }
 }
 
-public class DeleteRequest : Request
-{
-    public DeleteRequest(string path) : base(HttpMethod.Delete, path)
-    {
-    }
-}
+public class DeleteRequest(string path) : Request(HttpMethod.Delete, path);

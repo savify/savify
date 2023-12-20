@@ -4,24 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Banks.Infrastructure.Domain.Banks;
 
-public class BankRepository : IBankRepository
+public class BankRepository(BanksContext banksContext) : IBankRepository
 {
-    private readonly BanksContext _banksContext;
-
-    public BankRepository(BanksContext banksContext)
-    {
-        _banksContext = banksContext;
-    }
-
     public async Task AddAsync(Bank bank)
     {
-        await _banksContext.AddAsync(bank);
+        await banksContext.AddAsync(bank);
     }
 
     public async Task<Bank> GetByIdAsync(BankId id)
     {
-        var bank = _banksContext.Banks.Local.SingleOrDefault(b => b.Id == id) ??
-                   await _banksContext.Banks.SingleOrDefaultAsync(b => b.Id == id);
+        var bank = banksContext.Banks.Local.SingleOrDefault(b => b.Id == id) ??
+                   await banksContext.Banks.SingleOrDefaultAsync(b => b.Id == id);
 
         if (bank is null)
         {
@@ -33,11 +26,11 @@ public class BankRepository : IBankRepository
 
     public async Task<Bank?> GetByExternalIdAsync(string externalId)
     {
-        return await _banksContext.Banks.SingleOrDefaultAsync(b => b.ExternalId == externalId);
+        return await banksContext.Banks.SingleOrDefaultAsync(b => b.ExternalId == externalId);
     }
 
     public async Task<List<Bank>> GetAllAsync()
     {
-        return await _banksContext.Banks.ToListAsync();
+        return await banksContext.Banks.ToListAsync();
     }
 }

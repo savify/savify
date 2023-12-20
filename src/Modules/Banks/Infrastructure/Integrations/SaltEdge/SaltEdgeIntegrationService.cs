@@ -4,29 +4,18 @@ using App.Modules.Banks.Infrastructure.Integrations.SaltEdge.Providers;
 
 namespace App.Modules.Banks.Infrastructure.Integrations.SaltEdge;
 
-public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
+public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client, bool isProduction) : ISaltEdgeIntegrationService
 {
-    private readonly ISaltEdgeHttpClient _client;
-
-    private readonly bool _isProduction;
-
-    public SaltEdgeIntegrationService(ISaltEdgeHttpClient client, bool isProduction)
-    {
-        _client = client;
-        _isProduction = isProduction;
-    }
-
-
     public async Task<List<SaltEdgeProvider>> FetchProvidersAsync(DateTime? fromDate = null)
     {
-        var request = Request.Get("providers").WithQueryParameter("include_fake_providers", !_isProduction);
+        var request = Request.Get("providers").WithQueryParameter("include_fake_providers", !isProduction);
 
         if (fromDate is not null)
         {
             request = request.WithQueryParameter("from_date", fromDate);
         }
 
-        var response = await _client.SendAsync(request);
+        var response = await client.SendAsync(request);
 
         if (!response.IsSuccessful())
         {

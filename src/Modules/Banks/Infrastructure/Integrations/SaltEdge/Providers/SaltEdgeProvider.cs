@@ -1,29 +1,25 @@
 namespace App.Modules.Banks.Infrastructure.Integrations.SaltEdge.Providers;
 
-public class SaltEdgeProvider
+public class SaltEdgeProvider(
+    string code,
+    string name,
+    string status,
+    string countryCode,
+    bool regulated,
+    int? maxConsentDays,
+    string logoUrl)
 {
-    public string Code { get; }
+    public string Code { get; } = code;
 
-    public string Name { get; }
+    public string Name { get; } = name;
 
-    public string Status { get; }
+    public string Status { get; } = status;
 
-    public string CountryCode { get; }
+    public string CountryCode { get; } = countryCode;
 
-    public bool Regulated { get; }
+    public bool Regulated { get; } = regulated;
 
-    public int? MaxConsentDays { get; }
+    public int? MaxConsentDays { get; } = maxConsentDays;
 
-    public string LogoUrl { get; }
-
-    public SaltEdgeProvider(string code, string name, string status, string countryCode, bool regulated, int? maxConsentDays, string logoUrl)
-    {
-        Code = code;
-        Name = name;
-        Status = status;
-        CountryCode = countryCode;
-        Regulated = regulated;
-        MaxConsentDays = maxConsentDays;
-        LogoUrl = logoUrl;
-    }
+    public string LogoUrl { get; } = logoUrl;
 }
