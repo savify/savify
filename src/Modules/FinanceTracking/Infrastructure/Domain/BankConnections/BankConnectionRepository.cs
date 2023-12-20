@@ -4,24 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.BankConnections;
 
-public class BankConnectionRepository : IBankConnectionRepository
+public class BankConnectionRepository(FinanceTrackingContext financeTrackingContext) : IBankConnectionRepository
 {
-    private readonly FinanceTrackingContext _financeTrackingContext;
-
-    public BankConnectionRepository(FinanceTrackingContext financeTrackingContext)
-    {
-        _financeTrackingContext = financeTrackingContext;
-    }
-
     public async Task AddAsync(BankConnection bankConnection)
     {
-        await _financeTrackingContext.AddAsync(bankConnection);
+        await financeTrackingContext.AddAsync(bankConnection);
     }
 
     public async Task<BankConnection> GetByIdAsync(BankConnectionId id)
     {
-        var bankConnection = _financeTrackingContext.BankConnections.Local.SingleOrDefault(x => x.Id == id) ??
-                             await _financeTrackingContext.BankConnections.SingleOrDefaultAsync(x => x.Id == id);
+        var bankConnection = financeTrackingContext.BankConnections.Local.SingleOrDefault(x => x.Id == id) ??
+                             await financeTrackingContext.BankConnections.SingleOrDefaultAsync(x => x.Id == id);
 
         if (bankConnection == null)
         {
@@ -33,6 +26,6 @@ public class BankConnectionRepository : IBankConnectionRepository
 
     public void Remove(BankConnection bankConnection)
     {
-        _financeTrackingContext.Remove(bankConnection);
+        financeTrackingContext.Remove(bankConnection);
     }
 }

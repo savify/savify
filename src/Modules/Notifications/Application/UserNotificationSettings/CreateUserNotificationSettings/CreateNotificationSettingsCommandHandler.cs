@@ -3,20 +3,11 @@ using App.Modules.Notifications.Domain.UserNotificationSettings;
 
 namespace App.Modules.Notifications.Application.UserNotificationSettings.CreateUserNotificationSettings;
 
-internal class CreateNotificationSettingsCommandHandler : ICommandHandler<CreateNotificationSettingsCommand>
+internal class CreateNotificationSettingsCommandHandler(
+    IUserNotificationSettingsRepository userNotificationSettingsRepository,
+    IUserNotificationSettingsCounter userNotificationSettingsCounter)
+    : ICommandHandler<CreateNotificationSettingsCommand>
 {
-    private readonly IUserNotificationSettingsRepository _userNotificationSettingsRepository;
-
-    private readonly IUserNotificationSettingsCounter _userNotificationSettingsCounter;
-
-    public CreateNotificationSettingsCommandHandler(
-        IUserNotificationSettingsRepository userNotificationSettingsRepository,
-        IUserNotificationSettingsCounter userNotificationSettingsCounter)
-    {
-        _userNotificationSettingsRepository = userNotificationSettingsRepository;
-        _userNotificationSettingsCounter = userNotificationSettingsCounter;
-    }
-
     public async Task Handle(CreateNotificationSettingsCommand command, CancellationToken cancellationToken)
     {
         var userNotificationSettings = Domain.UserNotificationSettings.UserNotificationSettings.Create(
@@ -24,8 +15,8 @@ internal class CreateNotificationSettingsCommandHandler : ICommandHandler<Create
             command.Email,
             command.Name,
             Language.From(command.PreferredLanguage),
-            _userNotificationSettingsCounter);
+            userNotificationSettingsCounter);
 
-        await _userNotificationSettingsRepository.AddAsync(userNotificationSettings);
+        await userNotificationSettingsRepository.AddAsync(userNotificationSettings);
     }
 }

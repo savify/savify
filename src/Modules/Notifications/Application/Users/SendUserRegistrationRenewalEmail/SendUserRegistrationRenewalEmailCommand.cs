@@ -3,28 +3,21 @@ using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewalEmail;
 
-public class SendUserRegistrationRenewalEmailCommand : InternalCommandBase
+[method: JsonConstructor]
+public class SendUserRegistrationRenewalEmailCommand(
+    Guid id,
+    Guid correlationId,
+    string name,
+    string email,
+    string language,
+    string confirmationCode)
+    : InternalCommandBase(id, correlationId)
 {
-    [JsonConstructor]
-    public SendUserRegistrationRenewalEmailCommand(
-        Guid id,
-        Guid correlationId,
-        string name,
-        string email,
-        string language,
-        string confirmationCode) : base(id, correlationId)
-    {
-        Name = name;
-        Email = email;
-        Language = language;
-        ConfirmationCode = confirmationCode;
-    }
+    internal string Name { get; } = name;
 
-    internal string Name { get; }
+    internal string Email { get; } = email;
 
-    internal string Email { get; }
+    internal string Language { get; } = language;
 
-    internal string Language { get; }
-
-    internal string ConfirmationCode { get; }
+    internal string ConfirmationCode { get; } = confirmationCode;
 }

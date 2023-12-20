@@ -4,16 +4,9 @@ using Microsoft.Extensions.Localization;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Configuration.Localization;
 
-public class LocalizerProvider : ILocalizerProvider
+public class LocalizerProvider(ILocalizerFactory localizerFactory) : ILocalizerProvider
 {
-    private readonly ILocalizerFactory _localizerFactory;
-
     private IStringLocalizer? _localizer;
-
-    public LocalizerProvider(ILocalizerFactory localizerFactory)
-    {
-        _localizerFactory = localizerFactory;
-    }
 
     public IStringLocalizer GetLocalizer()
     {
@@ -27,6 +20,6 @@ public class LocalizerProvider : ILocalizerProvider
 
     private void CreateLocalizer()
     {
-        _localizer = _localizerFactory.Create<FinanceTrackingLocalizationResource>();
+        _localizer = localizerFactory.Create<FinanceTrackingLocalizationResource>();
     }
 }

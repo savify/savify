@@ -16,22 +16,20 @@ public class EmailSender(EmailMessageMapper emailMessageMapper, EmailConfigurati
 
     private async Task SendAsync(MimeMessage message)
     {
-        using (var client = new SmtpClient())
+        using var client = new SmtpClient();
+        try
         {
-            try
-            {
-                await client.ConnectAsync(configuration.Host, configuration.Port, configuration.UseSsl);
-                await client.SendAsync(message);
-            }
-            catch (Exception e)
-            {
-                logger.Error(e, "Email sending failed; {Message}", e.Message);
-                throw;
-            }
-            finally
-            {
-                await client.DisconnectAsync(true);
-            }
+            await client.ConnectAsync(configuration.Host, configuration.Port, configuration.UseSsl);
+            await client.SendAsync(message);
+        }
+        catch (Exception e)
+        {
+            logger.Error(e, "Email sending failed; {Message}", e.Message);
+            throw;
+        }
+        finally
+        {
+            await client.DisconnectAsync(true);
         }
     }
 }

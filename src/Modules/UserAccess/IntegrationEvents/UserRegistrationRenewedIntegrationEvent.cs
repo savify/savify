@@ -2,28 +2,21 @@ using App.BuildingBlocks.Integration;
 
 namespace App.Modules.UserAccess.IntegrationEvents;
 
-public class UserRegistrationRenewedIntegrationEvent : IntegrationEvent
+public class UserRegistrationRenewedIntegrationEvent(
+    Guid id,
+    Guid correlationId,
+    DateTime occurredOn,
+    string email,
+    string name,
+    string confirmationCode,
+    string preferredLanguage)
+    : IntegrationEvent(id, correlationId, occurredOn)
 {
-    public string Email { get; }
+    public string Email { get; } = email;
 
-    public string Name { get; }
+    public string Name { get; } = name;
 
-    public string ConfirmationCode { get; }
+    public string ConfirmationCode { get; } = confirmationCode;
 
-    public string PreferredLanguage { get; }
-
-    public UserRegistrationRenewedIntegrationEvent(
-        Guid id,
-        Guid correlationId,
-        DateTime occurredOn,
-        string email,
-        string name,
-        string confirmationCode,
-        string preferredLanguage) : base(id, correlationId, occurredOn)
-    {
-        Email = email;
-        Name = name;
-        ConfirmationCode = confirmationCode;
-        PreferredLanguage = preferredLanguage;
-    }
+    public string PreferredLanguage { get; } = preferredLanguage;
 }

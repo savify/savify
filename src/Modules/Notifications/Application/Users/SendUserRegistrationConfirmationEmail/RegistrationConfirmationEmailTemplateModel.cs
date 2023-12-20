@@ -2,17 +2,11 @@ using App.Modules.Notifications.Application.Emails.Templates;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmationEmail;
 
-public class RegistrationConfirmationEmailTemplateModel : EmailTemplateModelBase
+public class RegistrationConfirmationEmailTemplateModel(string name, string confirmationCode) : EmailTemplateModelBase
 {
     public override string TemplateName => "registration_confirmation";
 
-    public string Name { get; }
+    public string Name { get; } = name;
 
-    public string ConfirmationCode { get; }
-
-    public RegistrationConfirmationEmailTemplateModel(string name, string confirmationCode)
-    {
-        Name = name;
-        ConfirmationCode = confirmationCode;
-    }
+    public string ConfirmationCode { get; } = confirmationCode;
 }

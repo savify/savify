@@ -3,15 +3,10 @@ using App.Modules.FinanceTracking.Application.Contracts;
 
 namespace App.Modules.FinanceTracking.Application.BankConnectionProcessing.CreateBankConnection;
 
-public class CreateBankConnectionCommand : CommandBase<EmptyResult<CreateBankConnectionError>>
+public class CreateBankConnectionCommand(Guid bankConnectionProcessId, string externalBankConnectionId)
+    : CommandBase<EmptyResult<CreateBankConnectionError>>
 {
-    public Guid BankConnectionProcessId { get; }
+    public Guid BankConnectionProcessId { get; } = bankConnectionProcessId;
 
-    public string ExternalBankConnectionId { get; }
-
-    public CreateBankConnectionCommand(Guid bankConnectionProcessId, string externalBankConnectionId)
-    {
-        BankConnectionProcessId = bankConnectionProcessId;
-        ExternalBankConnectionId = externalBankConnectionId;
-    }
+    public string ExternalBankConnectionId { get; } = externalBankConnectionId;
 }

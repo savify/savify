@@ -1,11 +1,6 @@
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.RequestContent;
 
-public class CreateCustomerRequestContent
+public class CreateCustomerRequestContent(string identifier)
 {
-    public string Identifier { get; }
-
-    public CreateCustomerRequestContent(string identifier)
-    {
-        Identifier = identifier;
-    }
+    public string Identifier { get; } = identifier;
 }

@@ -5,27 +5,17 @@ using Microsoft.Extensions.Localization;
 
 namespace App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 
-internal class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensCommand, TokensResult>
+internal class RefreshTokensCommandHandler(
+    ILocalizerProvider localizerProvider,
+    IAuthenticationTokenGenerator tokenGenerator,
+    IRefreshTokenRepository refreshTokenRepository)
+    : ICommandHandler<RefreshTokensCommand, TokensResult>
 {
-    private readonly IStringLocalizer _localizer;
-
-    private readonly IAuthenticationTokenGenerator _tokenGenerator;
-
-    private readonly IRefreshTokenRepository _refreshTokenRepository;
-
-    public RefreshTokensCommandHandler(
-        ILocalizerProvider localizerProvider,
-        IAuthenticationTokenGenerator tokenGenerator,
-        IRefreshTokenRepository refreshTokenRepository)
-    {
-        _localizer = localizerProvider.GetLocalizer();
-        _tokenGenerator = tokenGenerator;
-        _refreshTokenRepository = refreshTokenRepository;
-    }
+    private readonly IStringLocalizer _localizer = localizerProvider.GetLocalizer();
 
     public async Task<TokensResult> Handle(RefreshTokensCommand command, CancellationToken cancellationToken)
     {
-        var refreshToken = await _refreshTokenRepository.GetByUserIdAsync(command.UserId);
+        var refreshToken = await refreshTokenRepository.GetByUserIdAsync(command.UserId);
 
         if (refreshToken == null || refreshToken.Value != command.RefreshToken)
         {
@@ -37,10 +27,10 @@ internal class RefreshTokensCommandHandler : ICommandHandler<RefreshTokensComman
             throw new AuthenticationException(_localizer["Refresh token expired"]);
         }
 
-        var accessToken = _tokenGenerator.GenerateAccessToken(command.UserId);
-        var newRefreshToken = _tokenGenerator.GenerateRefreshToken(refreshToken.Value);
+        var accessToken = tokenGenerator.GenerateAccessToken(command.UserId);
+        var newRefreshToken = tokenGenerator.GenerateRefreshToken(refreshToken.Value);
 
-        await _refreshTokenRepository.UpdateAsync(command.UserId, newRefreshToken.Value, newRefreshToken.Expires);
+        await refreshTokenRepository.UpdateAsync(command.UserId, newRefreshToken.Value, newRefreshToken.Expires);
 
         return new TokensResult(accessToken.Value, refreshToken.Value);
     }

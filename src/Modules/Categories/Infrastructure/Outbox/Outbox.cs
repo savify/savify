@@ -2,17 +2,10 @@ using App.BuildingBlocks.Infrastructure.Outbox;
 
 namespace App.Modules.Categories.Infrastructure.Outbox;
 
-public class Outbox : IOutbox<CategoriesContext>
+public class Outbox(CategoriesContext categoriesContext) : IOutbox<CategoriesContext>
 {
-    private readonly CategoriesContext _categoriesContext;
-
-    public Outbox(CategoriesContext categoriesContext)
-    {
-        _categoriesContext = categoriesContext;
-    }
-
     public void Add(OutboxMessage message)
     {
-        _categoriesContext.OutboxMessages.Add(message);
+        categoriesContext.OutboxMessages.Add(message);
     }
 }

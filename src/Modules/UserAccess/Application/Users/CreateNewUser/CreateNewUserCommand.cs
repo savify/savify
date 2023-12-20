@@ -3,27 +3,19 @@ using Destructurama.Attributed;
 
 namespace App.Modules.UserAccess.Application.Users.CreateNewUser;
 
-public class CreateNewUserCommand : CommandBase<Guid>
+public class CreateNewUserCommand(string email, string password, string name, string role, string country)
+    : CommandBase<Guid>
 {
     [LogMasked]
-    public string Email { get; }
+    public string Email { get; } = email;
 
     [LogMasked]
-    public string Password { get; }
+    public string Password { get; } = password;
 
     [LogMasked]
-    public string Name { get; }
+    public string Name { get; } = name;
 
-    public string Role { get; }
+    public string Role { get; } = role;
 
-    public string Country { get; }
-
-    public CreateNewUserCommand(string email, string password, string name, string role, string country)
-    {
-        Email = email;
-        Password = password;
-        Name = name;
-        Role = role;
-        Country = country;
-    }
+    public string Country { get; } = country;
 }

@@ -5,23 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.BankConnectionProcessing;
 
-public class BankConnectionProcessRepository : IBankConnectionProcessRepository
+public class BankConnectionProcessRepository(FinanceTrackingContext financeTrackingContext)
+    : IBankConnectionProcessRepository
 {
-    private readonly FinanceTrackingContext _financeTrackingContext;
-
-    public BankConnectionProcessRepository(FinanceTrackingContext financeTrackingContext)
-    {
-        _financeTrackingContext = financeTrackingContext;
-    }
-
     public async Task AddAsync(BankConnectionProcess bankConnectionProcess)
     {
-        await _financeTrackingContext.AddAsync(bankConnectionProcess);
+        await financeTrackingContext.AddAsync(bankConnectionProcess);
     }
 
     public async Task<BankConnectionProcess> GetByIdAsync(BankConnectionProcessId id)
     {
-        var bankConnectionProcess = await _financeTrackingContext.BankConnectionProcesses.SingleOrDefaultAsync(x => x.Id == id);
+        var bankConnectionProcess = await financeTrackingContext.BankConnectionProcesses.SingleOrDefaultAsync(x => x.Id == id);
 
         if (bankConnectionProcess == null)
         {
@@ -33,7 +27,7 @@ public class BankConnectionProcessRepository : IBankConnectionProcessRepository
 
     public async Task<BankConnectionProcess> GetByIdAndUserIdAsync(BankConnectionProcessId id, UserId userId)
     {
-        var bankConnectionProcess = await _financeTrackingContext.BankConnectionProcesses.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var bankConnectionProcess = await financeTrackingContext.BankConnectionProcesses.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (bankConnectionProcess == null)
         {

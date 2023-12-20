@@ -3,24 +3,18 @@ using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationConfirmedEmail;
 
-public class SendUserRegistrationConfirmedEmailCommand : InternalCommandBase
+[method: JsonConstructor]
+public class SendUserRegistrationConfirmedEmailCommand(
+    Guid id,
+    Guid correlationId,
+    string name,
+    string email,
+    string language)
+    : InternalCommandBase(id, correlationId)
 {
-    [JsonConstructor]
-    public SendUserRegistrationConfirmedEmailCommand(
-        Guid id,
-        Guid correlationId,
-        string name,
-        string email,
-        string language) : base(id, correlationId)
-    {
-        Name = name;
-        Email = email;
-        Language = language;
-    }
+    internal string Name { get; } = name;
 
-    internal string Name { get; }
+    internal string Email { get; } = email;
 
-    internal string Email { get; }
-
-    internal string Language { get; }
+    internal string Language { get; } = language;
 }

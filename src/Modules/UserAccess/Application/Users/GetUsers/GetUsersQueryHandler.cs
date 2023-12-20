@@ -5,18 +5,12 @@ using Dapper;
 
 namespace App.Modules.UserAccess.Application.Users.GetUsers;
 
-internal class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, List<UserDto>>
+internal class GetUsersQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+    : IQueryHandler<GetUsersQuery, List<UserDto>>
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public GetUsersQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public async Task<List<UserDto>> Handle(GetUsersQuery query, CancellationToken cancellationToken)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                     SELECT id, name, email, is_active AS isActive, created_at AS createdAt, array_agg(role_code) AS roles

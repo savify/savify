@@ -5,18 +5,12 @@ using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.Infrastructure.Configuration.Processing.InternalCommands;
 
-internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
+internal class ProcessInternalCommandsCommandHandler(InternalCommandProcessor internalCommandProcessor)
+    : ICommandHandler<ProcessInternalCommandsCommand>
 {
-    private readonly InternalCommandProcessor _internalCommandProcessor;
-
-    public ProcessInternalCommandsCommandHandler(InternalCommandProcessor internalCommandProcessor)
-    {
-        _internalCommandProcessor = internalCommandProcessor;
-    }
-
     public async Task Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
     {
-        await _internalCommandProcessor.Process(DatabaseConfiguration.Schema, ExecuteCommand, cancellationToken);
+        await internalCommandProcessor.Process(DatabaseConfiguration.Schema, ExecuteCommand, cancellationToken);
     }
 
     private async Task ExecuteCommand(InternalCommandDto internalCommand)

@@ -4,18 +4,12 @@ using MediatR;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.RenewUserRegistration;
 
-public class UserRegistrationRenewedPublishNotificationHandler : INotificationHandler<UserRegistrationRenewedNotification>
+public class UserRegistrationRenewedPublishNotificationHandler(IEventBus eventBus)
+    : INotificationHandler<UserRegistrationRenewedNotification>
 {
-    private readonly IEventBus _eventBus;
-
-    public UserRegistrationRenewedPublishNotificationHandler(IEventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(UserRegistrationRenewedNotification notification, CancellationToken cancellationToken)
     {
-        await _eventBus.Publish(new UserRegistrationRenewedIntegrationEvent(
+        await eventBus.Publish(new UserRegistrationRenewedIntegrationEvent(
             notification.Id,
             notification.CorrelationId,
             notification.DomainEvent.OccurredOn,

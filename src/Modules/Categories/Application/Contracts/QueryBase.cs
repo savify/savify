@@ -1,16 +1,10 @@
 namespace App.Modules.Categories.Application.Contracts;
 
-public abstract class QueryBase<TResult> : IQuery<TResult>
+public abstract class QueryBase<TResult>(Guid id) : IQuery<TResult>
 {
-    public Guid Id { get; }
+    public Guid Id { get; } = id;
 
-    protected QueryBase()
+    protected QueryBase() : this(Guid.NewGuid())
     {
-        Id = Guid.NewGuid();
-    }
-
-    protected QueryBase(Guid id)
-    {
-        Id = id;
     }
 }

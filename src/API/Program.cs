@@ -136,7 +136,7 @@ public class Program
 
         _loggerConfiguration = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .Enrich.WithSensitiveDataMasking(_ => {})
+            .Enrich.WithSensitiveDataMasking(_ => { })
             .Destructure.UsingAttributes()
             .Enrich.WithProperty("Environment", environment.EnvironmentName);
 

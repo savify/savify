@@ -8,20 +8,13 @@ using SaltEdgeConsent = App.Modules.FinanceTracking.Infrastructure.Integrations.
 
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge;
 
-public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
+public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client) : ISaltEdgeIntegrationService
 {
-    private readonly ISaltEdgeHttpClient _client;
-
-    public SaltEdgeIntegrationService(ISaltEdgeHttpClient client)
-    {
-        _client = client;
-    }
-
     public async Task<CreateCustomerResponseContent> CreateCustomerAsync(Guid userId)
     {
         var request = Request.Post("customers")
             .WithContent(new CreateCustomerRequestContent(userId.ToString()));
-        var response = await _client.SendAsync(request);
+        var response = await client.SendAsync(request);
 
         if (!response.IsSuccessful())
         {
@@ -40,7 +33,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
                 Consent.Default,
                 new Attempt(bankConnectionProcessId, returnToUrl)));
 
-        var response = await _client.SendAsync(request);
+        var response = await client.SendAsync(request);
 
         if (!response.IsSuccessful())
         {
@@ -54,7 +47,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
     {
         var request = Request.Get($"connections/{connectionId}");
 
-        var response = await _client.SendAsync(request);
+        var response = await client.SendAsync(request);
 
         if (!response.IsSuccessful())
         {
@@ -75,7 +68,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
     {
         var request = Request.Get($"consents/{consentId}").WithQueryParameter("connection_id", connectionId);
 
-        var response = await _client.SendAsync(request);
+        var response = await client.SendAsync(request);
 
         if (!response.IsSuccessful())
         {
@@ -96,7 +89,7 @@ public class SaltEdgeIntegrationService : ISaltEdgeIntegrationService
     {
         var request = Request.Get("accounts").WithQueryParameter("connection_id", connectionId);
 
-        var response = await _client.SendAsync(request);
+        var response = await client.SendAsync(request);
 
         if (!response.IsSuccessful())
         {

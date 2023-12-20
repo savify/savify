@@ -1,28 +1,24 @@
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.RequestContent;
 
-public class CreateConnectSessionRequestContent
+public class CreateConnectSessionRequestContent(
+    string customerId,
+    string providerCode,
+    Consent consent,
+    Attempt attempt,
+    bool disableProviderSearch = true,
+    bool dailyRefresh = true)
 {
-    public string CustomerId { get; }
+    public string CustomerId { get; } = customerId;
 
-    public string ProviderCode { get; }
+    public string ProviderCode { get; } = providerCode;
 
-    public Consent Consent { get; }
+    public Consent Consent { get; } = consent;
 
-    public Attempt Attempt { get; }
+    public Attempt Attempt { get; } = attempt;
 
-    public bool DisableProviderSearch { get; }
+    public bool DisableProviderSearch { get; } = disableProviderSearch;
 
-    public bool DailyRefresh { get; }
-
-    public CreateConnectSessionRequestContent(string customerId, string providerCode, Consent consent, Attempt attempt, bool disableProviderSearch = true, bool dailyRefresh = true)
-    {
-        CustomerId = customerId;
-        ProviderCode = providerCode;
-        Consent = consent;
-        Attempt = attempt;
-        DisableProviderSearch = disableProviderSearch;
-        DailyRefresh = dailyRefresh;
-    }
+    public bool DailyRefresh { get; } = dailyRefresh;
 }
 
 public class Consent
@@ -37,31 +33,22 @@ public class Consent
     }
 }
 
-public class Attempt
+public class Attempt(
+    Guid bankConnectionProcessId,
+    string returnTo,
+    string locale = "en",
+    bool fetchedAccountsNotify = true)
 {
-    public string ReturnTo { get; }
+    public string ReturnTo { get; } = returnTo;
 
-    public string Locale { get; }
+    public string Locale { get; } = locale;
 
-    public bool FetchedAccountsNotify { get; }
+    public bool FetchedAccountsNotify { get; } = fetchedAccountsNotify;
 
-    public CustomFields CustomFields { get; }
-
-    public Attempt(Guid bankConnectionProcessId, string returnTo, string locale = "en", bool fetchedAccountsNotify = true)
-    {
-        ReturnTo = returnTo;
-        Locale = locale;
-        FetchedAccountsNotify = fetchedAccountsNotify;
-        CustomFields = new CustomFields(bankConnectionProcessId);
-    }
+    public CustomFields CustomFields { get; } = new(bankConnectionProcessId);
 }
 
-public class CustomFields
+public class CustomFields(Guid bankConnectionProcessId)
 {
-    public Guid BankConnectionProcessId { get; }
-
-    public CustomFields(Guid bankConnectionProcessId)
-    {
-        BankConnectionProcessId = bankConnectionProcessId;
-    }
+    public Guid BankConnectionProcessId { get; } = bankConnectionProcessId;
 }

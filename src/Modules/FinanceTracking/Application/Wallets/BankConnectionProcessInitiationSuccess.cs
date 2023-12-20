@@ -1,14 +1,8 @@
 namespace App.Modules.FinanceTracking.Application.Wallets;
 
-public class BankConnectionProcessInitiationSuccess
+public class BankConnectionProcessInitiationSuccess(Guid id, string redirectUrl)
 {
-    public Guid Id { get; }
+    public Guid Id { get; } = id;
 
-    public string RedirectUrl { get; }
-
-    public BankConnectionProcessInitiationSuccess(Guid id, string redirectUrl)
-    {
-        Id = id;
-        RedirectUrl = redirectUrl;
-    }
+    public string RedirectUrl { get; } = redirectUrl;
 }

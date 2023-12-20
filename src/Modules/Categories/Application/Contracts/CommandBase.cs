@@ -1,31 +1,19 @@
 namespace App.Modules.Categories.Application.Contracts;
 
-public abstract class CommandBase : ICommand
+public abstract class CommandBase(Guid id) : ICommand
 {
-    public Guid Id { get; }
+    public Guid Id { get; } = id;
 
-    protected CommandBase()
+    protected CommandBase() : this(Guid.NewGuid())
     {
-        Id = Guid.NewGuid();
-    }
-
-    protected CommandBase(Guid id)
-    {
-        Id = id;
     }
 }
 
-public abstract class CommandBase<TResult> : ICommand<TResult>
+public abstract class CommandBase<TResult>(Guid id) : ICommand<TResult>
 {
-    public Guid Id { get; }
+    public Guid Id { get; } = id;
 
-    protected CommandBase()
+    protected CommandBase() : this(Guid.NewGuid())
     {
-        Id = Guid.NewGuid();
-    }
-
-    protected CommandBase(Guid id)
-    {
-        Id = id;
     }
 }

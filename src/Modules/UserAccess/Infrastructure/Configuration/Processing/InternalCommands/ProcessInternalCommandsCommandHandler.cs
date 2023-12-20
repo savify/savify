@@ -7,9 +7,9 @@ namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing.Interna
 
 internal class ProcessInternalCommandsCommandHandler(InternalCommandProcessor internalCommandProcessor) : ICommandHandler<ProcessInternalCommandsCommand>
 {
-    public async Task Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
+    public Task Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
     {
-        await internalCommandProcessor.Process(DatabaseConfiguration.Schema, ExecuteCommand, cancellationToken);
+        return internalCommandProcessor.Process(DatabaseConfiguration.Schema, ExecuteCommand, cancellationToken);
     }
 
     private async Task ExecuteCommand(InternalCommandDto internalCommand)

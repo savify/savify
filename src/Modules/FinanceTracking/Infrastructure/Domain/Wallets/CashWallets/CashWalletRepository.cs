@@ -6,23 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CashWallets;
 
-public class CashWalletRepository : ICashWalletRepository
+public class CashWalletRepository(FinanceTrackingContext financeTrackingContext) : ICashWalletRepository
 {
-    private readonly FinanceTrackingContext _financeTrackingContext;
-
-    public CashWalletRepository(FinanceTrackingContext financeTrackingContext)
-    {
-        _financeTrackingContext = financeTrackingContext;
-    }
-
     public async Task AddAsync(CashWallet wallet)
     {
-        await _financeTrackingContext.AddAsync(wallet);
+        await financeTrackingContext.AddAsync(wallet);
     }
 
     public async Task<CashWallet> GetByIdAsync(WalletId id)
     {
-        var wallet = await _financeTrackingContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id);
+        var wallet = await financeTrackingContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id);
 
         if (wallet == null)
         {
@@ -34,7 +27,7 @@ public class CashWalletRepository : ICashWalletRepository
 
     public async Task<CashWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId)
     {
-        var wallet = await _financeTrackingContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var wallet = await financeTrackingContext.CashWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (wallet == null)
         {

@@ -6,22 +6,15 @@ using Serilog;
 
 namespace App.Modules.Categories.Infrastructure.Configuration.Processing.Outbox;
 
-public class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand>
+public class ProcessOutboxCommandHandler(
+    OutboxCommandProcessor<CategoriesContext> outboxCommandProcessor,
+    ILoggerProvider loggerProvider)
+    : ICommandHandler<ProcessOutboxCommand>
 {
-    private readonly OutboxCommandProcessor<CategoriesContext> _outboxCommandProcessor;
-
-    private readonly ILogger _logger;
-
-    public ProcessOutboxCommandHandler(
-        OutboxCommandProcessor<CategoriesContext> outboxCommandProcessor,
-        ILoggerProvider loggerProvider)
-    {
-        _outboxCommandProcessor = outboxCommandProcessor;
-        _logger = loggerProvider.GetLogger();
-    }
+    private readonly ILogger _logger = loggerProvider.GetLogger();
 
     public async Task Handle(ProcessOutboxCommand command, CancellationToken cancellationToken)
     {
-        await _outboxCommandProcessor.Process(DatabaseConfiguration.Schema, _logger, cancellationToken);
+        await outboxCommandProcessor.Process(DatabaseConfiguration.Schema, _logger, cancellationToken);
     }
 }
