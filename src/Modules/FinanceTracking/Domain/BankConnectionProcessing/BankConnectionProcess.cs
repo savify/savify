@@ -25,13 +25,13 @@ public class BankConnectionProcess : Entity, IAggregateRoot
 
     private BankConnectionProcessStatus _status;
 
-    private string? _redirectUrl = null;
+    private string? _redirectUrl;
 
     private DateTime _initiatedAt;
 
-    private DateTime? _redirectUrlExpiresAt = null;
+    private DateTime? _redirectUrlExpiresAt;
 
-    private DateTime? _updatedAt = null;
+    private DateTime? _updatedAt;
 
     public static async Task<BankConnectionProcess> Initiate(UserId userId, BankId bankId, WalletId walletId, WalletType walletType, IBankConnectionProcessInitiationService initiationService)
     {

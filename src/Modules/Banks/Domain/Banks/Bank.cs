@@ -32,6 +32,7 @@ public class Bank : Entity, IAggregateRoot
 
     private string _defaultLogoUrl;
 
+    // ReSharper disable once NotAccessedField.Local
     private DateTime _createdAt;
 
     private DateTime? _updatedAt;
