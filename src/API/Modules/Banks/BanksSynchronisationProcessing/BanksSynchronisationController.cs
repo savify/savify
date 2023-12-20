@@ -10,24 +10,17 @@ namespace App.API.Modules.Banks.BanksSynchronisationProcessing;
 [Authorize]
 [ApiController]
 [Route("banks/sync")]
-public class BanksSynchronisationController : ControllerBase
+public class BanksSynchronisationController(
+    IBanksModule banksModule,
+    IExecutionContextAccessor executionContextAccessor)
+    : ControllerBase
 {
-    private readonly IBanksModule _banksModule;
-
-    private readonly IExecutionContextAccessor _executionContextAccessor;
-
-    public BanksSynchronisationController(IBanksModule banksModule, IExecutionContextAccessor executionContextAccessor)
-    {
-        _banksModule = banksModule;
-        _executionContextAccessor = executionContextAccessor;
-    }
-
     [HttpPost]
     [HasPermission(BanksPermissions.ManageBanks)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> SynchroniseBanks()
     {
-        var result = await _banksModule.ExecuteCommandAsync(new SynchroniseBanksCommand(_executionContextAccessor.UserId));
+        var result = await banksModule.ExecuteCommandAsync(new SynchroniseBanksCommand(executionContextAccessor.UserId));
 
         return Created("", new
         {

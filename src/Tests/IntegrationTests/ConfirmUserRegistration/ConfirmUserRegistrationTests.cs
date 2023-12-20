@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.UserNotificationSettings.GetUserNotificationSettings;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 using Dapper;
@@ -75,7 +76,7 @@ public class ConfirmUserRegistrationTests : TestBase
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
-        var sql = "SELECT confirmation_code FROM user_access.user_registrations u WHERE u.id = @userRegistrationId";
+        var sql = $"SELECT confirmation_code FROM {DatabaseConfiguration.Schema}.user_registrations u WHERE u.id = @userRegistrationId";
 
         return (await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { userRegistrationId }))!;
     }

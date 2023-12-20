@@ -125,10 +125,7 @@ public class Program
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         app.UseAuthentication();
         app.UseAuthorization();
-
-#pragma warning disable ASP0014
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-#pragma warning restore ASP0014
 
         app.Run();
     }

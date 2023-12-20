@@ -1,6 +1,6 @@
 namespace App.API.Modules.UserAccess;
 
-public class UserAccessPermissions
+public static class UserAccessPermissions
 {
-    public const string ManageUsers = "ManageUsers";
+    public const string ManageUsers = nameof(ManageUsers);
 }

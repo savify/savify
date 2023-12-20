@@ -4,18 +4,11 @@ using App.Modules.UserAccess.Domain.Users;
 
 namespace App.Modules.UserAccess.Application.Users.SetNewPassword;
 
-internal class SetNewPasswordCommandHandler : ICommandHandler<SetNewPasswordCommand>
+internal class SetNewPasswordCommandHandler(IUserRepository userRepository) : ICommandHandler<SetNewPasswordCommand>
 {
-    private readonly IUserRepository _userRepository;
-
-    public SetNewPasswordCommandHandler(IUserRepository userRepository)
-    {
-        _userRepository = userRepository;
-    }
-
     public async Task Handle(SetNewPasswordCommand command, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(new UserId(command.UserId));
+        var user = await userRepository.GetByIdAsync(new UserId(command.UserId));
         var password = PasswordHasher.HashPassword(command.Password);
 
         user.SetNewPassword(password);

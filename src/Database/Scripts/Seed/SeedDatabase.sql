@@ -16,8 +16,8 @@ INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ConnectBankAccountsToWallets');
 
 -- Users --
-INSERT INTO user_access.users (id, created_at, email, is_active, name, password, preferred_language, country) VALUES ('22b1ae1a-4c4c-4ba0-b88e-a61286728c44', '2023-05-29 10:28:30.773595 +00:00', 'admin@savify.io', true, 'Savify', '$2a$12$wOi7UGAVxWm.og3kwdc1meuOoNh.f9rtBkwpnPoQs2lSeV920mkKq', 'en', 'PL');
-INSERT INTO user_access.users (id, created_at, email, is_active, name, password, preferred_language, country) VALUES ('67c31122-7efe-4397-8348-9f3d1bf22a50', '2023-06-04 10:29:32.600990 +00:00', 'user@email.com', true, 'User', '$2a$12$e24KRd72mVs5Af36wRt4sOe/xiyJIJE.S2HPAbaKOuQHdtMxUpE46', 'en', 'PL');
+INSERT INTO user_access.users (id, created_at, email, is_active, name, password, preferred_language, country) VALUES ('22b1ae1a-4c4c-4ba0-b88e-a61286728c44', '2023-05-29 10:28:30.773595 +00:00', 'admin@savify.io', true, 'Savify', 'AAiunJOzFXPFnEP7TCA8b7WfX3b7vpUavMjWJRk3KDf2VAsa2sZHdU33UkkL7yGLrg==', 'en', 'PL');
+INSERT INTO user_access.users (id, created_at, email, is_active, name, password, preferred_language, country) VALUES ('67c31122-7efe-4397-8348-9f3d1bf22a50', '2023-06-04 10:29:32.600990 +00:00', 'user@email.com', true, 'User', 'AIYCEV3p1AHowVqoQvb2AVDuAhdeUBcMk/suDV3FT4JVMbCw6pzGnbdbw2D210dZnQ==', 'en', 'PL');
 
 -- Users Roles --
 INSERT INTO user_access.user_roles (role_code, user_id) VALUES ('Admin', '22b1ae1a-4c4c-4ba0-b88e-a61286728c44');

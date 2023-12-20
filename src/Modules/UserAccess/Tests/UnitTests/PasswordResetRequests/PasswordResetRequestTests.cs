@@ -4,7 +4,7 @@ using App.Modules.UserAccess.Domain.PasswordResetRequest.Events;
 using App.Modules.UserAccess.Domain.PasswordResetRequest.Rules;
 using App.Modules.UserAccess.Domain.Users;
 
-namespace App.Modules.UserAccess.UnitTests.Domain.PasswordResetRequests;
+namespace App.Modules.UserAccess.UnitTests.PasswordResetRequests;
 
 [TestFixture]
 public class PasswordResetRequestTests : UnitTestBase
