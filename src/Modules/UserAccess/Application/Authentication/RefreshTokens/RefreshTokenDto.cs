@@ -4,7 +4,7 @@ public class RefreshTokenDto
 {
     public Guid UserId { get; set; }
 
-    public string Value { get; set; }
+    public required string Value { get; set; }
 
     public DateTime ExpiresAt { get; set; }
 }

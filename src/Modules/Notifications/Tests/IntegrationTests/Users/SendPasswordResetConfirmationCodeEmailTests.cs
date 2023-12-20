@@ -41,7 +41,7 @@ public class SendPasswordResetConfirmationCodeEmailTests : TestBase
                     Guid.NewGuid(),
                     "test@email.com",
                     "ABC123"));
-            });
+            })!;
 
         Assert.That(exception.Message, Is.EqualTo(string.Format(
             "UserNotificationSettings for user with email '{0}' was not found",
