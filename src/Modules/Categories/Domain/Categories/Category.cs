@@ -28,6 +28,14 @@ public class Category : Entity, IAggregateRoot
         return Create(externalId, title, type, categoriesCounter, this.Id, iconUrl);
     }
 
+    public void Edit(string? newTitle, Url? newIconUrl)
+    {
+        _title = newTitle ?? _title;
+        _iconUrl = newIconUrl ?? _iconUrl;
+
+        AddDomainEvent(new CategoryEditedDomainEvent(Id, _title, _iconUrl));
+    }
+
     private Category(string externalId, string title, CategoryType type, ICategoriesCounter categoriesCounter, CategoryId? parentId = null, Url? iconUrl = null)
     {
         CheckRules(new ExternalIdMustBeUniqueRule(externalId, categoriesCounter));
