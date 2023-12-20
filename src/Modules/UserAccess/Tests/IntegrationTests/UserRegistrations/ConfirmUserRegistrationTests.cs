@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.GetUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
@@ -31,5 +32,14 @@ public class ConfirmUserRegistrationTests : TestBase
         Assert.That(userRegistration!.Status, Is.EqualTo(UserRegistrationStatus.Confirmed.Value));
         Assert.That(userRegistrationConfirmedNotification.DomainEvent.UserRegistrationId.Value, Is.EqualTo(userRegistrationId));
         Assert.That(userRegistrationConfirmedNotification.DomainEvent.Email, Is.EqualTo(UserRegistrationSampleData.Email));
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    public void ConfirmUserRegistrationCommand_WhenConfirmationCodeIsInvalid_ThrowsInvalidCommandException(string confirmationCode)
+    {
+        Assert.That(() => UserAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(
+            Guid.NewGuid(), confirmationCode)), Throws.TypeOf<InvalidCommandException>());
     }
 }

@@ -19,6 +19,7 @@
   "Please provide user ID": "Please provide user ID",
   "Please provide refresh token": "Please provide refresh token",
   "Please provide Your email address": "Please provide Your email address",
+  "Please provide Your role": "Please provide Your role",
   "Provided value is not a valid email address": "Provided value is not a valid email address",
   "Please provide Your password": "Please provide Your password",
   "Please provide Your name": "Please provide Your name",
@@ -33,5 +34,6 @@
   "Your password must contain at least one uppercase letter": "Your password must contain at least one uppercase letter",
   "Your password must contain at least one lowercase letter": "Your password must contain at least one lowercase letter",
   "Your password must contain at least one number": "Your password must contain at least one number",
-  "Your password must contain at least one special character (!? *.)": "Your password must contain at least one special character (!? *.)"
+  "Your password must contain at least one special character (!? *.)": "Your password must contain at least one special character (!? *.)",
+  "Provided role must be one of the following: 'Admin', 'User'": "Provided role must be one of the following: 'Admin', 'User'"
 }
