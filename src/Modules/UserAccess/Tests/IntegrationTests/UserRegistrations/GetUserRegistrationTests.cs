@@ -27,7 +27,7 @@ public class GetUserRegistrationTests : TestBase
 
         var userRegistration = await UserAccessModule.ExecuteQueryAsync(new GetUserRegistrationQuery(userRegistrationId));
 
-        Assert.That(userRegistration.Id, Is.EqualTo(userRegistrationId));
+        Assert.That(userRegistration!.Id, Is.EqualTo(userRegistrationId));
         Assert.That(userRegistration.Email, Is.EqualTo(UserRegistrationSampleData.Email));
         Assert.That(userRegistration.Name, Is.EqualTo(UserRegistrationSampleData.Name));
         Assert.That(userRegistration.Status, Is.EqualTo(UserRegistrationStatus.WaitingForConfirmation.Value));

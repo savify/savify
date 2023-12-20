@@ -31,7 +31,7 @@ public class SendPasswordResetConfirmationCodeEmailTests : TestBase
     }
 
     [Test]
-    public async Task SendUserRegistrationConfirmationEmailCommand_WhenNotificationSettingsNotExist_Fails()
+    public Task SendUserRegistrationConfirmationEmailCommand_WhenNotificationSettingsNotExist_Fails()
     {
         var exception = Assert.ThrowsAsync<NotFoundRepositoryException<Domain.UserNotificationSettings.UserNotificationSettings>>(
             async Task () =>
@@ -41,10 +41,12 @@ public class SendPasswordResetConfirmationCodeEmailTests : TestBase
                     Guid.NewGuid(),
                     "test@email.com",
                     "ABC123"));
-            });
+            })!;
 
         Assert.That(exception.Message, Is.EqualTo(string.Format(
             "UserNotificationSettings for user with email '{0}' was not found",
             new object[] { "test@email.com" })));
+
+        return Task.CompletedTask;
     }
 }

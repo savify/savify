@@ -1,20 +1,12 @@
 namespace App.Integrations.SaltEdge.Responses;
 
-public class ResponseError
+public class ResponseError(string @class, string message, string documentationUrl, Guid requestId)
 {
-    public string Class { get; }
+    public string Class { get; } = @class;
 
-    public string Message { get; }
+    public string Message { get; } = message;
 
-    public string DocumentationUrl { get; }
+    public string DocumentationUrl { get; } = documentationUrl;
 
-    public Guid RequestId { get; }
-
-    public ResponseError(string @class, string message, string documentationUrl, Guid requestId)
-    {
-        Class = @class;
-        Message = message;
-        DocumentationUrl = documentationUrl;
-        RequestId = requestId;
-    }
+    public Guid RequestId { get; } = requestId;
 }

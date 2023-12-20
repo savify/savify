@@ -6,22 +6,15 @@ using Serilog;
 
 namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing.Inbox;
 
-public class ProcessInboxCommandHandler : ICommandHandler<ProcessInboxCommand>
+public class ProcessInboxCommandHandler(
+    InboxCommandProcessor inboxCommandProcessor,
+    ILoggerProvider loggerProvider)
+    : ICommandHandler<ProcessInboxCommand>
 {
-    private readonly InboxCommandProcessor _inboxCommandProcessor;
-
-    private readonly ILogger _logger;
-
-    public ProcessInboxCommandHandler(
-        InboxCommandProcessor inboxCommandProcessor,
-        ILoggerProvider loggerProvider)
-    {
-        _inboxCommandProcessor = inboxCommandProcessor;
-        _logger = loggerProvider.GetLogger();
-    }
+    private readonly ILogger _logger = loggerProvider.GetLogger();
 
     public async Task Handle(ProcessInboxCommand command, CancellationToken cancellationToken)
     {
-        await _inboxCommandProcessor.Process(DatabaseConfiguration.Schema, _logger, cancellationToken);
+        await inboxCommandProcessor.Process(DatabaseConfiguration.Schema, _logger, cancellationToken);
     }
 }

@@ -6,18 +6,12 @@ using Dapper;
 
 namespace App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
 
-internal class GetCreditWalletQueryHandler : IQueryHandler<GetCreditWalletQuery, CreditWalletDto?>
+internal class GetCreditWalletQueryHandler(ISqlConnectionFactory connectionFactory)
+    : IQueryHandler<GetCreditWalletQuery, CreditWalletDto?>
 {
-    private readonly ISqlConnectionFactory _connectionFactory;
-
-    public GetCreditWalletQueryHandler(ISqlConnectionFactory connectionFactory)
-    {
-        _connectionFactory = connectionFactory;
-    }
-
     public async Task<CreditWalletDto?> Handle(GetCreditWalletQuery query, CancellationToken cancellationToken)
     {
-        using var connection = _connectionFactory.CreateNewConnection();
+        using var connection = connectionFactory.CreateNewConnection();
 
         var sql = $"""
                             SELECT c.id, c.user_id as userId, c.title, c.available_balance AS availableBalance,
@@ -37,6 +31,6 @@ internal class GetCreditWalletQueryHandler : IQueryHandler<GetCreditWalletQuery,
         new { query.WalletId },
         splitOn: "walletId");
 
-        return creditWallets.SingleOrDefault(); ;
+        return creditWallets.SingleOrDefault();
     }
 }

@@ -3,20 +3,15 @@ using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.Application.Users.SendPasswordResetConfirmationCodeEmail;
 
-public class SendPasswordResetConfirmationCodeEmailCommand : InternalCommandBase
+[method: JsonConstructor]
+public class SendPasswordResetConfirmationCodeEmailCommand(
+    Guid id,
+    Guid correlationId,
+    string email,
+    string confirmationCode)
+    : InternalCommandBase(id, correlationId)
 {
-    [JsonConstructor]
-    public SendPasswordResetConfirmationCodeEmailCommand(
-        Guid id,
-        Guid correlationId,
-        string email,
-        string confirmationCode) : base(id, correlationId)
-    {
-        Email = email;
-        ConfirmationCode = confirmationCode;
-    }
+    internal string Email { get; } = email;
 
-    internal string Email { get; }
-
-    internal string ConfirmationCode { get; }
+    internal string ConfirmationCode { get; } = confirmationCode;
 }

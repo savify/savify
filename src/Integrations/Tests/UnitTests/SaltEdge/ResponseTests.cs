@@ -22,7 +22,7 @@ public class ResponseTests
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         Assert.That(response.IsSuccessful, Is.True);
 
-        var content = response.Content.As<ContentDto>();
+        var content = response.Content!.As<ContentDto>()!;
         Assert.That(content, Is.Not.Null);
         Assert.That(content.Foo, Is.EqualTo("bar"));
         Assert.That(content.Abc, Is.EqualTo(123));
@@ -45,7 +45,7 @@ public class ResponseTests
         httpResponseMessage.Content = new StringContent(JsonSerializer.Serialize(expectedResponse));
 
         var response = await Response.From(httpResponseMessage);
-        var error = response.Error;
+        var error = response.Error!;
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         Assert.That(response.IsSuccessful, Is.False);
@@ -58,16 +58,10 @@ public class ResponseTests
 
     }
 
-    private class ContentDto
+    private class ContentDto(string foo, int abc)
     {
-        public string Foo { get; }
+        public string Foo { get; } = foo;
 
-        public int Abc { get; }
-
-        public ContentDto(string foo, int abc)
-        {
-            Foo = foo;
-            Abc = abc;
-        }
+        public int Abc { get; } = abc;
     }
 }

@@ -28,8 +28,8 @@ public static class OutboxMessagesAccessor
 
     public static T Deserialize<T>(OutboxMessageDto message, Assembly notificationsAssembly) where T : class, INotification
     {
-        Type type = notificationsAssembly.GetType(typeof(T).FullName);
+        var type = notificationsAssembly.GetType(typeof(T).FullName!)!;
 
-        return JsonConvert.DeserializeObject(message.Data, type) as T;
+        return (JsonConvert.DeserializeObject(message.Data, type) as T)!;
     }
 }

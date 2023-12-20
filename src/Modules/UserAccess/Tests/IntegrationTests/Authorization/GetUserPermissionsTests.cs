@@ -25,7 +25,7 @@ public class GetUserPermissionsTests : TestBase
         var permissions = await UserAccessModule.ExecuteQueryAsync(new GetUserPermissionsQuery(userId));
 
         Assert.That(permissions.Count, Is.EqualTo(1));
-        Assert.That(permissions.SingleOrDefault(p => p.Code == "SomePermission").Code, Is.Not.Null);
+        Assert.That(permissions.SingleOrDefault(p => p.Code == "SomePermission")!.Code, Is.Not.Null);
     }
 
     private async Task PreparePermissions()

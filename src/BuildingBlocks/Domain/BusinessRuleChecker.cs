@@ -4,7 +4,7 @@ public static class BusinessRuleChecker
 {
     public static void CheckRules(params IBusinessRule[] rules)
     {
-        foreach (IBusinessRule rule in rules)
+        foreach (var rule in rules)
         {
             CheckRule(rule);
         }

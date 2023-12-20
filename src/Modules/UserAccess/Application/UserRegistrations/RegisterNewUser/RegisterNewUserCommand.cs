@@ -1,30 +1,26 @@
 using App.Modules.UserAccess.Application.Contracts;
-using App.Modules.UserAccess.Domain.Users;
 using Destructurama.Attributed;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 
-public class RegisterNewUserCommand : CommandBase<Guid>
+public class RegisterNewUserCommand(
+    string email,
+    string password,
+    string name,
+    string country,
+    string preferredLanguage)
+    : CommandBase<Guid>
 {
     [LogMasked]
-    public string Email { get; }
+    public string Email { get; } = email;
 
     [LogMasked]
-    public string Password { get; }
+    public string Password { get; } = password;
 
     [LogMasked]
-    public string Name { get; }
+    public string Name { get; } = name;
 
-    public string Country { get; }
+    public string Country { get; } = country;
 
-    public string PreferredLanguage { get; }
-
-    public RegisterNewUserCommand(string email, string password, string name, string country, string preferredLanguage)
-    {
-        Email = email;
-        Password = password;
-        Name = name;
-        Country = country;
-        PreferredLanguage = preferredLanguage;
-    }
+    public string PreferredLanguage { get; } = preferredLanguage;
 }

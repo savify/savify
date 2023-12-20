@@ -4,18 +4,11 @@ using App.Modules.UserAccess.Domain.Users;
 
 namespace App.Modules.UserAccess.Application.Users.CreateNewUser;
 
-internal class CreateNewUserCommandHandler : ICommandHandler<CreateNewUserCommand, Guid>
+internal class CreateNewUserCommandHandler(
+    IUserRepository userRepository,
+    IUsersCounter usersCounter)
+    : ICommandHandler<CreateNewUserCommand, Guid>
 {
-    private readonly IUserRepository _userRepository;
-
-    private readonly IUsersCounter _usersCounter;
-
-    public CreateNewUserCommandHandler(IUserRepository userRepository, IUsersCounter usersCounter)
-    {
-        _userRepository = userRepository;
-        _usersCounter = usersCounter;
-    }
-
     public async Task<Guid> Handle(CreateNewUserCommand command, CancellationToken cancellationToken)
     {
         var password = PasswordHasher.HashPassword(command.Password);
@@ -26,9 +19,9 @@ internal class CreateNewUserCommandHandler : ICommandHandler<CreateNewUserComman
             command.Name,
             UserRole.From(command.Role),
             Country.From(command.Country),
-            _usersCounter);
+            usersCounter);
 
-        await _userRepository.AddAsync(user);
+        await userRepository.AddAsync(user);
 
         return user.Id.Value;
     }

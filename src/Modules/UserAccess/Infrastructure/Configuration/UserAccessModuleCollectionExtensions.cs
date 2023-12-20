@@ -25,8 +25,8 @@ public static class UserAccessModuleCollectionExtensions
         var authenticationConfiguration = configuration.GetSection("Authentication").Get<AuthenticationConfiguration>();
 
         services
-            .AddAuthenticationServices(authenticationConfiguration)
-            .AddDataAccessServices<UserAccessContext>(connectionString)
+            .AddAuthenticationServices(authenticationConfiguration!)
+            .AddDataAccessServices<UserAccessContext>(connectionString!)
             .AddDomainServices()
             .AddLocalizationServices()
             .AddLoggingServices()

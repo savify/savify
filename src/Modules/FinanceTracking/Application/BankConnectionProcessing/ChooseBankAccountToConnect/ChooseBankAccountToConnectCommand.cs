@@ -2,18 +2,11 @@ using App.Modules.FinanceTracking.Application.Contracts;
 
 namespace App.Modules.FinanceTracking.Application.BankConnectionProcessing.ChooseBankAccountToConnect;
 
-public class ChooseBankAccountToConnectCommand : CommandBase
+public class ChooseBankAccountToConnectCommand(Guid bankConnectionProcessId, Guid userId, Guid bankAccountId) : CommandBase
 {
-    public Guid BankConnectionProcessId { get; }
+    public Guid BankConnectionProcessId { get; } = bankConnectionProcessId;
 
-    public Guid UserId { get; }
+    public Guid UserId { get; } = userId;
 
-    public Guid BankAccountId { get; }
-
-    public ChooseBankAccountToConnectCommand(Guid bankConnectionProcessId, Guid userId, Guid bankAccountId)
-    {
-        BankConnectionProcessId = bankConnectionProcessId;
-        UserId = userId;
-        BankAccountId = bankAccountId;
-    }
+    public Guid BankAccountId { get; } = bankAccountId;
 }

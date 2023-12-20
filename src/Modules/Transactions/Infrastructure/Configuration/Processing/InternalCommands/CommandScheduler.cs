@@ -6,19 +6,12 @@ using Newtonsoft.Json;
 
 namespace App.Modules.Transactions.Infrastructure.Configuration.Processing.InternalCommands;
 
-public class CommandScheduler : ICommandScheduler
+public class CommandScheduler(TransactionsContext transactionsContext) : ICommandScheduler
 {
-    private readonly TransactionsContext _transactionsContext;
-
-    public CommandScheduler(TransactionsContext transactionsContext)
-    {
-        _transactionsContext = transactionsContext;
-    }
-
     public async Task EnqueueAsync<T>(ICommand<T> command)
     {
-        await _transactionsContext.AddAsync(CreateInternalCommandFrom(command));
-        await _transactionsContext.SaveChangesAsync();
+        await transactionsContext.AddAsync(CreateInternalCommandFrom(command));
+        await transactionsContext.SaveChangesAsync();
     }
 
     private InternalCommand CreateInternalCommandFrom<T>(ICommand<T> command)
@@ -26,7 +19,7 @@ public class CommandScheduler : ICommandScheduler
         var internalCommand = new InternalCommand();
 
         internalCommand.Id = command.Id;
-        internalCommand.Type = command.GetType().FullName;
+        internalCommand.Type = command.GetType().FullName!;
         internalCommand.Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings
         {
             ContractResolver = new AllPropertiesContractResolver()

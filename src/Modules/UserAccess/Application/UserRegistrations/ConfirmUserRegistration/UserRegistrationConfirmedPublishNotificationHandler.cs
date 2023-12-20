@@ -4,18 +4,12 @@ using MediatR;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 
-public class UserRegistrationConfirmedPublishNotificationHandler : INotificationHandler<UserRegistrationConfirmedNotification>
+public class UserRegistrationConfirmedPublishNotificationHandler(IEventBus eventBus)
+    : INotificationHandler<UserRegistrationConfirmedNotification>
 {
-    private readonly IEventBus _eventBus;
-
-    public UserRegistrationConfirmedPublishNotificationHandler(IEventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(UserRegistrationConfirmedNotification notification, CancellationToken cancellationToken)
     {
-        await _eventBus.Publish(new UserRegistrationConfirmedIntegrationEvent(
+        await eventBus.Publish(new UserRegistrationConfirmedIntegrationEvent(
             notification.Id,
             notification.CorrelationId,
             notification.DomainEvent.OccurredOn,

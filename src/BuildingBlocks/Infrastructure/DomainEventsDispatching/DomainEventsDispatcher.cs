@@ -9,40 +9,23 @@ using Newtonsoft.Json;
 
 namespace App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 
-public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext> where TContext : DbContext
+public class DomainEventsDispatcher<TContext>(
+    IMediator mediator,
+    IExecutionContextAccessor executionContextAccessor,
+    IOutbox<TContext> outbox,
+    IDomainEventsAccessor<TContext> domainEventsAccessor,
+    IDomainNotificationsMapper<TContext> domainNotificationsMapper)
+    : IDomainEventsDispatcher<TContext>
+    where TContext : DbContext
 {
-    private readonly IMediator _mediator;
-
-    private readonly IExecutionContextAccessor _executionContextAccessor;
-
-    private readonly IOutbox<TContext> _outbox;
-
-    private readonly IDomainEventsAccessor<TContext> _domainEventsAccessor;
-
-    private readonly IDomainNotificationsMapper<TContext> _domainNotificationsMapper;
-
-    public DomainEventsDispatcher(
-        IMediator mediator,
-        IExecutionContextAccessor executionContextAccessor,
-        IOutbox<TContext> outbox,
-        IDomainEventsAccessor<TContext> domainEventsAccessor,
-        IDomainNotificationsMapper<TContext> domainNotificationsMapper)
-    {
-        _mediator = mediator;
-        _executionContextAccessor = executionContextAccessor;
-        _outbox = outbox;
-        _domainEventsAccessor = domainEventsAccessor;
-        _domainNotificationsMapper = domainNotificationsMapper;
-    }
-
     public async Task DispatchEventsAsync()
     {
-        var domainEvents = _domainEventsAccessor.GetAllDomainEvents();
+        var domainEvents = domainEventsAccessor.GetAllDomainEvents();
 
         var domainEventNotifications = new List<IDomainEventNotification<IDomainEvent>>();
         foreach (var domainEvent in domainEvents)
         {
-            Type? domainNotificationType = _domainNotificationsMapper.GetType(domainEvent.GetType().Name);
+            var domainNotificationType = domainNotificationsMapper.GetType(domainEvent.GetType().Name);
             object? domainNotification = null;
 
             if (domainNotificationType != null)
@@ -50,7 +33,7 @@ public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext
                 domainNotification = Activator.CreateInstance(
                     domainNotificationType,
                     domainEvent.Id,
-                    _executionContextAccessor.CorrelationId,
+                    executionContextAccessor.CorrelationId,
                     domainEvent);
             }
 
@@ -60,11 +43,11 @@ public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext
             }
         }
 
-        _domainEventsAccessor.ClearAllDomainEvents();
+        domainEventsAccessor.ClearAllDomainEvents();
 
         foreach (var domainEvent in domainEvents)
         {
-            await _mediator.Publish(domainEvent).ContinueWith(async _ =>
+            await mediator.Publish(domainEvent).ContinueWith(async _ =>
             {
                 await this.DispatchEventsAsync();
             });
@@ -72,7 +55,7 @@ public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext
 
         foreach (var domainEventNotification in domainEventNotifications)
         {
-            var type = _domainNotificationsMapper.GetName(domainEventNotification.GetType());
+            var type = domainNotificationsMapper.GetName(domainEventNotification.GetType());
             var data = JsonConvert.SerializeObject(domainEventNotification, new JsonSerializerSettings
             {
                 ContractResolver = new AllPropertiesContractResolver()
@@ -84,7 +67,7 @@ public class DomainEventsDispatcher<TContext> : IDomainEventsDispatcher<TContext
                 type!,
                 data);
 
-            _outbox.Add(outboxMessage);
+            outbox.Add(outboxMessage);
         }
     }
 }

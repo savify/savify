@@ -33,9 +33,11 @@ public class BankConnectionProcessConnectionCreationServiceTests : UnitTestBase
             "123456",
             "123456",
             "active");
-        var consent = new SaltEdgeConsent();
-        consent.Id = "123456";
-        consent.ExpiresAt = null;
+        var consent = new SaltEdgeConsent
+        {
+            Id = "123456",
+            ExpiresAt = null
+        };
 
         var saltEdgeAccounts = new List<SaltEdgeAccount>
         {

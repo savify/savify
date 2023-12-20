@@ -20,6 +20,7 @@ public static class ClearDatabaseCommandProvider
     {
         var executingAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var commandPath = Path.Combine(executingAssemblyLocation, $"Clear", "ClearDatabase.sql");
+
         return File.ReadAllTextAsync(commandPath);
     }
 }

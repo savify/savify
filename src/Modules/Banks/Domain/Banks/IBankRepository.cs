@@ -8,5 +8,5 @@ public interface IBankRepository
 
     public Task<Bank?> GetByExternalIdAsync(string externalId);
 
-    public Task<IEnumerable<Bank>> GetAllAsync();
+    public Task<List<Bank>> GetAllAsync();
 }

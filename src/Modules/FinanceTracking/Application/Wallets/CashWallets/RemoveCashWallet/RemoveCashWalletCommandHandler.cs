@@ -5,18 +5,12 @@ using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 
 namespace App.Modules.FinanceTracking.Application.Wallets.CashWallets.RemoveCashWallet;
 
-internal class RemoveCashWalletCommandHandler : ICommandHandler<RemoveCashWalletCommand>
+internal class RemoveCashWalletCommandHandler(ICashWalletRepository cashWalletRepository)
+    : ICommandHandler<RemoveCashWalletCommand>
 {
-    private readonly ICashWalletRepository _cashWalletRepository;
-
-    public RemoveCashWalletCommandHandler(ICashWalletRepository cashWalletRepository)
-    {
-        _cashWalletRepository = cashWalletRepository;
-    }
-
     public async Task Handle(RemoveCashWalletCommand command, CancellationToken cancellationToken)
     {
-        var wallet = await _cashWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
+        var wallet = await cashWalletRepository.GetByIdAndUserIdAsync(new WalletId(command.WalletId), new UserId(command.UserId));
 
         wallet.Remove();
     }

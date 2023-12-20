@@ -19,7 +19,7 @@ public static class TransactionsModuleCollectionExtensions
         ILogger logger)
     {
         var moduleLogger = logger.ForContext("Module", "Transactions");
-        var connectionString = configuration.GetConnectionString("Savify");
+        var connectionString = configuration.GetConnectionString("Savify")!;
         var domainNotificationMap = DomainNotificationsMap.Build();
 
         services

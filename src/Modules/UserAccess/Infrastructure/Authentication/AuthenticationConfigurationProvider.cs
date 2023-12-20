@@ -1,16 +1,9 @@
 namespace App.Modules.UserAccess.Infrastructure.Authentication;
 
-public class AuthenticationConfigurationProvider : IAuthenticationConfigurationProvider
+public class AuthenticationConfigurationProvider(AuthenticationConfiguration configuration) : IAuthenticationConfigurationProvider
 {
-    private readonly AuthenticationConfiguration _configuration;
-
-    public AuthenticationConfigurationProvider(AuthenticationConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     public AuthenticationConfiguration GetConfiguration()
     {
-        return _configuration;
+        return configuration;
     }
 }

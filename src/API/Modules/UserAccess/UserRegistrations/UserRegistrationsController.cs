@@ -14,21 +14,14 @@ namespace App.API.Modules.UserAccess.UserRegistrations;
 
 [Route("user-access/user-registrations")]
 [ApiController]
-public class UserRegistrationsController : ControllerBase
+public class UserRegistrationsController(IUserAccessModule userAccessModule) : ControllerBase
 {
-    private readonly IUserAccessModule _userAccessModule;
-
-    public UserRegistrationsController(IUserAccessModule userAccessModule)
-    {
-        _userAccessModule = userAccessModule;
-    }
-
     [AllowAnonymous]
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> RegisterNewUser(RegisterNewUserRequest request)
     {
-        var userRegistrationId = await _userAccessModule.ExecuteCommandAsync(new RegisterNewUserCommand(
+        var userRegistrationId = await userAccessModule.ExecuteCommandAsync(new RegisterNewUserCommand(
             request.Email,
             request.Password,
             request.Name,
@@ -47,7 +40,7 @@ public class UserRegistrationsController : ControllerBase
     public async Task<IActionResult> GetUserRegistration(Guid userRegistrationId)
     {
         var userRegistration =
-            await _userAccessModule.ExecuteQueryAsync(new GetUserRegistrationQuery(userRegistrationId));
+            await userAccessModule.ExecuteQueryAsync(new GetUserRegistrationQuery(userRegistrationId));
 
         return Ok(userRegistration);
     }
@@ -57,11 +50,11 @@ public class UserRegistrationsController : ControllerBase
     [ProducesResponseType(typeof(TokensResult), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> ConfirmUserRegistration(Guid userRegistrationId, ConfirmUserRegistrationRequest request)
     {
-        await _userAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(
+        await userAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(
             userRegistrationId,
             request.ConfirmationCode));
 
-        var tokens = await _userAccessModule.ExecuteCommandAsync(new AuthenticateUserByUserIdCommand(userRegistrationId));
+        var tokens = await userAccessModule.ExecuteCommandAsync(new AuthenticateUserByUserIdCommand(userRegistrationId));
 
         return Accepted(tokens);
     }
@@ -71,7 +64,7 @@ public class UserRegistrationsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> RenewUserRegistration(Guid userRegistrationId)
     {
-        await _userAccessModule.ExecuteCommandAsync(new RenewUserRegistrationCommand(userRegistrationId));
+        await userAccessModule.ExecuteCommandAsync(new RenewUserRegistrationCommand(userRegistrationId));
 
         return Accepted();
     }

@@ -7,27 +7,20 @@ using Newtonsoft.Json;
 
 namespace App.BuildingBlocks.Infrastructure.Configuration.EventBus;
 
-public class IntegrationEventGenericHandler<TEvent> : IIntegrationEventHandler<TEvent> where TEvent : IntegrationEvent
+public class IntegrationEventGenericHandler<TEvent>(DatabaseSchema schema) : IIntegrationEventHandler<TEvent> where TEvent : IntegrationEvent
 {
-    private readonly DatabaseSchema _schema;
-
-    public IntegrationEventGenericHandler(DatabaseSchema schema)
-    {
-        _schema = schema;
-    }
-
     public async Task Handle(TEvent @event)
     {
         using var scope = CompositionRoot.BeginScope();
         using var connection = scope.ServiceProvider.GetRequiredService<ISqlConnectionFactory>().GetOpenConnection();
 
-        string type = @event.GetType().FullName;
+        var type = @event.GetType().FullName;
         var data = JsonConvert.SerializeObject(@event, new JsonSerializerSettings
         {
             ContractResolver = new AllPropertiesContractResolver()
         });
 
-        var sql = $"INSERT INTO {_schema.Name}.inbox_messages (id, occurred_on, type, data) " +
+        var sql = $"INSERT INTO {schema.Name}.inbox_messages (id, occurred_on, type, data) " +
                   "VALUES (@Id, @OccurredOn, @Type, @Data)";
 
         await connection.ExecuteScalarAsync(sql, new

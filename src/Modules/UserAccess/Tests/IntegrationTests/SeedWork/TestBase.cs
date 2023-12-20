@@ -23,7 +23,7 @@ public class TestBase
 
     protected string ConnectionString { get; private set; }
 
-    private static Assembly _applicationAssembly = Assembly.GetAssembly(typeof(CommandBase));
+    private static readonly Assembly ApplicationAssembly = Assembly.GetAssembly(typeof(CommandBase))!;
 
     [OneTimeSetUp]
     public async Task Init()
@@ -57,7 +57,7 @@ public class TestBase
     protected async Task<List<OutboxMessageDto>> GetOutboxMessages()
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
-        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, _applicationAssembly);
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, ApplicationAssembly);
 
         return messages;
     }
@@ -65,9 +65,9 @@ public class TestBase
     protected async Task<T> GetLastOutboxMessage<T>() where T : class, INotification
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
-        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, _applicationAssembly);
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, ApplicationAssembly);
 
-        return OutboxMessagesAccessor.Deserialize<T>(messages.Last(), _applicationAssembly);
+        return OutboxMessagesAccessor.Deserialize<T>(messages.Last(), ApplicationAssembly);
     }
 
     private static async Task ClearDatabase(IDbConnection connection)

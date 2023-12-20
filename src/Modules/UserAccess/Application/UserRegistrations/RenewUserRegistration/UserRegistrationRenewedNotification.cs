@@ -4,10 +4,9 @@ using Newtonsoft.Json;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.RenewUserRegistration;
 
-public class UserRegistrationRenewedNotification : DomainEventNotificationBase<UserRegistrationRenewedDomainEvent>
-{
-    [JsonConstructor]
-    public UserRegistrationRenewedNotification(Guid id, Guid correlationId, UserRegistrationRenewedDomainEvent domainEvent) : base(id, correlationId, domainEvent)
-    {
-    }
-}
+[method: JsonConstructor]
+public class UserRegistrationRenewedNotification(
+    Guid id,
+    Guid correlationId,
+    UserRegistrationRenewedDomainEvent domainEvent)
+    : DomainEventNotificationBase<UserRegistrationRenewedDomainEvent>(id, correlationId, domainEvent);

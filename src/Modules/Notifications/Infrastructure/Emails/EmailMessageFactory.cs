@@ -6,17 +6,9 @@ using Microsoft.Extensions.Localization;
 
 namespace App.Modules.Notifications.Infrastructure.Emails;
 
-public class EmailMessageFactory : IEmailMessageFactory
+public class EmailMessageFactory(IEmailTemplateGenerator emailTemplateGenerator, ILocalizerProvider localizerProvider) : IEmailMessageFactory
 {
-    private readonly IEmailTemplateGenerator _emailTemplateGenerator;
-
-    private readonly IStringLocalizer _localizer;
-
-    public EmailMessageFactory(IEmailTemplateGenerator emailTemplateGenerator, ILocalizerProvider localizerProvider)
-    {
-        _emailTemplateGenerator = emailTemplateGenerator;
-        _localizer = localizerProvider.GetLocalizer();
-    }
+    private readonly IStringLocalizer _localizer = localizerProvider.GetLocalizer();
 
     public EmailMessage CreateLocalizedEmailMessage<T>(string receiverEmail, string subject, T templateModel, string culture) where T : IEmailTemplateModel
     {
@@ -28,6 +20,6 @@ public class EmailMessageFactory : IEmailMessageFactory
         return new EmailMessage(
             receiverEmail,
             $"Savify - {templateModel.Localizer[subject]}",
-            _emailTemplateGenerator.GenerateEmailTemplate(templateModel));
+            emailTemplateGenerator.GenerateEmailTemplate(templateModel));
     }
 }

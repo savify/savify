@@ -1,29 +1,25 @@
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Connections;
 
-public class SaltEdgeConnection
+public class SaltEdgeConnection(
+    string id,
+    Guid internalConnectionId,
+    string providerCode,
+    string countryCode,
+    string lastConsentId,
+    string customerId,
+    string status)
 {
-    public string Id { get; }
+    public string Id { get; } = id;
 
-    public Guid InternalConnectionId { get; set; }
+    public Guid InternalConnectionId { get; set; } = internalConnectionId;
 
-    public string ProviderCode { get; }
+    public string ProviderCode { get; } = providerCode;
 
-    public string CountryCode { get; }
+    public string CountryCode { get; } = countryCode;
 
-    public string LastConsentId { get; }
+    public string LastConsentId { get; } = lastConsentId;
 
-    public string CustomerId { get; }
+    public string CustomerId { get; } = customerId;
 
-    public string Status { get; }
-
-    public SaltEdgeConnection(string id, Guid internalConnectionId, string providerCode, string countryCode, string lastConsentId, string customerId, string status)
-    {
-        Id = id;
-        InternalConnectionId = internalConnectionId;
-        ProviderCode = providerCode;
-        CountryCode = countryCode;
-        LastConsentId = lastConsentId;
-        CustomerId = customerId;
-        Status = status;
-    }
+    public string Status { get; } = status;
 }

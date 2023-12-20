@@ -7,17 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Notifications.Infrastructure;
 
-public class NotificationsContext : DbContext
+public class NotificationsContext(DbContextOptions<NotificationsContext> options) : DbContext(options)
 {
-    public DbSet<UserNotificationSettings>? UserNotificationSettings { get; set; }
+    public required DbSet<UserNotificationSettings> UserNotificationSettings { get; set; }
 
-    public DbSet<InboxMessage>? InboxMessages { get; set; }
+    public required DbSet<InboxMessage> InboxMessages { get; set; }
 
-    public DbSet<InternalCommand>? InternalCommands { get; set; }
-
-    public NotificationsContext(DbContextOptions<NotificationsContext> options) : base(options)
-    {
-    }
+    public required DbSet<InternalCommand> InternalCommands { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

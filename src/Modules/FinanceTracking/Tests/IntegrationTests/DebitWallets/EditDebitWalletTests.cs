@@ -33,7 +33,7 @@ public class EditDebitWalletTests : TestBase
 
         var editedWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(walletId));
 
-        Assert.That(editedWallet.UserId, Is.EqualTo(userId));
+        Assert.That(editedWallet!.UserId, Is.EqualTo(userId));
         Assert.That(editedWallet.Title, Is.EqualTo("New title"));
         Assert.That(editedWallet.Balance, Is.EqualTo(2000));
         Assert.That(editedWallet.Currency, Is.EqualTo("USD"));

@@ -3,22 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.BuildingBlocks.Infrastructure;
 
-public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
+public class UnitOfWork<TContext>(TContext context, IDomainEventsDispatcher<TContext> domainEventsDispatcher)
+    : IUnitOfWork<TContext>
+    where TContext : DbContext
 {
-    private readonly TContext _context;
-
-    private readonly IDomainEventsDispatcher<TContext> _domainEventsDispatcher;
-
-    public UnitOfWork(TContext context, IDomainEventsDispatcher<TContext> domainEventsDispatcher)
-    {
-        _context = context;
-        _domainEventsDispatcher = domainEventsDispatcher;
-    }
-
     public async Task<int> CommitAsync(CancellationToken cancellationToken = default, Guid? internalCommandId = null)
     {
-        await _domainEventsDispatcher.DispatchEventsAsync();
+        await domainEventsDispatcher.DispatchEventsAsync();
 
-        return await _context.SaveChangesAsync(cancellationToken);
+        return await context.SaveChangesAsync(cancellationToken);
     }
 }

@@ -2,11 +2,11 @@ namespace App.Modules.Notifications.Application.UserNotificationSettings.GetUser
 
 public class UserNotificationSettingsDto
 {
-    public Guid UserId { get; }
+    public required Guid UserId { get; set; }
 
-    public string Email { get; }
+    public required string Email { get; set; }
 
-    public string Name { get; }
+    public required string Name { get; set; }
 
-    public string PreferredLanguage { get; }
+    public required string PreferredLanguage { get; set; }
 }

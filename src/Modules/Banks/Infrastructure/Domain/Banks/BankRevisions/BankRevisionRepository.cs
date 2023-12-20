@@ -4,23 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Banks.Infrastructure.Domain.Banks.BankRevisions;
 
-public class BankRevisionRepository : IBankRevisionRepository
+public class BankRevisionRepository(BanksContext banksContext) : IBankRevisionRepository
 {
-    private readonly BanksContext _banksContext;
-
-    public BankRevisionRepository(BanksContext banksContext)
-    {
-        _banksContext = banksContext;
-    }
-
     public async Task AddAsync(BankRevision bankRevision)
     {
-        await _banksContext.AddAsync(bankRevision);
+        await banksContext.AddAsync(bankRevision);
     }
 
     public async Task<BankRevision> GetByIdAsync(BankRevisionId id)
     {
-        var bankRevision = await _banksContext.BankRevisions.SingleOrDefaultAsync(b => b.Id == id);
+        var bankRevision = await banksContext.BankRevisions.SingleOrDefaultAsync(b => b.Id == id);
 
         if (bankRevision is null)
         {

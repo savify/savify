@@ -9,21 +9,11 @@ using Serilog.Context;
 
 namespace App.BuildingBlocks.Infrastructure.Configuration.Inbox;
 
-public class InboxCommandProcessor
+public class InboxCommandProcessor(IMediator mediator, ISqlConnectionFactory sqlConnectionFactory)
 {
-    private readonly IMediator _mediator;
-
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public InboxCommandProcessor(IMediator mediator, ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _mediator = mediator;
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public async Task Process(DatabaseSchema schema, ILogger logger, CancellationToken cancellationToken)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                     SELECT
@@ -47,18 +37,18 @@ public class InboxCommandProcessor
         foreach (var message in messagesList)
         {
             var messageAssembly = AppDomain.CurrentDomain.GetAssemblies()
-                .SingleOrDefault(assembly => message.Type.Contains(assembly.GetName().Name));
+                .SingleOrDefault(assembly => message.Type.Contains(assembly.GetName().Name!))!;
 
-            Type type = messageAssembly.GetType(message.Type);
+            var type = messageAssembly.GetType(message.Type)!;
             var request = JsonConvert.DeserializeObject(message.Data, type);
 
-            using (LogContext.Push(new CorrelationIdLogEnricher(((IntegrationEvent)request).CorrelationId)))
+            using (LogContext.Push(new CorrelationIdLogEnricher(((IntegrationEvent)request!).CorrelationId)))
             {
                 logger.Information("Start processing inbox message of type {Type}", type);
 
                 try
                 {
-                    await _mediator.Publish((INotification)request, cancellationToken);
+                    await mediator.Publish((INotification)request, cancellationToken);
                 }
                 catch (Exception exception)
                 {

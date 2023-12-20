@@ -9,31 +9,18 @@ using Microsoft.Extensions.Localization;
 
 namespace App.Modules.UserAccess.Application.Authentication.AuthenticateUser;
 
-internal class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUserCommand, TokensResult>
+internal class AuthenticateUserCommandHandler(
+    ISqlConnectionFactory sqlConnectionFactory,
+    IAuthenticationTokenGenerator tokenGenerator,
+    IRefreshTokenRepository refreshTokenRepository,
+    ILocalizerProvider localizerProvider)
+    : ICommandHandler<AuthenticateUserCommand, TokensResult>
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    private readonly IAuthenticationTokenGenerator _tokenGenerator;
-
-    private readonly IRefreshTokenRepository _refreshTokenRepository;
-
-    private readonly IStringLocalizer _localizer;
-
-    public AuthenticateUserCommandHandler(
-        ISqlConnectionFactory sqlConnectionFactory,
-        IAuthenticationTokenGenerator tokenGenerator,
-        IRefreshTokenRepository refreshTokenRepository,
-        ILocalizerProvider localizerProvider)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-        _tokenGenerator = tokenGenerator;
-        _refreshTokenRepository = refreshTokenRepository;
-        _localizer = localizerProvider.GetLocalizer();
-    }
+    private readonly IStringLocalizer _localizer = localizerProvider.GetLocalizer();
 
     public async Task<TokensResult> Handle(AuthenticateUserCommand command, CancellationToken cancellationToken)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"SELECT id, name, email, password, is_active AS isActive FROM {DatabaseConfiguration.Schema.Name}.users WHERE email = @email";
 
@@ -54,11 +41,11 @@ internal class AuthenticateUserCommandHandler : ICommandHandler<AuthenticateUser
             throw new AuthenticationException(_localizer["Incorrect email or password"]);
         }
 
-        var accessToken = _tokenGenerator.GenerateAccessToken(user.Id);
-        var refreshToken = _tokenGenerator.GenerateRefreshToken();
+        var accessToken = tokenGenerator.GenerateAccessToken(user.Id);
+        var refreshToken = tokenGenerator.GenerateRefreshToken();
 
-        await _refreshTokenRepository.UpdateAsync(user.Id, refreshToken.Value, refreshToken.Expires);
+        await refreshTokenRepository.UpdateAsync(user.Id, refreshToken.Value, refreshToken.Expires);
 
-        return new TokensResult(accessToken.Value, refreshToken.Value); ;
+        return new TokensResult(accessToken.Value, refreshToken.Value);
     }
 }

@@ -12,7 +12,7 @@ public static class SaltEdgeCollectionExtensions
 {
     public static IServiceCollection AddSaltEdgeIntegration(this IServiceCollection services, IConfiguration configuration)
     {
-        var saltEdgeClientConfiguration = configuration.GetSection("SaltEdge").Get<SaltEdgeClientConfiguration>();
+        var saltEdgeClientConfiguration = configuration.GetSection("SaltEdge").Get<SaltEdgeClientConfiguration>()!;
 
         services.AddHttpClient<ISaltEdgeHttpClient, SaltEdgeHttpClient>(client =>
             {

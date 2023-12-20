@@ -52,7 +52,7 @@ public class RequestTests
         var request = Request.Post("/some-path")
             .WithContent(content);
 
-        var requestContent = await request.Content.ReadAsStringAsync();
+        var requestContent = await request.Content!.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Post));
         Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
@@ -70,7 +70,7 @@ public class RequestTests
         var request = Request.Put("/some-path")
             .WithContent(content);
 
-        var requestContent = await request.Content.ReadAsStringAsync();
+        var requestContent = await request.Content!.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Put));
         Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
@@ -88,17 +88,19 @@ public class RequestTests
         var request = Request.Patch("/some-path")
             .WithContent(content);
 
-        var requestContent = await request.Content.ReadAsStringAsync();
+        var requestContent = await request.Content!.ReadAsStringAsync();
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Patch));
         Assert.That(requestContent, Is.EqualTo(@"{""data"":{""foo"":""bar"",""abc"":123}}"));
     }
 
     [Test]
-    public async Task CreatingDeleteRequest_IsSuccessful()
+    public Task CreatingDeleteRequest_IsSuccessful()
     {
         var request = Request.Delete("/some-path");
 
         Assert.That(request.Method, Is.EqualTo(HttpMethod.Delete));
+
+        return Task.CompletedTask;
     }
 }

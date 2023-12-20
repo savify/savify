@@ -13,7 +13,7 @@ namespace App.Modules.Banks.Infrastructure.Configuration.Quartz;
 
 internal static class QuartzInitialization
 {
-    private static IScheduler _scheduler;
+    private static IScheduler _scheduler = null!;
 
     internal static void Initialize(ILogger logger)
     {

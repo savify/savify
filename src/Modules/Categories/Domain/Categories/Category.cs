@@ -10,13 +10,13 @@ public class Category : Entity, IAggregateRoot
 
     public string ExternalId { get; private set; }
 
-    public CategoryId? ParentId { get; private set; } = null;
+    public CategoryId? ParentId { get; private set; }
 
     private string _title;
 
     private CategoryType _type;
 
-    private Url? _iconUrl = null;
+    private Url? _iconUrl;
 
     public static Category Create(string externalId, string title, CategoryType type, ICategoriesCounter categoriesCounter, CategoryId? parentId = null, Url? iconUrl = null)
     {

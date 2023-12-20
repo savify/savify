@@ -1,14 +1,8 @@
 namespace App.Modules.UserAccess.Application.Authentication;
 
-public class TokensResult
+public class TokensResult(string accessToken, string refreshToken)
 {
-    public string AccessToken { get; set; }
+    public string AccessToken { get; set; } = accessToken;
 
-    public string RefreshToken { get; set; }
-
-    public TokensResult(string accessToken, string refreshToken)
-    {
-        AccessToken = accessToken;
-        RefreshToken = refreshToken;
-    }
+    public string RefreshToken { get; set; } = refreshToken;
 }

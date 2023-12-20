@@ -5,7 +5,6 @@ using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWa
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing;
-using App.Modules.FinanceTracking.IntegrationTests.SeedData;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 using Dapper;
 using Npgsql;
@@ -32,10 +31,10 @@ public class CreateBankConnectionCommandTests : TestBase
         var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId));
 
         Assert.That(bankConnectionProcess, Is.Not.Null);
-        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
+        Assert.That(bankConnectionProcess!.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
         Assert.That(await CountBankAccountsInConnection(bankConnectionProcess.Id), Is.EqualTo(1));
-        Assert.That(wallet.Balance, Is.EqualTo((int)BankConnectionProcessingData.ExternalUSDAccountBalance * 100));
-        Assert.That(wallet.Currency, Is.EqualTo(BankConnectionProcessingData.ExternalUSDAccountCurrency));
+        Assert.That(wallet!.Balance, Is.EqualTo((int)BankConnectionProcessingData.ExternalUsdAccountBalance * 100));
+        Assert.That(wallet.Currency, Is.EqualTo(BankConnectionProcessingData.ExternalUsdAccountCurrency));
         Assert.That(wallet.BankConnectionId, Is.EqualTo(bankConnectionProcess.Id));
         Assert.That(wallet.BankAccountId, Is.Not.Null);
     }
@@ -54,7 +53,7 @@ public class CreateBankConnectionCommandTests : TestBase
         var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
 
         Assert.That(bankConnectionProcess, Is.Not.Null);
-        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.WaitingForAccountChoosing.ToString()));
+        Assert.That(bankConnectionProcess!.Status, Is.EqualTo(BankConnectionProcessStatus.State.WaitingForAccountChoosing.ToString()));
         Assert.That(await CountBankAccountsInConnection(bankConnectionProcess.Id), Is.EqualTo(2));
     }
 

@@ -21,9 +21,11 @@ public class BankConnectionProcessRedirectionServiceTests : UnitTestBase
         var customerRepository = Substitute.For<ISaltEdgeCustomerRepository>();
         customerRepository.GetAsync(userId.Value).Returns(new SaltEdgeCustomer("123456", userId.Value));
 
-        var responseContent = new CreateConnectSessionResponseContent();
-        responseContent.ConnectUrl = "https://connect-url.com/connect";
-        responseContent.ExpiresAt = DateTime.UtcNow;
+        var responseContent = new CreateConnectSessionResponseContent
+        {
+            ConnectUrl = "https://connect-url.com/connect",
+            ExpiresAt = DateTime.UtcNow
+        };
 
         var integrationService = Substitute.For<ISaltEdgeIntegrationService>();
         // TODO: logic will be changed for provider code and return to url

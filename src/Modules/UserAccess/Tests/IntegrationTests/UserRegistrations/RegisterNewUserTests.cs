@@ -27,7 +27,7 @@ public class RegisterNewUserTests : TestBase
         Assert.That(notification.DomainEvent.Name, Is.EqualTo(UserRegistrationSampleData.Name));
         Assert.That(notification.DomainEvent.PreferredLanguage, Is.EqualTo(UserRegistrationSampleData.PreferredLanguage));
 
-        Assert.That(userRegistration.Id, Is.EqualTo(userRegistrationId));
+        Assert.That(userRegistration!.Id, Is.EqualTo(userRegistrationId));
         Assert.That(userRegistration.Email, Is.EqualTo(UserRegistrationSampleData.Email));
         Assert.That(userRegistration.Name, Is.EqualTo(UserRegistrationSampleData.Name));
         Assert.That(userRegistration.Status, Is.EqualTo(UserRegistrationStatus.WaitingForConfirmation.Value));

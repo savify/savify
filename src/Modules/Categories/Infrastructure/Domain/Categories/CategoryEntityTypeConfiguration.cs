@@ -22,7 +22,7 @@ public class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category
             b.Property(x => x.Value).HasColumnName("type");
         });
 
-        builder.OwnsOne<Url?>("_iconUrl", b =>
+        builder.OwnsOne<Url>("_iconUrl", b =>
         {
             b.Property(x => x.Value).HasColumnName("icon_url");
         });

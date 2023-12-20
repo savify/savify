@@ -12,7 +12,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
 
         Assert.DoesNotThrow(() =>
         {
-            var redirected = initiated.ToRedirected();
+            initiated.ToRedirected();
         });
     }
 
@@ -30,7 +30,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
 
         AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() =>
         {
-            var redirected = status.ToRedirected();
+            status.ToRedirected();
         });
     }
 
@@ -41,7 +41,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
 
         Assert.DoesNotThrow(() =>
         {
-            var redirectUrlExpired = redirected.ToRedirectUrlExpired();
+            redirected.ToRedirectUrlExpired();
         });
     }
 
@@ -59,7 +59,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
 
         AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() =>
         {
-            var redirectUrlExpired = status.ToRedirectUrlExpired();
+            status.ToRedirectUrlExpired();
         });
     }
 
@@ -70,10 +70,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var status = BankConnectionProcessStatusFactory.Create(initialState);
 
-        Assert.DoesNotThrow(() =>
-        {
-            var errorAtProvider = status.ToErrorAtProvider();
-        });
+        Assert.DoesNotThrow(() => { status.ToErrorAtProvider(); });
     }
 
     [Test]
@@ -87,10 +84,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var status = BankConnectionProcessStatusFactory.Create(initialState);
 
-        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() =>
-        {
-            var errorAtProvider = status.ToErrorAtProvider();
-        });
+        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() => { status.ToErrorAtProvider(); });
     }
 
     [Test]
@@ -98,10 +92,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var redirected = BankConnectionProcessStatusFactory.Create(State.Redirected);
 
-        Assert.DoesNotThrow(() =>
-        {
-            var consentRefused = redirected.ToConsentRefused();
-        });
+        Assert.DoesNotThrow(() => { redirected.ToConsentRefused(); });
     }
 
     [Test]
@@ -116,10 +107,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var status = BankConnectionProcessStatusFactory.Create(initialState);
 
-        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() =>
-        {
-            var errorAtProvider = status.ToConsentRefused();
-        });
+        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() => { status.ToConsentRefused(); });
     }
 
     [Test]
@@ -127,10 +115,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var redirected = BankConnectionProcessStatusFactory.Create(State.Redirected);
 
-        Assert.DoesNotThrow(() =>
-        {
-            var waitingForAccountChoosing = redirected.ToWaitingForAccountChoosing();
-        });
+        Assert.DoesNotThrow(() => { redirected.ToWaitingForAccountChoosing(); });
     }
 
     [Test]
@@ -147,7 +132,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
 
         AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() =>
         {
-            var waitingForAccountChoosing = status.ToWaitingForAccountChoosing();
+            status.ToWaitingForAccountChoosing();
         });
     }
 
@@ -158,10 +143,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var state = BankConnectionProcessStatusFactory.Create(initialState);
 
-        Assert.DoesNotThrow(() =>
-        {
-            var completed = state.ToCompleted();
-        });
+        Assert.DoesNotThrow(() => { state.ToCompleted(); });
     }
 
     [Test]
@@ -175,10 +157,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var status = BankConnectionProcessStatusFactory.Create(initialState);
 
-        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() =>
-        {
-            var completed = status.ToCompleted();
-        });
+        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() => { status.ToCompleted(); });
     }
 
     [Test]
@@ -189,10 +168,7 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var state = BankConnectionProcessStatusFactory.Create(initialState);
 
-        Assert.DoesNotThrow(() =>
-        {
-            var cancelled = state.ToCancelled();
-        });
+        Assert.DoesNotThrow(() => { state.ToCancelled(); });
     }
 
     [Test]
@@ -205,9 +181,6 @@ public class BankConnectionProcessStatusTests : UnitTestBase
     {
         var status = BankConnectionProcessStatusFactory.Create(initialState);
 
-        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() =>
-        {
-            var canceled = status.ToCancelled();
-        });
+        AssertBrokenRule<BankConnectionProcessStatusShouldKeepValidTransitionRule>(() => { status.ToCancelled(); });
     }
 }

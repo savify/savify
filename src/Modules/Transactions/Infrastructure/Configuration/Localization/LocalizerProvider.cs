@@ -22,7 +22,7 @@ public class LocalizerProvider : ILocalizerProvider
             CreateLocalizer();
         }
 
-        return _localizer;
+        return _localizer!;
     }
 
     private void CreateLocalizer()

@@ -21,6 +21,7 @@ public class BanksSynchronisationServiceTests : UnitTestBase
         integrationService.FetchProvidersAsync().Returns(externalProviders);
 
         var bankRepository = Substitute.For<IBankRepository>();
+        bankRepository.GetAllAsync().Returns(new List<Bank>());
 
         var service = new BanksSynchronisationService(integrationService, bankRepository);
 
