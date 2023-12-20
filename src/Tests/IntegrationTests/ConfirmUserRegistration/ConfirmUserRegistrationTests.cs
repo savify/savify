@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.UserNotificationSettings.GetUserNotificationSettings;
+using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 using Dapper;
@@ -21,7 +22,7 @@ public class ConfirmUserRegistrationTests : TestBase
             "PL",
             "en"
             ));
-        string confirmationCode = await GetUserRegistrationConfirmationCode(userRegistrationId);
+        var confirmationCode = await GetUserRegistrationConfirmationCode(userRegistrationId);
 
         await UserAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(userRegistrationId, confirmationCode));
 
@@ -29,25 +30,16 @@ public class ConfirmUserRegistrationTests : TestBase
             new GetCreatedUserNotificationSettingsFromNotificationsProbe(userRegistrationId, NotificationsModule), 20000);
     }
 
-    private class GetCreatedUserNotificationSettingsFromNotificationsProbe : IProbe
+    private class GetCreatedUserNotificationSettingsFromNotificationsProbe(
+        Guid expectedUserId,
+        INotificationsModule notificationsModule)
+        : IProbe
     {
-        private readonly Guid _expectedUserId;
-
-        private readonly INotificationsModule _notificationsModule;
-
         private UserNotificationSettingsDto? _notificationSettings;
-
-        public GetCreatedUserNotificationSettingsFromNotificationsProbe(
-            Guid expectedUserId,
-            INotificationsModule notificationsModule)
-        {
-            _expectedUserId = expectedUserId;
-            _notificationsModule = notificationsModule;
-        }
 
         public bool IsSatisfied()
         {
-            if (_notificationSettings != null && _notificationSettings.UserId == _expectedUserId)
+            if (_notificationSettings != null && _notificationSettings.UserId == expectedUserId)
             {
                 return true;
             }
@@ -59,8 +51,8 @@ public class ConfirmUserRegistrationTests : TestBase
         {
             try
             {
-                _notificationSettings = await _notificationsModule.ExecuteQueryAsync(
-                    new GetUserNotificationSettingsQuery(_expectedUserId));
+                _notificationSettings = await notificationsModule.ExecuteQueryAsync(
+                    new GetUserNotificationSettingsQuery(expectedUserId));
             }
             catch
             {
@@ -68,15 +60,15 @@ public class ConfirmUserRegistrationTests : TestBase
             }
         }
 
-        public string DescribeFailureTo() => $"Notification settings for user with id '{_expectedUserId}' were not created";
+        public string DescribeFailureTo() => $"Notification settings for user with id '{expectedUserId}' were not created";
     }
 
     private async Task<string> GetUserRegistrationConfirmationCode(Guid userRegistrationId)
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
-        var sql = "SELECT confirmation_code FROM user_access.user_registrations u WHERE u.id = @userRegistrationId";
+        var sql = $"SELECT confirmation_code FROM {DatabaseConfiguration.Schema.Name}.user_registrations u WHERE u.id = @userRegistrationId";
 
-        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { userRegistrationId });
+        return (await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { userRegistrationId }))!;
     }
 }

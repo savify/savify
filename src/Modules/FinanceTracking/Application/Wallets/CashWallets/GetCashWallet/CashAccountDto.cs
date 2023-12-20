@@ -4,19 +4,19 @@ namespace App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWal
 
 public class CashWalletDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public Guid UserId { get; set; }
+    public Guid UserId { get; init; }
 
-    public string Title { get; set; }
+    public required string Title { get; init; }
 
-    public string Currency { get; set; }
+    public required string Currency { get; init; }
 
-    public int Balance { get; set; }
+    public int Balance { get; init; }
 
-    public WalletViewMetadataDto ViewMetadata { get; set; }
+    public required WalletViewMetadataDto ViewMetadata { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; init; }
 
-    public bool IsRemoved { get; set; }
+    public bool IsRemoved { get; init; }
 }

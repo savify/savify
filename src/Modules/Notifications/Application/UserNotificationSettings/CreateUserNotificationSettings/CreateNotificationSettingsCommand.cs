@@ -1,31 +1,23 @@
 using App.Modules.Notifications.Application.Configuration.Commands;
-using App.Modules.Notifications.Application.Contracts;
 using Newtonsoft.Json;
 
 namespace App.Modules.Notifications.Application.UserNotificationSettings.CreateUserNotificationSettings;
 
-public class CreateNotificationSettingsCommand : InternalCommandBase
+[method: JsonConstructor]
+public class CreateNotificationSettingsCommand(
+    Guid id,
+    Guid correlationId,
+    Guid userId,
+    string name,
+    string email,
+    string preferredLanguage)
+    : InternalCommandBase(id, correlationId)
 {
-    [JsonConstructor]
-    public CreateNotificationSettingsCommand(
-        Guid id,
-        Guid correlationId,
-        Guid userId,
-        string name,
-        string email,
-        string preferredLanguage) : base(id, correlationId)
-    {
-        UserId = userId;
-        Name = name;
-        Email = email;
-        PreferredLanguage = preferredLanguage;
-    }
+    internal Guid UserId { get; } = userId;
 
-    internal Guid UserId { get; }
+    internal string Name { get; } = name;
 
-    internal string Name { get; }
+    internal string Email { get; } = email;
 
-    internal string Email { get; }
-
-    internal string PreferredLanguage { get; }
+    internal string PreferredLanguage { get; } = preferredLanguage;
 }

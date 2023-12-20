@@ -4,21 +4,21 @@ namespace App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCredi
 
 public class CreditWalletDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public Guid UserId { get; set; }
+    public Guid UserId { get; init; }
 
-    public string Title { get; set; }
+    public required string Title { get; init; }
 
-    public int AvailableBalance { get; set; }
+    public int AvailableBalance { get; init; }
 
-    public int CreditLimit { get; set; }
+    public int CreditLimit { get; init; }
 
-    public string Currency { get; set; }
+    public required string Currency { get; init; }
 
-    public WalletViewMetadataDto ViewMetadata { get; set; }
+    public required WalletViewMetadataDto ViewMetadata { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; init; }
 
-    public bool IsRemoved { get; set; }
+    public bool IsRemoved { get; init; }
 }

@@ -3,18 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Customers;
 
-public class SaltEdgeCustomerRepository : ISaltEdgeCustomerRepository
+public class SaltEdgeCustomerRepository(FinanceTrackingContext financeTrackingContext) : ISaltEdgeCustomerRepository
 {
-    private readonly FinanceTrackingContext _financeTrackingContext;
-
-    public SaltEdgeCustomerRepository(FinanceTrackingContext financeTrackingContext)
-    {
-        _financeTrackingContext = financeTrackingContext;
-    }
-
     public async Task AddAsync(SaltEdgeCustomer customer)
     {
-        await _financeTrackingContext.AddAsync(customer);
+        await financeTrackingContext.AddAsync(customer);
     }
 
     public async Task<SaltEdgeCustomer> GetAsync(Guid userId)
@@ -31,7 +24,7 @@ public class SaltEdgeCustomerRepository : ISaltEdgeCustomerRepository
 
     public async Task<SaltEdgeCustomer?> GetOrDefaultAsync(Guid userId)
     {
-        return _financeTrackingContext.SaltEdgeCustomers.Local.SingleOrDefault(x => x.Identifier == userId) ??
-               await _financeTrackingContext.SaltEdgeCustomers.SingleOrDefaultAsync(x => x.Identifier == userId);
+        return financeTrackingContext.SaltEdgeCustomers.Local.SingleOrDefault(x => x.Identifier == userId) ??
+               await financeTrackingContext.SaltEdgeCustomers.SingleOrDefaultAsync(x => x.Identifier == userId);
     }
 }

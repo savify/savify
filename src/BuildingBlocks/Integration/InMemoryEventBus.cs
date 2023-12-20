@@ -20,14 +20,13 @@ public sealed class InMemoryEventBus
         var eventType = typeof(T).FullName;
         if (eventType != null)
         {
-            if (_handlersDictionary.ContainsKey(eventType))
+            if (_handlersDictionary.TryGetValue(eventType, out var handlers))
             {
-                var handlers = _handlersDictionary[eventType];
                 handlers.Add(handler);
             }
             else
             {
-                _handlersDictionary.Add(eventType, new List<IIntegrationEventHandler> { handler });
+                _handlersDictionary.Add(eventType, [handler]);
             }
         }
     }
@@ -41,7 +40,7 @@ public sealed class InMemoryEventBus
             return;
         }
 
-        List<IIntegrationEventHandler> integrationEventHandlers = _handlersDictionary[eventType];
+        var integrationEventHandlers = _handlersDictionary[eventType];
 
         foreach (var integrationEventHandler in integrationEventHandlers)
         {

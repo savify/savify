@@ -3,13 +3,8 @@ using Destructurama.Attributed;
 
 namespace App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
 
-public class RequestPasswordResetCommand : CommandBase<Guid>
+public class RequestPasswordResetCommand(string email) : CommandBase<Guid>
 {
     [LogMasked]
-    public string Email { get; }
-
-    public RequestPasswordResetCommand(string email)
-    {
-        Email = email;
-    }
+    public string Email { get; } = email;
 }

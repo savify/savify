@@ -20,7 +20,7 @@ public static class BanksModuleCollectionExtensions
         bool isProduction)
     {
         var moduleLogger = logger.ForContext("Module", "Banks");
-        var connectionString = configuration.GetConnectionString("Savify");
+        var connectionString = configuration.GetConnectionString("Savify")!;
         var domainNotificationMap = DomainNotificationsMap.Build();
 
         services

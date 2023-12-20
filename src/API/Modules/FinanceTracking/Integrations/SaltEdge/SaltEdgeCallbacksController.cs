@@ -9,30 +9,21 @@ namespace App.API.Modules.FinanceTracking.Integrations.SaltEdge;
 [AllowAnonymous]
 [ApiController]
 [Route("integrations/salt-edge")]
-public class SaltEdgeCallbacksController : ControllerBase
+public class SaltEdgeCallbacksController(IFinanceTrackingModule financeTrackingModule) : ControllerBase
 {
-    private readonly IFinanceTrackingModule _financeTrackingModule;
-
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public SaltEdgeCallbacksController(IFinanceTrackingModule financeTrackingModule, IHttpContextAccessor httpContextAccessor)
-    {
-        _financeTrackingModule = financeTrackingModule;
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     [HttpPost("success")]
     [NoPermissionRequired]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Success(SaltEdgeCallbackRequest request)
     {
         // TODO: verify signature
-        var signature = Signature.CreateFromHttpContext(_httpContextAccessor.HttpContext);
+        // var signature = Signature.CreateFromHttpContext(_httpContextAccessor.HttpContext);
+
 
         // TODO: accept all stages and make it prettier
         if (request.Data.Stage == "finish")
         {
-            var result = await _financeTrackingModule.ExecuteCommandAsync(new CreateBankConnectionCommand(
+            var result = await financeTrackingModule.ExecuteCommandAsync(new CreateBankConnectionCommand(
                 request.Data.CustomFields.BankConnectionProcessId,
                 request.Data.ConnectionId));
 

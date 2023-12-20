@@ -19,9 +19,12 @@ public class BankConnectionProcessInitiationServiceTests : UnitTestBase
         var customerRepository = Substitute.For<ISaltEdgeCustomerRepository>();
 
         var integrationService = Substitute.For<ISaltEdgeIntegrationService>();
-        var createCustomerResponseContent = new CreateCustomerResponseContent();
-        createCustomerResponseContent.Id = "123456";
-        createCustomerResponseContent.Identifier = userId.Value.ToString();
+        var createCustomerResponseContent = new CreateCustomerResponseContent
+        {
+            Id = "123456",
+            Identifier = userId.Value.ToString(),
+            Secret = "secret"
+        };
 
         integrationService.CreateCustomerAsync(userId.Value).Returns(Task.FromResult(createCustomerResponseContent));
 
@@ -60,7 +63,7 @@ public class BankConnectionProcessInitiationServiceTests : UnitTestBase
     }
 
     [Test]
-    public async Task InitiationForUser_WhenErrorAtProviderOccures_RethrowsExternalProviderException()
+    public Task InitiationForUser_WhenErrorAtProviderOccures_RethrowsExternalProviderException()
     {
         // Arrange
         var userId = new UserId(Guid.NewGuid());
@@ -75,5 +78,7 @@ public class BankConnectionProcessInitiationServiceTests : UnitTestBase
 
         // Act & Assert
         Assert.ThrowsAsync<ExternalProviderException>(() => service.InitiateForAsync(userId));
+
+        return Task.CompletedTask;
     }
 }

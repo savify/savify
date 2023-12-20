@@ -2,20 +2,15 @@ using App.BuildingBlocks.Integration;
 
 namespace App.Modules.UserAccess.IntegrationEvents;
 
-public class PasswordResetRequestedIntegrationEvent : IntegrationEvent
+public class PasswordResetRequestedIntegrationEvent(
+    Guid id,
+    Guid correlationId,
+    DateTime occurredOn,
+    string email,
+    string confirmationCode)
+    : IntegrationEvent(id, correlationId, occurredOn)
 {
-    public string Email { get; }
+    public string Email { get; } = email;
 
-    public string ConfirmationCode { get; }
-
-    public PasswordResetRequestedIntegrationEvent(
-        Guid id,
-        Guid correlationId,
-        DateTime occurredOn,
-        string email,
-        string confirmationCode) : base(id, correlationId, occurredOn)
-    {
-        Email = email;
-        ConfirmationCode = confirmationCode;
-    }
+    public string ConfirmationCode { get; } = confirmationCode;
 }

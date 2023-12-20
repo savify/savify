@@ -11,15 +11,15 @@ namespace App.Modules.FinanceTracking.UnitTests.BankConnectionProcessing;
 [TestFixture]
 public class BankConnectionProcessExpirationTests : UnitTestBase
 {
-    private static UserId _userId;
+    private static UserId _userId = null!;
 
-    private static BankId _bankId;
+    private static BankId _bankId = null!;
 
-    private static WalletId _walletId;
+    private static WalletId _walletId = null!;
 
-    private static IBankConnectionProcessInitiationService _initiationService;
+    private static IBankConnectionProcessInitiationService _initiationService = null!;
 
-    private static IBankConnectionProcessRedirectionService _redirectionService;
+    private static IBankConnectionProcessRedirectionService _redirectionService = null!;
 
     [SetUp]
     public void SetUp()

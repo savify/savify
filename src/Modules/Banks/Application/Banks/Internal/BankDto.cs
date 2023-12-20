@@ -2,27 +2,27 @@ namespace App.Modules.Banks.Application.Banks.Internal;
 
 public class BankDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public string Name { get; set; }
+    public required string Name { get; init; }
 
-    public string CountryCode { get; set; }
+    public required string CountryCode { get; init; }
 
-    public string ExternalProviderName { get; set; }
+    public required string ExternalProviderName { get; init; }
 
-    public string Status { get; set; }
+    public required string Status { get; init; }
 
-    public Guid LastBanksSynchronisationProcessId { get; set; }
+    public Guid LastBanksSynchronisationProcessId { get; init; }
 
-    public int? MaxConsentDays { get; set; }
+    public int? MaxConsentDays { get; init; }
 
-    public bool IsRegulated { get; set; }
+    public bool IsRegulated { get; init; }
 
-    public string DefaultLogoUrl { get; set; }
+    public required string DefaultLogoUrl { get; init; }
 
-    public string LogoUrl { get; set; }
+    public required string LogoUrl { get; init; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; init; }
 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; init; }
 }

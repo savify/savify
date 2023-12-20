@@ -1,6 +1,6 @@
 using App.Modules.UserAccess.Application.Authentication;
 
-namespace App.Modules.UserAccess.UnitTests.Application.Authentication;
+namespace App.Modules.UserAccess.UnitTests;
 
 [TestFixture]
 public class PasswordHasherTests : UnitTestBase

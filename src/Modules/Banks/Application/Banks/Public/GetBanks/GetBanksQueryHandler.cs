@@ -6,18 +6,11 @@ using Dapper;
 
 namespace App.Modules.Banks.Application.Banks.Public.GetBanks;
 
-internal class GetBanksQueryHandler : IQueryHandler<GetBanksQuery, IEnumerable<BankDto>>
+internal class GetBanksQueryHandler(ISqlConnectionFactory sqlConnectionFactory) : IQueryHandler<GetBanksQuery, IEnumerable<BankDto>>
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public GetBanksQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public async Task<IEnumerable<BankDto>> Handle(GetBanksQuery query, CancellationToken cancellationToken)
     {
-        using var connection = _sqlConnectionFactory.GetOpenConnection();
+        using var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                    SELECT id, name, country_code AS countryCode, default_logo_url AS defaultLogoUrl, logo_url AS logoUrl

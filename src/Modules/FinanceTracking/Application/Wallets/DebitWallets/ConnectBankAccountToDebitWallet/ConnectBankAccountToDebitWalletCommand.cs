@@ -3,18 +3,12 @@ using App.Modules.FinanceTracking.Application.Contracts;
 
 namespace App.Modules.FinanceTracking.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 
-public class ConnectBankAccountToDebitWalletCommand : CommandBase<Result<BankConnectionProcessInitiationSuccess, BankConnectionProcessInitiationError>>
+public class ConnectBankAccountToDebitWalletCommand(Guid userId, Guid walletId, Guid bankId)
+    : CommandBase<Result<BankConnectionProcessInitiationSuccess, BankConnectionProcessInitiationError>>
 {
-    public Guid UserId { get; }
+    public Guid UserId { get; } = userId;
 
-    public Guid WalletId { get; }
+    public Guid WalletId { get; } = walletId;
 
-    public Guid BankId { get; }
-
-    public ConnectBankAccountToDebitWalletCommand(Guid userId, Guid walletId, Guid bankId)
-    {
-        UserId = userId;
-        WalletId = walletId;
-        BankId = bankId;
-    }
+    public Guid BankId { get; } = bankId;
 }

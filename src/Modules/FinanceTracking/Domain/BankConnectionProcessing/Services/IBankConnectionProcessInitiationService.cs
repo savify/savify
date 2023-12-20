@@ -1,4 +1,3 @@
-using App.BuildingBlocks.Domain;
 using App.Modules.FinanceTracking.Domain.Users;
 
 namespace App.Modules.FinanceTracking.Domain.BankConnectionProcessing.Services;

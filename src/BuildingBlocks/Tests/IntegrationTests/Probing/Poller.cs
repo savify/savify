@@ -1,20 +1,12 @@
 namespace App.BuildingBlocks.Tests.IntegrationTests.Probing;
 
-public class Poller
+public class Poller(int timeoutMillis)
 {
-    private readonly int _timeoutMillis;
-
-    private readonly int _pollDelayMillis;
-
-    public Poller(int timeoutMillis)
-    {
-        _timeoutMillis = timeoutMillis;
-        _pollDelayMillis = 1000;
-    }
+    private readonly int _pollDelayMillis = 1000;
 
     public async Task CheckAsync(IProbe probe)
     {
-        var timeout = new Timeout(_timeoutMillis);
+        var timeout = new Timeout(timeoutMillis);
         while (!probe.IsSatisfied())
         {
             if (timeout.HasTimedOut())
@@ -27,11 +19,12 @@ public class Poller
         }
     }
 
-    public async Task<T> GetAsync<T>(IProbe<T> probe)
+    public async Task<T?> GetAsync<T>(IProbe<T?> probe)
         where T : class
     {
-        var timeout = new Timeout(_timeoutMillis);
-        T sample = null;
+        var timeout = new Timeout(timeoutMillis);
+        T? sample = null;
+
         while (!probe.IsSatisfied(sample))
         {
             if (timeout.HasTimedOut())

@@ -2,9 +2,9 @@ namespace App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 
 public class OutboxMessageDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public string Type { get; set; }
+    public required string Type { get; init; }
 
-    public string Data { get; set; }
+    public required string Data { get; init; }
 }

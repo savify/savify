@@ -7,25 +7,19 @@ using Microsoft.Extensions.Localization;
 
 namespace App.Modules.Categories.Infrastructure.Configuration.Processing.Decorators;
 
-internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
+internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T, TResult>(
+    ICommandHandler<T, TResult> decorated,
+    ILocalizerProvider localizerProvider)
+    : ICommandHandler<T, TResult>
+    where T : ICommand<TResult>
 {
-    private readonly ICommandHandler<T, TResult> _decorated;
-
-    private readonly IStringLocalizer _localizer;
-
-    public BusinessRuleExceptionLocalizationCommandHandlerDecorator(
-        ICommandHandler<T, TResult> decorated,
-        ILocalizerProvider localizerProvider)
-    {
-        _decorated = decorated;
-        _localizer = localizerProvider.GetLocalizer();
-    }
+    private readonly IStringLocalizer _localizer = localizerProvider.GetLocalizer();
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
         try
         {
-            return await _decorated.Handle(command, cancellationToken);
+            return await decorated.Handle(command, cancellationToken);
         }
         catch (BusinessRuleValidationException exception)
         {
@@ -39,25 +33,19 @@ internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T, TResu
     }
 }
 
-internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
+internal class BusinessRuleExceptionLocalizationCommandHandlerDecorator<T>(
+    ICommandHandler<T> decorated,
+    ILocalizerProvider localizerProvider)
+    : ICommandHandler<T>
+    where T : ICommand
 {
-    private readonly ICommandHandler<T> _decorated;
-
-    private readonly IStringLocalizer _localizer;
-
-    public BusinessRuleExceptionLocalizationCommandHandlerDecorator(
-        ICommandHandler<T> decorated,
-        ILocalizerProvider localizerProvider)
-    {
-        _decorated = decorated;
-        _localizer = localizerProvider.GetLocalizer();
-    }
+    private readonly IStringLocalizer _localizer = localizerProvider.GetLocalizer();
 
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
         try
         {
-            await _decorated.Handle(command, cancellationToken);
+            await decorated.Handle(command, cancellationToken);
         }
         catch (BusinessRuleValidationException exception)
         {

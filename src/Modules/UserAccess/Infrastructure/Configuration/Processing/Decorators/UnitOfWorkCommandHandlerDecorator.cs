@@ -6,55 +6,39 @@ using static App.Modules.UserAccess.Infrastructure.Configuration.Processing.Deco
 
 namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing.Decorators;
 
-internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
+internal class UnitOfWorkCommandHandlerDecorator<T, TResult>(
+    ICommandHandler<T, TResult> decorated,
+    IUnitOfWork<UserAccessContext> unitOfWork)
+    : ICommandHandler<T, TResult>
+    where T : ICommand<TResult>
 {
-    private readonly ICommandHandler<T, TResult> _decorated;
-    private readonly IUnitOfWork<UserAccessContext> _unitOfWork;
-
-    public UnitOfWorkCommandHandlerDecorator(
-        ICommandHandler<T, TResult> decorated,
-        IUnitOfWork<UserAccessContext> unitOfWork)
-    {
-        _decorated = decorated;
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
-        var result = await _decorated.Handle(command, cancellationToken);
+        var result = await decorated.Handle(command, cancellationToken);
 
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
 
         return result;
     }
 }
 
-internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
+internal class UnitOfWorkCommandHandlerDecorator<T>(
+    ICommandHandler<T> decorated,
+    IUnitOfWork<UserAccessContext> unitOfWork,
+    UserAccessContext userAccessContext)
+    : ICommandHandler<T>
+    where T : ICommand
 {
-    private readonly ICommandHandler<T> _decorated;
-    private readonly IUnitOfWork<UserAccessContext> _unitOfWork;
-    private readonly UserAccessContext _userAccessContext;
-
-    public UnitOfWorkCommandHandlerDecorator(
-        ICommandHandler<T> decorated,
-        IUnitOfWork<UserAccessContext> unitOfWork,
-        UserAccessContext userAccessContext)
-    {
-        _decorated = decorated;
-        _unitOfWork = unitOfWork;
-        _userAccessContext = userAccessContext;
-    }
-
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
-        await _decorated.Handle(command, cancellationToken);
+        await decorated.Handle(command, cancellationToken);
 
         if (command is InternalCommandBase)
         {
-            await SetInternalCommandAsProcessedAsync(_userAccessContext, command.Id, cancellationToken);
+            await SetInternalCommandAsProcessedAsync(userAccessContext, command.Id, cancellationToken);
         }
 
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
     }
 }
 

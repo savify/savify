@@ -5,7 +5,6 @@ using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.ConnectBankAc
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing;
 using App.Modules.FinanceTracking.Domain.Wallets;
 using App.Modules.FinanceTracking.IntegrationTests.BankConnectionProcessing;
-using App.Modules.FinanceTracking.IntegrationTests.SeedData;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 using Dapper;
 using Npgsql;
@@ -30,14 +29,14 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
         Assert.That(result.Success.RedirectUrl, Is.EqualTo(BankConnectionProcessingData.ExpectedRedirectUrl));
 
         Assert.That(bankConnectionProcess, Is.Not.Null);
-        Assert.That(bankConnectionProcess.UserId, Is.EqualTo(BankConnectionProcessingData.UserId));
+        Assert.That(bankConnectionProcess!.UserId, Is.EqualTo(BankConnectionProcessingData.UserId));
         Assert.That(bankConnectionProcess.BankId, Is.EqualTo(BankConnectionProcessingData.BankId));
         Assert.That(bankConnectionProcess.WalletId, Is.EqualTo(walletId));
         Assert.That(bankConnectionProcess.WalletType, Is.EqualTo(WalletType.Debit.Value));
         Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.Redirected.ToString()));
 
         Assert.That(saltEdgeCustomer, Is.Not.Null);
-        Assert.That(saltEdgeCustomer.Id, Is.EqualTo(BankConnectionProcessingData.ExternalCustomerId));
+        Assert.That(saltEdgeCustomer!.Id, Is.EqualTo(BankConnectionProcessingData.ExternalCustomerId));
     }
 
     private async Task<Guid> AddDebitWalletFor(Guid userId)
@@ -65,8 +64,8 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
 
     private class SaltEdgeCustomerDto
     {
-        public string Id { get; set; }
+        public required string Id { get; init; }
 
-        public Guid Identifier { get; set; }
+        public Guid Identifier { get; init; }
     }
 }

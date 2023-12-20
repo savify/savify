@@ -35,7 +35,7 @@ public class EditCreditWalletTests : TestBase
 
         var editedWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCreditWalletQuery(walletId));
 
-        Assert.That(editedWallet.UserId, Is.EqualTo(userId));
+        Assert.That(editedWallet!.UserId, Is.EqualTo(userId));
         Assert.That(editedWallet.Title, Is.EqualTo("New title"));
         Assert.That(editedWallet.AvailableBalance, Is.EqualTo(2000));
         Assert.That(editedWallet.CreditLimit, Is.EqualTo(2000));

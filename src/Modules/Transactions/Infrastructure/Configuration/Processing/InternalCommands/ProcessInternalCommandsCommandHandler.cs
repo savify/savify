@@ -21,8 +21,8 @@ internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessIn
 
     private async Task ExecuteCommand(InternalCommandDto internalCommand)
     {
-        Type type = Assemblies.Application.GetType(internalCommand.Type);
-        dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type);
+        var type = Assemblies.Application.GetType(internalCommand.Type)!;
+        dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type)!;
 
         await CommandExecutor.Execute(commandToProcess);
     }

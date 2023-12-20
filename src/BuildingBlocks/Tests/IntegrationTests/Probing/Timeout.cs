@@ -1,13 +1,8 @@
 namespace App.BuildingBlocks.Tests.IntegrationTests.Probing;
 
-public class Timeout
+public class Timeout(int duration)
 {
-    private readonly DateTime _endTime;
-
-    public Timeout(int duration)
-    {
-        _endTime = DateTime.Now.AddMilliseconds(duration);
-    }
+    private readonly DateTime _endTime = DateTime.Now.AddMilliseconds(duration);
 
     public bool HasTimedOut()
     {

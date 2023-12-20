@@ -6,23 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.DebitWallets;
 
-internal class DebitWalletRepository : IDebitWalletRepository
+internal class DebitWalletRepository(FinanceTrackingContext financeTrackingContext) : IDebitWalletRepository
 {
-    private readonly FinanceTrackingContext _financeTrackingContext;
-
-    public DebitWalletRepository(FinanceTrackingContext financeTrackingContext)
-    {
-        _financeTrackingContext = financeTrackingContext;
-    }
-
     public async Task AddAsync(DebitWallet wallet)
     {
-        await _financeTrackingContext.AddAsync(wallet);
+        await financeTrackingContext.AddAsync(wallet);
     }
 
     public async Task<DebitWallet> GetByIdAsync(WalletId id)
     {
-        var wallet = await _financeTrackingContext.DebitWallets.SingleOrDefaultAsync(wallet => wallet.Id == id);
+        var wallet = await financeTrackingContext.DebitWallets.SingleOrDefaultAsync(wallet => wallet.Id == id);
 
         if (wallet is null)
         {
@@ -34,7 +27,7 @@ internal class DebitWalletRepository : IDebitWalletRepository
 
     public async Task<DebitWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId)
     {
-        var wallet = await _financeTrackingContext.DebitWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var wallet = await financeTrackingContext.DebitWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
         if (wallet == null)
         {

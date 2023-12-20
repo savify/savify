@@ -12,7 +12,7 @@ public static class DataAccessServiceCollectionExtensions
 {
     public static IServiceCollection AddSqlConnectionFactory(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<ISqlConnectionFactory>(_ => new SqlConnectionFactory(configuration.GetConnectionString("Savify")));
+        services.AddScoped<ISqlConnectionFactory>(_ => new SqlConnectionFactory(configuration.GetConnectionString("Savify")!));
 
         return services;
     }

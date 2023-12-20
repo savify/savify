@@ -12,21 +12,14 @@ namespace App.API.Modules.Banks.Banks;
 [Authorize]
 [ApiController]
 [Route("public/banks/banks")]
-public class BanksController : ControllerBase
+public class BanksController(IBanksModule banksModule) : ControllerBase
 {
-    private readonly IBanksModule _banksModule;
-
-    public BanksController(IBanksModule banksModule)
-    {
-        _banksModule = banksModule;
-    }
-
     [HttpGet]
     [NoPermissionRequired]
     [ProducesResponseType(typeof(IEnumerable<BankDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList([FromQuery] PaginationQueryParameters pagination)
     {
-        var banks = await _banksModule.ExecuteQueryAsync(
+        var banks = await banksModule.ExecuteQueryAsync(
             new GetBanksQuery(pagination.Page, pagination.PerPage));
 
         return Ok(banks);
@@ -37,7 +30,7 @@ public class BanksController : ControllerBase
     [ProducesResponseType(typeof(BankDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetById(Guid bankId)
     {
-        var bank = await _banksModule.ExecuteQueryAsync(new GetBankQuery(bankId));
+        var bank = await banksModule.ExecuteQueryAsync(new GetBankQuery(bankId));
 
         return Ok(bank);
     }

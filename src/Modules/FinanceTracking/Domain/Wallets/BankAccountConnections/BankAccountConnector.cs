@@ -1,6 +1,5 @@
 using App.Modules.FinanceTracking.Domain.BankConnections;
 using App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts;
-using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections;
@@ -9,17 +8,13 @@ public class BankAccountConnector : IBankAccountConnector
 {
     private readonly IDebitWalletRepository _debitWalletRepository;
 
-    private readonly ICreditWalletRepository _creditWalletRepository;
-
     private readonly IBankConnectionRepository _bankConnectionRepository;
 
     public BankAccountConnector(
         IDebitWalletRepository debitWalletRepository,
-        ICreditWalletRepository creditWalletRepository,
         IBankConnectionRepository bankConnectionRepository)
     {
         _debitWalletRepository = debitWalletRepository;
-        _creditWalletRepository = creditWalletRepository;
         _bankConnectionRepository = bankConnectionRepository;
     }
 

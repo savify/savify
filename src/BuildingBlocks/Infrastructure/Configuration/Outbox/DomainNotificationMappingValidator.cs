@@ -23,7 +23,7 @@ public static class DomainNotificationMappingValidator
             }
         }
 
-        if (notMappedNotifications.Any())
+        if (notMappedNotifications.Count != 0)
         {
             throw new ApplicationException($"Domain Event Notifications {notMappedNotifications.Select(x => x.FullName).Aggregate((x, y) => x + "," + y)} not mapped");
         }

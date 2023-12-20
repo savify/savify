@@ -24,37 +24,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure;
 
-public class FinanceTrackingContext : DbContext
+public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> options) : DbContext(options)
 {
-    public DbSet<CashWallet>? CashWallets { get; set; }
+    public required DbSet<CashWallet> CashWallets { get; set; }
 
-    public DbSet<CreditWallet>? CreditWallets { get; set; }
+    public required DbSet<CreditWallet> CreditWallets { get; set; }
 
-    public DbSet<DebitWallet>? DebitWallets { get; set; }
+    public required DbSet<DebitWallet> DebitWallets { get; set; }
 
-    public DbSet<WalletViewMetadata>? WalletsViewMetadata { get; set; }
+    public required DbSet<WalletViewMetadata> WalletsViewMetadata { get; set; }
 
-    public DbSet<InvestmentPortfolio>? InvestmentPortfolios { get; set; }
+    public required DbSet<InvestmentPortfolio> InvestmentPortfolios { get; set; }
 
-    public DbSet<PortfolioViewMetadata> PortfoliosViewMetadata { get; set; }
+    public required DbSet<PortfolioViewMetadata> PortfoliosViewMetadata { get; set; }
 
-    public DbSet<OutboxMessage>? OutboxMessages { get; set; }
+    public required DbSet<OutboxMessage> OutboxMessages { get; set; }
 
-    public DbSet<InboxMessage>? InboxMessages { get; set; }
+    public required DbSet<InboxMessage> InboxMessages { get; set; }
 
-    public DbSet<InternalCommand>? InternalCommands { get; set; }
+    public required DbSet<InternalCommand> InternalCommands { get; set; }
 
-    public DbSet<BankConnectionProcess>? BankConnectionProcesses { get; set; }
+    public required DbSet<BankConnectionProcess> BankConnectionProcesses { get; set; }
 
-    public DbSet<BankConnection>? BankConnections { get; set; }
+    public required DbSet<BankConnection> BankConnections { get; set; }
 
-    public DbSet<SaltEdgeCustomer>? SaltEdgeCustomers { get; set; }
+    public required DbSet<SaltEdgeCustomer> SaltEdgeCustomers { get; set; }
 
-    public DbSet<SaltEdgeConnection>? SaltEdgeConnections { get; set; }
-
-    public FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> options) : base(options)
-    {
-    }
+    public required DbSet<SaltEdgeConnection> SaltEdgeConnections { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

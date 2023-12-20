@@ -1,6 +1,6 @@
 using App.Modules.UserAccess.Domain;
 
-namespace App.Modules.UserAccess.UnitTests.Domain;
+namespace App.Modules.UserAccess.UnitTests;
 
 [TestFixture]
 public class ConfirmationCodeTests : UnitTestBase

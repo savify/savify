@@ -1,8 +1,3 @@
 namespace App.Modules.UserAccess.Application.Authentication.Exceptions;
 
-public class AuthenticationException : Exception
-{
-    public AuthenticationException(string? message) : base(message)
-    {
-    }
-}
+public class AuthenticationException(string? message) : Exception(message);

@@ -4,23 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.UserAccess.Infrastructure.Domain.UserRegistrations;
 
-public class UserRegistrationRepository : IUserRegistrationRepository
+public class UserRegistrationRepository(UserAccessContext userAccessContext) : IUserRegistrationRepository
 {
-    private readonly UserAccessContext _userAccessContext;
-
-    public UserRegistrationRepository(UserAccessContext userAccessContext)
-    {
-        _userAccessContext = userAccessContext;
-    }
-
     public async Task AddAsync(UserRegistration userRegistration)
     {
-        await _userAccessContext.AddAsync(userRegistration);
+        await userAccessContext.AddAsync(userRegistration);
     }
 
     public async Task<UserRegistration> GetByIdAsync(UserRegistrationId id)
     {
-        var userRegistration = await _userAccessContext.UserRegistrations.SingleOrDefaultAsync(x => x.Id == id);
+        var userRegistration = await userAccessContext.UserRegistrations.SingleOrDefaultAsync(x => x.Id == id);
 
         if (userRegistration == null)
         {

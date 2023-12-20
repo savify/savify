@@ -1,6 +1,3 @@
 namespace App.Modules.Transactions.Domain.Transactions;
 
-public class Transaction
-{
-
-}
+public class Transaction;

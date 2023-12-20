@@ -1,14 +1,8 @@
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Customers;
 
-public class SaltEdgeCustomer
+public class SaltEdgeCustomer(string id, Guid identifier)
 {
-    public string Id { get; }
+    public string Id { get; } = id;
 
-    public Guid Identifier { get; }
-
-    public SaltEdgeCustomer(string id, Guid identifier)
-    {
-        Id = id;
-        Identifier = identifier;
-    }
+    public Guid Identifier { get; } = identifier;
 }

@@ -2,7 +2,7 @@ using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Domain.Users.Rules;
 
-namespace App.Modules.UserAccess.UnitTests.Domain.Users;
+namespace App.Modules.UserAccess.UnitTests.Users;
 
 [TestFixture]
 public class UserTests : UnitTestBase

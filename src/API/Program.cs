@@ -125,10 +125,7 @@ public class Program
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         app.UseAuthentication();
         app.UseAuthorization();
-
-#pragma warning disable ASP0014
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-#pragma warning restore ASP0014
 
         app.Run();
     }
@@ -139,7 +136,7 @@ public class Program
 
         _loggerConfiguration = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .Enrich.WithSensitiveDataMasking()
+            .Enrich.WithSensitiveDataMasking(_ => { })
             .Destructure.UsingAttributes()
             .Enrich.WithProperty("Environment", environment.EnvironmentName);
 

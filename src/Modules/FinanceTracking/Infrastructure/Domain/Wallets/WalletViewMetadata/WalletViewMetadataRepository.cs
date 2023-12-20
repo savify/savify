@@ -5,23 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletViewMetadata;
 
-public class WalletViewMetadataRepository : IWalletViewMetadataRepository
+public class WalletViewMetadataRepository(FinanceTrackingContext financeTrackingContext) : IWalletViewMetadataRepository
 {
-    private readonly FinanceTrackingContext _financeTrackingContext;
-
-    public WalletViewMetadataRepository(FinanceTrackingContext financeTrackingContext)
-    {
-        _financeTrackingContext = financeTrackingContext;
-    }
-
     public async Task AddAsync(Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata.WalletViewMetadata walletViewMetadata)
     {
-        await _financeTrackingContext.AddAsync(walletViewMetadata);
+        await financeTrackingContext.AddAsync(walletViewMetadata);
     }
 
     public async Task<Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata.WalletViewMetadata> GetByWalletIdAsync(WalletId walletId)
     {
-        var walletViewMetadata = await _financeTrackingContext.WalletsViewMetadata.SingleOrDefaultAsync(x => x.WalletId == walletId);
+        var walletViewMetadata = await financeTrackingContext.WalletsViewMetadata.SingleOrDefaultAsync(x => x.WalletId == walletId);
 
         if (walletViewMetadata == null)
         {

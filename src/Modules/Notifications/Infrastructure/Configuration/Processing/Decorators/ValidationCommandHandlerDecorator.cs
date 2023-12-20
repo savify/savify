@@ -8,55 +8,37 @@ using static App.Modules.Notifications.Infrastructure.Configuration.Processing.D
 
 namespace App.Modules.Notifications.Infrastructure.Configuration.Processing.Decorators;
 
-internal class ValidationCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
+internal class ValidationCommandHandlerDecorator<T, TResult>(
+    ICommandHandler<T, TResult> decorated,
+    IEnumerable<IValidator<T>> validators,
+    ILocalizerProvider localizerProvider)
+    : ICommandHandler<T, TResult>
+    where T : ICommand<TResult>
 {
-    private readonly ICommandHandler<T, TResult> _decorated;
-
-    private readonly IEnumerable<IValidator<T>> _validators;
-
-    private readonly IStringLocalizer _localizer;
-
-    public ValidationCommandHandlerDecorator(
-        ICommandHandler<T, TResult> decorated,
-        IEnumerable<IValidator<T>> validators,
-        ILocalizerProvider localizerProvider)
-    {
-        _decorated = decorated;
-        _validators = validators;
-        _localizer = localizerProvider.GetLocalizer();
-    }
+    private readonly IStringLocalizer _localizer = localizerProvider.GetLocalizer();
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
-        Validate(command, _validators, _localizer);
+        Validate(command, validators, _localizer);
 
-        return await _decorated.Handle(command, cancellationToken);
+        return await decorated.Handle(command, cancellationToken);
     }
 }
 
-internal class ValidationCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
+internal class ValidationCommandHandlerDecorator<T>(
+    ICommandHandler<T> decorated,
+    IEnumerable<IValidator<T>> validators,
+    ILocalizerProvider localizerProvider)
+    : ICommandHandler<T>
+    where T : ICommand
 {
-    private readonly ICommandHandler<T> _decorated;
-
-    private readonly IEnumerable<IValidator<T>> _validators;
-
-    private readonly IStringLocalizer _localizer;
-
-    public ValidationCommandHandlerDecorator(
-        ICommandHandler<T> decorated,
-        IEnumerable<IValidator<T>> validators,
-        ILocalizerProvider localizerProvider)
-    {
-        _decorated = decorated;
-        _validators = validators;
-        _localizer = localizerProvider.GetLocalizer();
-    }
+    private readonly IStringLocalizer _localizer = localizerProvider.GetLocalizer();
 
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
-        Validate(command, _validators, _localizer);
+        Validate(command, validators, _localizer);
 
-        await _decorated.Handle(command, cancellationToken);
+        await decorated.Handle(command, cancellationToken);
     }
 }
 

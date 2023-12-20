@@ -4,10 +4,9 @@ using Newtonsoft.Json;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 
-public class UserRegistrationConfirmedNotification : DomainEventNotificationBase<UserRegistrationConfirmedDomainEvent>
-{
-    [JsonConstructor]
-    public UserRegistrationConfirmedNotification(Guid id, Guid correlationId, UserRegistrationConfirmedDomainEvent domainEvent) : base(id, correlationId, domainEvent)
-    {
-    }
-}
+[method: JsonConstructor]
+public class UserRegistrationConfirmedNotification(
+    Guid id,
+    Guid correlationId,
+    UserRegistrationConfirmedDomainEvent domainEvent)
+    : DomainEventNotificationBase<UserRegistrationConfirmedDomainEvent>(id, correlationId, domainEvent);

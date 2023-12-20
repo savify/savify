@@ -4,23 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.UserAccess.Infrastructure.Domain.PasswordResetRequests;
 
-public class PasswordResetRequestRepository : IPasswordResetRequestRepository
+public class PasswordResetRequestRepository(UserAccessContext userAccessContext) : IPasswordResetRequestRepository
 {
-    private readonly UserAccessContext _userAccessContext;
-
-    public PasswordResetRequestRepository(UserAccessContext userAccessContext)
-    {
-        _userAccessContext = userAccessContext;
-    }
-
     public async Task AddAsync(PasswordResetRequest passwordResetRequest)
     {
-        await _userAccessContext.AddAsync(passwordResetRequest);
+        await userAccessContext.AddAsync(passwordResetRequest);
     }
 
     public async Task<PasswordResetRequest> GetByIdAsync(PasswordResetRequestId id)
     {
-        var passwordResetRequest = await _userAccessContext.PasswordResetRequests.SingleOrDefaultAsync(x => x.Id == id);
+        var passwordResetRequest = await userAccessContext.PasswordResetRequests.SingleOrDefaultAsync(x => x.Id == id);
 
         if (passwordResetRequest == null)
         {

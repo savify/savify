@@ -12,25 +12,15 @@ namespace App.API.Modules.UserAccess.Users;
 
 [Route("user-access/users")]
 [ApiController]
-public class UsersController : ControllerBase
+public class UsersController(IUserAccessModule userAccessModule, IExecutionContextAccessor executionContextAccessor) : ControllerBase
 {
-    private readonly IUserAccessModule _userAccessModule;
-
-    private readonly IExecutionContextAccessor _executionContextAccessor;
-
-    public UsersController(IUserAccessModule userAccessModule, IExecutionContextAccessor executionContextAccessor)
-    {
-        _userAccessModule = userAccessModule;
-        _executionContextAccessor = executionContextAccessor;
-    }
-
     [Authorize]
     [HasPermission(UserAccessPermissions.ManageUsers)]
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateNew(CreateNewUserRequest request)
     {
-        var userId = await _userAccessModule.ExecuteCommandAsync(new CreateNewUserCommand(
+        var userId = await userAccessModule.ExecuteCommandAsync(new CreateNewUserCommand(
             request.Email,
             request.Password,
             request.Name,
@@ -49,7 +39,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SetNewPassword(SetNewPasswordRequest request)
     {
-        await _userAccessModule.ExecuteCommandAsync(new SetNewPasswordCommand(_executionContextAccessor.UserId, request.Password));
+        await userAccessModule.ExecuteCommandAsync(new SetNewPasswordCommand(executionContextAccessor.UserId, request.Password));
 
         return Accepted();
     }
@@ -60,7 +50,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList()
     {
-        var users = await _userAccessModule.ExecuteQueryAsync(new GetUsersQuery());
+        var users = await userAccessModule.ExecuteQueryAsync(new GetUsersQuery());
 
         return Ok(users);
     }

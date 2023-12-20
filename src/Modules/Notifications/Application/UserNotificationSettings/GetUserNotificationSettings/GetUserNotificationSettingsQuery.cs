@@ -2,12 +2,7 @@ using App.Modules.Notifications.Application.Contracts;
 
 namespace App.Modules.Notifications.Application.UserNotificationSettings.GetUserNotificationSettings;
 
-public class GetUserNotificationSettingsQuery : QueryBase<UserNotificationSettingsDto?>
+public class GetUserNotificationSettingsQuery(Guid userId) : QueryBase<UserNotificationSettingsDto?>
 {
-    public Guid UserId { get; }
-
-    public GetUserNotificationSettingsQuery(Guid userId)
-    {
-        UserId = userId;
-    }
+    public Guid UserId { get; } = userId;
 }

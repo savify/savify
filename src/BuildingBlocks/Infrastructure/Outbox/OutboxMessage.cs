@@ -1,22 +1,14 @@
 namespace App.BuildingBlocks.Infrastructure.Outbox;
 
-public class OutboxMessage
+public class OutboxMessage(Guid id, DateTime occurredOn, string type, string data)
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; } = id;
 
-    public DateTime OccurredOn { get; set; }
+    public DateTime OccurredOn { get; init; } = occurredOn;
 
-    public string Type { get; set; }
+    public string Type { get; init; } = type;
 
-    public string Data { get; set; }
+    public string Data { get; init; } = data;
 
-    public DateTime? ProcessedDate { get; set; }
-
-    public OutboxMessage(Guid id, DateTime occurredOn, string type, string data)
-    {
-        Id = id;
-        OccurredOn = occurredOn;
-        Type = type;
-        Data = data;
-    }
+    public DateTime? ProcessedDate { get; init; }
 }

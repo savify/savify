@@ -2,15 +2,9 @@ using App.Modules.FinanceTracking.Application.Contracts;
 
 namespace App.Modules.FinanceTracking.Application.Wallets.CashWallets.RemoveCashWallet;
 
-public class RemoveCashWalletCommand : CommandBase
+public class RemoveCashWalletCommand(Guid userId, Guid walletId) : CommandBase
 {
-    public Guid UserId { get; }
+    public Guid UserId { get; } = userId;
 
-    public Guid WalletId { get; }
-
-    public RemoveCashWalletCommand(Guid userId, Guid walletId)
-    {
-        UserId = userId;
-        WalletId = walletId;
-    }
+    public Guid WalletId { get; } = walletId;
 }

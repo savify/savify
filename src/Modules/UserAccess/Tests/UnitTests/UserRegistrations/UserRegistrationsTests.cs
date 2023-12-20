@@ -6,7 +6,7 @@ using App.Modules.UserAccess.Domain.Users;
 using App.Modules.UserAccess.Domain.Users.Events;
 using App.Modules.UserAccess.Domain.Users.Rules;
 
-namespace App.Modules.UserAccess.UnitTests.Domain.UserRegistrations;
+namespace App.Modules.UserAccess.UnitTests.UserRegistrations;
 
 [TestFixture]
 public class UserRegistrationsTests : UnitTestBase

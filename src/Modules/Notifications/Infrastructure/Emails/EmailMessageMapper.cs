@@ -3,20 +3,13 @@ using MimeKit;
 
 namespace App.Modules.Notifications.Infrastructure.Emails;
 
-public class EmailMessageMapper
+public class EmailMessageMapper(EmailConfiguration configuration)
 {
-    private readonly EmailConfiguration _configuration;
-
-    public EmailMessageMapper(EmailConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     public MimeMessage MapToMimeMessage(EmailMessage emailMessage)
     {
         var mimeMessage = new MimeMessage();
 
-        mimeMessage.From.Add(new MailboxAddress(_configuration.FromName, _configuration.FromEmail));
+        mimeMessage.From.Add(new MailboxAddress(configuration.FromName, configuration.FromEmail));
         mimeMessage.To.AddRange(emailMessage.To.Select(x => new MailboxAddress(null, x)));
         mimeMessage.Subject = emailMessage.Subject;
 

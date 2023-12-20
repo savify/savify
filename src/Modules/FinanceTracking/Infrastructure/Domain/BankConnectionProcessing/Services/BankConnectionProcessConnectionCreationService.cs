@@ -9,31 +9,19 @@ using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Connectio
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.BankConnectionProcessing.Services;
 
-public class BankConnectionProcessConnectionCreationService : IBankConnectionProcessConnectionCreationService
+public class BankConnectionProcessConnectionCreationService(
+    ISaltEdgeConnectionRepository connectionRepository,
+    IBankConnectionRepository bankConnectionRepository,
+    ISaltEdgeIntegrationService saltEdgeIntegrationService)
+    : IBankConnectionProcessConnectionCreationService
 {
-    private readonly ISaltEdgeConnectionRepository _connectionRepository;
-
-    private readonly IBankConnectionRepository _bankConnectionRepository;
-
-    private readonly ISaltEdgeIntegrationService _saltEdgeIntegrationService;
-
-    public BankConnectionProcessConnectionCreationService(
-        ISaltEdgeConnectionRepository connectionRepository,
-        IBankConnectionRepository bankConnectionRepository,
-        ISaltEdgeIntegrationService saltEdgeIntegrationService)
-    {
-        _connectionRepository = connectionRepository;
-        _bankConnectionRepository = bankConnectionRepository;
-        _saltEdgeIntegrationService = saltEdgeIntegrationService;
-    }
-
     public async Task<Result<BankConnection, CreateConnectionError>> CreateConnection(BankConnectionProcessId id, UserId userId, BankId bankId, string externalConnectionId)
     {
         try
         {
-            var saltEdgeConnection = await _saltEdgeIntegrationService.FetchConnectionAsync(externalConnectionId);
-            var saltEdgeConsent = await _saltEdgeIntegrationService.FetchConsentAsync(saltEdgeConnection.LastConsentId, saltEdgeConnection.Id);
-            var saltEdgeAccounts = await _saltEdgeIntegrationService.FetchAccountsAsync(saltEdgeConnection.Id);
+            var saltEdgeConnection = await saltEdgeIntegrationService.FetchConnectionAsync(externalConnectionId);
+            var saltEdgeConsent = await saltEdgeIntegrationService.FetchConsentAsync(saltEdgeConnection.LastConsentId, saltEdgeConnection.Id);
+            var saltEdgeAccounts = await saltEdgeIntegrationService.FetchAccountsAsync(saltEdgeConnection.Id);
 
             var connection = BankConnection.CreateFromBankConnectionProcess(
                 id,
@@ -48,8 +36,8 @@ public class BankConnectionProcessConnectionCreationService : IBankConnectionPro
                 (int)(account.Balance * 100.00),
                 new Currency(account.CurrencyCode)));
 
-            await _connectionRepository.AddAsync(saltEdgeConnection);
-            await _bankConnectionRepository.AddAsync(connection);
+            await connectionRepository.AddAsync(saltEdgeConnection);
+            await bankConnectionRepository.AddAsync(connection);
 
             return connection;
         }
