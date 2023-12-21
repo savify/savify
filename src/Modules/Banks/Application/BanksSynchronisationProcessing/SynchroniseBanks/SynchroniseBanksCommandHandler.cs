@@ -18,6 +18,6 @@ internal class SynchroniseBanksCommandHandler(
 
         await banksSynchronisationProcessRepository.AddAsync(banksSynchronisationProcess);
 
-        return new BanksSynchronisationResultDto(banksSynchronisationProcess.GetStatus().Value);
+        return new BanksSynchronisationResultDto(banksSynchronisationProcess.Status.Value);
     }
 }

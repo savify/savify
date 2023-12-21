@@ -17,6 +17,8 @@ public class BanksSynchronisationProcess : Entity, IAggregateRoot
 
     private DateTime? _finishedAt;
 
+    public BanksSynchronisationProcessStatus Status => _status;
+
     public static async Task<BanksSynchronisationProcess> Start(
         BanksSynchronisationProcessInitiator initiatedBy,
         IBanksSynchronisationService banksSynchronisationService)
@@ -53,8 +55,6 @@ public class BanksSynchronisationProcess : Entity, IAggregateRoot
 
         AddDomainEvent(new BanksSynchronisationProcessFailedDomainEvent(Id));
     }
-
-    public BanksSynchronisationProcessStatus GetStatus() => _status;
 
     public BanksSynchronisationProcess(BanksSynchronisationProcessInitiator initiatedBy)
     {
