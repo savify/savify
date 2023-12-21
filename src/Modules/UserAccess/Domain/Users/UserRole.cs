@@ -19,4 +19,9 @@ public record UserRole(string Value)
 
         return role;
     }
+
+    public static IEnumerable<string> GetAvailableRolesValues()
+    {
+        return AvailableRoles.Select(x => x.Value);
+    }
 }
