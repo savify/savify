@@ -3,7 +3,7 @@ using App.Modules.Categories.Domain.CategoriesSynchronisationProcessing;
 
 namespace App.Modules.Categories.Application.CategoriesSynchronisationProcessing.SynchroniseCategories;
 
-public class SynchroniseCategoriesCommandHandler(
+internal class SynchroniseCategoriesCommandHandler(
     ICategoriesSynchronisationProcessRepository categoriesSynchronisationProcessRepository,
     ICategoriesSynchronisationService categoriesSynchronisationService)
     : ICommandHandler<SynchroniseCategoriesCommand, CategoriesSynchronisationResultDto>
