@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.EditCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
@@ -14,7 +15,7 @@ public class EditCreditWalletTests : TestBase
         var userId = Guid.NewGuid();
         var walletId = await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCreditWalletCommand(
             userId,
-            "Debit wallet",
+            "Credit wallet",
             "PLN",
             1000,
             1000,
@@ -44,5 +45,120 @@ public class EditCreditWalletTests : TestBase
         Assert.That(editedWallet.ViewMetadata.Color, Is.EqualTo("#000000"));
         Assert.That(editedWallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/new-wallet.png"));
         Assert.That(editedWallet.ViewMetadata.IsConsideredInTotalBalance, Is.False);
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    public void EditNewCreditWalletCommand_WhenTitleIsInvalid_ThrowsInvalidCommandException(string title)
+    {
+        var command = new EditCreditWalletCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            title,
+            "PLN",
+            500,
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    public void AddNewCreditWalletCommand_WhenCreditLimitIsNegative_ThrowsInvalidCommandException()
+    {
+        var command = new EditCreditWalletCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Credit wallet",
+            "PLN",
+            500,
+            -100,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    public void AddNewCreditWalletCommand_WhenAvailableBalanceIsHigherThatCreditLimit_ThrowsInvalidCommandException()
+    {
+        var command = new EditCreditWalletCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Credit wallet",
+            "PLN",
+            1500,
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("pl")]
+    [TestCase("invalid")]
+    public void EditNewCreditWalletCommand_WhenCurrencyIsInvalid_ThrowsInvalidCommandException(string currency)
+    {
+        var command = new EditCreditWalletCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Credit wallet",
+            currency,
+            500,
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("invalid")]
+    [TestCase("#FFFFFFF")]
+    public void EditNewCreditWalletCommand_WhenColorIsInvalid_ThrowsInvalidCommandException(string color)
+    {
+        var command = new EditCreditWalletCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Credit wallet",
+            "PLN",
+            500,
+            1000,
+            color,
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("invalid")]
+    public void EditNewCreditWalletCommand_WhenIconUrlIsInvalid_ThrowsInvalidCommandException(string iconUrl)
+    {
+        var command = new EditCreditWalletCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Credit wallet",
+            "PLN",
+            500,
+            1000,
+            "#ffffff",
+            iconUrl,
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
 }

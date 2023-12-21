@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
@@ -34,5 +35,78 @@ public class AddNewCashWalletTests : TestBase
         Assert.That(wallet.ViewMetadata.Color, Is.EqualTo("#ffffff"));
         Assert.That(wallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/wallet.png"));
         Assert.That(wallet.ViewMetadata.IsConsideredInTotalBalance, Is.True);
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    public void AddNewCashWalletCommand_WhenTitleIsInvalid_ThrowsInvalidCommandException(string title)
+    {
+        var command = new AddNewCashWalletCommand(
+            Guid.NewGuid(),
+            title,
+            "PLN",
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("pl")]
+    [TestCase("invalid")]
+    public void AddNewCashWalletCommand_WhenCurrencyIsInvalid_ThrowsInvalidCommandException(string currency)
+    {
+        var command = new AddNewCashWalletCommand(
+            Guid.NewGuid(),
+            "Cash wallet",
+            currency,
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("invalid")]
+    [TestCase("#FFFFFFF")]
+    public void AddNewCashWalletCommand_WhenColorIsInvalid_ThrowsInvalidCommandException(string color)
+    {
+        var command = new AddNewCashWalletCommand(
+            Guid.NewGuid(),
+            "Cash wallet",
+            "PLN",
+            1000,
+            color,
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("invalid")]
+    public void AddNewCashWalletCommand_WhenIconUrlIsInvalid_ThrowsInvalidCommandException(string iconUrl)
+    {
+        var command = new AddNewCashWalletCommand(
+            Guid.NewGuid(),
+            "Cash wallet",
+            "PLN",
+            1000,
+            "#ffffff",
+            iconUrl,
+            true);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
 }

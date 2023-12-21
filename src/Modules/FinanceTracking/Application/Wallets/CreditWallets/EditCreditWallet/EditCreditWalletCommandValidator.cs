@@ -9,8 +9,8 @@ internal class EditCreditWalletCommandValidator : Validator<EditCreditWalletComm
     public EditCreditWalletCommandValidator()
     {
         RuleFor(c => c.Title)
-            .MinimumLength(3)
-            .WithMessage("Wallet title length should contain minimum 3 characters");
+            .NotEmpty()
+            .WithMessage("Please provide wallet title");
 
         RuleFor(c => c.Currency)
             .MustMatchCurrencyCodeIsoFormat();
