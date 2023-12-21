@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.Categories.Application.Categories.CreateCategory;
 using App.Modules.Categories.Application.Categories.EditCategory;
 using App.Modules.Categories.Application.Categories.GetCategories;
@@ -26,6 +27,34 @@ public class EditCategoryTests : TestBase
         Assert.That(editedCategory, Is.Not.Null);
         Assert.That(editedCategory!.Title, Is.EqualTo("New title"));
         Assert.That(editedCategory.IconUrl, Is.EqualTo("https://new-icon-url.com"));
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("Ne")]
+    public void EditCategoryCommand_WhenTitleIsInvalid_ThrowsInvalidCommandException(string title)
+    {
+        var categoryId = Guid.NewGuid();
+
+        Assert.That(() => CategoriesModule.ExecuteCommandAsync(new EditCategoryCommand(
+            categoryId,
+            title,
+            "https://new-icon-url.com")), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("invalid_url")]
+    public void EditCategoryCommand_WhenIconUrlIsInvalid_ThrowsInvalidCommandException(string iconUrl)
+    {
+        var categoryId = Guid.NewGuid();
+
+        Assert.That(() => CategoriesModule.ExecuteCommandAsync(new EditCategoryCommand(
+            categoryId,
+            "New title",
+            iconUrl)), Throws.TypeOf<InvalidCommandException>());
     }
 
     private async Task<CategoryDto?> GetEditedCategory(Guid categoryId)
