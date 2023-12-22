@@ -14,7 +14,7 @@ public class CategoriesSynchronisationController(ICategoriesModule categoriesMod
     [HttpPost]
     [HasPermission(CategoriesPermissions.ManageCategories)]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<IActionResult> SynchroniseBanks()
+    public async Task<IActionResult> SynchroniseCategories()
     {
         var result = await categoriesModule.ExecuteCommandAsync(new SynchroniseCategoriesCommand());
 
