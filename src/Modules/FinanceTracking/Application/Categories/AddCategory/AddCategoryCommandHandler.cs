@@ -1,11 +1,14 @@
 using App.Modules.FinanceTracking.Application.Configuration.Commands;
+using App.Modules.FinanceTracking.Domain.Categories;
 
-namespace App.Modules.FinanceTracking.Application.Categories;
+namespace App.Modules.FinanceTracking.Application.Categories.AddCategory;
 
-public class AddCategoryCommandHandler : ICommandHandler<AddCategoryCommand>
+public class AddCategoryCommandHandler(ICategoryRepository categoryRepository) : ICommandHandler<AddCategoryCommand>
 {
     public Task Handle(AddCategoryCommand command, CancellationToken cancellationToken)
     {
-        // TODO: add category here
+        var category = new Category(new CategoryId(command.CategoryId), command.ExternalCategoryId);
+
+        return categoryRepository.AddAsync(category);
     }
 }

@@ -2,7 +2,7 @@ using App.Modules.Categories.IntegrationEvents;
 using App.Modules.FinanceTracking.Application.Configuration.Commands;
 using MediatR;
 
-namespace App.Modules.FinanceTracking.Application.Categories;
+namespace App.Modules.FinanceTracking.Application.Categories.AddCategory;
 
 public class NewCategoryCreatedIntegrationEventHandler(ICommandScheduler commandScheduler) : INotificationHandler<NewCategoryCreatedIntegrationEvent>
 {

@@ -1,7 +1,7 @@
 using App.Modules.FinanceTracking.Application.Configuration.Commands;
 using Newtonsoft.Json;
 
-namespace App.Modules.FinanceTracking.Application.Categories;
+namespace App.Modules.FinanceTracking.Application.Categories.AddCategory;
 
 [method: JsonConstructor]
 public class AddCategoryCommand(

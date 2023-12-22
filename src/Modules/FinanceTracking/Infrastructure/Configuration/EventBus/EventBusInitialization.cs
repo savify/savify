@@ -1,6 +1,7 @@
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.EventBus;
 using App.BuildingBlocks.Integration;
+using App.Modules.Categories.IntegrationEvents;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -18,7 +19,7 @@ public static class EventBusInitialization
     {
         var eventBus = CompositionRoot.BeginScope().ServiceProvider.GetRequiredService<IEventBus>();
 
-        // SubscribeToIntegrationEvent<SomeIntegrationEvent>(eventBus, logger);
+        SubscribeToIntegrationEvent<NewCategoryCreatedIntegrationEvent>(eventBus, logger);
     }
 
     private static void SubscribeToIntegrationEvent<T>(IEventBus eventBus, ILogger logger) where T : IntegrationEvent
