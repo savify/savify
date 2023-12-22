@@ -40,9 +40,9 @@ public sealed class InMemoryEventBus
             return;
         }
 
-        var integrationEventHandlers = _handlersDictionary[eventType];
+        _handlersDictionary.TryGetValue(eventType, out var integrationEventHandlers);
 
-        foreach (var integrationEventHandler in integrationEventHandlers)
+        foreach (var integrationEventHandler in integrationEventHandlers ?? new List<IIntegrationEventHandler>())
         {
             if (integrationEventHandler is IIntegrationEventHandler<T> handler)
             {
