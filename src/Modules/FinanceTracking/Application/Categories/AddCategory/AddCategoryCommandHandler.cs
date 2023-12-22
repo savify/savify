@@ -3,7 +3,7 @@ using App.Modules.FinanceTracking.Domain.Categories;
 
 namespace App.Modules.FinanceTracking.Application.Categories.AddCategory;
 
-public class AddCategoryCommandHandler(ICategoryRepository categoryRepository) : ICommandHandler<AddCategoryCommand>
+internal class AddCategoryCommandHandler(ICategoryRepository categoryRepository) : ICommandHandler<AddCategoryCommand>
 {
     public Task Handle(AddCategoryCommand command, CancellationToken cancellationToken)
     {
