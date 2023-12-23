@@ -90,6 +90,7 @@ resharper_field_can_be_made_read_only_local_highlighting = hint
 resharper_not_accessed_field_global_highlighting = hint
 resharper_not_accessed_field_local_highlighting = hint
 resharper_unused_auto_property_accessor_local_highlighting = hint
+resharper_collection_never_queried_local_highlighting = hint
 resharper_unused_parameter_local_highlighting = suggestion
 resharper_unused_variable_highlighting = suggestion
 

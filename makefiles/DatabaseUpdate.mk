@@ -1,4 +1,4 @@
-db-update: user-access-db-update notifications-db-update finance-tracking-db-update banks-db-update categories-db-update transactions-db-update
+db-update: user-access-db-update notifications-db-update finance-tracking-db-update banks-db-update categories-db-update
 
 user-access-db-update:
 	dotnet ef database update --project src/Modules/UserAccess/Infrastructure --startup-project src/API --context UserAccessContext
@@ -14,6 +14,3 @@ banks-db-update:
 
 categories-db-update:
 	dotnet ef database update --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext
-
-transactions-db-update:
-	dotnet ef database update --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext

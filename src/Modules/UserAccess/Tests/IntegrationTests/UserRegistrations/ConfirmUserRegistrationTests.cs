@@ -27,7 +27,7 @@ public class ConfirmUserRegistrationTests : TestBase
             confirmationCode.Value));
 
         var userRegistration = await UserAccessModule.ExecuteQueryAsync(new GetUserRegistrationQuery(userRegistrationId));
-        var userRegistrationConfirmedNotification = await GetLastOutboxMessage<UserRegistrationConfirmedNotification>();
+        var userRegistrationConfirmedNotification = await GetSingleOutboxMessage<UserRegistrationConfirmedNotification>();
 
         Assert.That(userRegistration!.Status, Is.EqualTo(UserRegistrationStatus.Confirmed.Value));
         Assert.That(userRegistrationConfirmedNotification.DomainEvent.UserRegistrationId.Value, Is.EqualTo(userRegistrationId));

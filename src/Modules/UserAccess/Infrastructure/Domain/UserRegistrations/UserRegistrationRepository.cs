@@ -13,7 +13,8 @@ public class UserRegistrationRepository(UserAccessContext userAccessContext) : I
 
     public async Task<UserRegistration> GetByIdAsync(UserRegistrationId id)
     {
-        var userRegistration = await userAccessContext.UserRegistrations.SingleOrDefaultAsync(x => x.Id == id);
+        var userRegistration = userAccessContext.UserRegistrations.Local.SingleOrDefault(x => x.Id == id) ??
+                               await userAccessContext.UserRegistrations.SingleOrDefaultAsync(x => x.Id == id);
 
         if (userRegistration == null)
         {

@@ -13,7 +13,6 @@ using App.Modules.FinanceTracking.Infrastructure;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Infrastructure;
-using App.Modules.Transactions.Infrastructure;
 using App.Modules.UserAccess.Application.Contracts;
 using App.Modules.UserAccess.Infrastructure;
 using Dapper;
@@ -64,7 +63,6 @@ public class TestBase
         await MigrateDb<CategoriesContext>(scope);
         await MigrateDb<FinanceTrackingContext>(scope);
         await MigrateDb<NotificationsContext>(scope);
-        await MigrateDb<TransactionsContext>(scope);
         await MigrateDb<UserAccessContext>(scope);
     }
 
