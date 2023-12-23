@@ -6,5 +6,7 @@ public interface ICategoryRepository
 
     Task<Category> GetByIdAsync(CategoryId id);
 
+    Task<List<Category>> GetAllAsync();
+
     Task<Category?> GetByExternalIdAsync(string externalId);
 }
