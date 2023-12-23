@@ -9,11 +9,7 @@ public static class DomainEventsAccessor
     public static List<IDomainEvent> GetAllDomainEvents(Entity aggregate)
     {
         var domainEvents = new List<IDomainEvent>();
-
-        if (aggregate.DomainEvents != null)
-        {
-            domainEvents.AddRange(aggregate.DomainEvents);
-        }
+        domainEvents.AddRange(aggregate.DomainEvents);
 
         var fields = aggregate.GetType()
             .GetFields(
