@@ -14,9 +14,13 @@ public class CategoriesSynchronisationService(
     {
         var categories = await categoryRepository.GetAllAsync();
         var externalCategories = await GetExternalCategories();
+        var externalIncomeCategories = externalCategories.Personal[SaltEdgeCategories.Income];
+        var externalExpenseCategories = externalCategories.Personal.Where(
+            c => c.Key != SaltEdgeCategories.Income)
+            .ToDictionary();
 
-        await SynchroniseIncomeCategoriesAsync(externalCategories.Personal[SaltEdgeCategories.Income], categories);
-        await SynchroniseExpenseCategoriesAsync(externalCategories, categories);
+        await SynchroniseIncomeCategoriesAsync(externalIncomeCategories, categories);
+        await SynchroniseExpenseCategoriesAsync(externalExpenseCategories, categories);
     }
 
     private async Task SynchroniseIncomeCategoriesAsync(IList<string> externalIncomeCategories, List<Category> categories)
@@ -38,9 +42,9 @@ public class CategoriesSynchronisationService(
         }
     }
 
-    private async Task SynchroniseExpenseCategoriesAsync(SaltEdgeCategories externalCategories, List<Category> categories)
+    private async Task SynchroniseExpenseCategoriesAsync(IDictionary<string, IList<string>> externalExpenseCategories, List<Category> categories)
     {
-        foreach (var externalCategory in externalCategories.Personal)
+        foreach (var externalCategory in externalExpenseCategories)
         {
             var externalId = externalCategory.Key;
             if (externalId == SaltEdgeCategories.Income) continue;
