@@ -7,9 +7,25 @@ on:
   pull_request:
 
 jobs:
-  codestyle-arch-unit-tests:
-    name: CodeStyle, Architectural and Unit Tests
+  codestyle:
+    name: CodeStyle
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Code style verifying
+        run: dotnet format Savify.sln --verify-no-changes
+
+  arch-unit-tests:
+    name: Architectural and Unit Tests
+    runs-on: ubuntu-latest
+    needs: codestyle
 
     steps:
       - uses: actions/checkout@v4
@@ -34,27 +50,27 @@ jobs:
       - name: Unit Tests
         run: dotnet test --no-build --verbosity normal --filter TestCategory=UnitTest
 
-#  integration-tests:
-#    name: Integration Tests
-#    runs-on: ubuntu-latest
-#    needs: codestyle-arch-unit-tests
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      - name: Setup .NET
-#        uses: actions/setup-dotnet@v3
-#        with:
-#          dotnet-version: 8.0.x
-#
-#      - name: Restore dependencies
-#        run: dotnet restore
-#
-#      - name: Build
-#        run: dotnet build --no-restore
-#
-#      - name: Integration Tests
-#        run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=IntegrationTest
-#
-#      - name: Module Integration Tests
-#        run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=ModulesIntegrationTest
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: arch-unit-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Integration Tests
+        run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=IntegrationTest
+
+      - name: Module Integration Tests
+        run: dotnet test -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=ModulesIntegrationTest
