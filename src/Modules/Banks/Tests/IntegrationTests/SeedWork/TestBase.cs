@@ -13,7 +13,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
-using WireMock.Server;
 
 namespace App.Modules.Banks.IntegrationTests.SeedWork;
 
@@ -32,15 +31,15 @@ public class TestBase
     [OneTimeSetUp]
     public async Task Init()
     {
-        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create();
+        SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker();
+
+        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(SaltEdgeHttpClientMocker.BaseUrl);
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         BanksModule = scope.ServiceProvider.GetRequiredService<IBanksModule>();
-
-        SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
 
         var dbContext = scope.ServiceProvider.GetRequiredService<BanksContext>();
         await dbContext.Database.MigrateAsync();
@@ -50,7 +49,6 @@ public class TestBase
     public async Task TearDown()
     {
         SaltEdgeHttpClientMocker.StopWireMockServer();
-        await WebApplicationFactory.StopDbContainerAsync();
         await WebApplicationFactory.DisposeAsync();
     }
 

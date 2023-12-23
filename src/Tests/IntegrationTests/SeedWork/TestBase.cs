@@ -20,7 +20,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using NSubstitute;
-using WireMock.Server;
 
 namespace App.IntegrationTests.SeedWork;
 
@@ -45,8 +44,10 @@ public class TestBase
     [OneTimeSetUp]
     public async Task Init()
     {
+        SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker();
         EmailSender = Substitute.For<IEmailSender>();
-        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(EmailSender);
+
+        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(EmailSender, SaltEdgeHttpClientMocker.BaseUrl);
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         ConnectionString = WebApplicationFactory.GetConnectionString();
@@ -56,8 +57,6 @@ public class TestBase
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
         CategoriesModule = scope.ServiceProvider.GetRequiredService<ICategoriesModule>();
         FinanceTrackingModule = scope.ServiceProvider.GetRequiredService<IFinanceTrackingModule>();
-
-        SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
 
         await MigrateDb<BanksContext>(scope);
         await MigrateDb<CategoriesContext>(scope);
@@ -70,7 +69,6 @@ public class TestBase
     public async Task TearDown()
     {
         SaltEdgeHttpClientMocker.StopWireMockServer();
-        await WebApplicationFactory.StopDbContainerAsync();
         await WebApplicationFactory.DisposeAsync();
     }
 

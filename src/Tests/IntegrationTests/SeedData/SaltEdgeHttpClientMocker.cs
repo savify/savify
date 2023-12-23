@@ -4,11 +4,15 @@ using WireMock.Server;
 
 namespace App.IntegrationTests.SeedData;
 
-public class SaltEdgeHttpClientMocker(WireMockServer wireMock)
+public class SaltEdgeHttpClientMocker
 {
+    private readonly WireMockServer _wireMock = WireMockServer.Start();
+
+    public string BaseUrl => _wireMock.Url!;
+
     public void StopWireMockServer()
     {
-        wireMock.Stop();
+        _wireMock.Stop();
     }
 
     public void MockFetchCategoriesSuccessfulResponse()
@@ -31,7 +35,7 @@ public class SaltEdgeHttpClientMocker(WireMockServer wireMock)
             }
         };
 
-        wireMock.Given(
+        _wireMock.Given(
                 Request.Create()
                     .WithPath("/categories")
                     .UsingGet()
@@ -55,7 +59,7 @@ public class SaltEdgeHttpClientMocker(WireMockServer wireMock)
             },
         };
 
-        wireMock.Given(
+        _wireMock.Given(
                 Request.Create()
                     .WithPath("/categories")
                     .UsingGet()

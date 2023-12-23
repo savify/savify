@@ -11,6 +11,7 @@ using App.Modules.UserAccess.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.PostgreSql;
@@ -21,6 +22,8 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 {
     private IEmailSender _emailSender;
 
+    private string _saltEdgeMockServerUrl;
+
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
         .WithDatabase("savify")
@@ -28,9 +31,9 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         .WithPassword("pass")
         .Build();
 
-    public static async Task<CustomWebApplicationFactory<TProgram>> Create(IEmailSender emailSender)
+    public static async Task<CustomWebApplicationFactory<TProgram>> Create(IEmailSender emailSender, string saltEdgeMockServerUrl)
     {
-        var factory = new CustomWebApplicationFactory<TProgram>(emailSender);
+        var factory = new CustomWebApplicationFactory<TProgram>(emailSender, saltEdgeMockServerUrl);
         await factory.InitialiseDbContainerAsync();
 
         return factory;
@@ -38,12 +41,18 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 
     public Task InitialiseDbContainerAsync() => _dbContainer.StartAsync();
 
-    public Task StopDbContainerAsync() => _dbContainer.StopAsync();
-
     public string GetConnectionString() => _dbContainer.GetConnectionString();
+
+    public override async ValueTask DisposeAsync()
+    {
+        await _dbContainer.StopAsync();
+        await base.DisposeAsync();
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseConfiguration(BuildConfiguration());
+
         builder.ConfigureTestServices(services =>
         {
             var connectionString = _dbContainer.GetConnectionString();
@@ -60,8 +69,24 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         });
     }
 
-    private CustomWebApplicationFactory(IEmailSender emailSender)
+    private IConfiguration BuildConfiguration()
+    {
+        var configurationValues = new List<KeyValuePair<string, string>>
+        {
+            new("SaltEdge:BaseUrl", _saltEdgeMockServerUrl)
+        };
+
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.Testing.json")
+            .AddInMemoryCollection(configurationValues!)
+            .Build();
+
+        return configuration;
+    }
+
+    private CustomWebApplicationFactory(IEmailSender emailSender, string saltEdgeMockServerUrl)
     {
         _emailSender = emailSender;
+        _saltEdgeMockServerUrl = saltEdgeMockServerUrl;
     }
 }
