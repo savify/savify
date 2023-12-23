@@ -16,6 +16,8 @@ public class Category : Entity, IAggregateRoot
 
     private CategoryType _type;
 
+    public CategoryType Type => _type;
+
     private Url? _iconUrl;
 
     public static Category Create(string externalId, string title, CategoryType type, ICategoriesCounter categoriesCounter, CategoryId? parentId = null, Url? iconUrl = null)
@@ -23,9 +25,17 @@ public class Category : Entity, IAggregateRoot
         return new Category(externalId, title, type, categoriesCounter, parentId, iconUrl);
     }
 
-    public Category AddChild(string externalId, string title, ICategoriesCounter categoriesCounter, CategoryType type, Url? iconUrl = null)
+    public Category AddChild(string externalId, string title, CategoryType type, ICategoriesCounter categoriesCounter, Url? iconUrl = null)
     {
         return Create(externalId, title, type, categoriesCounter, this.Id, iconUrl);
+    }
+
+    public void Edit(string? newTitle, Url? newIconUrl)
+    {
+        _title = newTitle ?? _title;
+        _iconUrl = newIconUrl ?? _iconUrl;
+
+        AddDomainEvent(new CategoryEditedDomainEvent(Id, _title, _iconUrl));
     }
 
     private Category(string externalId, string title, CategoryType type, ICategoriesCounter categoriesCounter, CategoryId? parentId = null, Url? iconUrl = null)

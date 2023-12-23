@@ -1,3 +1,4 @@
+using App.Modules.Categories.Domain;
 using App.Modules.Categories.Domain.Categories;
 using App.Modules.Categories.Domain.Categories.Events;
 using App.Modules.Categories.Domain.Categories.Rules;
@@ -35,7 +36,7 @@ public class CategoryTests : UnitTestBase
         var categoriesCounter = Substitute.For<ICategoriesCounter>();
         var category = Category.Create("external_id", "Category", CategoryType.Expense, categoriesCounter);
 
-        var childCategory = category.AddChild("child_external_id", "Child category", categoriesCounter, CategoryType.Expense);
+        var childCategory = category.AddChild("child_external_id", "Child category", CategoryType.Expense, categoriesCounter);
 
         var newCategoryCreatedDomainEvent = AssertPublishedDomainEvent<NewCategoryCreatedDomainEvent>(childCategory);
         Assert.That(childCategory.ParentId, Is.EqualTo(category.Id));
@@ -51,6 +52,20 @@ public class CategoryTests : UnitTestBase
         categoriesCounter.CountWithExternalId("child_external_id").Returns(1);
 
         AssertBrokenRule<ExternalIdMustBeUniqueRule>(() =>
-            category.AddChild("child_external_id", "Child category", categoriesCounter, CategoryType.Expense));
+            category.AddChild("child_external_id", "Child category", CategoryType.Expense, categoriesCounter));
+    }
+
+    [Test]
+    public void EditingCategory_IsSuccessful()
+    {
+        var categoriesCounter = Substitute.For<ICategoriesCounter>();
+        var category = Category.Create("external_id", "Category", CategoryType.Expense, categoriesCounter);
+
+        category.Edit("New title", new Url("https://new-icon-url.com"));
+
+        var categoryEditedDomainEvent = AssertPublishedDomainEvent<CategoryEditedDomainEvent>(category);
+        Assert.That(categoryEditedDomainEvent.CategoryId, Is.EqualTo(category.Id));
+        Assert.That(categoryEditedDomainEvent.NewTitle, Is.EqualTo("New title"));
+        Assert.That(categoryEditedDomainEvent.NewIconUrl, Is.EqualTo(new Url("https://new-icon-url.com")));
     }
 }

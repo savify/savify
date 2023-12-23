@@ -1,3 +1,6 @@
 {
-  "Category with external ID '{0}' already exists": "Категорія зі зовнішнім ID '{0}' вже існує"
+  "Category with external ID '{0}' already exists": "Категорія зі зовнішнім ID '{0}' вже існує",
+  "Category title length should contain minimum 3 characters": "Назва категорії повинна містити не менше 3 символів",
+  "Icon URL value is not a valid URL": "Подане значення URL іконки не є дійсним URL",
+  "Category type must be one of the following: 'Income', 'Expense'" : "Тип категорії повинен бути одним з наступних: 'Income', 'Expense'"
 }

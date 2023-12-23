@@ -1,11 +1,6 @@
 namespace App.Modules.Banks.Application.BanksSynchronisationProcessing.SynchroniseBanks;
 
-public class BanksSynchronisationResultDto
+public class BanksSynchronisationResultDto(string status)
 {
-    public string Status { get; }
-
-    public BanksSynchronisationResultDto(string status)
-    {
-        Status = status;
-    }
+    public string Status { get; } = status;
 }

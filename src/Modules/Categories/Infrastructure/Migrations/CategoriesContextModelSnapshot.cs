@@ -129,7 +129,7 @@ namespace App.Modules.Categories.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("external_id");
 
-                    b.Property<Guid?>("_parentId")
+                    b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid")
                         .HasColumnName("parent_id");
 
@@ -152,6 +152,36 @@ namespace App.Modules.Categories.Infrastructure.Migrations
                         .HasName("pk_categories");
 
                     b.ToTable("categories", "categories");
+                });
+
+            modelBuilder.Entity("App.Modules.Categories.Domain.CategoriesSynchronisationProcessing.CategoriesSynchronisationProcess", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("_finishedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("finished_at");
+
+                    b.Property<DateTime>("_startedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("started_at");
+
+                    b.ComplexProperty<Dictionary<string, object>>("_status", "App.Modules.Categories.Domain.CategoriesSynchronisationProcessing.CategoriesSynchronisationProcess._status#CategoriesSynchronisationProcessStatus", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("status");
+                        });
+
+                    b.HasKey("Id")
+                        .HasName("pk_categories_synchronisation_processes");
+
+                    b.ToTable("categories_synchronisation_processes", "categories");
                 });
 
             modelBuilder.Entity("App.Modules.Categories.Domain.Categories.Category", b =>

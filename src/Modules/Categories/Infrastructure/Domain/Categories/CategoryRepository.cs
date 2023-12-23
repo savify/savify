@@ -23,6 +23,11 @@ public class CategoryRepository(CategoriesContext categoriesContext) : ICategory
         return category;
     }
 
+    public Task<List<Category>> GetAllAsync()
+    {
+        return categoriesContext.Categories.ToListAsync();
+    }
+
     public Task<Category?> GetByExternalIdAsync(string externalId)
     {
         return categoriesContext.Categories.SingleOrDefaultAsync(x => x.ExternalId == externalId);
