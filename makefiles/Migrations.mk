@@ -13,6 +13,3 @@ banks-migrations:
 
 categories-migrations:
 	dotnet ef migrations add $(name) --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext
-
-transactions-migrations:
-	dotnet ef migrations add $(name) --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext

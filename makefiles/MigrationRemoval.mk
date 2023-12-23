@@ -12,6 +12,3 @@ banks-migration-removal:
 
 categories-migration-removal:
 	dotnet ef migrations remove --project src/Modules/Categories/Infrastructure --startup-project src/API --context CategoriesContext
-
-transactions-migration-removal:
-	dotnet ef migrations remove --project src/Modules/Transactions/Infrastructure --startup-project src/API --context TransactionsContext
