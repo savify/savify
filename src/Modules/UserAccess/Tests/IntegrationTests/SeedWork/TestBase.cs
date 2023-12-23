@@ -3,6 +3,7 @@ using System.Reflection;
 using App.API;
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
+using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.Database.Scripts.Clear;
 using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.Contracts;
@@ -23,6 +24,8 @@ public class TestBase
 
     protected string ConnectionString { get; private set; }
 
+    protected IDomainNotificationsMapper<UserAccessContext> DomainNotificationsMapper { get; private set; }
+
     private static readonly Assembly ApplicationAssembly = Assembly.GetAssembly(typeof(CommandBase))!;
 
     [OneTimeSetUp]
@@ -35,6 +38,7 @@ public class TestBase
 
         using var scope = WebApplicationFactory.Services.CreateScope();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
+        DomainNotificationsMapper = scope.ServiceProvider.GetRequiredService<IDomainNotificationsMapper<UserAccessContext>>();
 
         var dbContext = scope.ServiceProvider.GetRequiredService<UserAccessContext>();
         await dbContext.Database.MigrateAsync();
@@ -60,6 +64,16 @@ public class TestBase
         var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, ApplicationAssembly);
 
         return messages;
+    }
+
+    protected async Task<T> GetSingleOutboxMessage<T>() where T : class, INotification
+    {
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        var notificationType = DomainNotificationsMapper.GetName(typeof(T));
+        var messages = await OutboxMessagesAccessor.GetOutboxMessages(connection, DatabaseConfiguration.Schema, ApplicationAssembly);
+        var message = messages.Single(m => m.Type == notificationType);
+
+        return OutboxMessagesAccessor.Deserialize<T>(message, ApplicationAssembly);
     }
 
     protected async Task<T> GetLastOutboxMessage<T>() where T : class, INotification
