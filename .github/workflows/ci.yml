@@ -20,7 +20,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Code style verifying
-        run: dotnet format --verify-no-changes --no-restore --verbosity=detailed
+        run: dotnet format --verify-no-changes --verbosity=detailed
 
   arch-tests:
     name: Architectural Tests
