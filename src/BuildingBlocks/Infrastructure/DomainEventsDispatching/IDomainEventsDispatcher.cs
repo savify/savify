@@ -4,5 +4,5 @@ namespace App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 
 public interface IDomainEventsDispatcher<TContext> where TContext : DbContext
 {
-    void DispatchEventsAsync();
+    Task DispatchEventsAsync();
 }

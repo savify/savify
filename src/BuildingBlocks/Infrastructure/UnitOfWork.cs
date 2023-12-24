@@ -9,7 +9,7 @@ public class UnitOfWork<TContext>(TContext context, IDomainEventsDispatcher<TCon
 {
     public async Task<int> CommitAsync(CancellationToken cancellationToken = default, Guid? internalCommandId = null)
     {
-        domainEventsDispatcher.DispatchEventsAsync();
+        await domainEventsDispatcher.DispatchEventsAsync();
 
         try
         {
