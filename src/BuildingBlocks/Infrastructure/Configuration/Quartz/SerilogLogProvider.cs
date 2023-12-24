@@ -3,15 +3,8 @@ using Serilog;
 
 namespace App.BuildingBlocks.Infrastructure.Configuration.Quartz;
 
-public class SerilogLogProvider : ILogProvider
+public class SerilogLogProvider(ILogger logger) : ILogProvider
 {
-    private readonly ILogger _logger;
-
-    public SerilogLogProvider(ILogger logger)
-    {
-        _logger = logger;
-    }
-
     public Logger GetLogger(string name)
     {
         return (level, func, exception, parameters) =>
@@ -23,27 +16,27 @@ public class SerilogLogProvider : ILogProvider
 
             if (level == LogLevel.Debug || level == LogLevel.Trace)
             {
-                _logger.Debug(exception, func(), parameters);
+                logger.Debug(exception, func(), parameters);
             }
 
             if (level == LogLevel.Info)
             {
-                _logger.Information(exception, func(), parameters);
+                logger.Information(exception, func(), parameters);
             }
 
             if (level == LogLevel.Warn)
             {
-                _logger.Warning(exception, func(), parameters);
+                logger.Warning(exception, func(), parameters);
             }
 
             if (level == LogLevel.Error)
             {
-                _logger.Error(exception, func(), parameters);
+                logger.Error(exception, func(), parameters);
             }
 
             if (level == LogLevel.Fatal)
             {
-                _logger.Fatal(exception, func(), parameters);
+                logger.Fatal(exception, func(), parameters);
             }
 
             return true;

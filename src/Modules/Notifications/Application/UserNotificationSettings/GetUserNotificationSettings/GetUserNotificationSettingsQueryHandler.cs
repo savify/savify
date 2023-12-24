@@ -5,18 +5,12 @@ using Dapper;
 
 namespace App.Modules.Notifications.Application.UserNotificationSettings.GetUserNotificationSettings;
 
-internal class GetUserNotificationSettingsQueryHandler : IQueryHandler<GetUserNotificationSettingsQuery, UserNotificationSettingsDto?>
+internal class GetUserNotificationSettingsQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+    : IQueryHandler<GetUserNotificationSettingsQuery, UserNotificationSettingsDto?>
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public GetUserNotificationSettingsQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public async Task<UserNotificationSettingsDto?> Handle(GetUserNotificationSettingsQuery query, CancellationToken cancellationToken)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         string sql = $"""
                       SELECT user_id AS userId, email, name, preferred_language AS preferredLanguage

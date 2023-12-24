@@ -5,24 +5,17 @@ using Newtonsoft.Json;
 
 namespace App.Modules.UserAccess.Infrastructure.Configuration.Processing.InternalCommands;
 
-internal class ProcessInternalCommandsCommandHandler : ICommandHandler<ProcessInternalCommandsCommand>
+internal class ProcessInternalCommandsCommandHandler(InternalCommandProcessor internalCommandProcessor) : ICommandHandler<ProcessInternalCommandsCommand>
 {
-    private readonly InternalCommandProcessor _internalCommandProcessor;
-
-    public ProcessInternalCommandsCommandHandler(InternalCommandProcessor internalCommandProcessor)
+    public Task Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
     {
-        _internalCommandProcessor = internalCommandProcessor;
-    }
-
-    public async Task Handle(ProcessInternalCommandsCommand command, CancellationToken cancellationToken)
-    {
-        await _internalCommandProcessor.Process(DatabaseConfiguration.Schema, ExecuteCommand, cancellationToken);
+        return internalCommandProcessor.Process(DatabaseConfiguration.Schema, ExecuteCommand, cancellationToken);
     }
 
     private async Task ExecuteCommand(InternalCommandDto internalCommand)
     {
-        Type type = Assemblies.Application.GetType(internalCommand.Type);
-        dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type);
+        var type = Assemblies.Application.GetType(internalCommand.Type)!;
+        dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type)!;
 
         await CommandExecutor.Execute(commandToProcess);
     }

@@ -11,27 +11,15 @@ using Serilog.Context;
 
 namespace App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 
-public class OutboxCommandProcessor<TContext> where TContext : DbContext
+public class OutboxCommandProcessor<TContext>(
+    IMediator mediator,
+    ISqlConnectionFactory sqlConnectionFactory,
+    IDomainNotificationsMapper<TContext> domainNotificationsMapper)
+    where TContext : DbContext
 {
-    private readonly IMediator _mediator;
-
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    private readonly IDomainNotificationsMapper<TContext> _domainNotificationsMapper;
-
-    public OutboxCommandProcessor(
-        IMediator mediator,
-        ISqlConnectionFactory sqlConnectionFactory,
-        IDomainNotificationsMapper<TContext> domainNotificationsMapper)
-    {
-        _mediator = mediator;
-        _sqlConnectionFactory = sqlConnectionFactory;
-        _domainNotificationsMapper = domainNotificationsMapper;
-    }
-
     public async Task Process(DatabaseSchema schema, ILogger logger, CancellationToken cancellationToken)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                    SELECT
@@ -50,8 +38,8 @@ public class OutboxCommandProcessor<TContext> where TContext : DbContext
 
         foreach (var message in messagesList)
         {
-            var type = _domainNotificationsMapper.GetType(message.Type);
-            var @event = JsonConvert.DeserializeObject(message.Data, type) as IDomainEventNotification;
+            var type = domainNotificationsMapper.GetType(message.Type)!;
+            var @event = (JsonConvert.DeserializeObject(message.Data, type) as IDomainEventNotification)!;
 
             using (LogContext.Push(new CorrelationIdLogEnricher(@event.CorrelationId)))
             {
@@ -59,7 +47,7 @@ public class OutboxCommandProcessor<TContext> where TContext : DbContext
 
                 try
                 {
-                    await _mediator.Publish(@event, cancellationToken);
+                    await mediator.Publish(@event, cancellationToken);
                 }
                 catch (Exception exception)
                 {

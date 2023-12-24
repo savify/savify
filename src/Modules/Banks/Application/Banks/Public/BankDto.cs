@@ -2,13 +2,13 @@ namespace App.Modules.Banks.Application.Banks.Public;
 
 public class BankDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public string Name { get; set; }
+    public required string Name { get; init; }
 
-    public string CountryCode { get; set; }
+    public required string CountryCode { get; init; }
 
-    public string DefaultLogoUrl { get; set; }
+    public required string DefaultLogoUrl { get; init; }
 
-    public string LogoUrl { get; set; }
+    public required string LogoUrl { get; init; }
 }

@@ -6,19 +6,12 @@ using Newtonsoft.Json;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Configuration.Processing.InternalCommands;
 
-public class CommandScheduler : ICommandScheduler
+public class CommandScheduler(FinanceTrackingContext financeTrackingContext) : ICommandScheduler
 {
-    private readonly FinanceTrackingContext _financeTrackingContext;
-
-    public CommandScheduler(FinanceTrackingContext financeTrackingContext)
-    {
-        _financeTrackingContext = financeTrackingContext;
-    }
-
     public async Task EnqueueAsync(ICommand command)
     {
-        await _financeTrackingContext.AddAsync(CreateInternalCommandFrom(command));
-        await _financeTrackingContext.SaveChangesAsync();
+        await financeTrackingContext.AddAsync(CreateInternalCommandFrom(command));
+        await financeTrackingContext.SaveChangesAsync();
     }
 
     private InternalCommand CreateInternalCommandFrom(ICommand command)
@@ -26,7 +19,7 @@ public class CommandScheduler : ICommandScheduler
         var internalCommand = new InternalCommand();
 
         internalCommand.Id = command.Id;
-        internalCommand.Type = command.GetType().FullName;
+        internalCommand.Type = command.GetType().FullName!;
         internalCommand.Data = JsonConvert.SerializeObject(command, new JsonSerializerSettings
         {
             ContractResolver = new AllPropertiesContractResolver()

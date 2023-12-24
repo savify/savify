@@ -19,6 +19,7 @@
   "Please provide user ID": "Будь ласка, вкажіть ідентифікатор користувача",
   "Please provide refresh token": "Будь ласка, надайте токен оновлення",
   "Please provide Your email address": "Будь ласка, вкажіть вашу електронну адресу",
+  "Please provide Your role": "Будь ласка, вкажіть вашу роль",
   "Provided value is not a valid email address": "Надане значення не є дійсною електронною адресою",
   "Please provide Your password": "Будь ласка, вкажіть ваш пароль",
   "Please provide Your name": "Будь ласка, вкажіть ваше ім'я",
@@ -33,5 +34,6 @@
   "Your password must contain at least one uppercase letter": "Ваш пароль повинен містити щонайменше одну велику літеру",
   "Your password must contain at least one lowercase letter": "Ваш пароль повинен містити щонайменше одну маленьку літеру",
   "Your password must contain at least one number": "Ваш пароль повинен містити щонайменше одну цифру",
-  "Your password must contain at least one special character (!? *.)": "Ваш пароль повинен містити щонайменше один спеціальний символ (!? *.)"
+  "Your password must contain at least one special character (!? *.)": "Ваш пароль повинен містити щонайменше один спеціальний символ (!? *.)",
+  "Provided role must be one of the following: 'Admin', 'User'": "Роль повинна бути однією з наступних: 'Admin', 'User'"
 }

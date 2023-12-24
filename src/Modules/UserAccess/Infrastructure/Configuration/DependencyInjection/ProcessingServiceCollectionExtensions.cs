@@ -3,7 +3,6 @@ using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using App.Modules.UserAccess.Application.Configuration.Commands;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.Decorators;
 using App.Modules.UserAccess.Infrastructure.Configuration.Processing.InternalCommands;
-using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,8 +17,6 @@ internal static class ProcessingServiceCollectionExtensions
         services.AddScoped<IUnitOfWork<UserAccessContext>, UnitOfWork<UserAccessContext>>();
 
         services.AddScoped<ICommandScheduler, CommandScheduler>();
-
-        services.AddScoped<IList<IValidator>>(provider => provider.GetServices<IValidator>().ToList());
 
         services.Decorate(typeof(IRequestHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
         services.Decorate(typeof(IRequestHandler<>), typeof(ValidationCommandHandlerDecorator<>));

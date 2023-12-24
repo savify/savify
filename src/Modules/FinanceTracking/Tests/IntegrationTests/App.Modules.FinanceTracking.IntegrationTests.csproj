@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
+        <NoWarn>CS8618</NoWarn>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -23,7 +23,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Testcontainers.PostgreSql" Version="3.6.0" />
-        <PackageReference Include="WireMock.Net" Version="1.5.43" />
+        <PackageReference Include="WireMock.Net" Version="1.5.45" />
     </ItemGroup>
 
     <ItemGroup>

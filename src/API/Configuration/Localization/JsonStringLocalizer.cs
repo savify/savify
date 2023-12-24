@@ -7,7 +7,9 @@ namespace App.API.Configuration.Localization;
 public class JsonStringLocalizer : IStringLocalizer
 {
     private readonly IDistributedCache _cache;
+
     private readonly JsonSerializer _serializer;
+
     private readonly string? _module;
 
     public JsonStringLocalizer(IDistributedCache cache, JsonSerializer serializer)
@@ -27,7 +29,7 @@ public class JsonStringLocalizer : IStringLocalizer
     {
         get
         {
-            string? value = GetString(name);
+            var value = GetString(name);
 
             return new LocalizedString(name, value ?? name, value == null);
         }
@@ -60,10 +62,10 @@ public class JsonStringLocalizer : IStringLocalizer
         {
             if (reader.TokenType != JsonToken.PropertyName) continue;
 
-            var key = reader.Value as string;
+            var key = (reader.Value as string)!;
             reader.Read();
 
-            var value = _serializer.Deserialize<string>(reader);
+            var value = _serializer.Deserialize<string>(reader)!;
 
             yield return new LocalizedString(key, value, false);
         }

@@ -2,23 +2,23 @@ namespace App.Modules.FinanceTracking.Application.BankConnectionProcessing.GetBa
 
 public class BankConnectionProcessDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public Guid UserId { get; set; }
+    public Guid UserId { get; init; }
 
-    public Guid BankId { get; set; }
+    public Guid BankId { get; init; }
 
-    public Guid WalletId { get; set; }
+    public Guid WalletId { get; init; }
 
-    public string WalletType { get; set; }
+    public required string WalletType { get; init; }
 
-    public string Status { get; set; }
+    public required string Status { get; init; }
 
-    public string RedirectUrl { get; set; }
+    public required string RedirectUrl { get; init; }
 
-    public DateTime RedirectUrlExpiresAt { get; set; }
+    public DateTime RedirectUrlExpiresAt { get; init; }
 
-    public DateTime InitiatedAt { get; set; }
+    public DateTime InitiatedAt { get; init; }
 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; init; }
 }

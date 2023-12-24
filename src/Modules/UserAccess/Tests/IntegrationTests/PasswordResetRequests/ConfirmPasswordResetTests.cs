@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.PasswordResetRequests.ConfirmPasswordReset;
 using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
@@ -40,6 +41,15 @@ public class ConfirmPasswordResetTests : TestBase
 
         Assert.That(Guid.Parse(userIdFromToken), Is.EqualTo(userId));
         Assert.That(passwordResetRequestStatus, Is.EqualTo(PasswordResetRequestStatus.Confirmed.Value));
+    }
+
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    public void ConfirmPasswordResetCommand_WhenConfirmationCodeIsInvalid_ThrowsInvalidCommandException(string confirmationCode)
+    {
+        Assert.That(() => UserAccessModule.ExecuteCommandAsync(new ConfirmPasswordResetCommand(
+            Guid.NewGuid(), confirmationCode)), Throws.TypeOf<InvalidCommandException>());
     }
 
     private JwtSecurityToken DecodeJwtToken(string token)

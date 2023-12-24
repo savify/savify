@@ -5,18 +5,11 @@ using WireMock.Server;
 
 namespace App.Modules.Banks.IntegrationTests.SeedData;
 
-public class SaltEdgeHttpClientMocker
+public class SaltEdgeHttpClientMocker(WireMockServer wireMock)
 {
-    private readonly WireMockServer _wireMock;
-
-    public SaltEdgeHttpClientMocker(WireMockServer wireMock)
-    {
-        _wireMock = wireMock;
-    }
-
     public void StopWireMockServer()
     {
-        _wireMock.Stop();
+        wireMock.Stop();
     }
 
     public void MockFetchProvidersSuccessfulResponse()
@@ -48,7 +41,7 @@ public class SaltEdgeHttpClientMocker
             }
         };
 
-        _wireMock.Given(
+        wireMock.Given(
                 Request.Create()
                     .WithPath("/providers")
                     .WithParam("include_fake_providers")
@@ -79,7 +72,7 @@ public class SaltEdgeHttpClientMocker
             }
         };
 
-        _wireMock.Given(
+        wireMock.Given(
                 Request.Create()
                     .WithPath("/providers")
                     .WithParam("include_fake_providers")
@@ -104,7 +97,7 @@ public class SaltEdgeHttpClientMocker
             },
         };
 
-        _wireMock.Given(
+        wireMock.Given(
                 Request.Create()
                     .WithPath("/providers")
                     .WithParam("include_fake_providers", true)

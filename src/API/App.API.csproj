@@ -3,7 +3,7 @@
     <PropertyGroup>
       <TargetFramework>net8.0</TargetFramework>
       <Nullable>enable</Nullable>
-      <NoWarn>CS8618</NoWarn>
+      <NoWarn>CS8618,ASP0014</NoWarn>
       <ImplicitUsings>enable</ImplicitUsings>
       <UserSecretsId>bf409451-b6a1-4174-9dce-48a38b669fe0</UserSecretsId>
   </PropertyGroup>
@@ -28,7 +28,6 @@
       <ProjectReference Include="..\Modules\Banks\Infrastructure\App.Modules.Banks.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\Categories\Infrastructure\App.Modules.Categories.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\FinanceTracking\Infrastructure\App.Modules.FinanceTracking.Infrastructure.csproj" />
-      <ProjectReference Include="..\Modules\Transactions\Infrastructure\App.Modules.Transactions.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\Notifications\Infrastructure\App.Modules.Notifications.Infrastructure.csproj" />
       <ProjectReference Include="..\Modules\UserAccess\Infrastructure\App.Modules.UserAccess.Infrastructure.csproj" />
     </ItemGroup>
@@ -38,11 +37,4 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
-
-
-    <ItemGroup>
-      <Folder Include="Modules\Categories\" />
-      <Folder Include="Modules\Transactions\" />
-    </ItemGroup>
-
 </Project>

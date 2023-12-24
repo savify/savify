@@ -10,22 +10,15 @@ namespace App.API.Modules.UserAccess.PasswordResetRequests;
 
 [Route("user-access/password-reset-requests")]
 [ApiController]
-public class PasswordResetRequestsController : ControllerBase
+public class PasswordResetRequestsController(IUserAccessModule userAccessModule) : ControllerBase
 {
-    private readonly IUserAccessModule _userAccessModule;
-
-    public PasswordResetRequestsController(IUserAccessModule userAccessModule)
-    {
-        _userAccessModule = userAccessModule;
-    }
-
     [AllowAnonymous]
     [NoPermissionRequired]
     [HttpPost("")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> RequestPasswordReset(RequestPasswordResetRequest request)
     {
-        var passwordResetRequestId = await _userAccessModule.ExecuteCommandAsync(
+        var passwordResetRequestId = await userAccessModule.ExecuteCommandAsync(
             new RequestPasswordResetCommand(request.Email));
 
         return Created("", new
@@ -40,7 +33,7 @@ public class PasswordResetRequestsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> ConfirmPasswordReset(Guid passwordResetRequestId, ConfirmPasswordResetRequest request)
     {
-        var token = await _userAccessModule.ExecuteCommandAsync(
+        var token = await userAccessModule.ExecuteCommandAsync(
             new ConfirmPasswordResetCommand(passwordResetRequestId, request.ConfirmationCode));
 
         return Accepted("", new

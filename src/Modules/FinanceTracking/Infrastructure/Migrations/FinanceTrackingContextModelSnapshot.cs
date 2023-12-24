@@ -215,6 +215,23 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     b.ToTable("bank_connections", "finance_tracking");
                 });
 
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Categories.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("external_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_categories");
+
+                    b.ToTable("categories", "finance_tracking");
+                });
+
             modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
                 {
                     b.Property<Guid>("Id")
@@ -420,10 +437,12 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                         .HasColumnName("wallet_id");
 
                     b.Property<string>("Color")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("color");
 
                     b.Property<string>("Icon")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("icon");
 

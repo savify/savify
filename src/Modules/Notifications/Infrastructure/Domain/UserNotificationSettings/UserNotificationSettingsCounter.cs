@@ -5,18 +5,11 @@ using Dapper;
 
 namespace App.Modules.Notifications.Infrastructure.Domain.UserNotificationSettings;
 
-public class UserNotificationSettingsCounter : IUserNotificationSettingsCounter
+public class UserNotificationSettingsCounter(ISqlConnectionFactory sqlConnectionFactory) : IUserNotificationSettingsCounter
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public UserNotificationSettingsCounter(ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public int CountNotificationSettingsWithUserId(UserId userId)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"SELECT COUNT(*) FROM {DatabaseConfiguration.Schema.Name}.user_notification_settings WHERE user_id = @userId";
 

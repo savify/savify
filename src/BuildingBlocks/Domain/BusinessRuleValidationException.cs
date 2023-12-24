@@ -1,13 +1,8 @@
 namespace App.BuildingBlocks.Domain;
 
-public class BusinessRuleValidationException : Exception
+public class BusinessRuleValidationException(IBusinessRule brokenRule, string? message = null) : Exception(message ?? brokenRule.Message)
 {
-    public IBusinessRule BrokenRule { get; }
-
-    public BusinessRuleValidationException(IBusinessRule brokenRule, string? message = null) : base(message ?? brokenRule.Message)
-    {
-        BrokenRule = brokenRule;
-    }
+    public IBusinessRule BrokenRule { get; } = brokenRule;
 
     public override string ToString()
     {

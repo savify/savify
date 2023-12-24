@@ -6,28 +6,21 @@ using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Customers
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.BankConnectionProcessing.Services;
 
-public class BankConnectionProcessInitiationService : IBankConnectionProcessInitiationService
+public class BankConnectionProcessInitiationService(
+    ISaltEdgeCustomerRepository customerRepository,
+    ISaltEdgeIntegrationService saltEdgeIntegrationService)
+    : IBankConnectionProcessInitiationService
 {
-    private readonly ISaltEdgeCustomerRepository _customerRepository;
-
-    private readonly ISaltEdgeIntegrationService _saltEdgeIntegrationService;
-
-    public BankConnectionProcessInitiationService(ISaltEdgeCustomerRepository customerRepository, ISaltEdgeIntegrationService saltEdgeIntegrationService)
-    {
-        _customerRepository = customerRepository;
-        _saltEdgeIntegrationService = saltEdgeIntegrationService;
-    }
-
     public async Task InitiateForAsync(UserId userId)
     {
-        var customer = await _customerRepository.GetOrDefaultAsync(userId.Value);
+        var customer = await customerRepository.GetOrDefaultAsync(userId.Value);
 
         if (customer is null)
         {
             try
             {
-                var responseContent = await _saltEdgeIntegrationService.CreateCustomerAsync(userId.Value);
-                await _customerRepository.AddAsync(new SaltEdgeCustomer(
+                var responseContent = await saltEdgeIntegrationService.CreateCustomerAsync(userId.Value);
+                await customerRepository.AddAsync(new SaltEdgeCustomer(
                     responseContent.Id,
                     Guid.Parse(responseContent.Identifier)));
             }

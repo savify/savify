@@ -6,55 +6,39 @@ using static App.Modules.Notifications.Infrastructure.Configuration.Processing.D
 
 namespace App.Modules.Notifications.Infrastructure.Configuration.Processing.Decorators;
 
-internal class UnitOfWorkCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
+internal class UnitOfWorkCommandHandlerDecorator<T, TResult>(
+    ICommandHandler<T, TResult> decorated,
+    IUnitOfWork<NotificationsContext> unitOfWork)
+    : ICommandHandler<T, TResult>
+    where T : ICommand<TResult>
 {
-    private readonly ICommandHandler<T, TResult> _decorated;
-    private readonly IUnitOfWork<NotificationsContext> _unitOfWork;
-
-    public UnitOfWorkCommandHandlerDecorator(
-        ICommandHandler<T, TResult> decorated,
-        IUnitOfWork<NotificationsContext> unitOfWork)
-    {
-        _decorated = decorated;
-        _unitOfWork = unitOfWork;
-    }
-
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
-        var result = await _decorated.Handle(command, cancellationToken);
+        var result = await decorated.Handle(command, cancellationToken);
 
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
 
         return result;
     }
 }
 
-internal class UnitOfWorkCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
+internal class UnitOfWorkCommandHandlerDecorator<T>(
+    ICommandHandler<T> decorated,
+    IUnitOfWork<NotificationsContext> unitOfWork,
+    NotificationsContext notificationsContext)
+    : ICommandHandler<T>
+    where T : ICommand
 {
-    private readonly ICommandHandler<T> _decorated;
-    private readonly IUnitOfWork<NotificationsContext> _unitOfWork;
-    private readonly NotificationsContext _notificationsContext;
-
-    public UnitOfWorkCommandHandlerDecorator(
-        ICommandHandler<T> decorated,
-        IUnitOfWork<NotificationsContext> unitOfWork,
-        NotificationsContext notificationsContext)
-    {
-        _decorated = decorated;
-        _unitOfWork = unitOfWork;
-        _notificationsContext = notificationsContext;
-    }
-
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
-        await _decorated.Handle(command, cancellationToken);
+        await decorated.Handle(command, cancellationToken);
 
         if (command is InternalCommandBase)
         {
-            await SetInternalCommandAsProcessedAsync(_notificationsContext, command.Id, cancellationToken);
+            await SetInternalCommandAsProcessedAsync(notificationsContext, command.Id, cancellationToken);
         }
 
-        await _unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
     }
 }
 

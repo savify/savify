@@ -1,7 +1,3 @@
 ﻿namespace App.BuildingBlocks.Domain.Results;
 
-public class SuccessResult : Result
-{
-    public SuccessResult() : base(isSuccess: true)
-    { }
-}
+public class SuccessResult() : Result(isSuccess: true);

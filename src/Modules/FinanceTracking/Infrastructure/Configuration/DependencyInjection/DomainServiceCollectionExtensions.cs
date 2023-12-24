@@ -1,5 +1,8 @@
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing.Services;
 using App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections;
+using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
+using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
+using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.BankConnectionProcessing.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +12,12 @@ internal static class DomainServiceCollectionExtensions
 {
     internal static IServiceCollection AddDomainServices(this IServiceCollection services)
     {
+        services.AddScoped<CashWalletFactory>();
+        services.AddScoped<CreditWalletFactory>();
+        services.AddScoped<DebitWalletFactory>();
+        services.AddScoped<CashWalletEditionService>();
+        services.AddScoped<CreditWalletEditionService>();
+        services.AddScoped<DebitWalletEditionService>();
         services.AddScoped<IBankConnectionProcessInitiationService, BankConnectionProcessInitiationService>();
         services.AddScoped<IBankConnectionProcessRedirectionService, BankConnectionProcessRedirectionService>();
         services.AddScoped<IBankConnectionProcessConnectionCreationService, BankConnectionProcessConnectionCreationService>();

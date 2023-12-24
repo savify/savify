@@ -12,23 +12,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Banks.Infrastructure;
 
-public class BanksContext : DbContext
+public class BanksContext(DbContextOptions<BanksContext> options) : DbContext(options)
 {
-    public DbSet<Bank>? Banks { get; set; }
+    public required DbSet<Bank> Banks { get; set; }
 
-    public DbSet<BankRevision>? BankRevisions { get; set; }
+    public required DbSet<BankRevision> BankRevisions { get; set; }
 
-    public DbSet<BanksSynchronisationProcess>? BankSynchronisationProcesses { get; set; }
+    public required DbSet<BanksSynchronisationProcess> BankSynchronisationProcesses { get; set; }
 
-    public DbSet<OutboxMessage>? OutboxMessages { get; set; }
+    public required DbSet<OutboxMessage> OutboxMessages { get; set; }
 
-    public DbSet<InboxMessage>? InboxMessages { get; set; }
+    public required DbSet<InboxMessage> InboxMessages { get; set; }
 
-    public DbSet<InternalCommand>? InternalCommands { get; set; }
-
-    public BanksContext(DbContextOptions<BanksContext> options) : base(options)
-    {
-    }
+    public required DbSet<InternalCommand> InternalCommands { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

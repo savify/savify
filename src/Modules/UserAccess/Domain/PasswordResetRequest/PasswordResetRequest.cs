@@ -21,7 +21,7 @@ public class PasswordResetRequest : Entity, IAggregateRoot
 
     private DateTime _validTill;
 
-    private DateTime? _confirmedAt = null;
+    private DateTime? _confirmedAt;
 
     public static PasswordResetRequest Create(string userEmail, ConfirmationCode confirmationCode, IUsersCounter usersCounter)
     {

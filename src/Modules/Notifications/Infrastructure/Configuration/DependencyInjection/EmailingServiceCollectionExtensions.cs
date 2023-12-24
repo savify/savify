@@ -19,7 +19,7 @@ internal static class EmailingServiceCollectionExtensions
         });
 
         services.AddScoped<IEmailSender>(provider => new EmailSender(
-            provider.GetService<EmailMessageMapper>(),
+            provider.GetRequiredService<EmailMessageMapper>(),
             configuration,
             logger));
 

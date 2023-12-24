@@ -7,7 +7,6 @@ using App.Modules.Categories.Infrastructure;
 using App.Modules.FinanceTracking.Infrastructure;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Infrastructure;
-using App.Modules.Transactions.Infrastructure;
 using App.Modules.UserAccess.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -53,7 +52,6 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
             services.ReplaceDbContext<CategoriesContext>(connectionString);
             services.ReplaceDbContext<FinanceTrackingContext>(connectionString);
             services.ReplaceDbContext<NotificationsContext>(connectionString);
-            services.ReplaceDbContext<TransactionsContext>(connectionString);
             services.ReplaceDbContext<UserAccessContext>(connectionString);
 
             services.Replace(ServiceDescriptor.Scoped<ISqlConnectionFactory>(_ => new SqlConnectionFactory(_dbContainer.GetConnectionString())));

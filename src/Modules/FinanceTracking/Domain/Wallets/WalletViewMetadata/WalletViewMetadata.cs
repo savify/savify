@@ -6,13 +6,13 @@ public class WalletViewMetadata : Entity, IAggregateRoot
 {
     public WalletId WalletId { get; private set; }
 
-    public string? Color { get; private set; }
+    public string Color { get; private set; }
 
-    public string? Icon { get; private set; }
+    public string Icon { get; private set; }
 
     public bool IsConsideredInTotalBalance { get; private set; }
 
-    public static WalletViewMetadata CreateForWallet(WalletId walletId, string? color, string? icon, bool isConsideredInTotalBalance)
+    public static WalletViewMetadata CreateForWallet(WalletId walletId, string color, string icon, bool isConsideredInTotalBalance)
     {
         return new WalletViewMetadata(walletId, color, icon, isConsideredInTotalBalance);
     }
@@ -24,7 +24,7 @@ public class WalletViewMetadata : Entity, IAggregateRoot
         IsConsideredInTotalBalance = isConsideredInTotalBalance ?? IsConsideredInTotalBalance;
     }
 
-    private WalletViewMetadata(WalletId walletId, string? color, string? icon, bool isConsideredInTotalBalance)
+    private WalletViewMetadata(WalletId walletId, string color, string icon, bool isConsideredInTotalBalance)
     {
         WalletId = walletId;
         Color = color;

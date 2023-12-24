@@ -179,9 +179,9 @@ public class ApplicationTests : TestBase
             .GetTypes().ToList();
 
         var failingTypes = new List<Type>();
-        foreach (Type type in types)
+        foreach (var type in types)
         {
-            Type interfaceType = type.GetInterface(commandWithResultHandlerType.Name);
+            var interfaceType = type.GetInterface(commandWithResultHandlerType.Name);
             if (interfaceType?.GenericTypeArguments[1] == typeof(Unit))
             {
                 failingTypes.Add(type);

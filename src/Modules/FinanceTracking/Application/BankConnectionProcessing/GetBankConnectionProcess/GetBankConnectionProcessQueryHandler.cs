@@ -5,18 +5,12 @@ using Dapper;
 
 namespace App.Modules.FinanceTracking.Application.BankConnectionProcessing.GetBankConnectionProcess;
 
-internal class GetBankConnectionProcessQueryHandler : IQueryHandler<GetBankConnectionProcessQuery, BankConnectionProcessDto?>
+internal class GetBankConnectionProcessQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+    : IQueryHandler<GetBankConnectionProcessQuery, BankConnectionProcessDto?>
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public GetBankConnectionProcessQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public async Task<BankConnectionProcessDto?> Handle(GetBankConnectionProcessQuery query, CancellationToken cancellationToken)
     {
-        using var connection = _sqlConnectionFactory.GetOpenConnection();
+        using var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                   SELECT p.id, p.user_id AS userId, p.bank_id AS bankId, p.wallet_id AS walletId, p.wallet_type AS walletType,

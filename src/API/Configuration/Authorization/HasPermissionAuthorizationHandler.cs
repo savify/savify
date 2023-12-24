@@ -8,6 +8,7 @@ namespace App.API.Configuration.Authorization;
 internal class HasPermissionAuthorizationHandler : AttributeAuthorizationHandler<HasPermissionAuthorizationRequirement, HasPermissionAttribute>
 {
     private readonly IExecutionContextAccessor _executionContextAccessor;
+
     private readonly IUserAccessModule _userAccessModule;
 
     public HasPermissionAuthorizationHandler(

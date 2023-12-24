@@ -22,11 +22,11 @@ public class CreditWallet : Entity, IAggregateRoot
 
     private DateTime _createdAt;
 
-    private DateTime? _updatedAt = null;
+    private DateTime? _updatedAt;
 
-    private DateTime? _removedAt = null;
+    private DateTime? _removedAt;
 
-    private bool _isRemoved = false;
+    private bool _isRemoved;
 
     public static CreditWallet AddNew(UserId userId, string title, Currency currency, int creditLimit, int availableBalance)
     {

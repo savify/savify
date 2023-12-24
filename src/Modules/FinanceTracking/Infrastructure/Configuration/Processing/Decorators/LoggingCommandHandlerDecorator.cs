@@ -10,35 +10,26 @@ using Serilog.Events;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Configuration.Processing.Decorators;
 
-internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, TResult> where T : ICommand<TResult>
+internal class LoggingCommandHandlerDecorator<T, TResult>(
+    ICommandHandler<T, TResult> decorated,
+    ILoggerProvider loggerProvider,
+    IExecutionContextAccessor executionContextAccessor)
+    : ICommandHandler<T, TResult>
+    where T : ICommand<TResult>
 {
-    private readonly ICommandHandler<T, TResult> _decorated;
-
-    private readonly ILogger _logger;
-
-    private readonly IExecutionContextAccessor _executionContextAccessor;
-
-    public LoggingCommandHandlerDecorator(
-        ICommandHandler<T, TResult> decorated,
-        ILoggerProvider loggerProvider,
-        IExecutionContextAccessor executionContextAccessor)
-    {
-        _decorated = decorated;
-        _logger = loggerProvider.GetLogger();
-        _executionContextAccessor = executionContextAccessor;
-    }
+    private readonly ILogger _logger = loggerProvider.GetLogger();
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
         using (LogContext.Push(
-                   new RequestLogEnricher(_executionContextAccessor),
+                   new RequestLogEnricher(executionContextAccessor),
                    new CommandLogEnricher(command)))
         {
             try
             {
                 _logger.Information("Executing command {@Command}", command);
 
-                var result = await _decorated.Handle(command, cancellationToken);
+                var result = await decorated.Handle(command, cancellationToken);
 
                 _logger.Information("Command processed successful, result {Result}", result);
 
@@ -52,51 +43,35 @@ internal class LoggingCommandHandlerDecorator<T, TResult> : ICommandHandler<T, T
         }
     }
 
-    private class CommandLogEnricher : ILogEventEnricher
+    private class CommandLogEnricher(ICommand<TResult> command) : ILogEventEnricher
     {
-        private readonly ICommand<TResult> _command;
-
-        public CommandLogEnricher(ICommand<TResult> command)
-        {
-            _command = command;
-        }
-
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-            logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{_command.Id.ToString()}")));
+            logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{command.Id.ToString()}")));
         }
     }
 }
 
-internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : ICommand
+internal class LoggingCommandHandlerDecorator<T>(
+    ICommandHandler<T> decorated,
+    ILoggerProvider loggerProvider,
+    IExecutionContextAccessor executionContextAccessor)
+    : ICommandHandler<T>
+    where T : ICommand
 {
-    private readonly ICommandHandler<T> _decorated;
-
-    private readonly ILogger _logger;
-
-    private readonly IExecutionContextAccessor _executionContextAccessor;
-
-    public LoggingCommandHandlerDecorator(
-        ICommandHandler<T> decorated,
-        ILoggerProvider loggerProvider,
-        IExecutionContextAccessor executionContextAccessor)
-    {
-        _decorated = decorated;
-        _logger = loggerProvider.GetLogger();
-        _executionContextAccessor = executionContextAccessor;
-    }
+    private readonly ILogger _logger = loggerProvider.GetLogger();
 
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
         if (command is IRecurringCommand)
         {
-            await _decorated.Handle(command, cancellationToken);
+            await decorated.Handle(command, cancellationToken);
             return;
         }
 
         var enrichers = new List<ILogEventEnricher>();
         enrichers.Add(new CommandLogEnricher(command));
-        enrichers.Add(new RequestLogEnricher(_executionContextAccessor));
+        enrichers.Add(new RequestLogEnricher(executionContextAccessor));
 
         if (command is InternalCommandBase internalCommand)
         {
@@ -109,7 +84,7 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
             {
                 _logger.Information("Executing command {@Command}", command);
 
-                await _decorated.Handle(command, cancellationToken);
+                await decorated.Handle(command, cancellationToken);
 
                 _logger.Information("Command processed successful");
             }
@@ -121,18 +96,11 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T> where T : 
         }
     }
 
-    private class CommandLogEnricher : ILogEventEnricher
+    private class CommandLogEnricher(ICommand command) : ILogEventEnricher
     {
-        private readonly ICommand _command;
-
-        public CommandLogEnricher(ICommand command)
-        {
-            _command = command;
-        }
-
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-            logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{_command.Id.ToString()}")));
+            logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"Command:{command.Id.ToString()}")));
         }
     }
 }

@@ -19,8 +19,8 @@ public static class NotificationsModuleCollectionExtensions
         ILogger logger)
     {
         var moduleLogger = logger.ForContext("Module", "Notifications");
-        var connectionString = configuration.GetConnectionString("Savify");
-        var emailConfiguration = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+        var connectionString = configuration.GetConnectionString("Savify")!;
+        var emailConfiguration = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>()!;
 
         services
             .AddDataAccessServices<NotificationsContext>(connectionString)

@@ -1,8 +1,3 @@
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge;
 
-public class SaltEdgeIntegrationException : Exception
-{
-    public SaltEdgeIntegrationException(string? message) : base(message)
-    {
-    }
-}
+public class SaltEdgeIntegrationException(string? message) : Exception(message);

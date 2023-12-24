@@ -13,7 +13,7 @@ public static class ApiCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var authenticationConfiguration = configuration.GetSection("Authentication").Get<AuthenticationConfiguration>();
+        var authenticationConfiguration = configuration.GetSection("Authentication").Get<AuthenticationConfiguration>()!;
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

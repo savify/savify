@@ -28,7 +28,7 @@ public class UserNotificationSettingsCounterTests : TestBase
     }
 
     [Test]
-    public async Task TestThat_ForNonExistingNotificationSettings_CountIsZero()
+    public Task TestThat_ForNonExistingNotificationSettings_CountIsZero()
     {
         using var scope = WebApplicationFactory.Services.CreateScope();
         var userNotificationSettingsCounter = scope.ServiceProvider.GetRequiredService<IUserNotificationSettingsCounter>();
@@ -36,5 +36,7 @@ public class UserNotificationSettingsCounterTests : TestBase
         var count = userNotificationSettingsCounter.CountNotificationSettingsWithUserId(new UserId(Guid.NewGuid()));
 
         Assert.That(count, Is.EqualTo(0));
+
+        return Task.CompletedTask;
     }
 }

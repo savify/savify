@@ -6,18 +6,11 @@ using App.Modules.UserAccess.Domain.Users;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 
-internal class RegisterNewUserCommandHandler : ICommandHandler<RegisterNewUserCommand, Guid>
+internal class RegisterNewUserCommandHandler(
+    IUserRegistrationRepository userRegistrationRepository,
+    IUsersCounter usersCounter)
+    : ICommandHandler<RegisterNewUserCommand, Guid>
 {
-    private readonly IUserRegistrationRepository _userRegistrationRepository;
-
-    private readonly IUsersCounter _usersCounter;
-
-    public RegisterNewUserCommandHandler(IUserRegistrationRepository userRegistrationRepository, IUsersCounter usersCounter)
-    {
-        _userRegistrationRepository = userRegistrationRepository;
-        _usersCounter = usersCounter;
-    }
-
     public async Task<Guid> Handle(RegisterNewUserCommand command, CancellationToken cancellationToken)
     {
         var userRegistration = UserRegistration.RegisterNewUser(
@@ -27,9 +20,9 @@ internal class RegisterNewUserCommandHandler : ICommandHandler<RegisterNewUserCo
             Country.From(command.Country),
             Language.From(command.PreferredLanguage),
             ConfirmationCode.Generate(),
-            _usersCounter);
+            usersCounter);
 
-        await _userRegistrationRepository.AddAsync(userRegistration);
+        await userRegistrationRepository.AddAsync(userRegistration);
 
         return userRegistration.Id.Value;
     }

@@ -20,11 +20,11 @@ public class CashWallet : Entity, IAggregateRoot
 
     private DateTime _createdAt;
 
-    private DateTime? _updatedAt = null;
+    private DateTime? _updatedAt;
 
-    private DateTime? _removedAt = null;
+    private DateTime? _removedAt;
 
-    private bool _isRemoved = false;
+    private bool _isRemoved;
 
     public static CashWallet AddNew(UserId userId, string title, Currency currency, int balance = 0)
     {

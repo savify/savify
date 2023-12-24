@@ -4,10 +4,6 @@ using Newtonsoft.Json;
 
 namespace App.Modules.UserAccess.Application.Users.CreateNewUser;
 
-public class UserCreatedNotification : DomainEventNotificationBase<UserCreatedDomainEvent>
-{
-    [JsonConstructor]
-    public UserCreatedNotification(Guid id, Guid correlationId, UserCreatedDomainEvent domainEvent) : base(id, correlationId, domainEvent)
-    {
-    }
-}
+[method: JsonConstructor]
+public class UserCreatedNotification(Guid id, Guid correlationId, UserCreatedDomainEvent domainEvent)
+    : DomainEventNotificationBase<UserCreatedDomainEvent>(id, correlationId, domainEvent);

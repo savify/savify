@@ -50,7 +50,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".root", ".root", "{29792374
 		.editorconfig = .editorconfig
 		.env = .env
 		.env.dist = .env.dist
-		.env.test = .env.test
 		.gitignore = .gitignore
 		docker-compose.yaml = docker-compose.yaml
 		Makefile = Makefile
@@ -137,27 +136,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Categories", "Categories", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{85E70A69-7C22-412F-8DE8-7E642E23DBA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Transactions.Domain", "src\Modules\Transactions\Domain\App.Modules.Transactions.Domain.csproj", "{04C9FB25-003D-4ECD-A57F-261E92A94A0A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Transactions.Application", "src\Modules\Transactions\Application\App.Modules.Transactions.Application.csproj", "{66DC88E8-C5D8-4E86-8E33-EB4B2B997A26}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Transactions.Infrastructure", "src\Modules\Transactions\Infrastructure\App.Modules.Transactions.Infrastructure.csproj", "{5928D51B-1E07-48D6-AF4C-C3D82FF95408}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Transactions.IntegrationEvents", "src\Modules\Transactions\IntegrationEvents\App.Modules.Transactions.IntegrationEvents.csproj", "{0A29C103-DFDE-41A3-840B-0B49596F119C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Transactions.UnitTests", "src\Modules\Transactions\Tests\UnitTests\App.Modules.Transactions.UnitTests.csproj", "{F3074EE1-1D9E-40E0-999F-A89C00FB7D22}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Transactions.IntegrationTests", "src\Modules\Transactions\Tests\IntegrationTests\App.Modules.Transactions.IntegrationTests.csproj", "{CBBE7102-FC09-4C95-B6A2-C92DA4CA6C05}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Modules.Transactions.ArchTests", "src\Modules\Transactions\Tests\ArchTests\App.Modules.Transactions.ArchTests.csproj", "{90E03358-206C-4B15-999C-A79E512D6F80}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transactions", "Transactions", "{75993048-A63B-404B-8B88-9A3A926B5CD9}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C47476F-B8CA-4028-8A9D-FB03C3CC9449}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{7F001996-E68C-46A2-BED8-D603499A251F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Database.Scripts", "src\Database\Scripts\App.Database.Scripts.csproj", "{1643411A-E39D-4779-9FBB-7747A2F646A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "makefiles", "makefiles", "{F60181E9-0865-4CFD-8731-02F0DB3ADDC2}"
+	ProjectSection(SolutionItems) = preProject
+		makefiles\DatabaseUpdate.mk = makefiles\DatabaseUpdate.mk
+		makefiles\MigrationRemoval.mk = makefiles\MigrationRemoval.mk
+		makefiles\Migrations.mk = makefiles\Migrations.mk
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -341,34 +329,6 @@ Global
 		{70D11964-5429-4E75-9FE2-C3C885241E5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70D11964-5429-4E75-9FE2-C3C885241E5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70D11964-5429-4E75-9FE2-C3C885241E5C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04C9FB25-003D-4ECD-A57F-261E92A94A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04C9FB25-003D-4ECD-A57F-261E92A94A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04C9FB25-003D-4ECD-A57F-261E92A94A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04C9FB25-003D-4ECD-A57F-261E92A94A0A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66DC88E8-C5D8-4E86-8E33-EB4B2B997A26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66DC88E8-C5D8-4E86-8E33-EB4B2B997A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66DC88E8-C5D8-4E86-8E33-EB4B2B997A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66DC88E8-C5D8-4E86-8E33-EB4B2B997A26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5928D51B-1E07-48D6-AF4C-C3D82FF95408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5928D51B-1E07-48D6-AF4C-C3D82FF95408}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5928D51B-1E07-48D6-AF4C-C3D82FF95408}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5928D51B-1E07-48D6-AF4C-C3D82FF95408}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A29C103-DFDE-41A3-840B-0B49596F119C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A29C103-DFDE-41A3-840B-0B49596F119C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A29C103-DFDE-41A3-840B-0B49596F119C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A29C103-DFDE-41A3-840B-0B49596F119C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3074EE1-1D9E-40E0-999F-A89C00FB7D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3074EE1-1D9E-40E0-999F-A89C00FB7D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3074EE1-1D9E-40E0-999F-A89C00FB7D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3074EE1-1D9E-40E0-999F-A89C00FB7D22}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBBE7102-FC09-4C95-B6A2-C92DA4CA6C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBBE7102-FC09-4C95-B6A2-C92DA4CA6C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBBE7102-FC09-4C95-B6A2-C92DA4CA6C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBBE7102-FC09-4C95-B6A2-C92DA4CA6C05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90E03358-206C-4B15-999C-A79E512D6F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90E03358-206C-4B15-999C-A79E512D6F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90E03358-206C-4B15-999C-A79E512D6F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90E03358-206C-4B15-999C-A79E512D6F80}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1643411A-E39D-4779-9FBB-7747A2F646A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1643411A-E39D-4779-9FBB-7747A2F646A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1643411A-E39D-4779-9FBB-7747A2F646A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -433,16 +393,8 @@ Global
 		{70D11964-5429-4E75-9FE2-C3C885241E5C} = {85E70A69-7C22-412F-8DE8-7E642E23DBA4}
 		{CE879EE4-3B7A-4DEA-AE4D-8D14892388E5} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
 		{85E70A69-7C22-412F-8DE8-7E642E23DBA4} = {CE879EE4-3B7A-4DEA-AE4D-8D14892388E5}
-		{04C9FB25-003D-4ECD-A57F-261E92A94A0A} = {75993048-A63B-404B-8B88-9A3A926B5CD9}
-		{66DC88E8-C5D8-4E86-8E33-EB4B2B997A26} = {75993048-A63B-404B-8B88-9A3A926B5CD9}
-		{5928D51B-1E07-48D6-AF4C-C3D82FF95408} = {75993048-A63B-404B-8B88-9A3A926B5CD9}
-		{0A29C103-DFDE-41A3-840B-0B49596F119C} = {75993048-A63B-404B-8B88-9A3A926B5CD9}
-		{F3074EE1-1D9E-40E0-999F-A89C00FB7D22} = {2C47476F-B8CA-4028-8A9D-FB03C3CC9449}
-		{CBBE7102-FC09-4C95-B6A2-C92DA4CA6C05} = {2C47476F-B8CA-4028-8A9D-FB03C3CC9449}
-		{90E03358-206C-4B15-999C-A79E512D6F80} = {2C47476F-B8CA-4028-8A9D-FB03C3CC9449}
-		{75993048-A63B-404B-8B88-9A3A926B5CD9} = {85EC9C33-206A-4B0F-A78E-BBFED4FE11BD}
-		{2C47476F-B8CA-4028-8A9D-FB03C3CC9449} = {75993048-A63B-404B-8B88-9A3A926B5CD9}
 		{1643411A-E39D-4779-9FBB-7747A2F646A5} = {7F001996-E68C-46A2-BED8-D603499A251F}
+		{F60181E9-0865-4CFD-8731-02F0DB3ADDC2} = {29792374-3E5F-485C-90CD-773DAA420286}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F51F7F7A-D302-4F30-97E8-A4EBC860CF6F}

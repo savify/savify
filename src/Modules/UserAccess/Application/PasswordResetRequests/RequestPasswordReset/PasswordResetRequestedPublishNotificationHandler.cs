@@ -4,18 +4,11 @@ using MediatR;
 
 namespace App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
 
-public class PasswordResetRequestedPublishNotificationHandler : INotificationHandler<PasswordResetRequestedNotification>
+public class PasswordResetRequestedPublishNotificationHandler(IEventBus eventBus) : INotificationHandler<PasswordResetRequestedNotification>
 {
-    private readonly IEventBus _eventBus;
-
-    public PasswordResetRequestedPublishNotificationHandler(IEventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(PasswordResetRequestedNotification notification, CancellationToken cancellationToken)
     {
-        await _eventBus.Publish(new PasswordResetRequestedIntegrationEvent(
+        await eventBus.Publish(new PasswordResetRequestedIntegrationEvent(
             notification.Id,
             notification.CorrelationId,
             notification.DomainEvent.OccurredOn,

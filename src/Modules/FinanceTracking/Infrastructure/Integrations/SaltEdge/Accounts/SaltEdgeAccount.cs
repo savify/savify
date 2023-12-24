@@ -1,23 +1,14 @@
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Accounts;
 
-public class SaltEdgeAccount
+public class SaltEdgeAccount(string id, string name, string nature, double balance, string currencyCode)
 {
-    public string Id { get; }
+    public string Id { get; } = id;
 
-    public string Name { get; }
+    public string Name { get; } = name;
 
-    public string Nature { get; }
+    public string Nature { get; } = nature;
 
-    public double Balance { get; }
+    public double Balance { get; } = balance;
 
-    public string CurrencyCode { get; }
-
-    public SaltEdgeAccount(string id, string name, string nature, double balance, string currencyCode)
-    {
-        Id = id;
-        Name = name;
-        Nature = nature;
-        Balance = balance;
-        CurrencyCode = currencyCode;
-    }
+    public string CurrencyCode { get; } = currencyCode;
 }

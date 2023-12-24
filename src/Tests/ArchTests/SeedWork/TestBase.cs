@@ -7,17 +7,15 @@ public abstract class TestBase
 {
     protected static Assembly ApiAssembly => typeof(ExecutionContextAccessor).Assembly;
 
-    public const string UserAccessNamespace = "App.Modules.UserAccess";
+    protected const string UserAccessNamespace = "App.Modules.UserAccess";
 
-    public const string NotificationsNamespace = "App.Modules.Notifications";
+    protected const string NotificationsNamespace = "App.Modules.Notifications";
 
-    public const string FinanceTrackingNamespace = "App.Modules.FinanceTracking";
+    protected const string FinanceTrackingNamespace = "App.Modules.FinanceTracking";
 
-    public const string BanksNamespace = "App.Modules.Banks";
+    protected const string BanksNamespace = "App.Modules.Banks";
 
-    public const string CategoriesNamespace = "App.Modules.Categories";
-
-    public const string TransactionsNamespace = "App.Modules.Transactions";
+    protected const string CategoriesNamespace = "App.Modules.Categories";
 
     protected static void AssertAreImmutable(IEnumerable<Type> types)
     {

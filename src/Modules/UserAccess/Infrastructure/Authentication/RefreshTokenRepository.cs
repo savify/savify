@@ -1,23 +1,15 @@
 using App.BuildingBlocks.Application.Data;
-using App.Modules.UserAccess.Application.Authentication;
 using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 using App.Modules.UserAccess.Application.Configuration.Data;
 using Dapper;
 
 namespace App.Modules.UserAccess.Infrastructure.Authentication;
 
-public class RefreshTokenRepository : IRefreshTokenRepository
+public class RefreshTokenRepository(ISqlConnectionFactory sqlConnectionFactory) : IRefreshTokenRepository
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public RefreshTokenRepository(ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public async Task<RefreshTokenDto?> GetByUserIdAsync(Guid userId)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                    SELECT user_id as userId, value, expires_at as expiresAt
@@ -32,7 +24,7 @@ public class RefreshTokenRepository : IRefreshTokenRepository
 
     public async Task UpdateAsync(Guid userId, string token, DateTime expiresAt)
     {
-        var connection = _sqlConnectionFactory.GetOpenConnection();
+        var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                    INSERT INTO {DatabaseConfiguration.Schema.Name}.refresh_tokens (user_id, value, expires_at)

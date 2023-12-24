@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.UserAccess.Application.Configuration.Data;
 using App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswordReset;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
@@ -32,12 +33,22 @@ public class RequestPasswordResetTests : TestBase
         Assert.That(status, Is.EqualTo(PasswordResetRequestStatus.WaitingForConfirmation.Value));
     }
 
+    [Test]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("invalid_email")]
+    public void RequestPasswordResetCommand_WhenEmailIsInvalid_ThrowsInvalidCommandException(string email)
+    {
+        Assert.That(() => UserAccessModule.ExecuteCommandAsync(new RequestPasswordResetCommand(email)),
+            Throws.TypeOf<InvalidCommandException>());
+    }
+
     private async Task<string> GetPasswordResetRequestStatus(Guid passwordResetRequestId)
     {
         await using var sqlConnection = new NpgsqlConnection(ConnectionString);
 
         var sql = $"SELECT status FROM {DatabaseConfiguration.Schema.Name}.password_reset_requests p WHERE p.id = @passwordResetRequestId";
 
-        return await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { passwordResetRequestId });
+        return (await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { passwordResetRequestId }))!;
     }
 }

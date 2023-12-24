@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Validators;
+using App.Modules.UserAccess.Domain.Users;
 using FluentValidation;
 
 namespace App.Modules.UserAccess.Application.Users.CreateNewUser;
@@ -23,6 +24,14 @@ internal class CreateNewUserCommandValidator : Validator<CreateNewUserCommand>
             .Matches(@"[a-z]+").WithMessage("Your password must contain at least one lowercase letter")
             .Matches(@"[0-9]+").WithMessage("Your password must contain at least one number")
             .Matches(@"[\!\?\*\.]+").WithMessage("Your password must contain at least one special character (!? *.)");
+
+        RuleFor(c => c.Role)
+            .NotNull()
+            .NotEmpty()
+            .WithMessage("Please provide Your role")
+            .Must(role => UserRole.GetAvailableRolesValues().Contains(role))
+            .WithMessage("Provided role must be one of the following: 'Admin', 'User'");
+
 
         RuleFor(c => c.Country)
             .NotNull()

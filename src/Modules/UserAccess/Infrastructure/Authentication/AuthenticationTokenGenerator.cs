@@ -7,14 +7,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace App.Modules.UserAccess.Infrastructure.Authentication;
 
-public class AuthenticationTokenGenerator : IAuthenticationTokenGenerator
+public class AuthenticationTokenGenerator(IAuthenticationConfigurationProvider configurationProvider)
+    : IAuthenticationTokenGenerator
 {
-    private readonly AuthenticationConfiguration _configuration;
-
-    public AuthenticationTokenGenerator(IAuthenticationConfigurationProvider configurationProvider)
-    {
-        _configuration = configurationProvider.GetConfiguration();
-    }
+    private readonly AuthenticationConfiguration _configuration = configurationProvider.GetConfiguration();
 
     public Token GenerateAccessToken(Guid userId)
     {

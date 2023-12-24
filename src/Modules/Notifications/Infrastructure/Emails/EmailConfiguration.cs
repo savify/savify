@@ -2,13 +2,13 @@ namespace App.Modules.Notifications.Infrastructure.Emails;
 
 public class EmailConfiguration
 {
-    public string AppUrl { get; set; }
+    public required string AppUrl { get; set; }
 
-    public string FromName { get; set; }
+    public required string FromName { get; set; }
 
-    public string FromEmail { get; set; }
+    public required string FromEmail { get; set; }
 
-    public string Host { get; set; }
+    public required string Host { get; set; }
 
     public int Port { get; set; }
 

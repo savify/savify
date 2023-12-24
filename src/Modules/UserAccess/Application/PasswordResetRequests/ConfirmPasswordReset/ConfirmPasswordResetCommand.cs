@@ -2,15 +2,9 @@ using App.Modules.UserAccess.Application.Contracts;
 
 namespace App.Modules.UserAccess.Application.PasswordResetRequests.ConfirmPasswordReset;
 
-public class ConfirmPasswordResetCommand : CommandBase<string>
+public class ConfirmPasswordResetCommand(Guid passwordResetRequestId, string confirmationCode) : CommandBase<string>
 {
-    public Guid PasswordResetRequestId { get; }
+    public Guid PasswordResetRequestId { get; } = passwordResetRequestId;
 
-    public string ConfirmationCode { get; }
-
-    public ConfirmPasswordResetCommand(Guid passwordResetRequestId, string confirmationCode)
-    {
-        PasswordResetRequestId = passwordResetRequestId;
-        ConfirmationCode = confirmationCode;
-    }
+    public string ConfirmationCode { get; } = confirmationCode;
 }

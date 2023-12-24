@@ -15,7 +15,6 @@ using App.Modules.Categories.Infrastructure.Configuration;
 using App.Modules.FinanceTracking.Infrastructure.Configuration;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.Exceptions;
 using App.Modules.Notifications.Infrastructure.Configuration;
-using App.Modules.Transactions.Infrastructure.Configuration;
 using App.Modules.UserAccess.Application.Authentication.Exceptions;
 using App.Modules.UserAccess.Infrastructure.Configuration;
 using Destructurama;
@@ -87,7 +86,6 @@ public class Program
         builder.Services.AddFinanceTrackingModule(builder.Configuration, _logger);
         builder.Services.AddBanksModule(builder.Configuration, _logger, builder.Environment.IsProduction());
         builder.Services.AddCategoriesModule(builder.Configuration, _logger);
-        builder.Services.AddTransactionsModule(builder.Configuration, _logger);
 
         var app = builder.Build();
 
@@ -125,10 +123,7 @@ public class Program
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         app.UseAuthentication();
         app.UseAuthorization();
-
-#pragma warning disable ASP0014
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-#pragma warning restore ASP0014
 
         app.Run();
     }
@@ -139,7 +134,7 @@ public class Program
 
         _loggerConfiguration = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .Enrich.WithSensitiveDataMasking()
+            .Enrich.WithSensitiveDataMasking(_ => { })
             .Destructure.UsingAttributes()
             .Enrich.WithProperty("Environment", environment.EnvironmentName);
 

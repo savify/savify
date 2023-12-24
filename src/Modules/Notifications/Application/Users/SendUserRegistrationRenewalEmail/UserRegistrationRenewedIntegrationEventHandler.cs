@@ -4,18 +4,11 @@ using MediatR;
 
 namespace App.Modules.Notifications.Application.Users.SendUserRegistrationRenewalEmail;
 
-public class UserRegistrationRenewedIntegrationEventHandler : INotificationHandler<UserRegistrationRenewedIntegrationEvent>
+public class UserRegistrationRenewedIntegrationEventHandler(ICommandScheduler commandScheduler) : INotificationHandler<UserRegistrationRenewedIntegrationEvent>
 {
-    private readonly ICommandScheduler _commandScheduler;
-
-    public UserRegistrationRenewedIntegrationEventHandler(ICommandScheduler commandScheduler)
-    {
-        _commandScheduler = commandScheduler;
-    }
-
     public async Task Handle(UserRegistrationRenewedIntegrationEvent @event, CancellationToken cancellationToken)
     {
-        await _commandScheduler.EnqueueAsync(new SendUserRegistrationRenewalEmailCommand(
+        await commandScheduler.EnqueueAsync(new SendUserRegistrationRenewalEmailCommand(
             @event.Id,
             @event.CorrelationId,
             @event.Name,

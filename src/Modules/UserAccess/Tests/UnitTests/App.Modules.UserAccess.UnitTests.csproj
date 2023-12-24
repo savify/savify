@@ -24,10 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\..\..\BuildingBlocks\Tests\App.BuildingBlocks.Tests.csproj" />
       <ProjectReference Include="..\..\Application\App.Modules.UserAccess.Application.csproj" />
       <ProjectReference Include="..\..\Domain\App.Modules.UserAccess.Domain.csproj" />

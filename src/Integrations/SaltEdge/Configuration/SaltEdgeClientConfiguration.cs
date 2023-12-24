@@ -2,9 +2,9 @@ namespace App.Integrations.SaltEdge.Configuration;
 
 public class SaltEdgeClientConfiguration
 {
-    public string BaseUrl { get; set; }
+    public required string BaseUrl { get; set; }
 
-    public string AppId { get; set; }
+    public required string AppId { get; set; }
 
-    public string AppSecret { get; set; }
+    public required string AppSecret { get; set; }
 }

@@ -9,13 +9,18 @@ public static class DomainEventsAccessor
     public static List<IDomainEvent> GetAllDomainEvents(Entity aggregate)
     {
         var domainEvents = new List<IDomainEvent>();
+        domainEvents.AddRange(aggregate.DomainEvents);
 
-        if (aggregate.DomainEvents != null)
-        {
-            domainEvents.AddRange(aggregate.DomainEvents);
-        }
-
-        var fields = aggregate.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Concat(aggregate.GetType().BaseType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public)).ToArray();
+        var fields = aggregate.GetType()
+            .GetFields(
+                BindingFlags.NonPublic |
+                BindingFlags.Instance |
+                BindingFlags.Public)
+            .Concat(aggregate.GetType().BaseType!.GetFields(
+                BindingFlags.NonPublic |
+                BindingFlags.Instance |
+                BindingFlags.Public))
+            .ToArray();
 
         foreach (var field in fields)
         {
@@ -23,7 +28,7 @@ public static class DomainEventsAccessor
 
             if (isEntity)
             {
-                var entity = field.GetValue(aggregate) as Entity;
+                var entity = (field.GetValue(aggregate) as Entity)!;
                 domainEvents.AddRange(GetAllDomainEvents(entity).ToList());
             }
 

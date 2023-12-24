@@ -10,21 +10,14 @@ namespace App.API.Modules.UserAccess.Authentication;
 
 [Route("user-access/authentication")]
 [ApiController]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IUserAccessModule userAccessModule) : ControllerBase
 {
-    private readonly IUserAccessModule _userAccessModule;
-
-    public AuthenticationController(IUserAccessModule userAccessModule)
-    {
-        _userAccessModule = userAccessModule;
-    }
-
     [AllowAnonymous]
     [HttpPost("")]
     [ProducesResponseType(typeof(TokensResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> AuthenticateUser(AuthenticateUserRequest request)
     {
-        var tokens = await _userAccessModule.ExecuteCommandAsync(new AuthenticateUserCommand(request.Email, request.Password));
+        var tokens = await userAccessModule.ExecuteCommandAsync(new AuthenticateUserCommand(request.Email, request.Password));
 
         return Ok(tokens);
     }
@@ -34,7 +27,7 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(typeof(TokensResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> RefreshAccessToken(RefreshAccessTokenRequest request)
     {
-        var tokens = await _userAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(request.UserId, request.RefreshToken));
+        var tokens = await userAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(request.UserId, request.RefreshToken));
 
         return Ok(tokens);
     }

@@ -28,8 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Domain\" />
-      <Folder Include="Integrations\SaltEdge\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 

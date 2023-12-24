@@ -1,26 +1,14 @@
 namespace App.BuildingBlocks.Infrastructure.Inbox;
 
-public class InboxMessage
+public class InboxMessage(Guid id, DateTime occurredOn, string type, string data)
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; } = id;
 
-    public DateTime OccurredOn { get; set; }
+    public DateTime OccurredOn { get; init; } = occurredOn;
 
-    public string Type { get; set; } = null!;
+    public string Type { get; init; } = type;
 
-    public string Data { get; set; } = null!;
+    public string Data { get; init; } = data;
 
-    public DateTime? ProcessedDate { get; set; }
-
-    public InboxMessage(DateTime occurredOn, string type, string data)
-    {
-        Id = Guid.NewGuid();
-        OccurredOn = occurredOn;
-        Type = type;
-        Data = data;
-    }
-
-    private InboxMessage()
-    {
-    }
+    public DateTime? ProcessedDate { get; init; }
 }

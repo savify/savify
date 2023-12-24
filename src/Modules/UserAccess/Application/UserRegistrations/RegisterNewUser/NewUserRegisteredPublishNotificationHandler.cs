@@ -4,18 +4,12 @@ using MediatR;
 
 namespace App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 
-public class NewUserRegisteredPublishNotificationHandler : INotificationHandler<NewUserRegisteredNotification>
+public class NewUserRegisteredPublishNotificationHandler(IEventBus eventBus)
+    : INotificationHandler<NewUserRegisteredNotification>
 {
-    private readonly IEventBus _eventBus;
-
-    public NewUserRegisteredPublishNotificationHandler(IEventBus eventBus)
-    {
-        _eventBus = eventBus;
-    }
-
     public async Task Handle(NewUserRegisteredNotification notification, CancellationToken cancellationToken)
     {
-        await _eventBus.Publish(new NewUserRegisteredIntegrationEvent(
+        await eventBus.Publish(new NewUserRegisteredIntegrationEvent(
             notification.Id,
             notification.CorrelationId,
             notification.DomainEvent.OccurredOn,

@@ -6,18 +6,12 @@ using Dapper;
 
 namespace App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 
-internal class GetCashWalletQueryHandler : IQueryHandler<GetCashWalletQuery, CashWalletDto?>
+internal class GetCashWalletQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+    : IQueryHandler<GetCashWalletQuery, CashWalletDto?>
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-    public GetCashWalletQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-    }
-
     public async Task<CashWalletDto?> Handle(GetCashWalletQuery query, CancellationToken cancellationToken)
     {
-        using var connection = _sqlConnectionFactory.GetOpenConnection();
+        using var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
                     SELECT c.id, c.user_id AS userId, c.title, c.currency, c.balance, c.created_at AS createdAt,

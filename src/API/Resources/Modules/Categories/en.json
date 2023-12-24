@@ -1,2 +1,6 @@
 {
+  "Category with external ID '{0}' already exists": "Category with external ID '{0}' already exists",
+  "Category title length should contain minimum 3 characters": "Category title length should contain minimum 3 characters",
+  "Icon URL value is not a valid URL": "Icon URL value is not a valid URL",
+  "Category type must be one of the following: 'Income', 'Expense'" : "Category type must be one of the following: 'Income', 'Expense'"
 }

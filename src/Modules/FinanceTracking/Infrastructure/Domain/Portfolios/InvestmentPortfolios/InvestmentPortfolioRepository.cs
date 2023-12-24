@@ -5,23 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.Portfolios.InvestmentPortfolios;
 
-internal class InvestmentPortfolioRepository : IInvestmentPortfolioRepository
+internal class InvestmentPortfolioRepository(FinanceTrackingContext financeTrackingContext) : IInvestmentPortfolioRepository
 {
-    private readonly FinanceTrackingContext _financeTrackingContext;
-
-    public InvestmentPortfolioRepository(FinanceTrackingContext financeTrackingContext)
-    {
-        _financeTrackingContext = financeTrackingContext;
-    }
-
     public async Task AddAsync(InvestmentPortfolio portfolio)
     {
-        await _financeTrackingContext.AddAsync(portfolio);
+        await financeTrackingContext.AddAsync(portfolio);
     }
 
     public async Task<InvestmentPortfolio> GetByIdAsync(PortfolioId id)
     {
-        var investmentPortfolio = await _financeTrackingContext.InvestmentPortfolios.SingleOrDefaultAsync(x => x.Id == id);
+        var investmentPortfolio = await financeTrackingContext.InvestmentPortfolios.SingleOrDefaultAsync(x => x.Id == id);
 
         if (investmentPortfolio is null)
         {

@@ -26,7 +26,7 @@ public class RemoveCreditWalletTests : TestBase
 
         var removedWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCreditWalletQuery(walletId));
 
-        Assert.That(removedWallet.Id, Is.EqualTo(walletId));
+        Assert.That(removedWallet!.Id, Is.EqualTo(walletId));
         Assert.That(removedWallet.UserId, Is.EqualTo(userId));
         Assert.That(removedWallet.IsRemoved, Is.True);
     }

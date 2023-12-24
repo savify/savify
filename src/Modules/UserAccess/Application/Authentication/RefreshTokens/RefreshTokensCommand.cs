@@ -3,17 +3,11 @@ using Destructurama.Attributed;
 
 namespace App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 
-public class RefreshTokensCommand : CommandBase<TokensResult>
+public class RefreshTokensCommand(Guid userId, string refreshToken) : CommandBase<TokensResult>
 {
     [LogMasked]
-    public Guid UserId { get; }
+    public Guid UserId { get; } = userId;
 
     [LogMasked]
-    public string RefreshToken { get; }
-
-    public RefreshTokensCommand(Guid userId, string refreshToken)
-    {
-        UserId = userId;
-        RefreshToken = refreshToken;
-    }
+    public string RefreshToken { get; } = refreshToken;
 }

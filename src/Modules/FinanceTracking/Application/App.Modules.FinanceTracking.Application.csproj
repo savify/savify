@@ -9,6 +9,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\BuildingBlocks\Application\App.BuildingBlocks.Application.csproj" />
         <ProjectReference Include="..\..\..\BuildingBlocks\Integration\App.BuildingBlocks.Integration.csproj" />
+        <ProjectReference Include="..\..\Categories\IntegrationEvents\App.Modules.Categories.IntegrationEvents.csproj" />
         <ProjectReference Include="..\Domain\App.Modules.FinanceTracking.Domain.csproj" />
     </ItemGroup>
 

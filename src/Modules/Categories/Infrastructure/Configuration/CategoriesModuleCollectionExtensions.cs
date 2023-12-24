@@ -19,7 +19,7 @@ public static class CategoriesModuleCollectionExtensions
         ILogger logger)
     {
         var moduleLogger = logger.ForContext("Module", "Categories");
-        var connectionString = configuration.GetConnectionString("Savify");
+        var connectionString = configuration.GetConnectionString("Savify")!;
         var domainNotificationMap = DomainNotificationsMap.Build();
 
         services
