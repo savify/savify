@@ -3,11 +3,16 @@ using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Data;
 using App.BuildingBlocks.Tests.IntegrationTests.DependencyInjection;
 using App.Modules.Banks.Infrastructure;
+using App.Modules.Banks.Infrastructure.Configuration.Quartz;
 using App.Modules.Categories.Infrastructure;
+using App.Modules.Categories.Infrastructure.Configuration.Quartz;
 using App.Modules.FinanceTracking.Infrastructure;
+using App.Modules.FinanceTracking.Infrastructure.Configuration.Quartz;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Infrastructure;
+using App.Modules.Notifications.Infrastructure.Configuration.Quartz;
 using App.Modules.UserAccess.Infrastructure;
+using App.Modules.UserAccess.Infrastructure.Configuration.Quartz;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -46,6 +51,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
     public override async ValueTask DisposeAsync()
     {
         await _dbContainer.StopAsync();
+        QuartzTerminator.Terminate();
         await base.DisposeAsync();
     }
 
@@ -88,5 +94,17 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
     {
         _emailSender = emailSender;
         _saltEdgeMockServerUrl = saltEdgeMockServerUrl;
+    }
+
+    private static class QuartzTerminator
+    {
+        public static void Terminate()
+        {
+            BanksQuartzTerminator.Terminate();
+            CategoriesQuartzTerminator.Terminate();
+            FinanceTrackingQuartzTerminator.Terminate();
+            NotificationsQuartzTerminator.Terminate();
+            UserAccessQuartzTerminator.Terminate();
+        }
     }
 }

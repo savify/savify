@@ -5,6 +5,7 @@ using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
 using App.Database.Scripts.Clear;
 using App.IntegrationTests.SeedData;
+using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure;
 using App.Modules.Categories.Application.Contracts;
 using App.Modules.Categories.Infrastructure;
@@ -26,6 +27,8 @@ namespace App.IntegrationTests.SeedWork;
 public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
+
+    protected IBanksModule BanksModule { get; private set; }
 
     protected IUserAccessModule UserAccessModule { get; private set; }
 
@@ -53,6 +56,8 @@ public class TestBase
         ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
+
+        BanksModule = scope.ServiceProvider.GetRequiredService<IBanksModule>();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
         CategoriesModule = scope.ServiceProvider.GetRequiredService<ICategoriesModule>();

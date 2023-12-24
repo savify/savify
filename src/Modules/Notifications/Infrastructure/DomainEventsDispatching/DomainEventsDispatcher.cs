@@ -8,7 +8,7 @@ public class DomainEventsDispatcher<TContext>(IMediator mediator, IDomainEventsA
     : IDomainEventsDispatcher<TContext>
     where TContext : DbContext
 {
-    public async Task DispatchEventsAsync()
+    public void DispatchEventsAsync()
     {
         var domainEvents = domainEventsAccessor.GetAllDomainEvents();
 
@@ -16,7 +16,9 @@ public class DomainEventsDispatcher<TContext>(IMediator mediator, IDomainEventsA
 
         foreach (var domainEvent in domainEvents)
         {
-            await mediator.Publish(domainEvent);
+            mediator.Publish(domainEvent)
+                .ContinueWith(_ => this.DispatchEventsAsync())
+                .Wait();
         }
 
     }
