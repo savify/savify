@@ -8,12 +8,9 @@ namespace App.Modules.FinanceTracking.IntegrationTests.SeedData;
 
 public class SaltEdgeHttpClientMocker
 {
-    private readonly WireMockServer _wireMock;
+    private readonly WireMockServer _wireMock = WireMockServer.Start();
 
-    public SaltEdgeHttpClientMocker(WireMockServer wireMock)
-    {
-        _wireMock = wireMock;
-    }
+    public string BaseUrl => _wireMock.Url!;
 
     public void StopWireMockServer()
     {
