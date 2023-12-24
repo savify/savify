@@ -61,10 +61,8 @@ public class Transfer : Entity, IAggregateRoot
             _tags));
     }
 
-    public void Remove(ITransfersRepository repository)
+    public void Remove()
     {
-        repository.Remove(this);
-
         AddDomainEvent(new TransferRemovedDomainEvent(Id));
     }
 
