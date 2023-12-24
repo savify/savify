@@ -2,11 +2,11 @@
 
 public record Money
 {
-    public required decimal Amount { get; init; }
-    public required Currency Currency { get; init; }
+    public int Amount { get; private init; }
+    public Currency Currency { get; private init; }
 
-    public static Money From(decimal amount, Currency currency) => new() { Amount = amount, Currency = currency };
-    public static Money From(decimal amount, string currency) => new() { Amount = amount, Currency = Currency.From(currency) };
+    public static Money From(int amount, Currency currency) => new() { Amount = amount, Currency = currency };
+    public static Money From(int amount, string currency) => new() { Amount = amount, Currency = Currency.From(currency) };
 
     private Money()
     { }
