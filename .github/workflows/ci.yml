@@ -137,6 +137,8 @@ jobs:
       - modules-integration-tests
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
@@ -166,6 +168,7 @@ jobs:
           github_token: ${{secrets.GITHUB_TOKEN}}
           name: coverage-history
           path: coverage-history
+          branch: main
         continue-on-error: true
 
       - name: ReportGenerator
@@ -188,3 +191,12 @@ jobs:
         with:
           name: coverage-history
           path: coverage-history
+
+      - name: Deploy Code Coverage Report
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{secrets.FTP_SERVER}}
+          username: ${{secrets.FTP_USERNAME}}
+          password: ${{secrets.FTP_PASSWORD}}
+          local-dir: ./coverage/
+          server-dir: ${{secrets.HOST}}/
