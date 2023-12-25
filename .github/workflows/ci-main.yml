@@ -65,7 +65,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Run Tests
-        run: dotnet test --no-build --verbosity normal --filter TestCategory=UnitTest --collect:"XPlat Code Coverage" --results-directory TestReports
+        run: dotnet test --no-build --verbosity normal --filter TestCategory=UnitTest --collect:"XPlat Code Coverage" --results-directory TestReports --settings TestSettings.runsettings
 
       - name: Upload Test Coverage Artifacts
         uses: actions/upload-artifact@v4
@@ -95,7 +95,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Run Tests
-        run: dotnet test --no-build -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=IntegrationTest --collect:"XPlat Code Coverage" --results-directory TestReports
+        run: dotnet test --no-build -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=IntegrationTest --collect:"XPlat Code Coverage" --results-directory TestReports --settings TestSettings.runsettings
 
       - name: Upload Test Coverage Artifacts
         uses: actions/upload-artifact@v4
@@ -125,7 +125,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Run Tests
-        run: dotnet test --no-build -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=ModulesIntegrationTest --collect:"XPlat Code Coverage" --results-directory TestReports
+        run: dotnet test --no-build -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=ModulesIntegrationTest --collect:"XPlat Code Coverage" --results-directory TestReports --settings TestSettings.runsettings
 
       - name: Upload Test Coverage Artifacts
         uses: actions/upload-artifact@v4
