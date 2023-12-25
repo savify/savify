@@ -26,7 +26,6 @@ jobs:
   arch-tests:
     name: Architectural Tests
     runs-on: ubuntu-latest
-    needs: codestyle
 
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +47,9 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    needs: codestyle
+    needs:
+      - codestyle
+      - arch-tests
 
     steps:
       - uses: actions/checkout@v4
@@ -70,7 +71,9 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    needs: codestyle
+    needs:
+      - codestyle
+      - arch-tests
 
     steps:
       - uses: actions/checkout@v4
@@ -92,7 +95,9 @@ jobs:
   modules-integration-tests:
     name: Modules Integration Tests
     runs-on: ubuntu-latest
-    needs: codestyle
+    needs:
+      - codestyle
+      - arch-tests
 
     steps:
       - uses: actions/checkout@v4
