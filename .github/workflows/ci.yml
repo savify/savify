@@ -85,7 +85,7 @@ jobs:
           path: .
 
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build
 
       - name: Run Tests
         run: dotnet test --no-build --verbosity normal --filter TestCategory=UnitTest --collect:"XPlat Code Coverage" --results-directory TestReports
