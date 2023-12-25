@@ -43,16 +43,18 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                 oldType: "text",
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "purchase_price_amount",
+                schema: "finance_tracking",
+                table: "investment_portfolio_assets");
+
+            migrationBuilder.AddColumn<int>(
                 name: "purchase_price_amount",
                 schema: "finance_tracking",
                 table: "investment_portfolio_assets",
                 type: "integer",
                 nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(decimal),
-                oldType: "money",
-                oldNullable: true);
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
@@ -84,6 +86,19 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
+            
+            migrationBuilder.DropColumn(
+                name: "purchase_price_amount",
+                schema: "finance_tracking",
+                table: "investment_portfolio_assets");
+
+            migrationBuilder.AddColumn<decimal>(
+                name: "purchase_price_amount",
+                schema: "finance_tracking",
+                table: "investment_portfolio_assets",
+                type: "money",
+                nullable: true,
+                defaultValue: 0);
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "purchase_price_amount",
