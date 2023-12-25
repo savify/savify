@@ -9,10 +9,14 @@ internal static class OwnsOneMoneyExtensions
     public static EntityTypeBuilder<TEntity> OwnsOneMoney<TEntity>(this EntityTypeBuilder<TEntity> builder, string navigationName, string? amountColumnName = null, string? currencyColumnName = null)
         where TEntity : class
     {
-        return builder.OwnsOne<Money>(navigationName, b =>
+        builder.OwnsOne<Money>(navigationName, b =>
         {
             b.ConfigureMoney(amountColumnName, currencyColumnName);
         });
+
+        builder.Navigation(navigationName).IsRequired();
+
+        return builder;
     }
 
     public static void OwnsOneMoney<TOwnerEntity, TDependentEntity>(this OwnedNavigationBuilder<TOwnerEntity, TDependentEntity> builder, string navigationName, string? amountColumnName = null, string? currencyColumnName = null)
@@ -23,14 +27,20 @@ internal static class OwnsOneMoneyExtensions
         {
             b.ConfigureMoney(amountColumnName, currencyColumnName);
         });
+
+        builder.Navigation(navigationName).IsRequired();
     }
 
     private static void ConfigureMoney<TOwnerEntity>(this OwnedNavigationBuilder<TOwnerEntity, Money> builder, string? amountColumnName, string? currencyColumnName)
         where TOwnerEntity : class
     {
-        var amountProperty = builder.Property(p => p.Amount);
+        var amountProperty = builder.Property(p => p.Amount).IsRequired();
 
-        if (!string.IsNullOrEmpty(amountColumnName))
+        if (string.IsNullOrEmpty(amountColumnName))
+        {
+            amountProperty.HasColumnName("amount");
+        }
+        else
         {
             amountProperty.HasColumnName(amountColumnName);
         }

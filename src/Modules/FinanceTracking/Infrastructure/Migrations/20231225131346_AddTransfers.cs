@@ -22,8 +22,8 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     source_wallet_id = table.Column<Guid>(type: "uuid", nullable: false),
                     tags = table.Column<string[]>(type: "text[]", nullable: false),
                     target_wallet_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    amount = table.Column<int>(type: "integer", nullable: true),
-                    currency = table.Column<string>(type: "text", nullable: true)
+                    amount = table.Column<int>(type: "integer", nullable: false),
+                    currency = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

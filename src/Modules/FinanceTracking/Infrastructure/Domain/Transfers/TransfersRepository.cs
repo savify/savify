@@ -37,7 +37,7 @@ internal class TransferEntityTypeConfiguration : IEntityTypeConfiguration<Transf
 
         builder.Property<WalletId>("_sourceWalletId");
         builder.Property<WalletId>("_targetWalletId");
-        builder.OwnsOneMoney("_amount", amountColumnName: "amount");
+        builder.OwnsOneMoney("_amount");
         builder.Property<DateTime>("_madeOn");
         builder.Property<string>("_comment");
         builder.PrimitiveCollection<IEnumerable<string>>("_tags");
