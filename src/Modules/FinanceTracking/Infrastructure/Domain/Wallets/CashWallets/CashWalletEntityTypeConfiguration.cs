@@ -1,6 +1,7 @@
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,9 +23,6 @@ internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<Cash
         builder.Property<DateTime?>("_removedAt");
         builder.Property<bool>("_isRemoved");
 
-        builder.ComplexProperty<Currency>("_currency", b =>
-        {
-            b.Property(x => x.Value).HasColumnName("currency");
-        });
+        builder.OwnsOneCurrency("_currency");
     }
 }

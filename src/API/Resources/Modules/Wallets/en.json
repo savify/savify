@@ -20,5 +20,12 @@
   "Redirect URL was expired": "Redirect URL was expired",
   "Status transition from '{0}' to '{1}' is not valid": "Status transition from '{0}' to '{1}' is not valid",
   "Bank connection process was already finished": "Bank connection process was already finished",
-  "Redirect URL has not expired yet": "Redirect URL has not expired yet"
+  "Redirect URL has not expired yet": "Redirect URL has not expired yet",
+  "Please provide source wallet id": "Please provide source wallet id",
+  "Please provide target wallet id": "Please provide target wallet id",
+  "Transfer amount must be bigger than 0": "Transfer amount must be bigger than 0",
+  "Please provide transfer currency": "Please provide transfer currency",
+  "Please provide transfer's made on date": "Please provide transfer's made on date",
+  "Please provide any comment or empty": "Please provide any comment or empty",
+  "Please provide tags or empty collection": "Please provide tags or empty collection"
 }
