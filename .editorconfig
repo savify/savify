@@ -93,6 +93,7 @@ resharper_unused_auto_property_accessor_local_highlighting = hint
 resharper_collection_never_queried_local_highlighting = hint
 resharper_unused_parameter_local_highlighting = suggestion
 resharper_unused_variable_highlighting = suggestion
+resharper_inconsistent_naming_highlighting = suggestion
 
 [*.cs]
 indent_size = 4

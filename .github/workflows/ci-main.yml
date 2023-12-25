@@ -1,0 +1,198 @@
+name: CI Main
+
+on:
+  push:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+jobs:
+  codestyle:
+    name: CodeStyle
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Code style verifying
+        run: dotnet format --verify-no-changes --verbosity=detailed
+
+  arch-tests:
+    name: Architectural Tests
+    runs-on: ubuntu-latest
+    needs: codestyle
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Run Tests
+        run: dotnet test --no-build --verbosity normal --filter TestCategory=ArchTest
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: codestyle
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Run Tests
+        run: dotnet test --no-build --verbosity normal --filter TestCategory=UnitTest --collect:"XPlat Code Coverage" --results-directory TestReports
+
+      - name: Upload Test Coverage Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-tests-reports
+          path: TestReports
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: codestyle
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Run Tests
+        run: dotnet test --no-build -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=IntegrationTest --collect:"XPlat Code Coverage" --results-directory TestReports
+
+      - name: Upload Test Coverage Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-tests-reports
+          path: TestReports
+
+  modules-integration-tests:
+    name: Modules Integration Tests
+    runs-on: ubuntu-latest
+    needs: codestyle
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Run Tests
+        run: dotnet test --no-build -v normal -e ASPNETCORE_ENVIRONMENT=Testing --filter TestCategory=ModulesIntegrationTest --collect:"XPlat Code Coverage" --results-directory TestReports
+
+      - name: Upload Test Coverage Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: modules-integration-tests-reports
+          path: TestReports
+
+  code-coverage-report:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    needs:
+      - unit-tests
+      - integration-tests
+      - modules-integration-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Download Unit Tests Reports
+        uses: actions/download-artifact@v4
+        with:
+          name: unit-tests-reports
+          path: UnitTestReports
+
+      - name: Download Integration Tests Reports
+        uses: actions/download-artifact@v4
+        with:
+          name: integration-tests-reports
+          path: IntegrationTestReports
+
+      - name: Download Modules Integration Tests Reports
+        uses: actions/download-artifact@v4
+        with:
+          name: modules-integration-tests-reports
+          path: ModulesIntegrationTestReports
+
+      - name: Restore Coverage History
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          name: coverage-history
+          path: coverage-history
+          branch: main
+        continue-on-error: true
+
+      - name: ReportGenerator
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
+        with:
+          reports: 'UnitTestReports/*/coverage.cobertura.xml;IntegrationTestReports/*/coverage.cobertura.xml;ModulesIntegrationTestReports/*/coverage.cobertura.xml'
+          targetdir: 'coverage'
+          historydir: 'coverage-history'
+          reporttypes: 'Html;Badges'
+          toolpath: 'reportgeneratortool'
+
+      - name: Upload Coverage Report Artifact
+        id: coverage-artifact-upload-step
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
+      - name: Upload Coverage History
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-history
+          path: coverage-history
+
+      - name: Deploy Code Coverage Report
+        run: |
+          curl -XPOST -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/savify/savify-code-coverage/actions/workflows/deploy.yml/dispatches --data '{"ref": "main", "inputs": {"coverage-run-id": "${{ github.run_id }}"}}'
