@@ -160,11 +160,20 @@ jobs:
           name: modules-integration-tests-reports
           path: ModulesIntegrationTestReports
 
+      - name: Restore Coverage History
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          name: coverage-history
+          path: coverage-history
+        continue-on-error: true
+
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
         with:
           reports: 'UnitTestReports/*/coverage.cobertura.xml;IntegrationTestReports/*/coverage.cobertura.xml;ModulesIntegrationTestReports/*/coverage.cobertura.xml'
           targetdir: 'coverage'
+          historydir: 'coverage-history'
           reporttypes: 'Html;Badges'
           toolpath: 'reportgeneratortool'
 
@@ -173,3 +182,9 @@ jobs:
         with:
           name: CoverageReport
           path: coverage
+
+      - name: Upload Coverage History
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-history
+          path: coverage-history
