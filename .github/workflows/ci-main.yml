@@ -170,7 +170,7 @@ jobs:
       - name: Restore Coverage History
         uses: dawidd6/action-download-artifact@v3
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
+          github_token: ${{ secrets.PAT_TOKEN }}
           name: coverage-history
           path: coverage-history
           branch: main
@@ -200,4 +200,4 @@ jobs:
 
       - name: Deploy Code Coverage Report
         run: |
-          curl -XPOST -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/savify/savify-code-coverage/actions/workflows/deploy.yml/dispatches --data '{"ref": "main", "inputs": {"coverage-run-id": "${{ github.run_id }}"}}'
+          curl -XPOST -u "${{ secrets.PAT_USERNAME }}:${{ secrets.PAT_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/savify/savify-code-coverage/actions/workflows/deploy.yml/dispatches --data '{"ref": "main", "inputs": {"coverage-run-id": "${{ github.run_id }}"}}'
