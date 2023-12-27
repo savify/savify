@@ -16,7 +16,9 @@ public class DomainEventsDispatcher<TContext>(IMediator mediator, IDomainEventsA
 
         foreach (var domainEvent in domainEvents)
         {
-            await mediator.Publish(domainEvent);
+            await mediator.Publish(domainEvent)
+                .ContinueWith(_ => this.DispatchEventsAsync(),
+                    TaskContinuationOptions.ExecuteSynchronously);
         }
 
     }

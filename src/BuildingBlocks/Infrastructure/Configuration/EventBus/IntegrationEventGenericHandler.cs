@@ -1,3 +1,4 @@
+using System.Data;
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Infrastructure.Serialization;
 using App.BuildingBlocks.Integration;
@@ -20,6 +21,14 @@ public class IntegrationEventGenericHandler<TEvent>(DatabaseSchema schema) : IIn
             ContractResolver = new AllPropertiesContractResolver()
         });
 
+        if (!ExistsWithId(@event.Id, connection).Result)
+        {
+            await InsertInboxMessage(@event, connection, type, data);
+        }
+    }
+
+    private async Task InsertInboxMessage(TEvent @event, IDbConnection connection, string? type, string data)
+    {
         var sql = $"INSERT INTO {schema.Name}.inbox_messages (id, occurred_on, type, data) " +
                   "VALUES (@Id, @OccurredOn, @Type, @Data)";
 
@@ -29,6 +38,16 @@ public class IntegrationEventGenericHandler<TEvent>(DatabaseSchema schema) : IIn
             @event.OccurredOn,
             type,
             data
+        });
+    }
+
+    private Task<bool> ExistsWithId(Guid eventId, IDbConnection connection)
+    {
+        var existsWithIdSql = $"SELECT EXISTS(SELECT 1 FROM {schema.Name}.inbox_messages WHERE id = @Id)";
+
+        return connection.ExecuteScalarAsync<bool>(existsWithIdSql, new
+        {
+            Id = eventId
         });
     }
 }

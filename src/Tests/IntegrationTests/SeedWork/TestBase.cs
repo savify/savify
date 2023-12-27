@@ -5,6 +5,7 @@ using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
 using App.Database.Scripts.Clear;
 using App.IntegrationTests.SeedData;
+using App.Modules.Banks.Application.Contracts;
 using App.Modules.Banks.Infrastructure;
 using App.Modules.Categories.Application.Contracts;
 using App.Modules.Categories.Infrastructure;
@@ -20,13 +21,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using NSubstitute;
-using WireMock.Server;
 
 namespace App.IntegrationTests.SeedWork;
 
 public class TestBase
 {
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
+
+    protected IBanksModule BanksModule { get; private set; }
 
     protected IUserAccessModule UserAccessModule { get; private set; }
 
@@ -45,19 +47,21 @@ public class TestBase
     [OneTimeSetUp]
     public async Task Init()
     {
+        SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker();
         EmailSender = Substitute.For<IEmailSender>();
-        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(EmailSender);
+
+        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(EmailSender, SaltEdgeHttpClientMocker.BaseUrl);
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         ConnectionString = WebApplicationFactory.GetConnectionString();
 
         using var scope = WebApplicationFactory.Services.CreateScope();
+
+        BanksModule = scope.ServiceProvider.GetRequiredService<IBanksModule>();
         UserAccessModule = scope.ServiceProvider.GetRequiredService<IUserAccessModule>();
         NotificationsModule = scope.ServiceProvider.GetRequiredService<INotificationsModule>();
         CategoriesModule = scope.ServiceProvider.GetRequiredService<ICategoriesModule>();
         FinanceTrackingModule = scope.ServiceProvider.GetRequiredService<IFinanceTrackingModule>();
-
-        SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker(WireMockServer.StartWithAdminInterface(port: 1080, ssl: false));
 
         await MigrateDb<BanksContext>(scope);
         await MigrateDb<CategoriesContext>(scope);
@@ -70,7 +74,6 @@ public class TestBase
     public async Task TearDown()
     {
         SaltEdgeHttpClientMocker.StopWireMockServer();
-        await WebApplicationFactory.StopDbContainerAsync();
         await WebApplicationFactory.DisposeAsync();
     }
 

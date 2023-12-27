@@ -6,6 +6,7 @@ using App.Modules.Banks.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.PostgreSql;
@@ -21,27 +22,55 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         .WithPassword("pass")
         .Build();
 
-    public Task InitialiseDbContainerAsync() => _dbContainer.StartAsync();
+    private string _saltEdgeMockServerUrl;
 
-    public Task StopDbContainerAsync() => _dbContainer.StopAsync();
+    public Task InitialiseDbContainerAsync() => _dbContainer.StartAsync();
 
     public string GetConnectionString() => _dbContainer.GetConnectionString();
 
-    public static async Task<CustomWebApplicationFactory<TProgram>> Create()
+    public static async Task<CustomWebApplicationFactory<TProgram>> Create(string saltEdgeMockServerUrl)
     {
-        var factory = new CustomWebApplicationFactory<TProgram>();
+        var factory = new CustomWebApplicationFactory<TProgram>(saltEdgeMockServerUrl);
         await factory.InitialiseDbContainerAsync();
 
         return factory;
     }
 
+    public override async ValueTask DisposeAsync()
+    {
+        await _dbContainer.StopAsync();
+        await base.DisposeAsync();
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseConfiguration(BuildConfiguration());
+
         builder.ConfigureTestServices(services =>
         {
             services.ReplaceDbContext<BanksContext>(_dbContainer.GetConnectionString());
             services.Replace(ServiceDescriptor.Scoped<ISqlConnectionFactory>(_ => new SqlConnectionFactory(_dbContainer.GetConnectionString())));
             services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
         });
+    }
+
+    private IConfiguration BuildConfiguration()
+    {
+        var configurationValues = new List<KeyValuePair<string, string>>
+        {
+            new("SaltEdge:BaseUrl", _saltEdgeMockServerUrl)
+        };
+
+        var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.Testing.json")
+            .AddInMemoryCollection(configurationValues!)
+            .Build();
+
+        return configuration;
+    }
+
+    private CustomWebApplicationFactory(string saltEdgeMockServerUrl)
+    {
+        _saltEdgeMockServerUrl = saltEdgeMockServerUrl;
     }
 }

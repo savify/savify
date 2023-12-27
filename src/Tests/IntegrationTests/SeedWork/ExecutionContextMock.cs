@@ -4,9 +4,11 @@ namespace App.IntegrationTests.SeedWork;
 
 public class ExecutionContextMock(Guid userId) : IExecutionContextAccessor
 {
-    public Guid UserId { get; private set; } = userId;
+    public Guid UserId { get; } = userId;
 
-    public bool IsAvailable => true;
+    // ReSharper disable once UnassignedGetOnlyAutoProperty
+    public Guid CorrelationId { get; }
 
-    public Guid CorrelationId => Guid.NewGuid();
+    // ReSharper disable once UnassignedGetOnlyAutoProperty
+    public bool IsAvailable { get; }
 }
