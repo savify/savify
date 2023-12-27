@@ -1,5 +1,6 @@
 ﻿using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
+using App.BuildingBlocks.Tests.Creating.OptionalValues;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
@@ -9,22 +10,14 @@ using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
 
 [TestFixture]
-public class EditTransferTests : TestBase
+public partial class EditTransferTests : TestBase
 {
     [Test]
     public async Task EditTransferCommand_Tests()
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = new EditTransferCommand(
-            transferId,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.NewGuid(),
-            amount: 500,
-            currency: "PLN",
-            madeOn: DateTime.UtcNow,
-            comment: "Edited transfer",
-            tags: ["Edited", "Transfer"]);
+        var command = CreateCommand(transferId);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -36,6 +29,7 @@ public class EditTransferTests : TestBase
         Assert.That(transfer.TargetWalletId, Is.EqualTo(command.TargetWalletId));
         Assert.That(transfer.Amount, Is.EqualTo(command.Amount));
         Assert.That(transfer.Currency, Is.EqualTo(command.Currency));
+        Assert.That(transfer.CategoryId, Is.EqualTo(command.CategoryId));
         Assert.That(transfer.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(command.Comment));
         Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags));
@@ -46,52 +40,27 @@ public class EditTransferTests : TestBase
     {
         var notExistingTransferId = Guid.NewGuid();
 
-        var command = new EditTransferCommand(
-            notExistingTransferId,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.NewGuid(),
-            amount: 100,
-            currency: "PLN",
-            comment: "Commant",
-            madeOn: DateTime.UtcNow,
-            tags: ["SomeTag"]);
+        var command = CreateCommand(notExistingTransferId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
     }
 
     [Test]
-    public async Task EditTransferCommand_WhenTransferIdIsDefailtGuid_ThrowsInvalidCommandException()
+    public async Task EditTransferCommand_WhenTransferIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
         var defaultGuid = Guid.Empty;
 
-        var command = new EditTransferCommand(
-            defaultGuid,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.NewGuid(),
-            amount: 100,
-            currency: "PLN",
-            comment: "Commant",
-            madeOn: DateTime.UtcNow,
-            tags: ["SomeTag"]);
+        var command = CreateCommand(defaultGuid);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
 
     [Test]
-    public async Task EditTransferCommand_WhenSourceWalletIdIsDefaultGuid_ThrowsInvalidCommandException()
+    public async Task EditTransferCommand_WhenSourceWalletIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = new EditTransferCommand(
-            transferId,
-            sourceWalletId: Guid.Empty,
-            targetWalletId: Guid.NewGuid(),
-            amount: 100,
-            currency: "USD",
-            madeOn: DateTime.UtcNow,
-            comment: "Savings transfer",
-            tags: ["Savings", "Minor"]);
-
+        var command = CreateCommand(transferId, sourceWalletId: Guid.Empty);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -99,19 +68,11 @@ public class EditTransferTests : TestBase
     }
 
     [Test]
-    public async Task EditTransferCommand_WhenTargetWalletIdIsDefaultGuid_ThrowsInvalidCommandException()
+    public async Task EditTransferCommand_WhenTargetWalletIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = new EditTransferCommand(
-            transferId,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.Empty,
-            amount: 100,
-            currency: "USD",
-            madeOn: DateTime.UtcNow,
-            comment: "Savings transfer",
-            tags: ["Savings", "Minor"]);
+        var command = CreateCommand(transferId, targetWalletId: Guid.Empty);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -125,15 +86,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = new EditTransferCommand(
-            transferId,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.NewGuid(),
-            amount: amount,
-            currency: "USD",
-            madeOn: DateTime.UtcNow,
-            comment: "Savings transfer",
-            tags: ["Savings", "Minor"]);
+        var command = CreateCommand(transferId, amount: amount);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -149,15 +102,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = new EditTransferCommand(
-            transferId,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.Empty,
-            amount: 100,
-            currency: currency,
-            madeOn: DateTime.UtcNow,
-            comment: "Savings transfer",
-            tags: ["Savings", "Minor"]);
+        var command = CreateCommand(transferId, currency: currency);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -169,15 +114,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = new EditTransferCommand(
-            transferId,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.Empty,
-            amount: 100,
-            currency: "USD",
-            madeOn: default,
-            comment: "Savings transfer",
-            tags: ["Savings", "Minor"]);
+        var command = CreateCommand(transferId, madeOn: OptionalParameter.Default);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -189,15 +126,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = new EditTransferCommand(
-            transferId,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.Empty,
-            amount: 100,
-            currency: "USD",
-            madeOn: DateTime.UtcNow,
-            comment: null!,
-            tags: ["Savings", "Minor"]);
+        var command = CreateCommand(transferId, comment: OptionalParameter.Default);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -209,15 +138,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = new EditTransferCommand(
-            transferId,
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.Empty,
-            amount: 100,
-            currency: "USD",
-            madeOn: DateTime.UtcNow,
-            comment: "Savings transfer",
-            tags: null!);
+        var command = CreateCommand(transferId, tags: OptionalParameter.Default);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -231,6 +152,7 @@ public class EditTransferTests : TestBase
             targetWalletId: Guid.NewGuid(),
             amount: 100,
             currency: "USD",
+            categoryId: Guid.NewGuid(),
             madeOn: DateTime.UtcNow,
             comment: "Savings transfer",
             tags: ["Savings", "Minor"]);
@@ -238,5 +160,28 @@ public class EditTransferTests : TestBase
         var transferId = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
         return transferId;
+    }
+
+    private EditTransferCommand CreateCommand(
+        Guid transferId,
+        OptionalParameter<Guid> sourceWalletId = default,
+        OptionalParameter<Guid> targetWalletId = default,
+        OptionalParameter<int> amount = default,
+        OptionalParameter<string> currency = default,
+        OptionalParameter<Guid> categoryId = default,
+        OptionalParameter<DateTime> madeOn = default,
+        OptionalParameter<string> comment = default,
+        OptionalParameter<IEnumerable<string>> tags = default)
+    {
+        return new EditTransferCommand(
+            transferId,
+            sourceWalletId.GetValueOr(Guid.NewGuid()),
+            targetWalletId.GetValueOr(Guid.NewGuid()),
+            amount.GetValueOr(500),
+            currency.GetValueOr("PLN"),
+            categoryId.GetValueOr(Guid.NewGuid()),
+            madeOn.GetValueOr(DateTime.UtcNow),
+            comment.GetValueOr("Edited transfer"),
+            tags.GetValueOr(["Edited"]));
     }
 }

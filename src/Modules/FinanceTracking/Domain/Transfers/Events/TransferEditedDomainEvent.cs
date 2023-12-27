@@ -1,4 +1,5 @@
 ﻿using App.BuildingBlocks.Domain;
+using App.Modules.FinanceTracking.Domain.Categories;
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
@@ -10,6 +11,8 @@ public class TransferEditedDomainEvent(
     WalletId newTargetWalletId,
     Money oldAmount,
     Money newAmount,
+    CategoryId newCategoryId,
+    CategoryId oldCategoryId,
     DateTime oldMadeOn,
     DateTime newMadeOn,
     string oldComment,
@@ -25,6 +28,9 @@ public class TransferEditedDomainEvent(
 
     public Money OldAmount { get; } = oldAmount;
     public Money NewAmount { get; } = newAmount;
+
+    public CategoryId OldCategoryId { get; } = oldCategoryId;
+    public CategoryId NewCategoryId { get; } = newCategoryId;
 
     public DateTime OldMadeOn { get; } = oldMadeOn;
     public DateTime NewMadeOn { get; } = newMadeOn;

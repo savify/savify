@@ -1,4 +1,5 @@
 ﻿using App.Modules.FinanceTracking.Application.Configuration.Commands;
+using App.Modules.FinanceTracking.Domain.Categories;
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.Domain.Wallets;
@@ -20,6 +21,7 @@ internal class AddNewTransferCommandHandler : ICommandHandler<AddNewTransferComm
             new WalletId(request.SourceWalletId),
             new WalletId(request.TargetWalletId),
             Money.From(request.Amount, request.Currency),
+            new CategoryId(request.CategoryId),
             request.MadeOn,
             request.Comment,
             request.Tags);

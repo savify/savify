@@ -1,4 +1,5 @@
-﻿using App.Modules.FinanceTracking.Domain.Transfers;
+﻿using App.Modules.FinanceTracking.Domain.Categories;
+using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.Domain.Wallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ internal class TransferEntityTypeConfiguration : IEntityTypeConfiguration<Transf
         builder.Property<WalletId>("_sourceWalletId");
         builder.Property<WalletId>("_targetWalletId");
         builder.OwnsOneMoney("_amount");
+        builder.Property<CategoryId>("_categoryId");
         builder.Property<DateTime>("_madeOn");
         builder.Property<string>("_comment");
 

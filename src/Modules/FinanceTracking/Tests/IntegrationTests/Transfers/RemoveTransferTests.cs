@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using App.BuildingBlocks.Application.Exceptions;
+﻿using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.RemoveTransfer;
 using App.Modules.FinanceTracking.Domain.Transfers;
-using App.Modules.FinanceTracking.Infrastructure;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
@@ -54,6 +48,7 @@ public class RemoveTransferTests : TestBase
             targetWalletId: Guid.NewGuid(),
             amount: 100,
             currency: "USD",
+            categoryId: Guid.NewGuid(),
             madeOn: DateTime.UtcNow,
             comment: "Savings transfer",
             tags: ["Savings", "Minor"]);
