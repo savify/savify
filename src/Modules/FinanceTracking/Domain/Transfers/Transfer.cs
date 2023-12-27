@@ -90,7 +90,7 @@ public class Transfer : Entity, IAggregateRoot
         _comment = comment;
         _tags = tags.ToArray();
 
-        AddDomainEvent(new TransferAddedDomainEvent(Id, _sourceWalletId, _targetWalletId, _amount, _madeOn, _comment, _tags));
+        AddDomainEvent(new TransferAddedDomainEvent(Id, _sourceWalletId, _targetWalletId, _amount, _categoryId, _madeOn, _comment, _tags));
     }
 
     private Transfer()
