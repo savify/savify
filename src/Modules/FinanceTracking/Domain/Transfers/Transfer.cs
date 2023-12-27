@@ -35,7 +35,7 @@ public class Transfer : Entity, IAggregateRoot
 
     public void Edit(WalletId newSourceWalletId, WalletId newTargetWalletId, Money newAmount, CategoryId newCategoryId, DateTime newMadeOn, string newComment, IEnumerable<string> newTags)
     {
-        CheckRules(new TransferAmountMustBeBiggerThanZero(newAmount),
+        CheckRules(new TransferAmountMustBeBiggerThanZeroRule(newAmount),
                    new TransferSourceAndTargetWalletsMustBeDifferentRule(newSourceWalletId, newTargetWalletId));
 
         var oldSourceWalletId = _sourceWalletId;
@@ -78,7 +78,7 @@ public class Transfer : Entity, IAggregateRoot
 
     private Transfer(WalletId sourceWalletId, WalletId targetWalletId, Money amount, CategoryId categoryId, DateTime madeOn, string comment, IEnumerable<string> tags)
     {
-        CheckRules(new TransferAmountMustBeBiggerThanZero(amount),
+        CheckRules(new TransferAmountMustBeBiggerThanZeroRule(amount),
                    new TransferSourceAndTargetWalletsMustBeDifferentRule(sourceWalletId, targetWalletId));
 
         Id = new TransferId(Guid.NewGuid());

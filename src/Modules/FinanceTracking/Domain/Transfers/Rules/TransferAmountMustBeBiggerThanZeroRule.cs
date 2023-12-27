@@ -3,11 +3,11 @@ using App.Modules.FinanceTracking.Domain.Finance;
 
 namespace App.Modules.FinanceTracking.Domain.Transfers.Rules;
 
-public class TransferAmountMustBeBiggerThanZero : IBusinessRule
+public class TransferAmountMustBeBiggerThanZeroRule : IBusinessRule
 {
     private readonly Money _amount;
 
-    public TransferAmountMustBeBiggerThanZero(Money amount)
+    public TransferAmountMustBeBiggerThanZeroRule(Money amount)
     {
         _amount = amount;
     }

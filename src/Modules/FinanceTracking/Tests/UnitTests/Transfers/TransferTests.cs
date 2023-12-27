@@ -53,6 +53,26 @@ public class TransferTests : UnitTestBase
     }
 
     [Test]
+    [TestCase(-5)]
+    [TestCase(0)]
+    public void AddingNewTransfer_WhenTransferAmountIsLessOrEqualToZero_BreaksTransferAmountMustBeBiggerThanZeroRule(int amountValue)
+    {
+        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var targetWalletId = new WalletId(Guid.NewGuid());
+
+        var amount = Money.From(amountValue, "PLN");
+        var categoryId = new CategoryId(Guid.NewGuid());
+        var madeOn = DateTime.UtcNow;
+        var comment = "Some comment";
+        string[] tags = ["Tag1", "Tag2"];
+
+        AssertBrokenRule<TransferAmountMustBeBiggerThanZeroRule>(() =>
+        {
+            var _ = Transfer.AddNew(sourceWalletId, targetWalletId, amount, categoryId, madeOn, comment, tags);
+        });
+    }
+
+    [Test]
     public void EditingTransfer_IsSuccessful()
     {
         var sourceWalletId = new WalletId(Guid.NewGuid());
@@ -97,6 +117,35 @@ public class TransferTests : UnitTestBase
 
         Assert.That(transferEdditedDomainEvent.OldTags, Is.EquivalentTo(tags));
         Assert.That(transferEdditedDomainEvent.NewTags, Is.EquivalentTo(newTags));
+    }
+
+    [Test]
+    [TestCase(-5)]
+    [TestCase(0)]
+    public void EdditingTransfer_WhenNewAmountIsLessOrEqualToZero_BreaksTransferAmountMustBeBiggerThanZeroRule(int newAmountValue)
+    {
+        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var targetWalletId = new WalletId(Guid.NewGuid());
+        var amount = Money.From(100, "PLN");
+        var categoryId = new CategoryId(Guid.NewGuid());
+        var madeOn = DateTime.UtcNow;
+        var comment = "Some comment";
+        string[] tags = ["Tag1", "Tag2"];
+
+        var transfer = Transfer.AddNew(sourceWalletId, targetWalletId, amount, categoryId, madeOn, comment, tags);
+
+        var newSourceWalletId = new WalletId(Guid.NewGuid());
+        var newTargetWalletId = new WalletId(Guid.NewGuid());
+        var newAmount = Money.From(newAmountValue, "USD");
+        var newCategoryId = new CategoryId(Guid.NewGuid());
+        var newMadeOn = DateTime.UtcNow;
+        var newComment = "Eddited comment";
+        string[] newTags = ["New Tag1", "New Tag2"];
+
+        AssertBrokenRule<TransferAmountMustBeBiggerThanZeroRule>(() =>
+        {
+            transfer.Edit(newSourceWalletId, newTargetWalletId, newAmount, newCategoryId, newMadeOn, newComment, newTags);
+        });
     }
 
     [Test]
