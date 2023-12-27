@@ -20,7 +20,10 @@ public class Transfer : Entity, IAggregateRoot
 
     private string _comment;
 
-    private IEnumerable<string> _tags;
+    //TODO: Refactor to IEnumerable when Ngpsql adapter for EF will be fixed.
+    //Now it throws an exception for IEnumerable primitive collection when
+    //the entity is constructing by the EF (query operation on DbContext)
+    private string[] _tags;
 
     public static Transfer AddNew(WalletId sourceWalletId, WalletId targetWalletId, Money amount, DateTime madeOn, string comment, IEnumerable<string> tags)
     {
@@ -44,7 +47,7 @@ public class Transfer : Entity, IAggregateRoot
         _amount = newAmount;
         _madeOn = newMadeOn;
         _comment = newComment;
-        _tags = newTags;
+        _tags = newTags.ToArray();
 
         AddDomainEvent(new TransferEditedDomainEvent(
             oldSourceWalletId,
@@ -77,7 +80,7 @@ public class Transfer : Entity, IAggregateRoot
         _amount = amount;
         _madeOn = madeOn;
         _comment = comment;
-        _tags = tags;
+        _tags = tags.ToArray();
 
         AddDomainEvent(new TransferAddedDomainEvent(Id, _sourceWalletId, _targetWalletId, _amount, _madeOn, _comment, _tags));
     }

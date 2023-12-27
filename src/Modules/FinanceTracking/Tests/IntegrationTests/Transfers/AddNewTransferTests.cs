@@ -88,6 +88,7 @@ public class AddNewTransferTests : TestBase
     }
 
     [Test]
+    [TestCase(null!)]
     [TestCase("")]
     [TestCase("PL")]
     [TestCase("PLNN")]

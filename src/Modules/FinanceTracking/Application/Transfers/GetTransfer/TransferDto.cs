@@ -16,5 +16,5 @@ public class TransferDto
 
     public required string Comment { get; init; }
 
-    public required IEnumerable<string> Tags { get; init; }
+    public required IReadOnlyCollection<string> Tags { get; init; }
 }
