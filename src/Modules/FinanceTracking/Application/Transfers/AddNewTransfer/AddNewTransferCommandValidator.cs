@@ -25,20 +25,8 @@ internal class AddNewTransferCommandValidator : Validator<AddNewTransferCommand>
             .WithMessage("Please provide transfer currency")
             .MustMatchCurrencyCodeIsoFormat();
 
-        RuleFor(c => c.CategoryId)
-            .NotEmpty()
-            .WithMessage("Please provide category id");
-
         RuleFor(c => c.MadeOn)
             .NotEmpty()
             .WithMessage("Please provide transfer's made on date");
-
-        RuleFor(c => c.Comment)
-            .NotNull()
-            .WithMessage("Please provide any comment or empty");
-
-        RuleFor(c => c.Tags)
-            .NotNull()
-            .WithMessage("Please provide tags or empty collection");
     }
 }

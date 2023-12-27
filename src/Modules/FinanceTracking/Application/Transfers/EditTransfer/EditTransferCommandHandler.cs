@@ -15,7 +15,6 @@ internal class EditTransferCommandHandler(ITransfersRepository repository) : ICo
             newSourceWalletId: new WalletId(request.SourceWalletId),
             newTargetWalletId: new WalletId(request.TargetWalletId),
             newAmount: Money.From(request.Amount, request.Currency),
-            newCategoryId: new Domain.Categories.CategoryId(request.CategoryId),
             newMadeOn: request.MadeOn,
             newComment: request.Comment,
             newTags: request.Tags);

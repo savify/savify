@@ -29,10 +29,9 @@ public partial class EditTransferTests : TestBase
         Assert.That(transfer.TargetWalletId, Is.EqualTo(command.TargetWalletId));
         Assert.That(transfer.Amount, Is.EqualTo(command.Amount));
         Assert.That(transfer.Currency, Is.EqualTo(command.Currency));
-        Assert.That(transfer.CategoryId, Is.EqualTo(command.CategoryId));
         Assert.That(transfer.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(command.Comment));
-        Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags));
+        Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags!));
     }
 
     [Test]
@@ -121,30 +120,6 @@ public partial class EditTransferTests : TestBase
             Throws.TypeOf<InvalidCommandException>());
     }
 
-    [Test]
-    public async Task EditTransferCommand_WhenCommentIsNull_ThrowsInvalidCommandException()
-    {
-        var transferId = await AddNewTransferAsync();
-
-        var command = CreateCommand(transferId, comment: OptionalParameter.Default);
-
-        await Assert.ThatAsync(
-            () => FinanceTrackingModule.ExecuteCommandAsync(command),
-            Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    public async Task EditTransferCommand_WhenTagsCollectionIsNull_ThrowsInvalidCommandException()
-    {
-        var transferId = await AddNewTransferAsync();
-
-        var command = CreateCommand(transferId, tags: OptionalParameter.Default);
-
-        await Assert.ThatAsync(
-            () => FinanceTrackingModule.ExecuteCommandAsync(command),
-            Throws.TypeOf<InvalidCommandException>());
-    }
-
     private async Task<Guid> AddNewTransferAsync()
     {
         var command = new AddNewTransferCommand(
@@ -152,7 +127,6 @@ public partial class EditTransferTests : TestBase
             targetWalletId: Guid.NewGuid(),
             amount: 100,
             currency: "USD",
-            categoryId: Guid.NewGuid(),
             madeOn: DateTime.UtcNow,
             comment: "Savings transfer",
             tags: ["Savings", "Minor"]);
@@ -168,7 +142,6 @@ public partial class EditTransferTests : TestBase
         OptionalParameter<Guid> targetWalletId = default,
         OptionalParameter<int> amount = default,
         OptionalParameter<string> currency = default,
-        OptionalParameter<Guid> categoryId = default,
         OptionalParameter<DateTime> madeOn = default,
         OptionalParameter<string> comment = default,
         OptionalParameter<IEnumerable<string>> tags = default)
@@ -179,7 +152,6 @@ public partial class EditTransferTests : TestBase
             targetWalletId.GetValueOr(Guid.NewGuid()),
             amount.GetValueOr(500),
             currency.GetValueOr("PLN"),
-            categoryId.GetValueOr(Guid.NewGuid()),
             madeOn.GetValueOr(DateTime.UtcNow),
             comment.GetValueOr("Edited transfer"),
             tags.GetValueOr(["Edited"]));

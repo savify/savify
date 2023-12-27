@@ -12,8 +12,6 @@ public class TransferDto
 
     public required string Currency { get; init; }
 
-    public Guid CategoryId { get; init; }
-
     public required DateTime MadeOn { get; init; }
 
     public required string Comment { get; init; }

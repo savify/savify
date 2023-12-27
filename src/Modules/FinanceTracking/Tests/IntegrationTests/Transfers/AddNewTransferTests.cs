@@ -23,10 +23,9 @@ public class AddNewTransferTests : TestBase
         Assert.That(transfer.TargetWalletId, Is.EqualTo(command.TargetWalletId));
         Assert.That(transfer.Amount, Is.EqualTo(command.Amount));
         Assert.That(transfer.Currency, Is.EqualTo(command.Currency));
-        Assert.That(transfer.CategoryId, Is.EqualTo(command.CategoryId));
         Assert.That(transfer.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(command.Comment));
-        Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags));
+        Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags!));
     }
 
     [Test]
@@ -76,39 +75,9 @@ public class AddNewTransferTests : TestBase
     }
 
     [Test]
-    public async Task AddNewTransferCommand_WhenCategoryIdIsEmptyGuid_ThrowsInvalidCommandException()
-    {
-        var command = CreateCommand(categoryId: Guid.Empty);
-
-        var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
     public async Task AddNewTransferCommand_WhenMadeOnIsDefaultDate_ThrowsInvalidCommandException()
     {
         var command = CreateCommand(madeOn: OptionalParameter.Default);
-
-        var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    public async Task AddNewTransferCommand_WhenCommentIsNull_ThrowsInvalidCommandException()
-    {
-        var command = CreateCommand(comment: OptionalParameter.Default);
-
-        var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    public async Task AddNewTransferCommand_WhenTagsCollectionIsNull_ThrowsInvalidCommandException()
-    {
-        var command = CreateCommand(tags: OptionalParameter.Default);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -120,7 +89,6 @@ public class AddNewTransferTests : TestBase
         OptionalParameter<Guid> targetWalletId = default,
         OptionalParameter<int> amount = default,
         OptionalParameter<string> currency = default,
-        OptionalParameter<Guid> categoryId = default,
         OptionalParameter<DateTime> madeOn = default,
         OptionalParameter<string> comment = default,
         OptionalParameter<IEnumerable<string>> tags = default)
@@ -130,7 +98,6 @@ public class AddNewTransferTests : TestBase
             targetWalletId.GetValueOr(Guid.NewGuid()),
             amount.GetValueOr(100),
             currency.GetValueOr("USD"),
-            categoryId.GetValueOr(Guid.NewGuid()),
             madeOn.GetValueOr(DateTime.UtcNow),
             comment.GetValueOr("Savings transfer"),
             tags.GetValueOr(["Savings", "Minor"]));

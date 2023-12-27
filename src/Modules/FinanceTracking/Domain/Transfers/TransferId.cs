@@ -2,9 +2,6 @@
 
 namespace App.Modules.FinanceTracking.Domain.Transfers;
 
-public class TransferId : TypedIdValueBase
+public class TransferId(Guid value) : TypedIdValueBase(value)
 {
-    public TransferId(Guid value) : base(value)
-    {
-    }
 }

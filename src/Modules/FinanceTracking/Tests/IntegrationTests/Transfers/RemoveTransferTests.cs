@@ -48,7 +48,6 @@ public class RemoveTransferTests : TestBase
             targetWalletId: Guid.NewGuid(),
             amount: 100,
             currency: "USD",
-            categoryId: Guid.NewGuid(),
             madeOn: DateTime.UtcNow,
             comment: "Savings transfer",
             tags: ["Savings", "Minor"]);

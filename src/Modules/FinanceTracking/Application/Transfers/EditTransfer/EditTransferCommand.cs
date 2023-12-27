@@ -2,7 +2,7 @@
 using App.Modules.FinanceTracking.Domain.Categories;
 
 namespace App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
-public class EditTransferCommand(Guid transferId, Guid sourceWalletId, Guid targetWalletId, int amount, string currency, Guid categoryId, DateTime madeOn, string comment, IEnumerable<string> tags) : CommandBase
+public class EditTransferCommand(Guid transferId, Guid sourceWalletId, Guid targetWalletId, int amount, string currency, DateTime madeOn, string? comment, IEnumerable<string>? tags) : CommandBase
 {
     public Guid TransferId { get; } = transferId;
 
@@ -14,11 +14,9 @@ public class EditTransferCommand(Guid transferId, Guid sourceWalletId, Guid targ
 
     public string Currency { get; } = currency;
 
-    public Guid CategoryId { get; } = categoryId;
-
     public DateTime MadeOn { get; } = madeOn;
 
-    public string Comment { get; } = comment;
+    public string? Comment { get; } = comment;
 
-    public IEnumerable<string> Tags { get; } = tags;
+    public IEnumerable<string>? Tags { get; } = tags;
 }

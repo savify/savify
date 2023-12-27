@@ -1,5 +1,4 @@
 ﻿using App.BuildingBlocks.Domain;
-using App.Modules.FinanceTracking.Domain.Categories;
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
@@ -10,15 +9,7 @@ public class TransferEditedDomainEvent(
     WalletId oldTargetWalletId,
     WalletId newTargetWalletId,
     Money oldAmount,
-    Money newAmount,
-    CategoryId oldCategoryId,
-    CategoryId newCategoryId,
-    DateTime oldMadeOn,
-    DateTime newMadeOn,
-    string oldComment,
-    string newComment,
-    IEnumerable<string> oldTags,
-    IEnumerable<string> newTags) : DomainEventBase
+    Money newAmount) : DomainEventBase
 {
     public WalletId OldSourceWalletId { get; } = oldSourceWalletId;
     public WalletId NewSourceWalletId { get; } = newSourceWalletId;
@@ -28,16 +19,4 @@ public class TransferEditedDomainEvent(
 
     public Money OldAmount { get; } = oldAmount;
     public Money NewAmount { get; } = newAmount;
-
-    public CategoryId OldCategoryId { get; } = oldCategoryId;
-    public CategoryId NewCategoryId { get; } = newCategoryId;
-
-    public DateTime OldMadeOn { get; } = oldMadeOn;
-    public DateTime NewMadeOn { get; } = newMadeOn;
-
-    public string OldComment { get; } = oldComment;
-    public string NewComment { get; } = newComment;
-
-    public IEnumerable<string> OldTags { get; } = oldTags;
-    public IEnumerable<string> NewTags { get; } = newTags;
 }
