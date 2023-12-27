@@ -8,6 +8,10 @@ internal class EditTransferCommandValidator : Validator<EditTransferCommand>
 {
     public EditTransferCommandValidator()
     {
+        RuleFor(c => c.TransferId)
+            .NotEmpty()
+            .WithMessage("Please provide transfer id");
+
         RuleFor(c => c.SourceWalletId)
             .NotEmpty()
             .WithMessage("Please provide source wallet id");

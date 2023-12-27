@@ -1,7 +1,9 @@
 ﻿using App.BuildingBlocks.Application.Exceptions;
+using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
+using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
@@ -37,6 +39,42 @@ public class EditTransferTests : TestBase
         Assert.That(transfer.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(command.Comment));
         Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags));
+    }
+
+    [Test]
+    public async Task EditTransferCommand_WhenTransferDoesNotExist_ThrowsNotFoundRepositoryException()
+    {
+        var notExistingTransferId = Guid.NewGuid();
+
+        var command = new EditTransferCommand(
+            notExistingTransferId,
+            sourceWalletId: Guid.NewGuid(),
+            targetWalletId: Guid.NewGuid(),
+            amount: 100,
+            currency: "PLN",
+            comment: "Commant",
+            madeOn: DateTime.UtcNow,
+            tags: ["SomeTag"]);
+
+        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
+    }
+
+    [Test]
+    public async Task EditTransferCommand_WhenTransferIdIsDefailtGuid_ThrowsInvalidCommandException()
+    {
+        var defaultGuid = Guid.Empty;
+
+        var command = new EditTransferCommand(
+            defaultGuid,
+            sourceWalletId: Guid.NewGuid(),
+            targetWalletId: Guid.NewGuid(),
+            amount: 100,
+            currency: "PLN",
+            comment: "Commant",
+            madeOn: DateTime.UtcNow,
+            tags: ["SomeTag"]);
+
+        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
 
     [Test]

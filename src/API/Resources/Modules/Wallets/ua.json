@@ -27,5 +27,6 @@
   "Please provide transfer currency": "Будь ласка, вкажіть валюту трансферу",
   "Please provide transfer's made on date": "Будь ласка, вкажіть дату трансферу",
   "Please provide any comment or empty": "Будь ласка, вкажіть коментар до транферу або пусту вартість",
-  "Please provide tags or empty collection": "Будь ласка, вкажіть теги або пусту колекцію"
+  "Please provide tags or empty collection": "Будь ласка, вкажіть теги або пусту колекцію",
+  "Please provide transfer id": "Будь ласка, вкажіть ідентифікатор трансферу"
 }
