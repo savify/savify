@@ -86,7 +86,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "text");
-            
+
             migrationBuilder.DropColumn(
                 name: "purchase_price_amount",
                 schema: "finance_tracking",
