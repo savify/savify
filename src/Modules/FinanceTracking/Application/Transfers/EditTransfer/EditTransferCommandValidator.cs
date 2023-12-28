@@ -35,6 +35,6 @@ internal class EditTransferCommandValidator : Validator<EditTransferCommand>
 
         RuleFor(c => c.MadeOn)
             .NotEmpty()
-            .WithMessage("Please provide transfer's made on date");;
+            .WithMessage("Please provide transfer's made on date");
     }
 }

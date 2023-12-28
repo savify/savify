@@ -3,6 +3,7 @@ using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.Domain.Transfers.Events;
 using App.Modules.FinanceTracking.Domain.Transfers.Rules;
+using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.UnitTests.Transfers;
@@ -13,6 +14,7 @@ public class TransferTests : UnitTestBase
     [Test]
     public void AddingNewTransfer_IsSuccessful()
     {
+        var userId = new UserId(Guid.NewGuid());
         var sourceWalletId = new WalletId(Guid.NewGuid());
         var targetWalletId = new WalletId(Guid.NewGuid());
         var amount = Money.From(100, "PLN");
@@ -20,13 +22,15 @@ public class TransferTests : UnitTestBase
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
 
-        var transfer = Transfer.AddNew(sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
 
         var transferAddedDomainEvent = AssertPublishedDomainEvent<TransferAddedDomainEvent>(transfer);
 
+        Assert.That(transferAddedDomainEvent.UserId, Is.EqualTo(userId));
         Assert.That(transferAddedDomainEvent.SourceWalletId, Is.EqualTo(sourceWalletId));
         Assert.That(transferAddedDomainEvent.TargetWalletId, Is.EqualTo(targetWalletId));
         Assert.That(transferAddedDomainEvent.Amount, Is.EqualTo(amount));
+        Assert.That(transferAddedDomainEvent.Tags, Is.EquivalentTo(tags));
     }
 
     [Test]
@@ -35,6 +39,7 @@ public class TransferTests : UnitTestBase
         var sourceWalletId = new WalletId(Guid.NewGuid());
         var targetWalletId = sourceWalletId;
 
+        var userId = new UserId(Guid.NewGuid());
         var amount = Money.From(100, "PLN");
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
@@ -42,7 +47,7 @@ public class TransferTests : UnitTestBase
 
         AssertBrokenRule<TransferSourceAndTargetWalletsMustBeDifferentRule>(() =>
         {
-            var _ = Transfer.AddNew(sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+            var _ = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
         });
     }
 
@@ -54,6 +59,7 @@ public class TransferTests : UnitTestBase
         var sourceWalletId = new WalletId(Guid.NewGuid());
         var targetWalletId = new WalletId(Guid.NewGuid());
 
+        var userId = new UserId(Guid.NewGuid());
         var amount = Money.From(amountValue, "PLN");
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
@@ -61,13 +67,14 @@ public class TransferTests : UnitTestBase
 
         AssertBrokenRule<TransferAmountMustBeBiggerThanZeroRule>(() =>
         {
-            var _ = Transfer.AddNew(sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+            var _ = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
         });
     }
 
     [Test]
     public void EditingTransfer_IsSuccessful()
     {
+        var userId = new UserId(Guid.NewGuid());
         var sourceWalletId = new WalletId(Guid.NewGuid());
         var targetWalletId = new WalletId(Guid.NewGuid());
         var amount = Money.From(100, "PLN");
@@ -75,7 +82,7 @@ public class TransferTests : UnitTestBase
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
 
-        var transfer = Transfer.AddNew(sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
 
         var newSourceWalletId = new WalletId(Guid.NewGuid());
         var newTargetWalletId = new WalletId(Guid.NewGuid());
@@ -84,7 +91,7 @@ public class TransferTests : UnitTestBase
         var newComment = "Eddited comment";
         string[] newTags = ["New Tag1", "New Tag2"];
 
-        transfer.Edit(newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, newComment, newTags);
+        transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, newComment, newTags);
 
         var transferEdditedDomainEvent = AssertPublishedDomainEvent<TransferEditedDomainEvent>(transfer);
 
@@ -96,6 +103,9 @@ public class TransferTests : UnitTestBase
 
         Assert.That(transferEdditedDomainEvent.OldAmount, Is.EqualTo(amount));
         Assert.That(transferEdditedDomainEvent.NewAmount, Is.EqualTo(newAmount));
+
+        Assert.That(transferEdditedDomainEvent.UserId, Is.EqualTo(userId));
+        Assert.That(transferEdditedDomainEvent.Tags, Is.EqualTo(newTags));
     }
 
     [Test]
@@ -103,6 +113,7 @@ public class TransferTests : UnitTestBase
     [TestCase(0)]
     public void EdditingTransfer_WhenNewAmountIsLessOrEqualToZero_BreaksTransferAmountMustBeBiggerThanZeroRule(int newAmountValue)
     {
+        var userId = new UserId(Guid.NewGuid());
         var sourceWalletId = new WalletId(Guid.NewGuid());
         var targetWalletId = new WalletId(Guid.NewGuid());
         var amount = Money.From(100, "PLN");
@@ -110,7 +121,7 @@ public class TransferTests : UnitTestBase
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
 
-        var transfer = Transfer.AddNew(sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
 
         var newSourceWalletId = new WalletId(Guid.NewGuid());
         var newTargetWalletId = new WalletId(Guid.NewGuid());
@@ -121,13 +132,14 @@ public class TransferTests : UnitTestBase
 
         AssertBrokenRule<TransferAmountMustBeBiggerThanZeroRule>(() =>
         {
-            transfer.Edit(newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, newComment, newTags);
+            transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, newComment, newTags);
         });
     }
 
     [Test]
     public void EdditingTransfer_WhenNewSourceAndTargetWalletIdsAreTheSame_BreaksTransferSourceAndTargetWalletsMustBeDifferentRule()
     {
+        var userId = new UserId(Guid.NewGuid());
         var sourceWalletId = new WalletId(Guid.NewGuid());
         var targetWalletId = new WalletId(Guid.NewGuid());
         var amount = Money.From(100, "PLN");
@@ -136,7 +148,7 @@ public class TransferTests : UnitTestBase
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
 
-        var transfer = Transfer.AddNew(sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
 
         var newSourceWalletId = new WalletId(Guid.NewGuid());
         var newTargetWalletId = newSourceWalletId;
@@ -148,13 +160,14 @@ public class TransferTests : UnitTestBase
 
         AssertBrokenRule<TransferSourceAndTargetWalletsMustBeDifferentRule>(() =>
         {
-            transfer.Edit(newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, newComment, newTags);
+            transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, newComment, newTags);
         });
     }
 
     [Test]
     public void RemovingTransfer_IsSuccessful()
     {
+        var userId = new UserId(Guid.NewGuid());
         var sourceWalletId = new WalletId(Guid.NewGuid());
         var targetWalletId = new WalletId(Guid.NewGuid());
         var amount = Money.From(100, "PLN");
@@ -162,7 +175,7 @@ public class TransferTests : UnitTestBase
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
 
-        var transfer = Transfer.AddNew(sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
 
         transfer.Remove();
 

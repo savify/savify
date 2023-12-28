@@ -1,6 +1,6 @@
 ﻿using App.BuildingBlocks.Application.Data;
-using App.Modules.FinanceTracking.Application.Configuration.Queries;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
+using App.Modules.FinanceTracking.Application.Configuration.Queries;
 using App.Modules.FinanceTracking.Application.Contracts;
 using Dapper;
 
