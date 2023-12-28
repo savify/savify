@@ -44,6 +44,7 @@ public class RemoveTransferTests : TestBase
     private async Task<Guid> AddNewTransferAsync()
     {
         var command = new AddNewTransferCommand(
+            userId: Guid.NewGuid(),
             sourceWalletId: Guid.NewGuid(),
             targetWalletId: Guid.NewGuid(),
             amount: 100,

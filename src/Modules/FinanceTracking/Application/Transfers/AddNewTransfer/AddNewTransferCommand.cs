@@ -2,9 +2,11 @@
 
 namespace App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 
-public class AddNewTransferCommand(Guid sourceWalletId, Guid targetWalletId, int amount, string currency, DateTime madeOn, string? comment, IEnumerable<string>? tags)
+public class AddNewTransferCommand(Guid userId, Guid sourceWalletId, Guid targetWalletId, int amount, string currency, DateTime madeOn, string? comment, IEnumerable<string>? tags)
     : CommandBase<Guid>
 {
+    public Guid UserId { get; } = userId;
+
     public Guid SourceWalletId { get; } = sourceWalletId;
 
     public Guid TargetWalletId { get; } = targetWalletId;

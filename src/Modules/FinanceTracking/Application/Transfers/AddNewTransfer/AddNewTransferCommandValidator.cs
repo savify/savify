@@ -8,6 +8,10 @@ internal class AddNewTransferCommandValidator : Validator<AddNewTransferCommand>
 {
     public AddNewTransferCommandValidator()
     {
+        RuleFor(c => c.UserId)
+            .NotEmpty()
+            .WithMessage("Please provide user id");
+
         RuleFor(c => c.SourceWalletId)
             .NotEmpty()
             .WithMessage("Please provide source wallet id");

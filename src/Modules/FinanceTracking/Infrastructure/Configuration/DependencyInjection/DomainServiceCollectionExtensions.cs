@@ -1,4 +1,6 @@
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing.Services;
+using App.Modules.FinanceTracking.Domain.Transfers;
+using App.Modules.FinanceTracking.Domain.Users.Tags;
 using App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
@@ -18,6 +20,7 @@ internal static class DomainServiceCollectionExtensions
         services.AddScoped<CashWalletEditionService>();
         services.AddScoped<CreditWalletEditionService>();
         services.AddScoped<DebitWalletEditionService>();
+        services.AddScoped<UserTagsUpdateService>();
         services.AddScoped<IBankConnectionProcessInitiationService, BankConnectionProcessInitiationService>();
         services.AddScoped<IBankConnectionProcessRedirectionService, BankConnectionProcessRedirectionService>();
         services.AddScoped<IBankConnectionProcessConnectionCreationService, BankConnectionProcessConnectionCreationService>();

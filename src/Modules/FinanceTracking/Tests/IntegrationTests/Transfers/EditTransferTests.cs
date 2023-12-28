@@ -4,6 +4,7 @@ using App.BuildingBlocks.Tests.Creating.OptionalValues;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
+using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
 using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
@@ -13,7 +14,7 @@ namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
 public partial class EditTransferTests : TestBase
 {
     [Test]
-    public async Task EditTransferCommand_Tests()
+    public async Task EditTransferCommand_TransferIsEdited()
     {
         var transferId = await AddNewTransferAsync();
 
@@ -35,6 +36,23 @@ public partial class EditTransferTests : TestBase
     }
 
     [Test]
+    public async Task EditTransferCommand_UserTagsAreUpdated()
+    {
+        var userId = Guid.NewGuid();
+        var transferId = await AddNewTransferAsync(userId: userId);
+
+        string[] newTags = ["New user tag 1", "New user tag 2"];
+        var command = CreateCommand(transferId, userId: userId, tags: newTags);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(command);
+
+        var userTags = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(userId));
+
+        Assert.That(userTags, Is.Not.Null);
+        Assert.That(userTags.Tags, Is.SupersetOf(newTags));
+    }
+
+    [Test]
     public async Task EditTransferCommand_WhenTransferDoesNotExist_ThrowsNotFoundRepositoryException()
     {
         var notExistingTransferId = Guid.NewGuid();
@@ -47,9 +65,19 @@ public partial class EditTransferTests : TestBase
     [Test]
     public async Task EditTransferCommand_WhenTransferIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
-        var defaultGuid = Guid.Empty;
+        var emptyTransferId = Guid.Empty;
 
-        var command = CreateCommand(defaultGuid);
+        var command = CreateCommand(emptyTransferId);
+
+        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
+    }
+
+    [Test]
+    public async Task EditTransferCommand_WhenUserIdIsEmptyGuid_ThrowsInvalidCommandException()
+    {
+        var transferId = Guid.NewGuid();
+
+        var command = CreateCommand(transferId, userId: OptionalParameter.Default);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
@@ -120,9 +148,10 @@ public partial class EditTransferTests : TestBase
             Throws.TypeOf<InvalidCommandException>());
     }
 
-    private async Task<Guid> AddNewTransferAsync()
+    private async Task<Guid> AddNewTransferAsync(OptionalParameter<Guid> userId = default)
     {
         var command = new AddNewTransferCommand(
+            userId: userId.GetValueOr(Guid.NewGuid()),
             sourceWalletId: Guid.NewGuid(),
             targetWalletId: Guid.NewGuid(),
             amount: 100,
@@ -138,6 +167,7 @@ public partial class EditTransferTests : TestBase
 
     private EditTransferCommand CreateCommand(
         Guid transferId,
+        OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> targetWalletId = default,
         OptionalParameter<int> amount = default,
@@ -148,6 +178,7 @@ public partial class EditTransferTests : TestBase
     {
         return new EditTransferCommand(
             transferId,
+            userId.GetValueOr(Guid.NewGuid()),
             sourceWalletId.GetValueOr(Guid.NewGuid()),
             targetWalletId.GetValueOr(Guid.NewGuid()),
             amount.GetValueOr(500),

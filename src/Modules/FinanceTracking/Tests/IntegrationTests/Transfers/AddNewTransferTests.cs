@@ -2,7 +2,9 @@
 using App.BuildingBlocks.Tests.Creating.OptionalValues;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
+using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
+using RazorEngineCore;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
 
@@ -10,7 +12,7 @@ namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
 public class AddNewTransferTests : TestBase
 {
     [Test]
-    public async Task AddNewTransferCommand_Tests()
+    public async Task AddNewTransferCommand_TransferIsAdded()
     {
         var command = CreateCommand();
 
@@ -26,6 +28,32 @@ public class AddNewTransferTests : TestBase
         Assert.That(transfer.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(command.Comment));
         Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags!));
+    }
+
+    [Test]
+    public async Task AddNewTransferCommand_UserTagsAreUpdated()
+    {
+        var userId = Guid.NewGuid();
+        string[] newTags = ["New user tag 1", "New user tag 2"];
+
+        var command = CreateCommand(userId: userId, tags: newTags);
+
+        var _ = await FinanceTrackingModule.ExecuteCommandAsync(command);
+
+        var userTags = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(userId));
+
+        Assert.That(userTags, Is.Not.Null);
+        Assert.That(userTags.Tags, Is.SupersetOf(newTags));
+    }
+
+    [Test]
+    public async Task AddNewTransferCommand_WhenUserIdIsEmptyGuid_ThrowsInvalidCommandException()
+    {
+        var command = CreateCommand(userId: Guid.Empty);
+
+        var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
+
+        await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
     }
 
     [Test]
@@ -85,6 +113,7 @@ public class AddNewTransferTests : TestBase
     }
 
     private AddNewTransferCommand CreateCommand(
+        OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> targetWalletId = default,
         OptionalParameter<int> amount = default,
@@ -94,6 +123,7 @@ public class AddNewTransferTests : TestBase
         OptionalParameter<IEnumerable<string>> tags = default)
     {
         return new AddNewTransferCommand(
+            userId.GetValueOr(Guid.NewGuid()),
             sourceWalletId.GetValueOr(Guid.NewGuid()),
             targetWalletId.GetValueOr(Guid.NewGuid()),
             amount.GetValueOr(100),

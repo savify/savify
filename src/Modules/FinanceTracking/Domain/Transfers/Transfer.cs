@@ -2,6 +2,7 @@
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Transfers.Events;
 using App.Modules.FinanceTracking.Domain.Transfers.Rules;
+using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Domain.Transfers;
@@ -26,12 +27,12 @@ public class Transfer : Entity, IAggregateRoot
     //https://github.com/npgsql/efcore.pg/issues/3038
     private string[] _tags;
 
-    public static Transfer AddNew(WalletId sourceWalletId, WalletId targetWalletId, Money amount, DateTime madeOn, string? comment, IEnumerable<string>? tags)
+    public static Transfer AddNew(UserId userId, WalletId sourceWalletId, WalletId targetWalletId, Money amount, DateTime madeOn, string? comment, IEnumerable<string>? tags)
     {
-        return new Transfer(sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        return new Transfer(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
     }
 
-    public void Edit(WalletId newSourceWalletId, WalletId newTargetWalletId, Money newAmount, DateTime newMadeOn, string? newComment, IEnumerable<string>? newTags)
+    public void Edit(UserId userId, WalletId newSourceWalletId, WalletId newTargetWalletId, Money newAmount, DateTime newMadeOn, string? newComment, IEnumerable<string>? newTags)
     {
         CheckRules(new TransferAmountMustBeBiggerThanZeroRule(newAmount),
                    new TransferSourceAndTargetWalletsMustBeDifferentRule(newSourceWalletId, newTargetWalletId));
@@ -51,12 +52,14 @@ public class Transfer : Entity, IAggregateRoot
         _tags = newTags?.ToArray() ?? [];
 
         AddDomainEvent(new TransferEditedDomainEvent(
+            userId,
             oldSourceWalletId,
             _sourceWalletId,
             oldTargetWalletId,
             _targetWalletId,
             oldAmount,
-            _amount));
+            _amount,
+            _tags));
     }
 
     public void Remove()
@@ -64,7 +67,7 @@ public class Transfer : Entity, IAggregateRoot
         AddDomainEvent(new TransferRemovedDomainEvent(Id));
     }
 
-    private Transfer(WalletId sourceWalletId, WalletId targetWalletId, Money amount, DateTime madeOn, string? comment, IEnumerable<string>? tags)
+    private Transfer(UserId userId, WalletId sourceWalletId, WalletId targetWalletId, Money amount, DateTime madeOn, string? comment, IEnumerable<string>? tags)
     {
         CheckRules(new TransferAmountMustBeBiggerThanZeroRule(amount),
                    new TransferSourceAndTargetWalletsMustBeDifferentRule(sourceWalletId, targetWalletId));
@@ -77,7 +80,7 @@ public class Transfer : Entity, IAggregateRoot
         _comment = comment ?? string.Empty;
         _tags = tags?.ToArray() ?? [];
 
-        AddDomainEvent(new TransferAddedDomainEvent(Id, _sourceWalletId, _targetWalletId, _amount));
+        AddDomainEvent(new TransferAddedDomainEvent(Id, userId, _sourceWalletId, _targetWalletId, _amount, _tags));
     }
 
     private Transfer()
