@@ -12,7 +12,7 @@ internal class GetUserTagsQueryHandler(ISqlConnectionFactory sqlConnectionFactor
         using var connection = sqlConnectionFactory.CreateNewConnection();
 
         var sql = $"""
-                   SELECT ut.user_id as userId, ut.tags
+                   SELECT ut.tags as Values
                    FROM {DatabaseConfiguration.Schema.Name}.user_tags ut
                    WHERE ut.user_id = @UserId
                    """;

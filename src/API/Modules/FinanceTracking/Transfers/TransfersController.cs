@@ -19,7 +19,7 @@ public class TransfersController(
     : ControllerBase
 {
     [HttpPost("")]
-    [HasPermission(FinanceTrackingPermissions.AddNewTransfer)]
+    [HasPermission(FinanceTrackingPermissions.ManageTransfers)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewTransferRequest request)
     {
@@ -39,8 +39,8 @@ public class TransfersController(
         });
     }
 
-    [HttpPatch("{transferId}")]
-    [HasPermission(FinanceTrackingPermissions.EditTransfers)]
+    [HttpPut("{transferId}")]
+    [HasPermission(FinanceTrackingPermissions.ManageTransfers)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Edit(Guid transferId, EditTransferRequest request)
     {
@@ -59,7 +59,7 @@ public class TransfersController(
     }
 
     [HttpDelete("{transferId}")]
-    [HasPermission(FinanceTrackingPermissions.RemoveTransfers)]
+    [HasPermission(FinanceTrackingPermissions.ManageTransfers)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Remove(Guid transferId)
     {

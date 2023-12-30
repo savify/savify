@@ -21,7 +21,7 @@ public class DebitWalletsController(
     : ControllerBase
 {
     [HttpPost("")]
-    [HasPermission(FinanceTrackingPermissions.AddNewWallet)]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewDebitWalletRequest request)
     {
@@ -41,7 +41,7 @@ public class DebitWalletsController(
     }
 
     [HttpPatch("{walletId}")]
-    [HasPermission(FinanceTrackingPermissions.EditWallets)]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Edit(Guid walletId, EditDebitWalletRequest request)
     {
@@ -59,7 +59,7 @@ public class DebitWalletsController(
     }
 
     [HttpDelete("{walletId}")]
-    [HasPermission(FinanceTrackingPermissions.RemoveWallets)]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Remove(Guid walletId)
     {

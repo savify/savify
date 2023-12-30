@@ -43,7 +43,7 @@ public class AddNewTransferTests : TestBase
         var userTags = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(userId));
 
         Assert.That(userTags, Is.Not.Null);
-        Assert.That(userTags.Tags, Is.SupersetOf(newTags));
+        Assert.That(userTags.Values, Is.SupersetOf(newTags));
     }
 
     [Test]

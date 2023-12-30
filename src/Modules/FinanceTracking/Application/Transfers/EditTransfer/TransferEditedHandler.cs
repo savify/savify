@@ -5,8 +5,8 @@ using MediatR;
 namespace App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 internal class TransferEditedHandler(UserTagsUpdateService service) : INotificationHandler<TransferEditedDomainEvent>
 {
-    public Task Handle(TransferEditedDomainEvent notification, CancellationToken cancellationToken)
+    public Task Handle(TransferEditedDomainEvent @event, CancellationToken cancellationToken)
     {
-        return service.UpdateAsync(notification.UserId, notification.Tags);
+        return service.UpdateAsync(@event.UserId, @event.Tags);
     }
 }

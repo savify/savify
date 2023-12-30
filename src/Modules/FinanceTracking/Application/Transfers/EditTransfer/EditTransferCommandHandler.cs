@@ -8,17 +8,17 @@ namespace App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 
 internal class EditTransferCommandHandler(ITransfersRepository repository) : ICommandHandler<EditTransferCommand>
 {
-    public async Task Handle(EditTransferCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditTransferCommand command, CancellationToken cancellationToken)
     {
-        var transfer = await repository.GetByIdAsync(new TransferId(request.TransferId));
+        var transfer = await repository.GetByIdAsync(new TransferId(command.TransferId));
 
         transfer.Edit(
-            new UserId(request.UserId),
-            new WalletId(request.SourceWalletId),
-            new WalletId(request.TargetWalletId),
-            Money.From(request.Amount, request.Currency),
-            request.MadeOn,
-            request.Comment,
-            request.Tags);
+            new UserId(command.UserId),
+            new WalletId(command.SourceWalletId),
+            new WalletId(command.TargetWalletId),
+            Money.From(command.Amount, command.Currency),
+            command.MadeOn,
+            command.Comment,
+            command.Tags);
     }
 }

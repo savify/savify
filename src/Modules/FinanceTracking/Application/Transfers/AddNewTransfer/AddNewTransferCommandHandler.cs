@@ -8,16 +8,16 @@ namespace App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 
 internal class AddNewTransferCommandHandler(ITransfersRepository repository) : ICommandHandler<AddNewTransferCommand, Guid>
 {
-    public async Task<Guid> Handle(AddNewTransferCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(AddNewTransferCommand command, CancellationToken cancellationToken)
     {
         var transfer = Transfer.AddNew(
-            new UserId(request.UserId),
-            new WalletId(request.SourceWalletId),
-            new WalletId(request.TargetWalletId),
-            Money.From(request.Amount, request.Currency),
-            request.MadeOn,
-            request.Comment,
-            request.Tags);
+            new UserId(command.UserId),
+            new WalletId(command.SourceWalletId),
+            new WalletId(command.TargetWalletId),
+            Money.From(command.Amount, command.Currency),
+            command.MadeOn,
+            command.Comment,
+            command.Tags);
 
         await repository.AddAsync(transfer);
 
