@@ -13,7 +13,7 @@ public class UserTags : Entity, IAggregateRoot
 
     public void Update(IEnumerable<string> tags)
     {
-        var newTags = tags.Except(_tags);
+        var newTags = tags.Except(_tags).ToArray();
         _tags.AddRange(newTags);
 
         AddDomainEvent(new UserTagsUpdatedDomainEvent(UserId, newTags));
@@ -23,8 +23,6 @@ public class UserTags : Entity, IAggregateRoot
     {
         UserId = userId;
         _tags = new List<string>();
-
-        AddDomainEvent(new UserTagsCreatedDomainEvent(UserId));
     }
 
     private UserTags()
