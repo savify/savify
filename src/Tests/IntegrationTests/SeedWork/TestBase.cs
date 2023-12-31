@@ -20,7 +20,6 @@ using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
-using NSubstitute;
 
 namespace App.IntegrationTests.SeedWork;
 
@@ -48,7 +47,7 @@ public class TestBase
     public async Task Init()
     {
         SaltEdgeHttpClientMocker = new SaltEdgeHttpClientMocker();
-        EmailSender = Substitute.For<IEmailSender>();
+        EmailSender = new EmailSenderMock();
 
         WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(EmailSender, SaltEdgeHttpClientMocker.BaseUrl);
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
