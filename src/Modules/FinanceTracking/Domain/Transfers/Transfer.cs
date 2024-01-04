@@ -11,6 +11,8 @@ public class Transfer : Entity, IAggregateRoot
 {
     public TransferId Id { get; private init; }
 
+    public UserId UserId { get; private set; }
+
     private WalletId _sourceWalletId;
 
     private WalletId _targetWalletId;
@@ -41,7 +43,6 @@ public class Transfer : Entity, IAggregateRoot
     }
 
     public void Edit(
-        UserId userId,
         WalletId newSourceWalletId,
         WalletId newTargetWalletId,
         Money newAmount,
@@ -52,14 +53,11 @@ public class Transfer : Entity, IAggregateRoot
     {
         CheckRules(
             new TransferSourceAndTargetWalletsMustBeDifferentRule(newSourceWalletId, newTargetWalletId),
-            new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(userId, newSourceWalletId, newTargetWalletId, walletsRepository));
+            new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(UserId, newSourceWalletId, newTargetWalletId, walletsRepository));
 
         var oldSourceWalletId = _sourceWalletId;
         var oldTargetWalletId = _targetWalletId;
         var oldAmount = _amount;
-        var oldMadeOn = _madeOn;
-        var oldComment = _comment;
-        var oldTags = _tags;
 
         _sourceWalletId = newSourceWalletId;
         _targetWalletId = newTargetWalletId;
@@ -69,7 +67,7 @@ public class Transfer : Entity, IAggregateRoot
         _tags = newTags?.ToArray() ?? [];
 
         AddDomainEvent(new TransferEditedDomainEvent(
-            userId,
+            UserId,
             oldSourceWalletId,
             _sourceWalletId,
             oldTargetWalletId,
@@ -99,6 +97,7 @@ public class Transfer : Entity, IAggregateRoot
             new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(userId, sourceWalletId, targetWalletId, walletsRepository));
 
         Id = new TransferId(Guid.NewGuid());
+        UserId = userId;
         _sourceWalletId = sourceWalletId;
         _targetWalletId = targetWalletId;
         _amount = amount;
@@ -106,9 +105,8 @@ public class Transfer : Entity, IAggregateRoot
         _comment = comment ?? string.Empty;
         _tags = tags?.ToArray() ?? [];
 
-        AddDomainEvent(new TransferAddedDomainEvent(Id, userId, _sourceWalletId, _targetWalletId, _amount, _tags));
+        AddDomainEvent(new TransferAddedDomainEvent(Id, UserId, _sourceWalletId, _targetWalletId, _amount, _tags));
     }
 
-    private Transfer()
-    { }
+    private Transfer() { }
 }

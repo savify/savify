@@ -71,6 +71,17 @@ public class EditTransferTests : TestBase
     }
 
     [Test]
+    public async Task EditTransferCommand_WhenTransferForUserIdDoesNotExist_ThrowsNotFoundRepositoryException()
+    {
+        var userId = Guid.NewGuid();
+        var transferId = await AddNewTransferAsync(userId: userId);
+
+        var command = CreateCommand(transferId);
+
+        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
+    }
+
+    [Test]
     public async Task EditTransferCommand_WhenTransferIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
         var emptyTransferId = Guid.Empty;

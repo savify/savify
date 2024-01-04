@@ -10,10 +10,9 @@ internal class EditTransferCommandHandler(ITransferRepository transferRepository
 {
     public async Task Handle(EditTransferCommand command, CancellationToken cancellationToken)
     {
-        var transfer = await transferRepository.GetByIdAsync(new TransferId(command.TransferId));
+        var transfer = await transferRepository.GetByIdAndUserIdAsync(new TransferId(command.TransferId), new UserId(command.UserId));
 
         transfer.Edit(
-            new UserId(command.UserId),
             new WalletId(command.SourceWalletId),
             new WalletId(command.TargetWalletId),
             Money.From(command.Amount, command.Currency),

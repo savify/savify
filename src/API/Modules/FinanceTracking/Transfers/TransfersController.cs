@@ -63,7 +63,7 @@ public class TransfersController(
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Remove(Guid transferId)
     {
-        await financeTrackingModule.ExecuteCommandAsync(new RemoveTransferCommand(transferId));
+        await financeTrackingModule.ExecuteCommandAsync(new RemoveTransferCommand(transferId, executionContextAccessor.UserId));
 
         return NoContent();
     }

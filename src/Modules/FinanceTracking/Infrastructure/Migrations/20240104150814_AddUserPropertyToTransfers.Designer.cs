@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using App.Modules.FinanceTracking.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceTrackingContext))]
-    partial class FinanceTrackingContextModelSnapshot : ModelSnapshot
+    [Migration("20240104150814_AddUserPropertyToTransfers")]
+    partial class AddUserPropertyToTransfers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -540,7 +543,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.FinanceTracking.Domain.BankConnections.BankConnection", b =>
                 {
-                    b.OwnsMany("App.Modules.FinanceTracking.Domain.BankConnections.BankConnection._accounts#App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts.BankAccount", "_accounts", b1 =>
+                    b.OwnsMany("App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts.BankAccount", "_accounts", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -576,7 +579,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                                 .HasForeignKey("BankConnectionId")
                                 .HasConstraintName("fk_bank_accounts_bank_connections_bank_connection_id");
 
-                            b1.OwnsOne("App.Modules.FinanceTracking.Domain.BankConnections.BankConnection._accounts#App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts.BankAccount.Currency#App.Modules.FinanceTracking.Domain.Finance.Currency", "Currency", b2 =>
+                            b1.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "Currency", b2 =>
                                 {
                                     b2.Property<Guid>("BankAccountId")
                                         .HasColumnType("uuid")
@@ -609,7 +612,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio", b =>
                 {
-                    b.OwnsMany("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio._assets#App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.Assets.Asset", "_assets", b1 =>
+                    b.OwnsMany("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.Assets.Asset", "_assets", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uuid")
@@ -659,7 +662,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                                 .HasForeignKey("investment_portfolio_id")
                                 .HasConstraintName("fk_investment_portfolio_assets_investment_portfolios_investmen");
 
-                            b1.OwnsOne("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio._assets#App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.Assets.Asset._purchasePrice#App.Modules.FinanceTracking.Domain.Finance.Money", "_purchasePrice", b2 =>
+                            b1.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Money", "_purchasePrice", b2 =>
                                 {
                                     b2.Property<Guid>("AssetId")
                                         .HasColumnType("uuid")
@@ -677,7 +680,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                                         .HasForeignKey("AssetId")
                                         .HasConstraintName("fk_investment_portfolio_assets_investment_portfolio_assets_id");
 
-                                    b2.OwnsOne("App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.InvestmentPortfolio._assets#App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.Assets.Asset._purchasePrice#App.Modules.FinanceTracking.Domain.Finance.Money.Currency#App.Modules.FinanceTracking.Domain.Finance.Currency", "Currency", b3 =>
+                                    b2.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "Currency", b3 =>
                                         {
                                             b3.Property<Guid>("MoneyAssetId")
                                                 .HasColumnType("uuid")
@@ -710,7 +713,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Transfers.Transfer", b =>
                 {
-                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Transfers.Transfer._amount#App.Modules.FinanceTracking.Domain.Finance.Money", "_amount", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Money", "_amount", b1 =>
                         {
                             b1.Property<Guid>("TransferId")
                                 .HasColumnType("uuid")
@@ -728,7 +731,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                                 .HasForeignKey("TransferId")
                                 .HasConstraintName("fk_transfers_transfers_id");
 
-                            b1.OwnsOne("App.Modules.FinanceTracking.Domain.Transfers.Transfer._amount#App.Modules.FinanceTracking.Domain.Finance.Money.Currency#App.Modules.FinanceTracking.Domain.Finance.Currency", "Currency", b2 =>
+                            b1.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "Currency", b2 =>
                                 {
                                     b2.Property<Guid>("MoneyTransferId")
                                         .HasColumnType("uuid")
@@ -758,7 +761,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.CashWallets.CashWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Wallets.CashWallets.CashWallet._currency#App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("CashWalletId")
                                 .HasColumnType("uuid")
@@ -784,7 +787,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.CreditWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.CreditWallet._currency#App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("CreditWalletId")
                                 .HasColumnType("uuid")
@@ -810,7 +813,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.DebitWallet", b =>
                 {
-                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.DebitWallet._bankAccountConnection#App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections.BankAccountConnection", "_bankAccountConnection", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections.BankAccountConnection", "_bankAccountConnection", b1 =>
                         {
                             b1.Property<Guid>("DebitWalletId")
                                 .HasColumnType("uuid")
@@ -833,7 +836,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                                 .HasConstraintName("fk_debit_wallets_debit_wallets_id");
                         });
 
-                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.DebitWallet._currency#App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
+                    b.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "_currency", b1 =>
                         {
                             b1.Property<Guid>("DebitWalletId")
                                 .HasColumnType("uuid")

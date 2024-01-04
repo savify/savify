@@ -101,7 +101,7 @@ public class TransferTests : UnitTestBase
         walletsRepository.ExistsForUserIdAndWalletId(userId, newSourceWalletId).Returns(true);
         walletsRepository.ExistsForUserIdAndWalletId(userId, newTargetWalletId).Returns(true);
 
-        transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
+        transfer.Edit(newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
 
         var transferEditedDomainEvent = AssertPublishedDomainEvent<TransferEditedDomainEvent>(transfer);
 
@@ -143,7 +143,7 @@ public class TransferTests : UnitTestBase
 
         AssertBrokenRule<TransferSourceAndTargetWalletsMustBeDifferentRule>(() =>
         {
-            transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
+            transfer.Edit(newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
         });
     }
 
@@ -174,7 +174,7 @@ public class TransferTests : UnitTestBase
 
         AssertBrokenRule<TransferSourceAndTargetMustBeOwnedByTheSameUserRule>(() =>
         {
-            transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
+            transfer.Edit(newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
         });
     }
 

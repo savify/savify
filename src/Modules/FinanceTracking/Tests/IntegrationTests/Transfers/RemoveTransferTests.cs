@@ -15,9 +15,10 @@ public class RemoveTransferTests : TestBase
     [Test]
     public async Task RemoveTransferCommand_Tests()
     {
-        var transferId = await AddNewTransferAsync(Guid.NewGuid());
+        var userId = Guid.NewGuid();
+        var transferId = await AddNewTransferAsync(userId);
 
-        var command = new RemoveTransferCommand(transferId);
+        var command = new RemoveTransferCommand(transferId, userId);
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
         var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId));
@@ -28,7 +29,7 @@ public class RemoveTransferTests : TestBase
     [Test]
     public async Task RemoveTransferCommand_WhenTransferIdIsDefaultGuid_ThrowsInvalidCommandException()
     {
-        var command = new RemoveTransferCommand(Guid.Empty);
+        var command = new RemoveTransferCommand(Guid.Empty, Guid.NewGuid());
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
@@ -37,7 +38,16 @@ public class RemoveTransferTests : TestBase
     public async Task RemoveTransferCommand_WhenTransferDoesNotExist_ThrowsNotFoundRepositoryException()
     {
         var notExistingTransferId = Guid.NewGuid();
-        var command = new RemoveTransferCommand(notExistingTransferId);
+        var command = new RemoveTransferCommand(notExistingTransferId, Guid.NewGuid());
+
+        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
+    }
+
+    [Test]
+    public async Task RemoveTransferCommand_WhenTransferForUserIdDoesNotExist_ThrowsNotFoundRepositoryException()
+    {
+        var transferId = await AddNewTransferAsync(Guid.NewGuid());
+        var command = new RemoveTransferCommand(transferId, Guid.NewGuid());
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
     }
