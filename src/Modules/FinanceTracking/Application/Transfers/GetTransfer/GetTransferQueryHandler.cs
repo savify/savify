@@ -1,4 +1,5 @@
 ﻿using App.BuildingBlocks.Application.Data;
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Configuration.Queries;
 using Dapper;
@@ -12,12 +13,17 @@ internal class GetTransferQueryHandler(ISqlConnectionFactory sqlConnectionFactor
         using var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
-                   SELECT t.id, t.source_wallet_id as sourceWalletId, t.target_wallet_id as targetWalletId, t.amount, t.currency, t.made_on as madeOn, t.comment, t.tags
-                   FROM {DatabaseConfiguration.Schema.Name}.transfers t 
+                   SELECT t.id, t.user_id as userId, t.source_wallet_id as sourceWalletId, t.target_wallet_id as targetWalletId, t.amount, t.currency, t.made_on as madeOn, t.comment, t.tags
+                   FROM {DatabaseConfiguration.Schema.Name}.transfers t
                    WHERE t.id = @TransferId
                    """;
 
         var transfer = await connection.QuerySingleOrDefaultAsync<TransferDto>(sql, new { query.TransferId });
+
+        if (transfer is not null && transfer.UserId != query.UserId)
+        {
+            throw new AccessDeniedException();
+        }
 
         return transfer;
     }

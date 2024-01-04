@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Configuration.Queries;
 using App.Modules.FinanceTracking.Application.Wallets.WalletsViewMetadata;
@@ -30,6 +31,13 @@ internal class GetCashWalletQueryHandler(ISqlConnectionFactory sqlConnectionFact
         new { query.WalletId },
         splitOn: "walletId");
 
-        return cashWallets.SingleOrDefault();
+        var cashWallet = cashWallets.SingleOrDefault();
+
+        if (cashWallet is not null && cashWallet.UserId != query.UserId)
+        {
+            throw new AccessDeniedException();
+        }
+
+        return cashWallet;
     }
 }

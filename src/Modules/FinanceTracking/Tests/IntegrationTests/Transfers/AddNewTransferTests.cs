@@ -23,7 +23,7 @@ public class AddNewTransferTests : TestBase
 
         var transferId = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
-        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId));
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, userId));
 
         Assert.That(transfer, Is.Not.Null);
         Assert.That(transfer!.SourceWalletId, Is.EqualTo(command.SourceWalletId));

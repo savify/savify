@@ -21,7 +21,7 @@ public class RemoveTransferTests : TestBase
         var command = new RemoveTransferCommand(transferId, userId);
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
-        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId));
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, userId));
 
         Assert.That(transfer, Is.Null);
     }
@@ -44,12 +44,12 @@ public class RemoveTransferTests : TestBase
     }
 
     [Test]
-    public async Task RemoveTransferCommand_WhenTransferForUserIdDoesNotExist_ThrowsNotFoundRepositoryException()
+    public async Task RemoveTransferCommand_WhenTransferForUserIdDoesNotExist_ThrowsAccessDeniedException()
     {
         var transferId = await AddNewTransferAsync(Guid.NewGuid());
         var command = new RemoveTransferCommand(transferId, Guid.NewGuid());
 
-        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
+        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<AccessDeniedException>());
     }
 
     private async Task<Guid> AddNewTransferAsync(Guid userId)

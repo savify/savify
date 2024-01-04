@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
@@ -27,13 +28,11 @@ internal class DebitWalletRepository(FinanceTrackingContext financeTrackingConte
 
     public async Task<DebitWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId)
     {
-        var wallet = await financeTrackingContext.DebitWallets.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var wallet = await GetByIdAsync(id);
 
-        if (wallet == null)
+        if (wallet.UserId != userId)
         {
-            throw new NotFoundRepositoryException<DebitWallet>(
-                "Wallet with id '{0}' was not found for user with id '{1}'",
-                new object[] { id.Value, userId.Value });
+            throw new AccessDeniedException();
         }
 
         return wallet;

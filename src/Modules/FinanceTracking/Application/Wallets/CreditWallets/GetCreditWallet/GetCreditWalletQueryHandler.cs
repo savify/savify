@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Configuration.Queries;
 using App.Modules.FinanceTracking.Application.Wallets.WalletsViewMetadata;
@@ -31,6 +32,13 @@ internal class GetCreditWalletQueryHandler(ISqlConnectionFactory connectionFacto
         new { query.WalletId },
         splitOn: "walletId");
 
-        return creditWallets.SingleOrDefault();
+        var creditWallet = creditWallets.SingleOrDefault();
+
+        if (creditWallet is not null && creditWallet.UserId != query.UserId)
+        {
+            throw new AccessDeniedException();
+        }
+
+        return creditWallet;
     }
 }

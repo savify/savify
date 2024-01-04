@@ -1,4 +1,5 @@
 using App.BuildingBlocks.Application.Data;
+using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Configuration.Queries;
 using Dapper;
@@ -20,6 +21,13 @@ internal class GetBankConnectionProcessQueryHandler(ISqlConnectionFactory sqlCon
                   WHERE p.id = @Id
                   """;
 
-        return await connection.QuerySingleOrDefaultAsync<BankConnectionProcessDto>(sql, new { Id = query.BankConnectionProcessId });
+        var bankConnectionProcess = await connection.QuerySingleOrDefaultAsync<BankConnectionProcessDto>(sql, new { Id = query.BankConnectionProcessId });
+
+        if (bankConnectionProcess is not null && bankConnectionProcess.UserId != query.UserId)
+        {
+            throw new AccessDeniedException();
+        }
+
+        return bankConnectionProcess;
     }
 }

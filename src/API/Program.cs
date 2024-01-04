@@ -62,6 +62,7 @@ public class Program
             x.Map<AuthenticationException>(ex => new AuthenticationExceptionProblemDetails(ex));
             x.Map<UserContextIsNotAvailableException>(ex => new UserContextIsNotAvailableProblemDetails(ex));
             x.Map<ExternalProviderException>(ex => new ExternalProviderExceptionProblemDetails(ex));
+            x.Map<AccessDeniedException>(ex => new AccessDeniedExceptionProblemDetails(ex));
         });
 
         builder.Services.AddUserAuthentication(builder.Configuration);

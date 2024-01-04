@@ -4,6 +4,8 @@ public class TransferDto
 {
     public required Guid Id { get; init; }
 
+    public required Guid UserId { get; init; }
+
     public required Guid SourceWalletId { get; init; }
 
     public required Guid TargetWalletId { get; init; }

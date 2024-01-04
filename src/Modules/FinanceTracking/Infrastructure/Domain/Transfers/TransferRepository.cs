@@ -1,4 +1,5 @@
-﻿using App.BuildingBlocks.Infrastructure.Exceptions;
+﻿using App.BuildingBlocks.Application.Exceptions;
+using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -26,13 +27,11 @@ internal class TransferRepository(FinanceTrackingContext context) : ITransferRep
 
     public async Task<Transfer> GetByIdAndUserIdAsync(TransferId id, UserId userId)
     {
-        var transfer = await context.Transfers.SingleOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+        var transfer = await GetByIdAsync(id);
 
-        if (transfer is null)
+        if (transfer.UserId != userId)
         {
-            throw new NotFoundRepositoryException<Transfer>(
-                "Wallet with id '{0}' was not found for user with id '{1}'",
-                [id.Value, userId.Value]);
+            throw new AccessDeniedException();
         }
 
         return transfer;

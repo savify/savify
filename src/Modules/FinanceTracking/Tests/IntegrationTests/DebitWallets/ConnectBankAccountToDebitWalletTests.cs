@@ -1,9 +1,12 @@
+using App.BuildingBlocks.Application.Exceptions;
+using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Application.BankConnectionProcessing.GetBankConnectionProcess;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing;
 using App.Modules.FinanceTracking.Domain.Wallets;
+using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 using App.Modules.FinanceTracking.IntegrationTests.BankConnectionProcessing;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 using Dapper;
@@ -23,7 +26,7 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
         var walletId = await AddDebitWalletFor(BankConnectionProcessingData.UserId);
 
         var result = await FinanceTrackingModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(BankConnectionProcessingData.UserId, walletId, BankConnectionProcessingData.BankId));
-        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(result.Success.Id));
+        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(result.Success.Id, BankConnectionProcessingData.UserId));
         var saltEdgeCustomer = await GetSaltEdgeCustomerByUserId(BankConnectionProcessingData.UserId);
 
         Assert.That(result.Success.RedirectUrl, Is.EqualTo(BankConnectionProcessingData.ExpectedRedirectUrl));
@@ -37,6 +40,26 @@ public class ConnectBankAccountToDebitWalletTests : TestBase
 
         Assert.That(saltEdgeCustomer, Is.Not.Null);
         Assert.That(saltEdgeCustomer!.Id, Is.EqualTo(BankConnectionProcessingData.ExternalCustomerId));
+    }
+
+    [Test]
+    public void ConnectBankAccountToDebitWalletCommand_WhenWalletDoesNotExist_ThrowsNotFoundRepositoryException()
+    {
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
+            BankConnectionProcessingData.UserId,
+            Guid.NewGuid(),
+            BankConnectionProcessingData.BankId)), Throws.TypeOf<NotFoundRepositoryException<DebitWallet>>());
+    }
+
+    [Test]
+    public async Task ConnectBankAccountToDebitWalletCommand_WhenWalletDoesNotBelongToUser_ThrowsAccessDeniedException()
+    {
+        var walletId = await AddDebitWalletFor(BankConnectionProcessingData.UserId);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(
+            Guid.NewGuid(),
+            walletId,
+            BankConnectionProcessingData.BankId)), Throws.TypeOf<AccessDeniedException>());
     }
 
     private async Task<Guid> AddDebitWalletFor(Guid userId)

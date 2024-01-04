@@ -27,7 +27,7 @@ public class EditTransferTests : TestBase
 
         await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
 
-        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId));
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, userId));
 
         Assert.That(transfer, Is.Not.Null);
         Assert.That(transfer!.Id, Is.EqualTo(transferId));
@@ -71,14 +71,14 @@ public class EditTransferTests : TestBase
     }
 
     [Test]
-    public async Task EditTransferCommand_WhenTransferForUserIdDoesNotExist_ThrowsNotFoundRepositoryException()
+    public async Task EditTransferCommand_WhenTransferForUserIdDoesNotExist_ThrowsAccessDeniedException()
     {
         var userId = Guid.NewGuid();
         var transferId = await AddNewTransferAsync(userId: userId);
 
         var command = CreateCommand(transferId);
 
-        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
+        await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<AccessDeniedException>());
     }
 
     [Test]
