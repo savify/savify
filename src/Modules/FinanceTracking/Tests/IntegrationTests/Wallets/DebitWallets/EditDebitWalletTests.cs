@@ -6,7 +6,7 @@ using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWalle
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
-namespace App.Modules.FinanceTracking.IntegrationTests.DebitWallets;
+namespace App.Modules.FinanceTracking.IntegrationTests.Wallets.DebitWallets;
 
 [TestFixture]
 public class EditDebitWalletTests : TestBase

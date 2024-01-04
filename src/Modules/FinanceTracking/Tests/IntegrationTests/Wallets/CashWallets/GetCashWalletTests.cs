@@ -3,7 +3,7 @@ using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWall
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
-namespace App.Modules.FinanceTracking.IntegrationTests.CashWallets;
+namespace App.Modules.FinanceTracking.IntegrationTests.Wallets.CashWallets;
 
 [TestFixture]
 public class GetCashWalletTests : TestBase

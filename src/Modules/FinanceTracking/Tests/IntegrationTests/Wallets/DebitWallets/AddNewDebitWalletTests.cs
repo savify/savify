@@ -1,34 +1,34 @@
 using App.BuildingBlocks.Application.Exceptions;
-using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
-using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
+using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWallet;
+using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
-namespace App.Modules.FinanceTracking.IntegrationTests.CashWallets;
+namespace App.Modules.FinanceTracking.IntegrationTests.Wallets.DebitWallets;
 
 [TestFixture]
-public class AddNewCashWalletTests : TestBase
+public class AddNewDebitWalletTests : TestBase
 {
     [Test]
-    public async Task AddNewCashWalletCommand_Tests()
+    public async Task AddNewDebitWalletCommand_Tests()
     {
-        var command = new AddNewCashWalletCommand(
+        var command = new AddNewDebitWalletCommand(
             Guid.NewGuid(),
-            "Cash wallet",
+            "Debit wallet",
             "PLN",
             1000,
             "#ffffff",
             "https://cdn.savify.localhost/icons/wallet.png",
             true);
-
         var walletId = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
-        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId, command.UserId));
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(walletId, command.UserId));
 
         Assert.That(wallet, Is.Not.Null);
-        Assert.That(wallet!.UserId, Is.EqualTo(command.UserId));
+        Assert.That(wallet!.Id, Is.EqualTo(walletId));
+        Assert.That(wallet.UserId, Is.EqualTo(command.UserId));
         Assert.That(wallet.Title, Is.EqualTo(command.Title));
-        Assert.That(wallet.Balance, Is.EqualTo(command.Balance));
         Assert.That(wallet.Currency, Is.EqualTo(command.Currency));
+        Assert.That(wallet.Balance, Is.EqualTo(command.Balance));
 
         Assert.That(wallet.ViewMetadata, Is.Not.Null);
         Assert.That(wallet.ViewMetadata.WalletId, Is.EqualTo(walletId));
@@ -40,9 +40,9 @@ public class AddNewCashWalletTests : TestBase
     [Test]
     [TestCase("")]
     [TestCase(" ")]
-    public void AddNewCashWalletCommand_WhenTitleIsInvalid_ThrowsInvalidCommandException(string title)
+    public void AddNewDebitWalletCommand_WhenTitleIsInvalid_ThrowsInvalidCommandException(string title)
     {
-        var command = new AddNewCashWalletCommand(
+        var command = new AddNewDebitWalletCommand(
             Guid.NewGuid(),
             title,
             "PLN",
@@ -59,11 +59,11 @@ public class AddNewCashWalletTests : TestBase
     [TestCase(" ")]
     [TestCase("pl")]
     [TestCase("invalid")]
-    public void AddNewCashWalletCommand_WhenCurrencyIsInvalid_ThrowsInvalidCommandException(string currency)
+    public void AddNewDebitWalletCommand_WhenCurrencyIsInvalid_ThrowsInvalidCommandException(string currency)
     {
-        var command = new AddNewCashWalletCommand(
+        var command = new AddNewDebitWalletCommand(
             Guid.NewGuid(),
-            "Cash wallet",
+            "Debit wallet",
             currency,
             1000,
             "#ffffff",
@@ -78,11 +78,11 @@ public class AddNewCashWalletTests : TestBase
     [TestCase(" ")]
     [TestCase("invalid")]
     [TestCase("#FFFFFFF")]
-    public void AddNewCashWalletCommand_WhenColorIsInvalid_ThrowsInvalidCommandException(string color)
+    public void AddNewDebitWalletCommand_WhenColorIsInvalid_ThrowsInvalidCommandException(string color)
     {
-        var command = new AddNewCashWalletCommand(
+        var command = new AddNewDebitWalletCommand(
             Guid.NewGuid(),
-            "Cash wallet",
+            "Debit wallet",
             "PLN",
             1000,
             color,
@@ -96,11 +96,11 @@ public class AddNewCashWalletTests : TestBase
     [TestCase("")]
     [TestCase(" ")]
     [TestCase("invalid")]
-    public void AddNewCashWalletCommand_WhenIconUrlIsInvalid_ThrowsInvalidCommandException(string iconUrl)
+    public void AddNewDebitWalletCommand_WhenIconUrlIsInvalid_ThrowsInvalidCommandException(string iconUrl)
     {
-        var command = new AddNewCashWalletCommand(
+        var command = new AddNewDebitWalletCommand(
             Guid.NewGuid(),
-            "Cash wallet",
+            "Debit wallet",
             "PLN",
             1000,
             "#ffffff",

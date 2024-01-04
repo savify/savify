@@ -12,7 +12,7 @@ using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 using Dapper;
 using Npgsql;
 
-namespace App.Modules.FinanceTracking.IntegrationTests.DebitWallets;
+namespace App.Modules.FinanceTracking.IntegrationTests.Wallets.DebitWallets;
 
 [TestFixture]
 public class ConnectBankAccountToDebitWalletTests : TestBase

@@ -3,7 +3,7 @@ using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWa
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
-namespace App.Modules.FinanceTracking.IntegrationTests.DebitWallets;
+namespace App.Modules.FinanceTracking.IntegrationTests.Wallets.DebitWallets;
 
 [TestFixture]
 public class GetDebitWalletTests : TestBase

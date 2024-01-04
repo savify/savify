@@ -6,7 +6,7 @@ using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.RemoveCredit
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
-namespace App.Modules.FinanceTracking.IntegrationTests.CreditWallets;
+namespace App.Modules.FinanceTracking.IntegrationTests.Wallets.CreditWallets;
 
 [TestFixture]
 public class RemoveCreditWalletTests : TestBase

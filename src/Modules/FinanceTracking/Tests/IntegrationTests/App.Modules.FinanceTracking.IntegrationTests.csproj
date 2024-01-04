@@ -35,4 +35,8 @@
         <ProjectReference Include="..\..\Infrastructure\App.Modules.FinanceTracking.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Wallets\" />
+    </ItemGroup>
+
 </Project>

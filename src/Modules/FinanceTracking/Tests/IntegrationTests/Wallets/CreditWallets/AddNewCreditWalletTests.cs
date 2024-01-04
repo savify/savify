@@ -3,7 +3,7 @@ using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCredit
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
-namespace App.Modules.FinanceTracking.IntegrationTests.CreditWallets;
+namespace App.Modules.FinanceTracking.IntegrationTests.Wallets.CreditWallets;
 
 [TestFixture]
 public class AddNewCreditWalletTests : TestBase
