@@ -6,6 +6,8 @@ public interface IExpenseRepository
 {
     public Task AddAsync(Expense expense);
 
+    public void Remove(Expense expense);
+
     public Task<Expense> GetByIdAsync(ExpenseId id);
 
     public Task<Expense> GetByIdAndUserIdAsync(ExpenseId id, UserId userId);

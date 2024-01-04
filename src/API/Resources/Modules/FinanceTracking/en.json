@@ -28,5 +28,13 @@
   "Please provide transfer's made on date": "Please provide transfer's made on date",
   "Please provide transfer id": "Please provide transfer id",
   "Please provide user id": "Please provide user id",
-  "Amount must not be negative": "Amount must not be negative"
+  "Amount must not be negative": "Amount must not be negative",
+  "Source and target wallets must be owned by the same user": "Source and target wallets must be owned by the same user",
+  "Transfer has equal source and target wallets": "Transfer has equal source and target wallets",
+  "Source wallet must be owned by the user": "Source wallet must be owned by the user",
+  "Please provide expense id": "Please provide expense id",
+  "Please provide expense category id": "Please provide expense category id",
+  "Expense amount must be bigger than 0": "Expense amount must be bigger than 0",
+  "Please provide expense currency": "Please provide expense currency",
+  "Please provide expense's made on date": "Please provide expense's made on date"
 }

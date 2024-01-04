@@ -9,6 +9,6 @@ internal class RemoveTransferCommandValidator : Validator<RemoveTransferCommand>
     {
         RuleFor(c => c.TransferId)
             .NotEmpty()
-            .WithMessage("Please provide trasfer id");
+            .WithMessage("Please provide transfer id");
     }
 }

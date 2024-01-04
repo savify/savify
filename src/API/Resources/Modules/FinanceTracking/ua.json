@@ -28,5 +28,12 @@
   "Please provide transfer's made on date": "Будь ласка, вкажіть дату трансферу",
   "Please provide transfer id": "Будь ласка, вкажіть ідентифікатор трансферу",
   "Please provide user id": "Будь ласка, вкажіть ідентифікатор користувача",
-  "Amount must not be negative": "Сумма не повинна бути від'ємною"
+  "Source and target wallets must be owned by the same user": "Вихідний та цільовий гаманці повинні бути власністю одного й того ж користувача",
+  "Transfer has equal source and target wallets": "Трансфер має однакові вихідний та цільовий гаманці",
+  "Source wallet must be owned by the user": "Вихідний гаманець повинен бути власністю користувача",
+  "Please provide expense id": "Будь ласка, вкажіть ідентифікатор витрати",
+  "Please provide expense category id": "Будь ласка, вкажіть ідентифікатор категорії витрати",
+  "Expense amount must be bigger than 0": "Сумма витрати повинна бути більшою за 0",
+  "Please provide expense currency": "Будь ласка, вкажіть валюту витрати",
+  "Please provide expense's made on date": "Будь ласка, вкажіть дату витрати"
 }

@@ -13,6 +13,11 @@ public class ExpenseRepository(FinanceTrackingContext financeTrackingContext) : 
         await financeTrackingContext.AddAsync(expense);
     }
 
+    public void Remove(Expense expense)
+    {
+        financeTrackingContext.Remove(expense);
+    }
+
     public async Task<Expense> GetByIdAsync(ExpenseId id)
     {
         var expense = await financeTrackingContext.Expenses.SingleOrDefaultAsync(e => e.Id == id);
