@@ -7,7 +7,7 @@ using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.EditExpense;
 
-public class EditExpenseCommandHandler(IExpenseRepository expenseRepository, IWalletsRepository walletsRepository) : ICommandHandler<EditExpenseCommand>
+internal class EditExpenseCommandHandler(IExpenseRepository expenseRepository, IWalletsRepository walletsRepository) : ICommandHandler<EditExpenseCommand>
 {
     public async Task Handle(EditExpenseCommand command, CancellationToken cancellationToken)
     {

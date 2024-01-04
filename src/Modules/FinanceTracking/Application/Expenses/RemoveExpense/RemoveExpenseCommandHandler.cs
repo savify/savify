@@ -4,7 +4,7 @@ using App.Modules.FinanceTracking.Domain.Users;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.RemoveExpense;
 
-public class RemoveExpenseCommandHandler(IExpenseRepository expenseRepository) : ICommandHandler<RemoveExpenseCommand>
+internal class RemoveExpenseCommandHandler(IExpenseRepository expenseRepository) : ICommandHandler<RemoveExpenseCommand>
 {
     public async Task Handle(RemoveExpenseCommand command, CancellationToken cancellationToken)
     {

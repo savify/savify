@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.AddNewExpense;
 
-public class AddNewExpenseCommandValidator : Validator<AddNewExpenseCommand>
+internal class AddNewExpenseCommandValidator : Validator<AddNewExpenseCommand>
 {
     public AddNewExpenseCommandValidator()
     {

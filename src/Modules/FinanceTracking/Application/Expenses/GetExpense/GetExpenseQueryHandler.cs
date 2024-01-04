@@ -6,7 +6,7 @@ using Dapper;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.GetExpense;
 
-public class GetExpenseQueryHandler(ISqlConnectionFactory sqlConnectionFactory) : IQueryHandler<GetExpenseQuery, ExpenseDto?>
+internal class GetExpenseQueryHandler(ISqlConnectionFactory sqlConnectionFactory) : IQueryHandler<GetExpenseQuery, ExpenseDto?>
 {
     public async Task<ExpenseDto?> Handle(GetExpenseQuery query, CancellationToken cancellationToken)
     {

@@ -7,7 +7,7 @@ using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.AddNewExpense;
 
-public class AddNewExpenseCommandHandler(IExpenseRepository expenseRepository, IWalletsRepository walletsRepository) : ICommandHandler<AddNewExpenseCommand, Guid>
+internal class AddNewExpenseCommandHandler(IExpenseRepository expenseRepository, IWalletsRepository walletsRepository) : ICommandHandler<AddNewExpenseCommand, Guid>
 {
     public async Task<Guid> Handle(AddNewExpenseCommand command, CancellationToken cancellationToken)
     {
