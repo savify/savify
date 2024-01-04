@@ -5,6 +5,7 @@ using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
 using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
@@ -16,23 +17,27 @@ public class EditTransferTests : TestBase
     [Test]
     public async Task EditTransferCommand_TransferIsEdited()
     {
-        var transferId = await AddNewTransferAsync();
+        var userId = Guid.NewGuid();
+        var transferId = await AddNewTransferAsync(userId);
 
-        var command = CreateCommand(transferId);
+        var newSourceWalletId = await CreateWallet(userId);
+        var newTargetWalletId = await CreateWallet(userId);
 
-        await FinanceTrackingModule.ExecuteCommandAsync(command);
+        var editCommand = CreateCommand(transferId, userId, newSourceWalletId, newTargetWalletId);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
 
         var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId));
 
         Assert.That(transfer, Is.Not.Null);
         Assert.That(transfer!.Id, Is.EqualTo(transferId));
-        Assert.That(transfer.SourceWalletId, Is.EqualTo(command.SourceWalletId));
-        Assert.That(transfer.TargetWalletId, Is.EqualTo(command.TargetWalletId));
-        Assert.That(transfer.Amount, Is.EqualTo(command.Amount));
-        Assert.That(transfer.Currency, Is.EqualTo(command.Currency));
-        Assert.That(transfer.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
-        Assert.That(transfer.Comment, Is.EqualTo(command.Comment));
-        Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags!));
+        Assert.That(transfer.SourceWalletId, Is.EqualTo(editCommand.SourceWalletId));
+        Assert.That(transfer.TargetWalletId, Is.EqualTo(editCommand.TargetWalletId));
+        Assert.That(transfer.Amount, Is.EqualTo(editCommand.Amount));
+        Assert.That(transfer.Currency, Is.EqualTo(editCommand.Currency));
+        Assert.That(transfer.MadeOn, Is.EqualTo(editCommand.MadeOn).Within(TimeSpan.FromSeconds(1)));
+        Assert.That(transfer.Comment, Is.EqualTo(editCommand.Comment));
+        Assert.That(transfer.Tags, Is.EquivalentTo(editCommand.Tags!));
     }
 
     [Test]
@@ -41,8 +46,11 @@ public class EditTransferTests : TestBase
         var userId = Guid.NewGuid();
         var transferId = await AddNewTransferAsync(userId: userId);
 
+        var newSourceWalletId = await CreateWallet(userId);
+        var newTargetWalletId = await CreateWallet(userId);
+
         string[] newTags = ["New user tag 1", "New user tag 2"];
-        var command = CreateCommand(transferId, userId: userId, tags: newTags);
+        var command = CreateCommand(transferId, userId, newSourceWalletId, newTargetWalletId, tags: newTags);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -150,10 +158,14 @@ public class EditTransferTests : TestBase
 
     private async Task<Guid> AddNewTransferAsync(OptionalParameter<Guid> userId = default)
     {
+        var userIdValue = userId.GetValueOr(Guid.NewGuid());
+        var sourceWalletId = await CreateWallet(userIdValue);
+        var targetWalletId = await CreateWallet(userIdValue);
+
         var command = new AddNewTransferCommand(
-            userId: userId.GetValueOr(Guid.NewGuid()),
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.NewGuid(),
+            userId: userIdValue,
+            sourceWalletId: sourceWalletId,
+            targetWalletId: targetWalletId,
             amount: 100,
             currency: "USD",
             madeOn: DateTime.UtcNow,
@@ -186,5 +198,17 @@ public class EditTransferTests : TestBase
             madeOn.GetValueOr(DateTime.UtcNow),
             comment.GetValueOr("Edited transfer"),
             tags.GetValueOr(["Edited"]));
+    }
+
+    private async Task<Guid> CreateWallet(Guid userId)
+    {
+        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
+            userId,
+            "Cash wallet",
+            "USD",
+            100,
+            "#000000",
+            "https://cdn.savify.io/icons/icon.svg",
+            true));
     }
 }

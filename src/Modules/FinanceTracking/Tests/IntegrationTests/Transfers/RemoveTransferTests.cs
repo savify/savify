@@ -3,6 +3,7 @@ using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.RemoveTransfer;
+using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
@@ -14,7 +15,7 @@ public class RemoveTransferTests : TestBase
     [Test]
     public async Task RemoveTransferCommand_Tests()
     {
-        var transferId = await AddNewTransferAsync();
+        var transferId = await AddNewTransferAsync(Guid.NewGuid());
 
         var command = new RemoveTransferCommand(transferId);
         await FinanceTrackingModule.ExecuteCommandAsync(command);
@@ -25,7 +26,7 @@ public class RemoveTransferTests : TestBase
     }
 
     [Test]
-    public async Task RemoveTranferCommand_WhenTransferIdIsDefaultGuid_ThrowsInvalidCommandException()
+    public async Task RemoveTransferCommand_WhenTransferIdIsDefaultGuid_ThrowsInvalidCommandException()
     {
         var command = new RemoveTransferCommand(Guid.Empty);
 
@@ -41,12 +42,15 @@ public class RemoveTransferTests : TestBase
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
     }
 
-    private async Task<Guid> AddNewTransferAsync()
+    private async Task<Guid> AddNewTransferAsync(Guid userId)
     {
+        var sourceWalletId = await CreateWallet(userId);
+        var targetWalletId = await CreateWallet(userId);
+
         var command = new AddNewTransferCommand(
-            userId: Guid.NewGuid(),
-            sourceWalletId: Guid.NewGuid(),
-            targetWalletId: Guid.NewGuid(),
+            userId: userId,
+            sourceWalletId: sourceWalletId,
+            targetWalletId: targetWalletId,
             amount: 100,
             currency: "USD",
             madeOn: DateTime.UtcNow,
@@ -56,5 +60,17 @@ public class RemoveTransferTests : TestBase
         var transferId = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
         return transferId;
+    }
+
+    private async Task<Guid> CreateWallet(Guid userId)
+    {
+        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
+            userId,
+            "Cash wallet",
+            "USD",
+            100,
+            "#000000",
+            "https://cdn.savify.io/icons/icon.svg",
+            true));
     }
 }

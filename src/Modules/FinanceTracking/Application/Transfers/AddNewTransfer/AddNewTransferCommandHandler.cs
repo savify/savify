@@ -6,7 +6,7 @@ using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 
-internal class AddNewTransferCommandHandler(ITransfersRepository repository) : ICommandHandler<AddNewTransferCommand, Guid>
+internal class AddNewTransferCommandHandler(ITransferRepository transferRepository, IWalletsRepository walletsRepository) : ICommandHandler<AddNewTransferCommand, Guid>
 {
     public async Task<Guid> Handle(AddNewTransferCommand command, CancellationToken cancellationToken)
     {
@@ -16,10 +16,11 @@ internal class AddNewTransferCommandHandler(ITransfersRepository repository) : I
             new WalletId(command.TargetWalletId),
             Money.From(command.Amount, command.Currency),
             command.MadeOn,
+            walletsRepository,
             command.Comment,
             command.Tags);
 
-        await repository.AddAsync(transfer);
+        await transferRepository.AddAsync(transfer);
 
         return transfer.Id.Value;
     }

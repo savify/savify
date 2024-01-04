@@ -1,5 +1,5 @@
 ﻿namespace App.Modules.FinanceTracking.Domain.Transfers;
-public interface ITransfersRepository
+public interface ITransferRepository
 {
     Task AddAsync(Transfer transfer);
 

@@ -3,6 +3,7 @@ using App.BuildingBlocks.Tests.Creating.OptionalParameters;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
 using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
@@ -13,7 +14,12 @@ public class AddNewTransferTests : TestBase
     [Test]
     public async Task AddNewTransferCommand_TransferIsAdded()
     {
-        var command = CreateCommand();
+        var userId = Guid.NewGuid();
+
+        var sourceWalletId = await CreateWallet(userId);
+        var targetWalletId = await CreateWallet(userId);
+
+        var command = CreateCommand(userId, sourceWalletId, targetWalletId);
 
         var transferId = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -35,9 +41,12 @@ public class AddNewTransferTests : TestBase
         var userId = Guid.NewGuid();
         string[] newTags = ["New user tag 1", "New user tag 2"];
 
-        var command = CreateCommand(userId: userId, tags: newTags);
+        var sourceWalletId = await CreateWallet(userId);
+        var targetWalletId = await CreateWallet(userId);
 
-        var _ = await FinanceTrackingModule.ExecuteCommandAsync(command);
+        var command = CreateCommand(userId, sourceWalletId, targetWalletId, tags: newTags);
+
+        _ = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
         var userTags = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(userId));
 
@@ -130,5 +139,17 @@ public class AddNewTransferTests : TestBase
             madeOn.GetValueOr(DateTime.UtcNow),
             comment.GetValueOr("Savings transfer"),
             tags.GetValueOr(["Savings", "Minor"]));
+    }
+
+    private async Task<Guid> CreateWallet(Guid userId)
+    {
+        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
+            userId,
+            "Cash wallet",
+            "USD",
+            100,
+            "#000000",
+            "https://cdn.savify.io/icons/icon.svg",
+            true));
     }
 }

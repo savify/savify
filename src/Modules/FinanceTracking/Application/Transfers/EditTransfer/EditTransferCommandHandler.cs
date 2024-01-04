@@ -6,11 +6,11 @@ using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 
-internal class EditTransferCommandHandler(ITransfersRepository repository) : ICommandHandler<EditTransferCommand>
+internal class EditTransferCommandHandler(ITransferRepository transferRepository, IWalletsRepository walletsRepository) : ICommandHandler<EditTransferCommand>
 {
     public async Task Handle(EditTransferCommand command, CancellationToken cancellationToken)
     {
-        var transfer = await repository.GetByIdAsync(new TransferId(command.TransferId));
+        var transfer = await transferRepository.GetByIdAsync(new TransferId(command.TransferId));
 
         transfer.Edit(
             new UserId(command.UserId),
@@ -18,6 +18,7 @@ internal class EditTransferCommandHandler(ITransfersRepository repository) : ICo
             new WalletId(command.TargetWalletId),
             Money.From(command.Amount, command.Currency),
             command.MadeOn,
+            walletsRepository,
             command.Comment,
             command.Tags);
     }

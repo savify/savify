@@ -20,8 +20,11 @@ public class TransferTests : UnitTestBase
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
+        var walletsRepository = Substitute.For<IWalletsRepository>();
+        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, targetWalletId).Returns(true);
 
-        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
 
         var transferAddedDomainEvent = AssertPublishedDomainEvent<TransferAddedDomainEvent>(transfer);
 
@@ -43,10 +46,33 @@ public class TransferTests : UnitTestBase
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
+        var walletsRepository = Substitute.For<IWalletsRepository>();
+        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, targetWalletId).Returns(true);
 
         AssertBrokenRule<TransferSourceAndTargetWalletsMustBeDifferentRule>(() =>
         {
-            _ = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+            _ = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
+        });
+    }
+
+    [Test]
+    public void AddingNewTransfer_WhenUserDoesNotOwnOneOfWallets_BreaksTransferSourceAndTargetMustBeOwnedByTheSameUserRule()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var targetWalletId = new WalletId(Guid.NewGuid());
+        var amount = Money.From(100, "PLN");
+        var madeOn = DateTime.UtcNow;
+        var comment = "Some comment";
+        string[] tags = ["Tag1", "Tag2"];
+        var walletsRepository = Substitute.For<IWalletsRepository>();
+        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, targetWalletId).Returns(false);
+
+        AssertBrokenRule<TransferSourceAndTargetMustBeOwnedByTheSameUserRule>(() =>
+        {
+            _ = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
         });
     }
 
@@ -60,8 +86,11 @@ public class TransferTests : UnitTestBase
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
+        var walletsRepository = Substitute.For<IWalletsRepository>();
+        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, targetWalletId).Returns(true);
 
-        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
 
         var newSourceWalletId = new WalletId(Guid.NewGuid());
         var newTargetWalletId = new WalletId(Guid.NewGuid());
@@ -69,8 +98,10 @@ public class TransferTests : UnitTestBase
         var newMadeOn = DateTime.UtcNow;
         var newComment = "Edited comment";
         string[] newTags = ["New Tag1", "New Tag2"];
+        walletsRepository.ExistsForUserIdAndWalletId(userId, newSourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, newTargetWalletId).Returns(true);
 
-        transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, newComment, newTags);
+        transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
 
         var transferEditedDomainEvent = AssertPublishedDomainEvent<TransferEditedDomainEvent>(transfer);
 
@@ -97,8 +128,11 @@ public class TransferTests : UnitTestBase
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
+        var walletsRepository = Substitute.For<IWalletsRepository>();
+        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, targetWalletId).Returns(true);
 
-        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
 
         var newSourceWalletId = new WalletId(Guid.NewGuid());
         var newTargetWalletId = newSourceWalletId;
@@ -109,7 +143,38 @@ public class TransferTests : UnitTestBase
 
         AssertBrokenRule<TransferSourceAndTargetWalletsMustBeDifferentRule>(() =>
         {
-            transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, newComment, newTags);
+            transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
+        });
+    }
+
+    [Test]
+    public void EditingTransfer_WhenUserDoesNotOwnOneOfNewWallets_BreaksTransferSourceAndTargetMustBeOwnedByTheSameUserRule()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var targetWalletId = new WalletId(Guid.NewGuid());
+        var amount = Money.From(100, "PLN");
+        var madeOn = DateTime.UtcNow;
+        var comment = "Some comment";
+        string[] tags = ["Tag1", "Tag2"];
+        var walletsRepository = Substitute.For<IWalletsRepository>();
+        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, targetWalletId).Returns(true);
+
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
+
+        var newSourceWalletId = new WalletId(Guid.NewGuid());
+        var newTargetWalletId = new WalletId(Guid.NewGuid());
+        var newAmount = Money.From(500, "USD");
+        var newMadeOn = DateTime.UtcNow;
+        var newComment = "Edited comment";
+        string[] newTags = ["New Tag1", "New Tag2"];
+        walletsRepository.ExistsForUserIdAndWalletId(userId, newSourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, newTargetWalletId).Returns(false);
+
+        AssertBrokenRule<TransferSourceAndTargetMustBeOwnedByTheSameUserRule>(() =>
+        {
+            transfer.Edit(userId, newSourceWalletId, newTargetWalletId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
         });
     }
 
@@ -123,8 +188,11 @@ public class TransferTests : UnitTestBase
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
+        var walletsRepository = Substitute.For<IWalletsRepository>();
+        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
+        walletsRepository.ExistsForUserIdAndWalletId(userId, targetWalletId).Returns(true);
 
-        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        var transfer = Transfer.AddNew(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
 
         transfer.Remove();
 

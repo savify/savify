@@ -27,14 +27,32 @@ public class Transfer : Entity, IAggregateRoot
     //https://github.com/npgsql/efcore.pg/issues/3038
     private string[] _tags;
 
-    public static Transfer AddNew(UserId userId, WalletId sourceWalletId, WalletId targetWalletId, Money amount, DateTime madeOn, string? comment, IEnumerable<string>? tags)
+    public static Transfer AddNew(
+        UserId userId,
+        WalletId sourceWalletId,
+        WalletId targetWalletId,
+        Money amount,
+        DateTime madeOn,
+        IWalletsRepository walletsRepository,
+        string? comment,
+        IEnumerable<string>? tags)
     {
-        return new Transfer(userId, sourceWalletId, targetWalletId, amount, madeOn, comment, tags);
+        return new Transfer(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
     }
 
-    public void Edit(UserId userId, WalletId newSourceWalletId, WalletId newTargetWalletId, Money newAmount, DateTime newMadeOn, string? newComment, IEnumerable<string>? newTags)
+    public void Edit(
+        UserId userId,
+        WalletId newSourceWalletId,
+        WalletId newTargetWalletId,
+        Money newAmount,
+        DateTime newMadeOn,
+        IWalletsRepository walletsRepository,
+        string? newComment,
+        IEnumerable<string>? newTags)
     {
-        CheckRules(new TransferSourceAndTargetWalletsMustBeDifferentRule(newSourceWalletId, newTargetWalletId));
+        CheckRules(
+            new TransferSourceAndTargetWalletsMustBeDifferentRule(newSourceWalletId, newTargetWalletId),
+            new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(userId, newSourceWalletId, newTargetWalletId, walletsRepository));
 
         var oldSourceWalletId = _sourceWalletId;
         var oldTargetWalletId = _targetWalletId;
@@ -66,9 +84,19 @@ public class Transfer : Entity, IAggregateRoot
         AddDomainEvent(new TransferRemovedDomainEvent(Id));
     }
 
-    private Transfer(UserId userId, WalletId sourceWalletId, WalletId targetWalletId, Money amount, DateTime madeOn, string? comment, IEnumerable<string>? tags)
+    private Transfer(
+        UserId userId,
+        WalletId sourceWalletId,
+        WalletId targetWalletId,
+        Money amount,
+        DateTime madeOn,
+        IWalletsRepository walletsRepository,
+        string? comment,
+        IEnumerable<string>? tags)
     {
-        CheckRules(new TransferSourceAndTargetWalletsMustBeDifferentRule(sourceWalletId, targetWalletId));
+        CheckRules(
+            new TransferSourceAndTargetWalletsMustBeDifferentRule(sourceWalletId, targetWalletId),
+            new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(userId, sourceWalletId, targetWalletId, walletsRepository));
 
         Id = new TransferId(Guid.NewGuid());
         _sourceWalletId = sourceWalletId;

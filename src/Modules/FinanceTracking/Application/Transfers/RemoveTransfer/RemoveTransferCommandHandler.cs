@@ -3,7 +3,7 @@ using App.Modules.FinanceTracking.Domain.Transfers;
 
 namespace App.Modules.FinanceTracking.Application.Transfers.RemoveTransfer;
 
-internal class RemoveTransferCommandHandler(ITransfersRepository repository) : ICommandHandler<RemoveTransferCommand>
+internal class RemoveTransferCommandHandler(ITransferRepository repository) : ICommandHandler<RemoveTransferCommand>
 {
     public async Task Handle(RemoveTransferCommand command, CancellationToken cancellationToken)
     {
