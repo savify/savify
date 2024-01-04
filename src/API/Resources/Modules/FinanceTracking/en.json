@@ -27,5 +27,6 @@
   "Please provide transfer currency": "Please provide transfer currency",
   "Please provide transfer's made on date": "Please provide transfer's made on date",
   "Please provide transfer id": "Please provide transfer id",
-  "Please provide user id": "Please provide user id"
+  "Please provide user id": "Please provide user id",
+  "Amount must not be negative": "Amount must not be negative"
 }

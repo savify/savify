@@ -1,5 +1,4 @@
 ﻿using App.Modules.FinanceTracking.Domain.Users.Tags;
-using App.Modules.FinanceTracking.Domain.Users.Tags.Events;
 
 namespace App.Modules.FinanceTracking.UnitTests.UserTags;
 
@@ -29,9 +28,7 @@ public class UserTagsUpdateServiceTests : UnitTestBase
         await _service.UpdateAsync(userId, tags);
 
         // Assert
-        var userTagsUpdatedDomainEvent = AssertPublishedDomainEvent<UserTagsUpdatedDomainEvent>(userTags);
-        Assert.That(userTagsUpdatedDomainEvent, Is.Not.Null);
-        Assert.That(userTagsUpdatedDomainEvent.NewTags, Is.EquivalentTo(tags));
+        Assert.That(userTags.Tags, Is.EquivalentTo(tags));
     }
 
     [Test]

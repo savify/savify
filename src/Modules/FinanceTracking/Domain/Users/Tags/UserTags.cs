@@ -1,13 +1,14 @@
 ﻿using App.BuildingBlocks.Domain;
-using App.Modules.FinanceTracking.Domain.Users.Tags.Events;
 
 namespace App.Modules.FinanceTracking.Domain.Users.Tags;
 
-public class UserTags : Entity, IAggregateRoot
+public class UserTags : Entity
 {
     public UserId UserId { get; private init; }
 
     private List<string> _tags;
+
+    public IReadOnlyCollection<string> Tags => _tags.AsReadOnly();
 
     public static UserTags Create(UserId userId) => new UserTags(userId);
 
@@ -15,8 +16,6 @@ public class UserTags : Entity, IAggregateRoot
     {
         var newTags = tags.Except(_tags).ToArray();
         _tags.AddRange(newTags);
-
-        AddDomainEvent(new UserTagsUpdatedDomainEvent(UserId, newTags));
     }
 
     private UserTags(UserId userId)
@@ -25,6 +24,5 @@ public class UserTags : Entity, IAggregateRoot
         _tags = new List<string>();
     }
 
-    private UserTags()
-    { }
+    private UserTags() { }
 }

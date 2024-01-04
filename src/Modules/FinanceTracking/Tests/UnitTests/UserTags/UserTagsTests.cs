@@ -1,5 +1,4 @@
 ﻿using App.Modules.FinanceTracking.Domain.Users;
-using App.Modules.FinanceTracking.Domain.Users.Tags.Events;
 
 namespace App.Modules.FinanceTracking.UnitTests.UserTags;
 
@@ -27,10 +26,7 @@ public class UserTagsTests : UnitTestBase
 
         userTags.Update(tags);
 
-        var userTagsUpdatedDomainEvent = AssertPublishedDomainEvent<UserTagsUpdatedDomainEvent>(userTags);
-
-        Assert.That(userTagsUpdatedDomainEvent, Is.Not.Null);
-        Assert.That(userTagsUpdatedDomainEvent.NewTags, Is.EquivalentTo(tags));
+        Assert.That(userTags.Tags, Is.EquivalentTo(tags));
     }
 
     [Test]
@@ -51,9 +47,6 @@ public class UserTagsTests : UnitTestBase
         userTags.Update(newTags);
 
         // Assert
-        var userTagsUpdatedDomainEvent = AssertPublishedDomainEvent<UserTagsUpdatedDomainEvent>(userTags);
-
-        Assert.That(userTagsUpdatedDomainEvent, Is.Not.Null);
-        Assert.That(userTagsUpdatedDomainEvent.NewTags, Has.Exactly(1).EqualTo("tag3"));
+        Assert.That(userTags.Tags, Has.Exactly(1).EqualTo("tag3"));
     }
 }
