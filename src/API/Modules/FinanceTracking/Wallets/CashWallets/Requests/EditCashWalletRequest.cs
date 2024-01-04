@@ -1,4 +1,4 @@
-namespace App.API.Modules.FinanceTracking.CashWallets.Requests;
+namespace App.API.Modules.FinanceTracking.Wallets.CashWallets.Requests;
 
 public class EditCashWalletRequest
 {

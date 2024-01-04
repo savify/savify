@@ -1,5 +1,5 @@
 using App.API.Configuration.Authorization;
-using App.API.Modules.FinanceTracking.CreditWallets.Requests;
+using App.API.Modules.FinanceTracking.Wallets.CreditWallets.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.FinanceTracking.Application.Contracts;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCreditWallet;
@@ -8,7 +8,7 @@ using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.RemoveCredit
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.API.Modules.FinanceTracking.CreditWallets;
+namespace App.API.Modules.FinanceTracking.Wallets.CreditWallets;
 
 [Authorize]
 [ApiController]

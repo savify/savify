@@ -1,6 +1,6 @@
-namespace App.API.Modules.FinanceTracking.CashWallets.Requests;
+namespace App.API.Modules.FinanceTracking.Wallets.DebitWallets.Requests;
 
-public class AddNewCashWalletRequest
+public class AddNewDebitWalletRequest
 {
     public string Title { get; set; }
 

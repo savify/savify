@@ -1,5 +1,5 @@
 using App.API.Configuration.Authorization;
-using App.API.Modules.FinanceTracking.CashWallets.Requests;
+using App.API.Modules.FinanceTracking.Wallets.CashWallets.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.FinanceTracking.Application.Contracts;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
@@ -8,7 +8,7 @@ using App.Modules.FinanceTracking.Application.Wallets.CashWallets.RemoveCashWall
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.API.Modules.FinanceTracking.CashWallets;
+namespace App.API.Modules.FinanceTracking.Wallets.CashWallets;
 
 [Authorize]
 [ApiController]

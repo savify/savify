@@ -1,4 +1,4 @@
-namespace App.API.Modules.FinanceTracking.DebitWallets.Requests;
+namespace App.API.Modules.FinanceTracking.Wallets.DebitWallets.Requests;
 
 public class ConnectBankAccountToDebitWalletRequest
 {

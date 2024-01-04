@@ -1,5 +1,5 @@
 ﻿using App.API.Configuration.Authorization;
-using App.API.Modules.FinanceTracking.DebitWallets.Requests;
+using App.API.Modules.FinanceTracking.Wallets.DebitWallets.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.FinanceTracking.Application.Contracts;
 using App.Modules.FinanceTracking.Application.Wallets;
@@ -10,7 +10,7 @@ using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.RemoveDebitWa
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.API.Modules.FinanceTracking.DebitWallets;
+namespace App.API.Modules.FinanceTracking.Wallets.DebitWallets;
 
 [Authorize]
 [ApiController]

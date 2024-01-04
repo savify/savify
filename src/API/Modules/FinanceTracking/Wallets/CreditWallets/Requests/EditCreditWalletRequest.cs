@@ -1,4 +1,4 @@
-namespace App.API.Modules.FinanceTracking.CreditWallets.Requests;
+namespace App.API.Modules.FinanceTracking.Wallets.CreditWallets.Requests;
 
 public class EditCreditWalletRequest
 {
