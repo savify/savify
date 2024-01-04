@@ -1,6 +1,6 @@
 ﻿using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
-using App.BuildingBlocks.Tests.Creating.OptionalValues;
+using App.BuildingBlocks.Tests.Creating.OptionalParameters;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
@@ -11,7 +11,7 @@ using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
 
 [TestFixture]
-public partial class EditTransferTests : TestBase
+public class EditTransferTests : TestBase
 {
     [Test]
     public async Task EditTransferCommand_TransferIsEdited()
@@ -25,7 +25,7 @@ public partial class EditTransferTests : TestBase
         var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId));
 
         Assert.That(transfer, Is.Not.Null);
-        Assert.That(transfer.Id, Is.EqualTo(transferId));
+        Assert.That(transfer!.Id, Is.EqualTo(transferId));
         Assert.That(transfer.SourceWalletId, Is.EqualTo(command.SourceWalletId));
         Assert.That(transfer.TargetWalletId, Is.EqualTo(command.TargetWalletId));
         Assert.That(transfer.Amount, Is.EqualTo(command.Amount));
@@ -49,7 +49,7 @@ public partial class EditTransferTests : TestBase
         var userTags = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(userId));
 
         Assert.That(userTags, Is.Not.Null);
-        Assert.That(userTags.Values, Is.SupersetOf(newTags));
+        Assert.That(userTags!.Values, Is.SupersetOf(newTags));
     }
 
     [Test]

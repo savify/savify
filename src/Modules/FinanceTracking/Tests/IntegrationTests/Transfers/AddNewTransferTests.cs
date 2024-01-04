@@ -1,10 +1,9 @@
 ﻿using App.BuildingBlocks.Application.Exceptions;
-using App.BuildingBlocks.Tests.Creating.OptionalValues;
+using App.BuildingBlocks.Tests.Creating.OptionalParameters;
 using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
 using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
-using RazorEngineCore;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
 
@@ -21,7 +20,7 @@ public class AddNewTransferTests : TestBase
         var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId));
 
         Assert.That(transfer, Is.Not.Null);
-        Assert.That(transfer.SourceWalletId, Is.EqualTo(command.SourceWalletId));
+        Assert.That(transfer!.SourceWalletId, Is.EqualTo(command.SourceWalletId));
         Assert.That(transfer.TargetWalletId, Is.EqualTo(command.TargetWalletId));
         Assert.That(transfer.Amount, Is.EqualTo(command.Amount));
         Assert.That(transfer.Currency, Is.EqualTo(command.Currency));
@@ -43,7 +42,7 @@ public class AddNewTransferTests : TestBase
         var userTags = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(userId));
 
         Assert.That(userTags, Is.Not.Null);
-        Assert.That(userTags.Values, Is.SupersetOf(newTags));
+        Assert.That(userTags!.Values, Is.SupersetOf(newTags));
     }
 
     [Test]

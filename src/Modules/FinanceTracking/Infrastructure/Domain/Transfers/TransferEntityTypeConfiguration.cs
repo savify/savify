@@ -1,5 +1,4 @@
-﻿using App.Modules.FinanceTracking.Domain.Categories;
-using App.Modules.FinanceTracking.Domain.Transfers;
+﻿using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.Domain.Wallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;

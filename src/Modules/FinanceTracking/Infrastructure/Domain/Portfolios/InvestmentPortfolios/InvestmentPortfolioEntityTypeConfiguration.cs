@@ -1,5 +1,4 @@
-﻿using App.Modules.FinanceTracking.Domain.Finance;
-using App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios;
+﻿using App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios;
 using App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.Assets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;

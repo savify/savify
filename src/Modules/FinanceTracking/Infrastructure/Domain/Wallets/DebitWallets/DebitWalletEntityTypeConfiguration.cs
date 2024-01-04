@@ -1,4 +1,3 @@
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;

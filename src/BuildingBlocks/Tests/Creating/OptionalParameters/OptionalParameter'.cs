@@ -1,4 +1,4 @@
-﻿namespace App.BuildingBlocks.Tests.Creating.OptionalValues;
+﻿namespace App.BuildingBlocks.Tests.Creating.OptionalParameters;
 
 /// <summary>
 /// Simplifies methods with optional parameters.

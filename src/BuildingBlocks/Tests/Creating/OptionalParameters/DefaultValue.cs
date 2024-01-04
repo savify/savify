@@ -1,4 +1,3 @@
-﻿namespace App.BuildingBlocks.Tests.Creating.OptionalValues;
+﻿namespace App.BuildingBlocks.Tests.Creating.OptionalParameters;
 
-public class DefaultValue
-{ }
+public class DefaultValue;

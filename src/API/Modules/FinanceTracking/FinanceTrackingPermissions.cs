@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Connections.Features;
-
 namespace App.API.Modules.FinanceTracking;
 
 public static class FinanceTrackingPermissions
