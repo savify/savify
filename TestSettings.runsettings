@@ -13,7 +13,7 @@
             <DataCollector friendlyName="XPlat code coverage">
                 <Configuration>
                     <Format>cobertura</Format>
-                    <ExcludeByFile>**/Migrations/**/*</ExcludeByFile>
+                    <ExcludeByFile>**/Migrations/**/*,**/src/API/**/*,**/BuildingBlocks/Tests/**/*</ExcludeByFile>
                 </Configuration>
             </DataCollector>
         </DataCollectors>
