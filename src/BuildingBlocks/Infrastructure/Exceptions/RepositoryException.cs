@@ -14,6 +14,6 @@ public class RepositoryException<T> : RepositoryException
     protected RepositoryException(string messageTemplate) : base(messageTemplate, typeof(T))
     {
         MessageTemplate = messageTemplate;
-        MessageArguments = new object[] { typeof(T) };
+        MessageArguments = [typeof(T)];
     }
 }

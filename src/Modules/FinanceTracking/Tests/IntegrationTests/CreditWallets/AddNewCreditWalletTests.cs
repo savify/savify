@@ -22,7 +22,7 @@ public class AddNewCreditWalletTests : TestBase
             true);
         var walletId = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
-        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCreditWalletQuery(walletId));
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCreditWalletQuery(walletId, command.UserId));
 
         Assert.That(wallet, Is.Not.Null);
         Assert.That(wallet!.Id, Is.EqualTo(walletId));

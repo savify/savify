@@ -1,3 +1,5 @@
+using App.BuildingBlocks.Application.Exceptions;
+using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Application.BankConnectionProcessing.ChooseBankAccountToConnect;
 using App.Modules.FinanceTracking.Application.BankConnectionProcessing.CreateBankConnection;
 using App.Modules.FinanceTracking.Application.BankConnectionProcessing.GetBankConnectionProcess;
@@ -31,12 +33,33 @@ public class ChooseBankAccountToConnectCommandTests : TestBase
             bankAccountId
         ));
 
-        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
-        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId));
+        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId, BankConnectionProcessingData.UserId));
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId, BankConnectionProcessingData.UserId));
 
         Assert.That(bankConnectionProcess!.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
         Assert.That(wallet!.BankConnectionId, Is.EqualTo(bankConnectionProcessId));
         Assert.That(wallet.BankAccountId, Is.EqualTo(bankAccountId));
+    }
+
+    [Test]
+    public void ChooseBankAccountToConnectCommand_WhenBankConnectionProcessDoesNotExist_ThrowsNotFoundRepositoryException()
+    {
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(new ChooseBankAccountToConnectCommand(
+            Guid.NewGuid(),
+            BankConnectionProcessingData.UserId,
+            Guid.NewGuid())), Throws.TypeOf<NotFoundRepositoryException<BankConnectionProcess>>());
+    }
+
+    [Test]
+    public async Task ChooseBankAccountToConnectCommand_WhenBankConnectionProcessDoesNotBelongToUser_ThrowsAccessDeniedException()
+    {
+        var bankConnectionProcessId = await InitiateBankConnectionProcess();
+        await CreateBankConnectionWithMultipleBankAccounts(bankConnectionProcessId);
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(new ChooseBankAccountToConnectCommand(
+            bankConnectionProcessId,
+            Guid.NewGuid(),
+            Guid.NewGuid())), Throws.TypeOf<AccessDeniedException>());
     }
 
     private async Task<Guid> InitiateBankConnectionProcess()

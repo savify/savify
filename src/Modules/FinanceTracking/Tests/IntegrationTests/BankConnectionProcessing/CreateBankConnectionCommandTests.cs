@@ -27,11 +27,11 @@ public class CreateBankConnectionCommandTests : TestBase
 
         await FinanceTrackingModule.ExecuteCommandAsync(new CreateBankConnectionCommand(bankConnectionProcessId, BankConnectionProcessingData.ExternalConnectionId));
 
-        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
-        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId));
+        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId, BankConnectionProcessingData.UserId));
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(_walletId, bankConnectionProcess!.UserId));
 
         Assert.That(bankConnectionProcess, Is.Not.Null);
-        Assert.That(bankConnectionProcess!.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
+        Assert.That(bankConnectionProcess.Status, Is.EqualTo(BankConnectionProcessStatus.State.Completed.ToString()));
         Assert.That(await CountBankAccountsInConnection(bankConnectionProcess.Id), Is.EqualTo(1));
         Assert.That(wallet!.Balance, Is.EqualTo((int)BankConnectionProcessingData.ExternalUsdAccountBalance * 100));
         Assert.That(wallet.Currency, Is.EqualTo(BankConnectionProcessingData.ExternalUsdAccountCurrency));
@@ -40,7 +40,7 @@ public class CreateBankConnectionCommandTests : TestBase
     }
 
     [Test]
-    public async Task CreateBankConnectionCommand_WithMultipleAccounts_FinishesBankConnectionProcess_Test()
+    public async Task CreateBankConnectionCommand_WithMultipleAccounts_SetWaitingForAccountChoosingStatus_Test()
     {
         SaltEdgeHttpClientMocker.MockFetchConnectionSuccessfulResponse();
         SaltEdgeHttpClientMocker.MockFetchConsentSuccessfulResponse();
@@ -50,7 +50,7 @@ public class CreateBankConnectionCommandTests : TestBase
 
         await FinanceTrackingModule.ExecuteCommandAsync(new CreateBankConnectionCommand(bankConnectionProcessId, BankConnectionProcessingData.ExternalConnectionId));
 
-        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId));
+        var bankConnectionProcess = await FinanceTrackingModule.ExecuteQueryAsync(new GetBankConnectionProcessQuery(bankConnectionProcessId, BankConnectionProcessingData.UserId));
 
         Assert.That(bankConnectionProcess, Is.Not.Null);
         Assert.That(bankConnectionProcess!.Status, Is.EqualTo(BankConnectionProcessStatus.State.WaitingForAccountChoosing.ToString()));

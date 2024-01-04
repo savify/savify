@@ -21,7 +21,7 @@ public class AddNewDebitWalletTests : TestBase
             true);
         var walletId = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
-        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(walletId));
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(walletId, command.UserId));
 
         Assert.That(wallet, Is.Not.Null);
         Assert.That(wallet!.Id, Is.EqualTo(walletId));

@@ -7,7 +7,7 @@ public class UserContextIsNotAvailableProblemDetails : ProblemDetails
 {
     public UserContextIsNotAvailableProblemDetails(UserContextIsNotAvailableException exception)
     {
-        Title = "User context is not available";
+        Title = "User is not authenticated";
         Detail = exception.Message;
         Status = StatusCodes.Status401Unauthorized;
     }

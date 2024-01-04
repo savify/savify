@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing;
 using App.Modules.FinanceTracking.Domain.Users;
@@ -27,13 +28,11 @@ public class BankConnectionProcessRepository(FinanceTrackingContext financeTrack
 
     public async Task<BankConnectionProcess> GetByIdAndUserIdAsync(BankConnectionProcessId id, UserId userId)
     {
-        var bankConnectionProcess = await financeTrackingContext.BankConnectionProcesses.SingleOrDefaultAsync(x => x.Id == id && x.UserId == userId);
+        var bankConnectionProcess = await GetByIdAsync(id);
 
-        if (bankConnectionProcess == null)
+        if (bankConnectionProcess.UserId != userId)
         {
-            throw new NotFoundRepositoryException<BankConnectionProcess>(
-                "Bank connection process with id '{0}' was not found for user with id '{1}'",
-                new object[] { id.Value, userId.Value });
+            throw new AccessDeniedException();
         }
 
         return bankConnectionProcess;

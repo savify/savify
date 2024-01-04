@@ -1,7 +1,9 @@
 using App.BuildingBlocks.Application.Exceptions;
+using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.EditCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
+using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.CashWallets;
@@ -32,7 +34,7 @@ public class EditCashWalletTests : TestBase
             "https://cdn.savify.localhost/icons/new-wallet.png",
             false));
 
-        var editedWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId));
+        var editedWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId, userId));
 
         Assert.That(editedWallet!.UserId, Is.EqualTo(userId));
         Assert.That(editedWallet.Title, Is.EqualTo("New title"));
@@ -42,6 +44,47 @@ public class EditCashWalletTests : TestBase
         Assert.That(editedWallet.ViewMetadata.Color, Is.EqualTo("#000000"));
         Assert.That(editedWallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/new-wallet.png"));
         Assert.That(editedWallet.ViewMetadata.IsConsideredInTotalBalance, Is.False);
+    }
+
+    [Test]
+    public void EditCashWalletCommand_WhenWalletDoesNotExist_ThrowsNotFoundRepositoryException()
+    {
+        var userId = Guid.NewGuid();
+        var walletId = Guid.NewGuid();
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(new EditCashWalletCommand(
+            userId,
+            walletId,
+            "New title",
+            "USD",
+            2000,
+            "#000000",
+            "https://cdn.savify.localhost/icons/new-wallet.png",
+            false)), Throws.TypeOf<NotFoundRepositoryException<CashWallet>>());
+    }
+
+    [Test]
+    public async Task EditCashWalletCommand_WhenWalletDoesNotBelongToUser_ThrowsAccessDeniedException()
+    {
+        var userId = Guid.NewGuid();
+        var walletId = await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
+            userId,
+            "Cash wallet",
+            "PLN",
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true));
+
+        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(new EditCashWalletCommand(
+            Guid.NewGuid(),
+            walletId,
+            "New title",
+            "USD",
+            2000,
+            "#000000",
+            "https://cdn.savify.localhost/icons/new-wallet.png",
+            false)), Throws.TypeOf<AccessDeniedException>());
     }
 
     [Test]
