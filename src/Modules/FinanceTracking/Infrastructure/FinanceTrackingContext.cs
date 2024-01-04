@@ -7,6 +7,8 @@ using App.Modules.FinanceTracking.Domain.BankConnections;
 using App.Modules.FinanceTracking.Domain.Categories;
 using App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios;
 using App.Modules.FinanceTracking.Domain.Portfolios.PortfolioViewMetadata;
+using App.Modules.FinanceTracking.Domain.Transfers;
+using App.Modules.FinanceTracking.Domain.Users.Tags;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
@@ -16,6 +18,8 @@ using App.Modules.FinanceTracking.Infrastructure.Domain.BankConnections;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Categories;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Portfolios.InvestmentPortfolios;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Portfolios.PortfolioViewMetadata;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Transfers;
+using App.Modules.FinanceTracking.Infrastructure.Domain.UserTags;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CreditWallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.DebitWallets;
@@ -41,6 +45,10 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
     public required DbSet<PortfolioViewMetadata> PortfoliosViewMetadata { get; set; }
 
     public required DbSet<Category> Categories { get; set; }
+
+    public required DbSet<Transfer> Transfers { get; set; }
+
+    public required DbSet<UserTags> UserTags { get; set; }
 
     public required DbSet<OutboxMessage> OutboxMessages { get; set; }
 
@@ -68,9 +76,11 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
         modelBuilder.ApplyConfiguration(new PortfolioViewMetadataEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankConnectionProcessEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankConnectionEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new TransferEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new UserTagsEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeCustomerEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeConnectionEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InboxMessageEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InternalCommandEntityTypeConfiguration());

@@ -20,5 +20,13 @@
   "Redirect URL was expired": "У URL-адреси перенаправлення закінчився термін дії",
   "Status transition from '{0}' to '{1}' is not valid": "Перехід статусу з '{0}' на '{1}' є неправильним",
   "Bank connection process was already finished": "Процес підключення до банку вже завершено",
-  "Redirect URL has not expired yet": "У URL-адреси перенаправлення ще не закінчилася термін дії"
+  "Redirect URL has not expired yet": "У URL-адреси перенаправлення ще не закінчилася термін дії",
+  "Please provide source wallet id": "Будь ласка, вкажіть ідентифікатор джерела трансферу",
+  "Please provide target wallet id": "Будь ласка, вкажіть ідентифікатор ціль трансферу",
+  "Transfer amount must be bigger than 0": "Сумма трансферу повинна бути більшою за 0",
+  "Please provide transfer currency": "Будь ласка, вкажіть валюту трансферу",
+  "Please provide transfer's made on date": "Будь ласка, вкажіть дату трансферу",
+  "Please provide transfer id": "Будь ласка, вкажіть ідентифікатор трансферу",
+  "Please provide user id": "Будь ласка, вкажіть ідентифікатор користувача",
+  "Amount must not be negative": "Сумма не повинна бути від'ємною"
 }

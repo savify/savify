@@ -19,7 +19,7 @@ public class CashWalletsController(
     : ControllerBase
 {
     [HttpPost("")]
-    [HasPermission(FinanceTrackingPermissions.AddNewWallet)]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> AddNew(AddNewCashWalletRequest request)
     {
@@ -39,7 +39,7 @@ public class CashWalletsController(
     }
 
     [HttpPatch("{walletId}")]
-    [HasPermission(FinanceTrackingPermissions.EditWallets)]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Edit(Guid walletId, EditCashWalletRequest request)
     {
@@ -57,7 +57,7 @@ public class CashWalletsController(
     }
 
     [HttpDelete("{walletId}")]
-    [HasPermission(FinanceTrackingPermissions.RemoveWallets)]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Remove(Guid walletId)
     {

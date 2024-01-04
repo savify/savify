@@ -1,6 +1,6 @@
-﻿using App.Modules.FinanceTracking.Domain.Finance;
-using App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios;
+﻿using App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios;
 using App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios.Assets;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,14 +30,7 @@ internal class InvestmentPortfolioEntityTypeConfiguration : IEntityTypeConfigura
             y.Property<string>("_country");
             y.Property<DateTime?>("_purchasedAt");
 
-            y.OwnsOne<Money>("_purchasePrice", m =>
-            {
-                m.Property(x => x.Amount).HasColumnName("purchase_price_amount").HasColumnType("money");
-                m.OwnsOne(x => x.Currency, c =>
-                {
-                    c.Property(x => x.Value).HasColumnName("purchase_price_currency");
-                });
-            });
+            y.OwnsOneMoney("_purchasePrice", "purchase_price_amount", "purchase_price_currency");
         });
     }
 }

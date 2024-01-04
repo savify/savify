@@ -1,7 +1,7 @@
 using App.Modules.FinanceTracking.Domain.BankConnections;
 using App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -33,10 +33,7 @@ public class BankConnectionEntityTypeConfiguration : IEntityTypeConfiguration<Ba
             b.Property<string>("_name");
             b.Property<int>("Balance");
 
-            b.OwnsOne<Currency>("Currency", c =>
-            {
-                c.Property(x => x.Value).HasColumnName("currency");
-            });
+            b.OwnsOneCurrency("Currency");
         });
 
         builder.ComplexProperty<Consent>("_consent", b =>

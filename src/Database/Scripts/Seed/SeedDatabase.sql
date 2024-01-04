@@ -1,9 +1,8 @@
 
 -- Permissions --
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageUsers', 'ManageUsers', 'Allows to manage Users data');
-INSERT INTO user_access.permissions (code, name, description) VALUES ('AddNewWallet', 'AddNewWallet', 'Allows to add new wallets');
-INSERT INTO user_access.permissions (code, name, description) VALUES ('EditWallets', 'EditWallets', 'Allows to edit existing wallets');
-INSERT INTO user_access.permissions (code, name, description) VALUES ('RemoveWallets', 'RemoveWallets', 'Allows to remove existing wallets');
+INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageWallets', 'ManageWallets', 'Allows to manage Wallets');
+INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageTransfers', 'ManageTransfers', 'Allows to manage Transfers');
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ConnectBankAccountsToWallets', 'ConnectBankAccountsToWallets', 'Allows to connect bank account to wallets');
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageBanks', 'ManageBanks', 'Allows to manage banks');
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageCategories', 'ManageCategories', 'Allows to manage categories');
@@ -13,9 +12,8 @@ INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageCus
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('Admin', 'ManageUsers');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('Admin', 'ManageBanks');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('Admin', 'ManageCategories');
-INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'AddNewWallet');
-INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'EditWallets');
-INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'RemoveWallets');
+INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageWallets');
+INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageTransfers');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ConnectBankAccountsToWallets');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageCustomCategories');
 
