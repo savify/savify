@@ -36,5 +36,6 @@
   "Please provide expense category id": "Please provide expense category id",
   "Expense amount must be bigger than 0": "Expense amount must be bigger than 0",
   "Please provide expense currency": "Please provide expense currency",
-  "Please provide expense's made on date": "Please provide expense's made on date"
+  "Please provide expense's made on date": "Please provide expense's made on date",
+  "Category with provided id does not exist": "Category with provided id does not exist"
 }

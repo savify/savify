@@ -20,10 +20,7 @@ public class EditTransferTests : TestBase
         var userId = Guid.NewGuid();
         var transferId = await AddNewTransferAsync(userId);
 
-        var newSourceWalletId = await CreateWallet(userId);
-        var newTargetWalletId = await CreateWallet(userId);
-
-        var editCommand = CreateCommand(transferId, userId, newSourceWalletId, newTargetWalletId);
+        var editCommand = await CreateCommand(transferId, userId);
 
         await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
 
@@ -46,11 +43,8 @@ public class EditTransferTests : TestBase
         var userId = Guid.NewGuid();
         var transferId = await AddNewTransferAsync(userId: userId);
 
-        var newSourceWalletId = await CreateWallet(userId);
-        var newTargetWalletId = await CreateWallet(userId);
-
         string[] newTags = ["New user tag 1", "New user tag 2"];
-        var command = CreateCommand(transferId, userId, newSourceWalletId, newTargetWalletId, tags: newTags);
+        var command = await CreateCommand(transferId, userId, tags: newTags);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -65,7 +59,7 @@ public class EditTransferTests : TestBase
     {
         var notExistingTransferId = Guid.NewGuid();
 
-        var command = CreateCommand(notExistingTransferId);
+        var command = await CreateCommand(notExistingTransferId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
     }
@@ -76,7 +70,7 @@ public class EditTransferTests : TestBase
         var userId = Guid.NewGuid();
         var transferId = await AddNewTransferAsync(userId: userId);
 
-        var command = CreateCommand(transferId);
+        var command = await CreateCommand(transferId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<AccessDeniedException>());
     }
@@ -86,7 +80,7 @@ public class EditTransferTests : TestBase
     {
         var emptyTransferId = Guid.Empty;
 
-        var command = CreateCommand(emptyTransferId);
+        var command = await CreateCommand(emptyTransferId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
@@ -96,7 +90,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = Guid.NewGuid();
 
-        var command = CreateCommand(transferId, userId: OptionalParameter.Default);
+        var command = await CreateCommand(transferId, userId: OptionalParameter.Default);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
@@ -106,7 +100,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = CreateCommand(transferId, sourceWalletId: Guid.Empty);
+        var command = await CreateCommand(transferId, sourceWalletId: Guid.Empty);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -118,7 +112,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = CreateCommand(transferId, targetWalletId: Guid.Empty);
+        var command = await CreateCommand(transferId, targetWalletId: Guid.Empty);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -132,7 +126,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = CreateCommand(transferId, amount: amount);
+        var command = await CreateCommand(transferId, amount: amount);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -148,7 +142,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = CreateCommand(transferId, currency: currency);
+        var command = await CreateCommand(transferId, currency: currency);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -160,7 +154,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = CreateCommand(transferId, madeOn: OptionalParameter.Default);
+        var command = await CreateCommand(transferId, madeOn: OptionalParameter.Default);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -188,7 +182,7 @@ public class EditTransferTests : TestBase
         return transferId;
     }
 
-    private EditTransferCommand CreateCommand(
+    private async Task<EditTransferCommand> CreateCommand(
         Guid transferId,
         OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
@@ -199,11 +193,13 @@ public class EditTransferTests : TestBase
         OptionalParameter<string> comment = default,
         OptionalParameter<IEnumerable<string>> tags = default)
     {
+        var userIdValue = userId.GetValueOr(Guid.NewGuid());
+
         return new EditTransferCommand(
             transferId,
-            userId.GetValueOr(Guid.NewGuid()),
-            sourceWalletId.GetValueOr(Guid.NewGuid()),
-            targetWalletId.GetValueOr(Guid.NewGuid()),
+            userIdValue,
+            sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
+            targetWalletId.GetValueOr(await CreateWallet(userIdValue)),
             amount.GetValueOr(500),
             currency.GetValueOr("PLN"),
             madeOn.GetValueOr(DateTime.UtcNow),
@@ -214,7 +210,7 @@ public class EditTransferTests : TestBase
     private async Task<Guid> CreateWallet(Guid userId)
     {
         return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
-            userId,
+            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
             "Cash wallet",
             "USD",
             100,

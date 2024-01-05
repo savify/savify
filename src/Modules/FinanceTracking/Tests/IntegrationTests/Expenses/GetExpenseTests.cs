@@ -1,9 +1,12 @@
 using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Tests.Creating.OptionalParameters;
+using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Expenses.AddNewExpense;
 using App.Modules.FinanceTracking.Application.Expenses.GetExpense;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
+using Dapper;
+using Npgsql;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Expenses;
 
@@ -33,11 +36,12 @@ public class GetExpenseTests : TestBase
     {
         var userIdValue = userId.GetValueOr(Guid.NewGuid());
         var sourceWalletId = await CreateWallet(userIdValue);
+        var categoryId = await CreateCategory();
 
         var command = new AddNewExpenseCommand(
             userId: userIdValue,
             sourceWalletId: sourceWalletId,
-            categoryId: Guid.NewGuid(),
+            categoryId: categoryId,
             amount: 100,
             currency: "USD",
             madeOn: DateTime.UtcNow,
@@ -59,5 +63,18 @@ public class GetExpenseTests : TestBase
             "#000000",
             "https://cdn.savify.io/icons/icon.svg",
             true));
+    }
+
+    private async Task<Guid> CreateCategory()
+    {
+        await using var sqlConnection = new NpgsqlConnection(ConnectionString);
+
+        var categoryId = Guid.NewGuid();
+
+        var sql = $"INSERT INTO {DatabaseConfiguration.Schema.Name}.categories (id, external_id) VALUES (@Id, @ExternalId)";
+
+        await sqlConnection.ExecuteAsync(sql, new { Id = categoryId, ExternalId = Guid.NewGuid() });
+
+        return categoryId;
     }
 }

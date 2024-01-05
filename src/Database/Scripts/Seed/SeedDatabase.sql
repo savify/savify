@@ -14,6 +14,7 @@ INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('Admin', 'ManageCategories');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageWallets');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageTransfers');
+INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageExpenses');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ConnectBankAccountsToWallets');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageCustomCategories');
 

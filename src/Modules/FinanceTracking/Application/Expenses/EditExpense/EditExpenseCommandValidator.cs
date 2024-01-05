@@ -1,13 +1,18 @@
 using App.BuildingBlocks.Application.Validators;
 using App.Modules.FinanceTracking.Application.Validation;
+using App.Modules.FinanceTracking.Domain.Categories;
 using FluentValidation;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.EditExpense;
 
 internal class EditExpenseCommandValidator : Validator<EditExpenseCommand>
 {
-    public EditExpenseCommandValidator()
+    private readonly ICategoryRepository _categoryRepository;
+
+    public EditExpenseCommandValidator(ICategoryRepository categoryRepository)
     {
+        _categoryRepository = categoryRepository;
+
         RuleFor(c => c.ExpenseId)
             .NotEmpty()
             .WithMessage("Please provide expense id");
@@ -22,7 +27,10 @@ internal class EditExpenseCommandValidator : Validator<EditExpenseCommand>
 
         RuleFor(c => c.CategoryId)
             .NotEmpty()
-            .WithMessage("Please provide expense category id");
+            .WithMessage("Please provide expense category id")
+            .MustAsync(async (categoryId, _) =>
+                await _categoryRepository.ExistsWithIdAsync(new CategoryId(categoryId)))
+            .WithMessage("Category with provided id does not exist");
 
         RuleFor(c => c.Amount)
             .GreaterThan(0)

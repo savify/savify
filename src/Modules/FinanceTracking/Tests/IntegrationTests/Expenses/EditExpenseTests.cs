@@ -1,6 +1,7 @@
 ﻿using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Tests.Creating.OptionalParameters;
+using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Expenses.AddNewExpense;
 using App.Modules.FinanceTracking.Application.Expenses.EditExpense;
 using App.Modules.FinanceTracking.Application.Expenses.GetExpense;
@@ -8,6 +9,8 @@ using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Domain.Expenses;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
+using Dapper;
+using Npgsql;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Expenses;
 
@@ -21,9 +24,9 @@ public class EditExpenseTests : TestBase
         var expenseId = await AddNewExpenseAsync(userId);
 
         var newSourceWalletId = await CreateWallet(userId);
-        var newCategoryId = Guid.NewGuid();
+        var newCategoryId = await CreateCategory();
 
-        var editCommand = CreateCommand(expenseId, userId, newSourceWalletId, newCategoryId);
+        var editCommand = await CreateCommand(expenseId, userId, newSourceWalletId, newCategoryId);
 
         await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
 
@@ -47,10 +50,10 @@ public class EditExpenseTests : TestBase
         var expenseId = await AddNewExpenseAsync(userId: userId);
 
         var newSourceWalletId = await CreateWallet(userId);
-        var newTargetWalletId = await CreateWallet(userId);
+        var newCategoryId = await CreateCategory();
 
         string[] newTags = ["New user tag 1", "New user tag 2"];
-        var command = CreateCommand(expenseId, userId, newSourceWalletId, newTargetWalletId, tags: newTags);
+        var command = await CreateCommand(expenseId, userId, newSourceWalletId, newCategoryId, tags: newTags);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -65,7 +68,7 @@ public class EditExpenseTests : TestBase
     {
         var notExistingExpenseId = Guid.NewGuid();
 
-        var command = CreateCommand(notExistingExpenseId);
+        var command = await CreateCommand(notExistingExpenseId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Expense>>());
     }
@@ -76,7 +79,7 @@ public class EditExpenseTests : TestBase
         var userId = Guid.NewGuid();
         var expenseId = await AddNewExpenseAsync(userId: userId);
 
-        var command = CreateCommand(expenseId);
+        var command = await CreateCommand(expenseId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<AccessDeniedException>());
     }
@@ -86,7 +89,7 @@ public class EditExpenseTests : TestBase
     {
         var emptyExpenseId = Guid.Empty;
 
-        var command = CreateCommand(emptyExpenseId);
+        var command = await CreateCommand(emptyExpenseId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
@@ -96,7 +99,7 @@ public class EditExpenseTests : TestBase
     {
         var expenseId = Guid.NewGuid();
 
-        var command = CreateCommand(expenseId, userId: OptionalParameter.Default);
+        var command = await CreateCommand(expenseId, userId: OptionalParameter.Default);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
@@ -106,7 +109,7 @@ public class EditExpenseTests : TestBase
     {
         var expenseId = await AddNewExpenseAsync();
 
-        var command = CreateCommand(expenseId, sourceWalletId: Guid.Empty);
+        var command = await CreateCommand(expenseId, sourceWalletId: Guid.Empty);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -114,11 +117,11 @@ public class EditExpenseTests : TestBase
     }
 
     [Test]
-    public async Task EditExpenseCommand_WhenTargetWalletIdIsEmptyGuid_ThrowsInvalidCommandException()
+    public async Task EditExpenseCommand_WhenCategoryWithGivenIdDoesNotExist_ThrowsInvalidCommandException()
     {
         var expenseId = await AddNewExpenseAsync();
 
-        var command = CreateCommand(expenseId, categoryId: Guid.Empty);
+        var command = await CreateCommand(expenseId, categoryId: Guid.NewGuid());
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -132,7 +135,7 @@ public class EditExpenseTests : TestBase
     {
         var expenseId = await AddNewExpenseAsync();
 
-        var command = CreateCommand(expenseId, amount: amount);
+        var command = await CreateCommand(expenseId, amount: amount);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -148,7 +151,7 @@ public class EditExpenseTests : TestBase
     {
         var expenseId = await AddNewExpenseAsync();
 
-        var command = CreateCommand(expenseId, currency: currency);
+        var command = await CreateCommand(expenseId, currency: currency);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -160,7 +163,7 @@ public class EditExpenseTests : TestBase
     {
         var expenseId = await AddNewExpenseAsync();
 
-        var command = CreateCommand(expenseId, madeOn: OptionalParameter.Default);
+        var command = await CreateCommand(expenseId, madeOn: OptionalParameter.Default);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -171,7 +174,7 @@ public class EditExpenseTests : TestBase
     {
         var userIdValue = userId.GetValueOr(Guid.NewGuid());
         var sourceWalletId = await CreateWallet(userIdValue);
-        var categoryId = Guid.NewGuid();
+        var categoryId = await CreateCategory();
 
         var command = new AddNewExpenseCommand(
             userId: userIdValue,
@@ -188,7 +191,7 @@ public class EditExpenseTests : TestBase
         return expenseId;
     }
 
-    private EditExpenseCommand CreateCommand(
+    private async Task<EditExpenseCommand> CreateCommand(
         Guid expenseId,
         OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
@@ -199,11 +202,13 @@ public class EditExpenseTests : TestBase
         OptionalParameter<string> comment = default,
         OptionalParameter<IEnumerable<string>> tags = default)
     {
+        var userIdValue = userId.GetValueOr(Guid.NewGuid());
+
         return new EditExpenseCommand(
             expenseId,
-            userId.GetValueOr(Guid.NewGuid()),
-            sourceWalletId.GetValueOr(Guid.NewGuid()),
-            categoryId.GetValueOr(Guid.NewGuid()),
+            userIdValue,
+            sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
+            categoryId.GetValueOr(await CreateCategory()),
             amount.GetValueOr(500),
             currency.GetValueOr("PLN"),
             madeOn.GetValueOr(DateTime.UtcNow),
@@ -214,12 +219,25 @@ public class EditExpenseTests : TestBase
     private async Task<Guid> CreateWallet(Guid userId)
     {
         return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
-            userId,
+            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
             "Cash wallet",
             "USD",
             100,
             "#000000",
             "https://cdn.savify.io/icons/icon.svg",
             true));
+    }
+
+    private async Task<Guid> CreateCategory()
+    {
+        await using var sqlConnection = new NpgsqlConnection(ConnectionString);
+
+        var categoryId = Guid.NewGuid();
+
+        var sql = $"INSERT INTO {DatabaseConfiguration.Schema.Name}.categories (id, external_id) VALUES (@Id, @ExternalId)";
+
+        await sqlConnection.ExecuteAsync(sql, new { Id = categoryId, ExternalId = Guid.NewGuid() });
+
+        return categoryId;
     }
 }
