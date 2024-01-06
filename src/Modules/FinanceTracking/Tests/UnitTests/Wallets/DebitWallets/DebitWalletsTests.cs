@@ -32,12 +32,11 @@ public class DebitWalletsTests : UnitTestBase
         var userId = new UserId(Guid.NewGuid());
         var wallet = DebitWallet.AddNew(userId, "Debit", Currency.From("PLN"), 1000);
 
-        wallet.Edit("New debit", new Currency("GBP"), 2000);
+        wallet.Edit("New debit", 2000);
 
         var walletEditedDomainEvent = AssertPublishedDomainEvent<DebitWalletEditedDomainEvent>(wallet);
         Assert.That(walletEditedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(walletEditedDomainEvent.UserId, Is.EqualTo(userId));
-        Assert.That(walletEditedDomainEvent.NewCurrency, Is.EqualTo(new Currency("GBP")));
         Assert.That(walletEditedDomainEvent.NewBalance, Is.EqualTo(2000));
     }
 
@@ -51,7 +50,7 @@ public class DebitWalletsTests : UnitTestBase
 
         AssertBrokenRule<DebitWalletCannotBeEditedIfWasRemovedRule>(() =>
         {
-            wallet.Edit("New debit", new Currency("GBP"), 2000);
+            wallet.Edit("New debit", 2000);
         });
     }
 
@@ -64,7 +63,7 @@ public class DebitWalletsTests : UnitTestBase
 
         AssertBrokenRule<WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule>(() =>
         {
-            wallet.Edit(null, new Currency("GBP"), null);
+            wallet.Edit(null, 10000);
         });
     }
 
@@ -77,7 +76,7 @@ public class DebitWalletsTests : UnitTestBase
 
         AssertBrokenRule<WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule>(() =>
         {
-            wallet.Edit(null, null, 100000);
+            wallet.Edit(null, 100000);
         });
     }
 

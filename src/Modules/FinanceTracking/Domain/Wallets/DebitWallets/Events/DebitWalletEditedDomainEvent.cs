@@ -1,24 +1,13 @@
 using App.BuildingBlocks.Domain;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Events;
 
-public class DebitWalletEditedDomainEvent : DomainEventBase
+public class DebitWalletEditedDomainEvent(WalletId walletId, UserId userId, int? newBalance) : DomainEventBase
 {
-    public WalletId WalletId { get; }
+    public WalletId WalletId { get; } = walletId;
 
-    public UserId UserId { get; }
+    public UserId UserId { get; } = userId;
 
-    public Currency? NewCurrency { get; }
-
-    public int? NewBalance { get; }
-
-    public DebitWalletEditedDomainEvent(WalletId walletId, UserId userId, Currency? newCurrency, int? newBalance)
-    {
-        WalletId = walletId;
-        UserId = userId;
-        NewCurrency = newCurrency;
-        NewBalance = newBalance;
-    }
+    public int? NewBalance { get; } = newBalance;
 }

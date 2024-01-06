@@ -38,17 +38,16 @@ public class DebitWallet : Entity, IAggregateRoot
         return new DebitWallet(userId, title, currency, balance);
     }
 
-    public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
+    public void Edit(string? newTitle, int? newBalance)
     {
         CheckRules(new DebitWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved),
-            new WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule(newBalance, newCurrency, HasConnectedBankAccount));
+            new WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule(newBalance, HasConnectedBankAccount));
 
         _title = newTitle ?? _title;
-        _currency = newCurrency ?? _currency;
         _balance = newBalance ?? _balance;
         _updatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new DebitWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
+        AddDomainEvent(new DebitWalletEditedDomainEvent(Id, UserId, newBalance));
     }
 
     public void Remove()

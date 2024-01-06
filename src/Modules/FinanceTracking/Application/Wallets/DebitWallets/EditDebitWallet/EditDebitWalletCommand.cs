@@ -6,7 +6,6 @@ public class EditDebitWalletCommand(
     Guid userId,
     Guid walletId,
     string? title,
-    string? currency,
     int? balance,
     string? color,
     string? icon,
@@ -18,8 +17,6 @@ public class EditDebitWalletCommand(
     public Guid WalletId { get; } = walletId;
 
     public string? Title { get; } = title;
-
-    public string? Currency { get; } = currency;
 
     public int? Balance { get; } = balance;
 

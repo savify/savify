@@ -49,7 +49,6 @@ public class DebitWalletsController(
             executionContextAccessor.UserId,
             walletId,
             request.Title,
-            request.Currency,
             request.Balance,
             request.Color,
             request.Icon,

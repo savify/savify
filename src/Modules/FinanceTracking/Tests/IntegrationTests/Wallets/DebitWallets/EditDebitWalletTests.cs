@@ -28,7 +28,6 @@ public class EditDebitWalletTests : TestBase
             userId,
             walletId,
             "New title",
-            "USD",
             2000,
             "#000000",
             "https://cdn.savify.localhost/icons/new-wallet.png",
@@ -39,7 +38,6 @@ public class EditDebitWalletTests : TestBase
         Assert.That(editedWallet!.UserId, Is.EqualTo(userId));
         Assert.That(editedWallet.Title, Is.EqualTo("New title"));
         Assert.That(editedWallet.Balance, Is.EqualTo(2000));
-        Assert.That(editedWallet.Currency, Is.EqualTo("USD"));
 
         Assert.That(editedWallet.ViewMetadata.Color, Is.EqualTo("#000000"));
         Assert.That(editedWallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/new-wallet.png"));
@@ -56,7 +54,6 @@ public class EditDebitWalletTests : TestBase
             userId,
             walletId,
             "New title",
-            "USD",
             2000,
             "#000000",
             "https://cdn.savify.localhost/icons/new-wallet.png",
@@ -80,7 +77,6 @@ public class EditDebitWalletTests : TestBase
             Guid.NewGuid(),
             walletId,
             "New title",
-            "USD",
             2000,
             "#000000",
             "https://cdn.savify.localhost/icons/new-wallet.png",
@@ -96,27 +92,6 @@ public class EditDebitWalletTests : TestBase
             Guid.NewGuid(),
             Guid.NewGuid(),
             title,
-            "PLN",
-            1000,
-            "#ffffff",
-            "https://cdn.savify.localhost/icons/wallet.png",
-            true);
-
-        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase("")]
-    [TestCase(" ")]
-    [TestCase("pl")]
-    [TestCase("invalid")]
-    public void EditNewDebitWalletCommand_WhenCurrencyIsInvalid_ThrowsInvalidCommandException(string currency)
-    {
-        var command = new EditDebitWalletCommand(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "Debit wallet",
-            currency,
             1000,
             "#ffffff",
             "https://cdn.savify.localhost/icons/wallet.png",
@@ -136,7 +111,6 @@ public class EditDebitWalletTests : TestBase
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Debit wallet",
-            "PLN",
             1000,
             color,
             "https://cdn.savify.localhost/icons/wallet.png",
@@ -155,7 +129,6 @@ public class EditDebitWalletTests : TestBase
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Debit wallet",
-            "PLN",
             1000,
             "#ffffff",
             iconUrl,
