@@ -31,16 +31,15 @@ public class CashWallet : Entity, IAggregateRoot
         return new CashWallet(userId, title, currency, balance);
     }
 
-    public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
+    public void Edit(string? newTitle, int? newBalance)
     {
         CheckRules(new CashWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved));
 
         _title = newTitle ?? _title;
-        _currency = newCurrency ?? _currency;
         _balance = newBalance ?? _balance;
         _updatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
+        AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId, newBalance));
     }
 
     public void Remove()

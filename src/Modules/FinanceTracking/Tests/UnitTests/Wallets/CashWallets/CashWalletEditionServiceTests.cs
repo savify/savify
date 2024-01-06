@@ -32,7 +32,6 @@ public class CashWalletEditionServiceTests : UnitTestBase
             userId,
             wallet.Id,
             "New cash",
-            new Currency("GBP"),
             2000,
             "#FFFFFF",
             "https://cdn.savify.localhost/icons/new-wallet.png",
@@ -41,7 +40,6 @@ public class CashWalletEditionServiceTests : UnitTestBase
         var walletEditedDomainEvent = AssertPublishedDomainEvent<CashWalletEditedDomainEvent>(wallet);
         Assert.That(walletEditedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(walletEditedDomainEvent.UserId, Is.EqualTo(userId));
-        Assert.That(walletEditedDomainEvent.NewCurrency, Is.EqualTo(new Currency("GBP")));
         Assert.That(walletEditedDomainEvent.NewBalance, Is.EqualTo(2000));
 
         Assert.That(walletViewMetadata.Color, Is.EqualTo("#FFFFFF"));

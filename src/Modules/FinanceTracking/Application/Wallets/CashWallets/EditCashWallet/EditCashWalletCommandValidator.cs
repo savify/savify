@@ -12,9 +12,6 @@ internal class EditCashWalletCommandValidator : Validator<EditCashWalletCommand>
             .NotEmpty()
             .WithMessage("Please provide wallet title");
 
-        RuleFor(c => c.Currency)
-            .MustMatchCurrencyCodeIsoFormat();
-
         RuleFor(c => c.Color)
             .MustMatchAColorHexFormat();
 
