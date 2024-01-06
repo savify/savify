@@ -37,5 +37,9 @@
   "Please provide expense currency": "Будь ласка, вкажіть валюту витрати",
   "Please provide expense's made on date": "Будь ласка, вкажіть дату витрати",
   "Category with provided id does not exist": "Категорія з вказаним ID не існує",
-  "Target wallet must be owned by the user": "Цільовий гаманець повинен бути власністю користувача"
+  "Target wallet must be owned by the user": "Цільовий гаманець повинен бути власністю користувача",
+  "Please provide income category id": "Будь ласка, вкажіть ID категорії доходу",
+  "Income amount must be bigger than 0": "Сумма доходу повинна бути більшою за 0",
+  "Please provide income currency": "Будь ласка, вкажіть валюту доходу",
+  "Please provide income's made on date": "Будь ласка, вкажіть дату доходу"
 }

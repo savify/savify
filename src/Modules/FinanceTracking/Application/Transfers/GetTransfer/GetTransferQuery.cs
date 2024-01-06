@@ -6,5 +6,5 @@ public class GetTransferQuery(Guid transferId, Guid userId) : QueryBase<Transfer
 {
     public Guid TransferId { get; } = transferId;
 
-    public Guid UserId { get; set; } = userId;
+    public Guid UserId { get; } = userId;
 }
