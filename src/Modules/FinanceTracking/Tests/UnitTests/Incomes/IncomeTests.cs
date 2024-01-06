@@ -1,8 +1,8 @@
 ﻿using App.Modules.FinanceTracking.Domain.Categories;
+using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Incomes;
 using App.Modules.FinanceTracking.Domain.Incomes.Events;
 using App.Modules.FinanceTracking.Domain.Incomes.Rules;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
