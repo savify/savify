@@ -29,7 +29,6 @@ public class EditCreditWalletTests : TestBase
             userId,
             walletId,
             "New title",
-            "USD",
             2000,
             2000,
             "#000000",
@@ -42,7 +41,6 @@ public class EditCreditWalletTests : TestBase
         Assert.That(editedWallet.Title, Is.EqualTo("New title"));
         Assert.That(editedWallet.AvailableBalance, Is.EqualTo(2000));
         Assert.That(editedWallet.CreditLimit, Is.EqualTo(2000));
-        Assert.That(editedWallet.Currency, Is.EqualTo("USD"));
 
         Assert.That(editedWallet.ViewMetadata.Color, Is.EqualTo("#000000"));
         Assert.That(editedWallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/new-wallet.png"));
@@ -59,7 +57,6 @@ public class EditCreditWalletTests : TestBase
             userId,
             walletId,
             "New title",
-            "USD",
             2000,
             2000,
             "#000000",
@@ -85,7 +82,6 @@ public class EditCreditWalletTests : TestBase
             Guid.NewGuid(),
             walletId,
             "New title",
-            "USD",
             2000,
             2000,
             "#000000",
@@ -102,7 +98,6 @@ public class EditCreditWalletTests : TestBase
             Guid.NewGuid(),
             Guid.NewGuid(),
             title,
-            "PLN",
             500,
             1000,
             "#ffffff",
@@ -119,7 +114,6 @@ public class EditCreditWalletTests : TestBase
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Credit wallet",
-            "PLN",
             500,
             -100,
             "#ffffff",
@@ -136,29 +130,7 @@ public class EditCreditWalletTests : TestBase
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Credit wallet",
-            "PLN",
             1500,
-            1000,
-            "#ffffff",
-            "https://cdn.savify.localhost/icons/wallet.png",
-            true);
-
-        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase("")]
-    [TestCase(" ")]
-    [TestCase("pl")]
-    [TestCase("invalid")]
-    public void EditNewCreditWalletCommand_WhenCurrencyIsInvalid_ThrowsInvalidCommandException(string currency)
-    {
-        var command = new EditCreditWalletCommand(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "Credit wallet",
-            currency,
-            500,
             1000,
             "#ffffff",
             "https://cdn.savify.localhost/icons/wallet.png",
@@ -178,7 +150,6 @@ public class EditCreditWalletTests : TestBase
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Credit wallet",
-            "PLN",
             500,
             1000,
             color,
@@ -198,7 +169,6 @@ public class EditCreditWalletTests : TestBase
             Guid.NewGuid(),
             Guid.NewGuid(),
             "Credit wallet",
-            "PLN",
             500,
             1000,
             "#ffffff",

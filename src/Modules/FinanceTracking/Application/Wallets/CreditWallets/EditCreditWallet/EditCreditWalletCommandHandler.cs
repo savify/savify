@@ -1,5 +1,4 @@
 using App.Modules.FinanceTracking.Application.Configuration.Commands;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
@@ -14,7 +13,6 @@ internal class EditCreditWalletCommandHandler(CreditWalletEditionService creditW
             new UserId(command.UserId),
             new WalletId(command.WalletId),
             command.Title,
-            command.Currency != null ? new Currency(command.Currency) : null,
             command.AvailableBalance,
             command.CreditLimit,
             command.Color,

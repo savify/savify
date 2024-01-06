@@ -28,12 +28,11 @@ public class CreditWalletsTests : UnitTestBase
         var userId = new UserId(Guid.NewGuid());
         var wallet = CreditWallet.AddNew(userId, "Credit", Currency.From("PLN"), creditLimit: 1000, availableBalance: 1000);
 
-        wallet.Edit("New credit", new Currency("GBP"), 2000, 2000);
+        wallet.Edit("New credit", 2000, 2000);
 
         var walletEditedDomainEvent = AssertPublishedDomainEvent<CreditWalletEditedDomainEvent>(wallet);
         Assert.That(walletEditedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(walletEditedDomainEvent.UserId, Is.EqualTo(userId));
-        Assert.That(walletEditedDomainEvent.NewCurrency, Is.EqualTo(new Currency("GBP")));
         Assert.That(walletEditedDomainEvent.NewAvailableBalance, Is.EqualTo(2000));
         Assert.That(walletEditedDomainEvent.NewCreditLimit, Is.EqualTo(2000));
     }
@@ -48,7 +47,7 @@ public class CreditWalletsTests : UnitTestBase
 
         AssertBrokenRule<CreditWalletCannotBeEditedIfWasRemovedRule>(() =>
         {
-            wallet.Edit("New credit", new Currency("GBP"), 2000, 2000);
+            wallet.Edit("New credit", 2000, 2000);
         });
     }
 

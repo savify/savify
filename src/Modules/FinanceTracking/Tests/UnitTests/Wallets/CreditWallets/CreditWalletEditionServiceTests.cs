@@ -32,7 +32,6 @@ public class CreditWalletEditionServiceTests : UnitTestBase
             userId,
             wallet.Id,
             "New cash",
-            new Currency("GBP"),
             2000,
             2000,
             "#FFFFFF",
@@ -42,7 +41,6 @@ public class CreditWalletEditionServiceTests : UnitTestBase
         var walletEditedDomainEvent = AssertPublishedDomainEvent<CreditWalletEditedDomainEvent>(wallet);
         Assert.That(walletEditedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(walletEditedDomainEvent.UserId, Is.EqualTo(userId));
-        Assert.That(walletEditedDomainEvent.NewCurrency, Is.EqualTo(new Currency("GBP")));
         Assert.That(walletEditedDomainEvent.NewCreditLimit, Is.EqualTo(2000));
         Assert.That(walletEditedDomainEvent.NewAvailableBalance, Is.EqualTo(2000));
 

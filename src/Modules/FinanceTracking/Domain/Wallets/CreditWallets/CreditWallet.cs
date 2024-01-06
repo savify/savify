@@ -33,18 +33,17 @@ public class CreditWallet : Entity, IAggregateRoot
         return new CreditWallet(userId, title, currency, creditLimit, availableBalance);
     }
 
-    public void Edit(string? newTitle, Currency? newCurrency, int? newAvailableBalance, int? newCreditLimit)
+    public void Edit(string? newTitle, int? newAvailableBalance, int? newCreditLimit)
     {
         // TODO: restrict currency, available balance and credit limit edtion for wallets that have bank account connected
         CheckRules(new CreditWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved));
 
         _title = newTitle ?? _title;
-        _currency = newCurrency ?? _currency;
         _availableBalance = newAvailableBalance ?? _availableBalance;
         _creditLimit = newCreditLimit ?? _creditLimit;
         _updatedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new CreditWalletEditedDomainEvent(Id, UserId, newCurrency, newAvailableBalance, newCreditLimit));
+        AddDomainEvent(new CreditWalletEditedDomainEvent(Id, UserId, newAvailableBalance, newCreditLimit));
     }
 
     public void Remove()

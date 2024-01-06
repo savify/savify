@@ -48,7 +48,6 @@ public class CreditWalletsController(
             executionContextAccessor.UserId,
             walletId,
             request.Title,
-            request.Currency,
             request.AvailableBalance,
             request.CreditLimit,
             request.Color,
