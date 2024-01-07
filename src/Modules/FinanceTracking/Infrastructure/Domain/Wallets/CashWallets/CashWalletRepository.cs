@@ -21,7 +21,7 @@ public class CashWalletRepository(
         await financeTrackingContext.AddAsync(wallet);
     }
 
-    public async Task SaveAsync(CashWallet wallet)
+    public async Task UpdateHistoryAsync(CashWallet wallet)
     {
         var walletHistory = await walletHistoryRepository.GetByWalletIdAsync(wallet.Id);
         walletHistory.AddRange(wallet.DomainEvents);

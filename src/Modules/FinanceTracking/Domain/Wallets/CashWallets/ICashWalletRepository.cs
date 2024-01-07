@@ -6,7 +6,7 @@ public interface ICashWalletRepository
 {
     Task AddAsync(CashWallet wallet);
 
-    Task SaveAsync(CashWallet wallet);
+    Task UpdateHistoryAsync(CashWallet wallet);
 
     Task<CashWallet> GetByIdAsync(WalletId id);
 

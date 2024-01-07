@@ -21,7 +21,7 @@ internal class DebitWalletRepository(
         await financeTrackingContext.AddAsync(wallet);
     }
 
-    public async Task SaveAsync(DebitWallet wallet)
+    public async Task UpdateHistoryAsync(DebitWallet wallet)
     {
         var walletHistory = await walletHistoryRepository.GetByWalletIdAsync(wallet.Id);
         walletHistory.AddRange(wallet.DomainEvents);

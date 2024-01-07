@@ -21,7 +21,7 @@ public class CashWalletEditor(
         if (title is not null) wallet.ChangeTitle(title);
         if (balance is not null && balance != wallet.Balance) wallet.ChangeBalance((int)balance);
 
-        await cashWalletRepository.SaveAsync(wallet);
+        await cashWalletRepository.UpdateHistoryAsync(wallet);
 
         var walletViewMetadata = await walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id);
         walletViewMetadata.Edit(color, icon, considerInTotalBalance);

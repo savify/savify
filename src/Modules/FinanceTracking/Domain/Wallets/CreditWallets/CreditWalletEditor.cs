@@ -23,7 +23,7 @@ public class CreditWalletEditor(
         if (creditLimit is not null && creditLimit != wallet.CreditLimit) wallet.ChangeCreditLimit((int)creditLimit);
         if (availableBalance is not null && availableBalance != wallet.AvailableBalance) wallet.ChangeAvailableBalance((int)availableBalance);
 
-        await creditWalletRepository.SaveAsync(wallet);
+        await creditWalletRepository.UpdateHistoryAsync(wallet);
 
         var walletViewMetadata = await walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id);
         walletViewMetadata.Edit(color, icon, considerInTotalBalance);
