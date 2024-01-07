@@ -16,11 +16,8 @@ internal class CreditWalletsEntityTypeConfiguration : IEntityTypeConfiguration<C
 
         builder.Property<UserId>(w => w.UserId);
         builder.Property<string>("_title");
-        builder.Property<int>("_availableBalance");
+        builder.Property<int>("_initialAvailableBalance");
         builder.Property<int>("_creditLimit");
-        builder.Property<DateTime>("_createdAt");
-        builder.Property<DateTime?>("_updatedAt");
-        builder.Property<DateTime?>("_removedAt");
         builder.Property<bool>("_isRemoved");
 
         builder.OwnsOneCurrency("_currency");

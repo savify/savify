@@ -18,7 +18,12 @@ public class CreditWalletEditor(
         bool? considerInTotalBalance)
     {
         var wallet = await creditWalletRepository.GetByIdAndUserIdAsync(walletId, userId);
-        wallet.Edit(title, availableBalance, creditLimit);
+
+        if (title is not null) wallet.ChangeTitle(title);
+        if (creditLimit is not null && creditLimit != wallet.CreditLimit) wallet.ChangeCreditLimit((int)creditLimit);
+        if (availableBalance is not null && availableBalance != wallet.AvailableBalance) wallet.ChangeAvailableBalance((int)availableBalance);
+
+        await creditWalletRepository.SaveAsync(wallet);
 
         var walletViewMetadata = await walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id);
         walletViewMetadata.Edit(color, icon, considerInTotalBalance);

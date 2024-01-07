@@ -44,19 +44,34 @@ public class DebitWallet : Wallet, IAggregateRoot
 
     public void ChangeBalance(int newBalance)
     {
-        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
-            new WalletFinanceDetailsCannotBeChangedIfBankAccountIsConnectedRule(newBalance, HasConnectedBankAccount));
+        CheckRules(new WalletFinanceDetailsCannotBeChangedIfBankAccountIsConnectedRule(newBalance, HasConnectedBankAccount));
 
         if (newBalance < _balance)
         {
-            AddDomainEvent(new WalletBalanceDecreasedDomainEvent(Id, Money.From(_balance - newBalance, _currency), newBalance));
+            DecreaseBalance(Money.From(_balance - newBalance, _currency));
         }
         else
         {
-            AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, Money.From(newBalance - _balance, _currency), newBalance));
+            IncreaseBalance(Money.From(newBalance - _balance, _currency));
         }
+    }
 
-        _balance = newBalance;
+    public void IncreaseBalance(Money amount)
+    {
+        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
+        _balance += amount.Amount;
+
+        AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, amount, _balance));
+    }
+
+    public void DecreaseBalance(Money amount)
+    {
+        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
+        _balance -= amount.Amount;
+
+        AddDomainEvent(new WalletBalanceDecreasedDomainEvent(Id, amount, _balance));
     }
 
     public void Remove()

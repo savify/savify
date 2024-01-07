@@ -3,16 +3,17 @@ using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.Rules;
+using App.Modules.FinanceTracking.Domain.Wallets.Events;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
 
-public class CreditWallet : Entity, IAggregateRoot
+public class CreditWallet : Wallet, IAggregateRoot
 {
-    public WalletId Id { get; private set; }
-
     public UserId UserId { get; private set; }
 
     private string _title;
+
+    private int _initialAvailableBalance;
 
     private int _availableBalance;
 
@@ -20,52 +21,104 @@ public class CreditWallet : Entity, IAggregateRoot
 
     private Currency _currency;
 
-    private DateTime _createdAt;
-
-    private DateTime? _updatedAt;
-
-    private DateTime? _removedAt;
-
     private bool _isRemoved;
 
-    public static CreditWallet AddNew(UserId userId, string title, Currency currency, int creditLimit, int availableBalance)
+    public int AvailableBalance => _availableBalance;
+
+    public int CreditLimit => _creditLimit;
+
+    public static CreditWallet AddNew(UserId userId, string title, Currency currency, int creditLimit, int initialAvailableBalance)
     {
-        return new CreditWallet(userId, title, currency, creditLimit, availableBalance);
+        return new CreditWallet(userId, title, currency, creditLimit, initialAvailableBalance);
     }
 
-    public void Edit(string? newTitle, int? newAvailableBalance, int? newCreditLimit)
+    public void ChangeTitle(string newTitle)
     {
-        // TODO: restrict currency, available balance and credit limit edtion for wallets that have bank account connected
-        CheckRules(new CreditWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 
-        _title = newTitle ?? _title;
-        _availableBalance = newAvailableBalance ?? _availableBalance;
-        _creditLimit = newCreditLimit ?? _creditLimit;
-        _updatedAt = DateTime.UtcNow;
+        _title = newTitle;
+    }
 
-        AddDomainEvent(new CreditWalletEditedDomainEvent(Id, UserId, newAvailableBalance, newCreditLimit));
+    public void ChangeCreditLimit(int newCreditLimit)
+    {
+        // TODO: check if available balance is not greater than credit limit
+        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
+        _creditLimit = newCreditLimit;
+    }
+
+    public void ChangeAvailableBalance(int newAvailableBalance)
+    {
+        if (newAvailableBalance < _availableBalance)
+        {
+            DecreaseAvailableBalance(Money.From(_availableBalance - newAvailableBalance, _currency));
+        }
+        else
+        {
+            IncreaseAvailableBalance(Money.From(newAvailableBalance - _availableBalance, _currency));
+        }
+    }
+
+    public void IncreaseAvailableBalance(Money amount)
+    {
+        // TODO: check if available balance is not greater than credit limit
+        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
+        _availableBalance += amount.Amount;
+
+        AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, amount, _availableBalance));
+    }
+
+    public void DecreaseAvailableBalance(Money amount)
+    {
+        // TODO: check if available balance is not greater than credit limit
+        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
+        _availableBalance -= amount.Amount;
+
+        AddDomainEvent(new WalletBalanceDecreasedDomainEvent(Id, amount, _availableBalance));
     }
 
     public void Remove()
     {
-        // TODO: check if there is a need to set some rules on wallet removal
         CheckRules(new CreditWalletCannotBeRemovedMoreThanOnceRule(Id, _isRemoved));
 
         _isRemoved = true;
-        _removedAt = DateTime.UtcNow;
 
         AddDomainEvent(new CreditWalletRemovedDomainEvent(Id, UserId));
     }
 
-    private CreditWallet(UserId userId, string title, Currency currency, int creditLimit, int availableBalance)
+    public new void Load(IEnumerable<IDomainEvent> history)
+    {
+        _availableBalance = _initialAvailableBalance;
+
+        base.Load(history);
+    }
+
+    protected override void Apply(IDomainEvent @event)
+    {
+        this.When((dynamic)@event);
+    }
+
+    private void When(WalletBalanceIncreasedDomainEvent @event)
+    {
+        _availableBalance += @event.Amount.Amount;
+    }
+
+    private void When(WalletBalanceDecreasedDomainEvent @event)
+    {
+        _availableBalance -= @event.Amount.Amount;
+    }
+
+    private CreditWallet(UserId userId, string title, Currency currency, int creditLimit, int initialAvailableBalance)
     {
         Id = new WalletId(Guid.NewGuid());
         UserId = userId;
         _title = title;
-        _availableBalance = availableBalance;
+        _initialAvailableBalance = initialAvailableBalance;
+        _availableBalance = initialAvailableBalance;
         _creditLimit = creditLimit;
         _currency = currency;
-        _createdAt = DateTime.UtcNow;
 
         AddDomainEvent(new CreditWalletAddedDomainEvent(Id, UserId, _currency));
     }

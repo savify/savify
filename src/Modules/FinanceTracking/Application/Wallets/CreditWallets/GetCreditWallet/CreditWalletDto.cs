@@ -10,7 +10,7 @@ public class CreditWalletDto
 
     public required string Title { get; init; }
 
-    public int AvailableBalance { get; init; }
+    public int AvailableBalance { get; set; }
 
     public int CreditLimit { get; init; }
 

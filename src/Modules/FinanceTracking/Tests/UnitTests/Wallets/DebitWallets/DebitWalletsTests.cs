@@ -190,4 +190,52 @@ public class DebitWalletsTests : UnitTestBase
             wallet.Remove();
         });
     }
+
+    [Test]
+    public void IncreaseBalance_AddsDomainEvent()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var wallet = DebitWallet.AddNew(userId, "Debit", Currency.From("PLN"), 1000);
+        var amount = Money.From(100, Currency.From("PLN"));
+
+        wallet.IncreaseBalance(amount);
+
+        var walletBalanceIncreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceIncreasedDomainEvent>(wallet);
+        Assert.That(walletBalanceIncreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
+        Assert.That(walletBalanceIncreasedDomainEvent.Amount, Is.EqualTo(amount));
+        Assert.That(walletBalanceIncreasedDomainEvent.NewBalance, Is.EqualTo(1100));
+    }
+
+    [Test]
+    public void DecreaseBalance_AddsDomainEvent()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var wallet = DebitWallet.AddNew(userId, "Debit", Currency.From("PLN"), 1000);
+        var amount = Money.From(100, Currency.From("PLN"));
+
+        wallet.DecreaseBalance(amount);
+
+        var walletBalanceDecreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceDecreasedDomainEvent>(wallet);
+        Assert.That(walletBalanceDecreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
+        Assert.That(walletBalanceDecreasedDomainEvent.Amount, Is.EqualTo(amount));
+        Assert.That(walletBalanceDecreasedDomainEvent.NewBalance, Is.EqualTo(900));
+    }
+
+    [Test]
+    public void LoadWalletFromHistory_IsSuccessful()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var wallet = DebitWallet.AddNew(userId, "Debit", Currency.From("PLN"), 1000);
+        wallet.ClearDomainEvents();
+
+        wallet.IncreaseBalance(Money.From(1000, Currency.From("PLN")));
+        wallet.DecreaseBalance(Money.From(100, Currency.From("PLN")));
+
+        var walletHistory = wallet.DomainEvents;
+
+        var loadedWallet = DebitWallet.AddNew(userId, "Debit", Currency.From("PLN"), 1000);
+        loadedWallet.Load(walletHistory);
+
+        Assert.That(loadedWallet.Balance, Is.EqualTo(wallet.Balance));
+    }
 }

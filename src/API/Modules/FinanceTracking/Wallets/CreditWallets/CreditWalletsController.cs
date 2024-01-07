@@ -4,6 +4,7 @@ using App.BuildingBlocks.Application;
 using App.Modules.FinanceTracking.Application.Contracts;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.EditCreditWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.RemoveCreditWallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,16 @@ public class CreditWalletsController(
         {
             Id = walletId
         });
+    }
+
+    [HttpGet("{walletId}")]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
+    [ProducesResponseType(typeof(CreditWalletDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get(Guid walletId)
+    {
+        var wallet = await financeTrackingModule.ExecuteQueryAsync(new GetCreditWalletQuery(walletId, executionContextAccessor.UserId));
+
+        return Ok(wallet);
     }
 
     [HttpPatch("{walletId}")]

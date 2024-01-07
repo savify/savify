@@ -37,6 +37,8 @@ public class CashWalletEditorTests : UnitTestBase
             "https://cdn.savify.localhost/icons/new-wallet.png",
             false);
 
+        Assert.That(wallet.Balance, Is.EqualTo(2000));
+
         var walletBalanceIncreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceIncreasedDomainEvent>(wallet);
         Assert.That(walletBalanceIncreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(walletBalanceIncreasedDomainEvent.Amount, Is.EqualTo(Money.From(1000, Currency.From("PLN"))));
