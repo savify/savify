@@ -75,7 +75,7 @@ public class Income : Entity, IAggregateRoot
 
     public void Remove()
     {
-        AddDomainEvent(new IncomeRemovedDomainEvent(Id));
+        AddDomainEvent(new IncomeRemovedDomainEvent(Id, _targetWalletId, _amount));
     }
 
     private Income(
