@@ -4,6 +4,7 @@ using App.BuildingBlocks.Application;
 using App.Modules.FinanceTracking.Application.Contracts;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.EditCashWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.RemoveCashWallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,16 @@ public class CashWalletsController(
         {
             Id = walletId,
         });
+    }
+
+    [HttpGet("{walletId}")]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
+    [ProducesResponseType(typeof(CashWalletDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get(Guid walletId)
+    {
+        var wallet = await financeTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(walletId, executionContextAccessor.UserId));
+
+        return Ok(wallet);
     }
 
     [HttpPatch("{walletId}")]

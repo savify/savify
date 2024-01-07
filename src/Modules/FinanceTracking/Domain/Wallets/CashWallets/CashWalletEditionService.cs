@@ -19,6 +19,8 @@ public class CashWalletEditionService(
         var wallet = await cashWalletRepository.GetByIdAndUserIdAsync(walletId, userId);
         wallet.Edit(title, balance);
 
+        await cashWalletRepository.SaveAsync(wallet);
+
         var walletViewMetadata = await walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id);
         walletViewMetadata.Edit(color, icon, considerInTotalBalance);
     }

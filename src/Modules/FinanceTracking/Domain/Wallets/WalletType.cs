@@ -2,9 +2,9 @@ namespace App.Modules.FinanceTracking.Domain.Wallets;
 
 public record WalletType(string Value)
 {
-    public static WalletType Cash = new WalletType(nameof(Cash));
+    public static WalletType Cash = new(nameof(Cash));
 
-    public static WalletType Debit = new WalletType(nameof(Debit));
+    public static WalletType Debit = new(nameof(Debit));
 
-    public static WalletType Credit = new WalletType(nameof(Credit));
+    public static WalletType Credit = new(nameof(Credit));
 }

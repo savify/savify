@@ -11,14 +11,6 @@ public class UnitOfWork<TContext>(TContext context, IDomainEventsDispatcher<TCon
     {
         await domainEventsDispatcher.DispatchEventsAsync();
 
-        try
-        {
-            return await context.SaveChangesAsync(cancellationToken);
-        }
-        catch (InvalidOperationException e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return await context.SaveChangesAsync(cancellationToken);
     }
 }

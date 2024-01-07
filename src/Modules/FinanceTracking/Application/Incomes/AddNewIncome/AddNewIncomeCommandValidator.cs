@@ -7,12 +7,8 @@ namespace App.Modules.FinanceTracking.Application.Incomes.AddNewIncome;
 
 internal class AddNewIncomeCommandValidator : Validator<AddNewIncomeCommand>
 {
-    private readonly ICategoryRepository _categoryRepository;
-
     public AddNewIncomeCommandValidator(ICategoryRepository categoryRepository)
     {
-        _categoryRepository = categoryRepository;
-
         RuleFor(c => c.UserId)
             .NotEmpty()
             .WithMessage("Please provide user id");
@@ -25,7 +21,7 @@ internal class AddNewIncomeCommandValidator : Validator<AddNewIncomeCommand>
             .NotEmpty()
             .WithMessage("Please provide income category id")
             .MustAsync(async (categoryId, _) =>
-                await _categoryRepository.ExistsWithIdAsync(new CategoryId(categoryId)))
+                await categoryRepository.ExistsWithIdAsync(new CategoryId(categoryId)))
             .WithMessage("Category with provided id does not exist");
 
         RuleFor(c => c.Amount)

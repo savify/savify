@@ -16,10 +16,7 @@ internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<Cash
 
         builder.Property<UserId>(w => w.UserId);
         builder.Property<string>("_title");
-        builder.Property<int>("_balance");
-        builder.Property<DateTime>("_createdAt");
-        builder.Property<DateTime?>("_updatedAt");
-        builder.Property<DateTime?>("_removedAt");
+        builder.Property<int>("_initialBalance");
         builder.Property<bool>("_isRemoved");
 
         builder.OwnsOneCurrency("_currency");

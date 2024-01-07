@@ -4,18 +4,11 @@ using App.Modules.FinanceTracking.Domain.Users;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Events;
 
-public class CashWalletAddedDomainEvent : DomainEventBase
+public class CashWalletAddedDomainEvent(WalletId walletId, UserId userId, Currency currency) : DomainEventBase
 {
-    public WalletId WalletId { get; }
+    public WalletId WalletId { get; } = walletId;
 
-    public UserId UserId { get; }
+    public UserId UserId { get; } = userId;
 
-    public Currency Currency { get; }
-
-    public CashWalletAddedDomainEvent(WalletId walletId, UserId userId, Currency currency)
-    {
-        WalletId = walletId;
-        UserId = userId;
-        Currency = currency;
-    }
+    public Currency Currency { get; } = currency;
 }

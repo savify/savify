@@ -6,7 +6,7 @@ public class AddNewCashWalletCommand(
     Guid userId,
     string title,
     string currency,
-    int balance,
+    int initialBalance,
     string color,
     string icon,
     bool considerInTotalBalance)
@@ -18,7 +18,7 @@ public class AddNewCashWalletCommand(
 
     public string Currency { get; } = currency;
 
-    public int Balance { get; } = balance;
+    public int InitialBalance { get; } = initialBalance;
 
     public string Color { get; } = color;
 
