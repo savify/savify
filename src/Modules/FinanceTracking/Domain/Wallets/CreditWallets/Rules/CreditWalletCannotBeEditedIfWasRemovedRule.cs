@@ -16,7 +16,7 @@ public class CreditWalletCannotBeEditedIfWasRemovedRule : IBusinessRule
 
     public bool IsBroken() => _isRemoved;
 
-    public string MessageTemplate => "Wallet with id '{0}' was already removed and cannot be edited";
+    public string MessageTemplate => "Wallet with id '{0}' was already removed and cannot be changed";
 
     public object[] MessageArguments => new object[] { _walletId.Value };
 }

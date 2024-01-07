@@ -3,7 +3,7 @@ using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
-public class DebitWalletEditionService(
+public class DebitWalletEditor(
     IDebitWalletRepository debitWalletRepository,
     IWalletViewMetadataRepository walletViewMetadataRepository)
 {

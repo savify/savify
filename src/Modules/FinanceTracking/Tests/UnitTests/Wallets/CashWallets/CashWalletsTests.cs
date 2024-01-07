@@ -24,30 +24,60 @@ public class CashWalletsTests : UnitTestBase
     }
 
     [Test]
-    public void EditingCashWallet_IsSuccessful()
+    public void ChangingTitle_WhenWalletIsRemoved_BreaksCashWalletCannotBeChangedIfWasRemovedRule()
     {
         var userId = new UserId(Guid.NewGuid());
         var wallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
+        wallet.Remove();
 
-        wallet.Edit("New cash", 2000);
-
-        var walletEditedDomainEvent = AssertPublishedDomainEvent<CashWalletEditedDomainEvent>(wallet);
-        Assert.That(walletEditedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
-        Assert.That(walletEditedDomainEvent.UserId, Is.EqualTo(userId));
-        Assert.That(walletEditedDomainEvent.NewBalance, Is.EqualTo(2000));
+        AssertBrokenRule<CashWalletCannotBeChangedIfWasRemovedRule>(() =>
+        {
+            wallet.ChangeTitle("New cash");
+        });
     }
 
     [Test]
-    public void EditingCashWallet_WhenWalletIsRemoved_BreaksCashWalletCannotBeEditedIfWasRemovedRule()
+    public void ChangingBalance_WhenNewBalanceIsLower_AddsWalletBalanceDecreasedDomainEvent()
     {
         var userId = new UserId(Guid.NewGuid());
         var wallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
 
+        wallet.ChangeBalance(100);
+
+        Assert.That(wallet.Balance, Is.EqualTo(100));
+
+        var walletBalanceDecreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceDecreasedDomainEvent>(wallet);
+        Assert.That(walletBalanceDecreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
+        Assert.That(walletBalanceDecreasedDomainEvent.Amount, Is.EqualTo(Money.From(900, Currency.From("PLN"))));
+        Assert.That(walletBalanceDecreasedDomainEvent.NewBalance, Is.EqualTo(100));
+    }
+
+    [Test]
+    public void ChangingBalance_WhenNewBalanceIsHigher_AddsWalletBalanceDecreasedDomainEvent()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var wallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
+
+        wallet.ChangeBalance(2000);
+
+        Assert.That(wallet.Balance, Is.EqualTo(2000));
+
+        var walletBalanceIncreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceIncreasedDomainEvent>(wallet);
+        Assert.That(walletBalanceIncreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
+        Assert.That(walletBalanceIncreasedDomainEvent.Amount, Is.EqualTo(Money.From(1000, Currency.From("PLN"))));
+        Assert.That(walletBalanceIncreasedDomainEvent.NewBalance, Is.EqualTo(2000));
+    }
+
+    [Test]
+    public void ChangingBalance_WhenWalletIsRemoved_BreaksCashWalletCannotBeChangedIfWasRemovedRule()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var wallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
         wallet.Remove();
 
-        AssertBrokenRule<CashWalletCannotBeEditedIfWasRemovedRule>(() =>
+        AssertBrokenRule<CashWalletCannotBeChangedIfWasRemovedRule>(() =>
         {
-            wallet.Edit("New cash", 2000);
+            wallet.ChangeBalance(2000);
         });
     }
 

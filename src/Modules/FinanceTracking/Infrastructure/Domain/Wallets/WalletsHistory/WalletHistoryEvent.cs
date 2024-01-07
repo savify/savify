@@ -1,5 +1,4 @@
 using App.BuildingBlocks.Domain;
-using App.BuildingBlocks.Infrastructure.Serialization;
 using App.Modules.FinanceTracking.Infrastructure.Configuration.Json;
 using Newtonsoft.Json;
 

@@ -28,32 +28,33 @@ public class CashWallet : Wallet, IAggregateRoot
         return new CashWallet(userId, title, currency, initialBalance);
     }
 
-    public void Edit(string? newTitle, int? newBalance)
+    public void ChangeTitle(string newTitle)
     {
-        CheckRules(new CashWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 
-        _title = newTitle ?? _title;
+        _title = newTitle;
+    }
 
-        // TODO: temporal fix for balance edition, will be refactored in next iteration
-        if (newBalance is not null && newBalance != _balance)
+    public void ChangeBalance(int newBalance)
+    {
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
+        if (newBalance < _balance)
         {
-            if (newBalance < _balance)
-            {
-                AddDomainEvent(new WalletBalanceDecreasedDomainEvent(Id, Money.From(_balance - (int)newBalance, _currency), (int)newBalance));
-            }
-            else
-            {
-                AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, Money.From((int)newBalance - _balance, _currency), (int)newBalance));
-            }
-
-            _balance = (int)newBalance;
+            AddDomainEvent(new WalletBalanceDecreasedDomainEvent(Id, Money.From(_balance - newBalance, _currency), newBalance));
+        }
+        else
+        {
+            AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, Money.From(newBalance - _balance, _currency), newBalance));
         }
 
-        AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId, newBalance));
+        _balance = newBalance;
     }
 
     public void IncreaseBalance(Money amount)
     {
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
         _balance += amount.Amount;
 
         AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, amount, _balance));
@@ -61,6 +62,8 @@ public class CashWallet : Wallet, IAggregateRoot
 
     public void DecreaseBalance(Money amount)
     {
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
         _balance -= amount.Amount;
 
         AddDomainEvent(new WalletBalanceDecreasedDomainEvent(Id, amount, _balance));
