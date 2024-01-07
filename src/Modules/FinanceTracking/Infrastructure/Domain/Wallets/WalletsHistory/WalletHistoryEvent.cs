@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Domain;
 using App.BuildingBlocks.Infrastructure.Serialization;
+using App.Modules.FinanceTracking.Infrastructure.Configuration.Json;
 using Newtonsoft.Json;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory;
@@ -14,10 +15,7 @@ public class WalletHistoryEvent
 
     public static WalletHistoryEvent From(IDomainEvent domainEvent)
     {
-        var jsonData = JsonConvert.SerializeObject(domainEvent, new JsonSerializerSettings
-        {
-            ContractResolver = new AllPropertiesContractResolver()
-        });
+        var jsonData = JsonConvert.SerializeObject(domainEvent, new MoneyJsonConverter());
 
         return new WalletHistoryEvent(domainEvent.Id, MapDomainEventToType(domainEvent), jsonData);
     }
@@ -26,7 +24,7 @@ public class WalletHistoryEvent
     {
         var type = DomainEventTypeMappings.Dictionary[Type];
 
-        return (JsonConvert.DeserializeObject(Data, type) as IDomainEvent)!;
+        return (JsonConvert.DeserializeObject(Data, type, new MoneyJsonConverter()) as IDomainEvent)!;
     }
 
     private static string MapDomainEventToType(IDomainEvent domainEvent)

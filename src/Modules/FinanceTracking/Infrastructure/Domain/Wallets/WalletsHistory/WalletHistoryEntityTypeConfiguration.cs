@@ -17,6 +17,7 @@ public class WalletHistoryEntityTypeConfiguration : IEntityTypeConfiguration<Wal
             b.ToTable("wallet_history_events");
 
             b.HasKey(e => e.Id);
+            b.Property(e => e.Id).ValueGeneratedNever();
             b.Property<string>(e => e.Type);
             b.Property<string>(e => e.Data);
         });
