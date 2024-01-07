@@ -5,6 +5,11 @@ using App.Modules.FinanceTracking.Application.Incomes.AddNewIncome;
 using App.Modules.FinanceTracking.Application.Incomes.GetIncome;
 using App.Modules.FinanceTracking.Application.Incomes.RemoveIncome;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCreditWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
+using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWallet;
+using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.FinanceTracking.Domain.Incomes;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 using Dapper;
@@ -16,17 +21,55 @@ namespace App.Modules.FinanceTracking.IntegrationTests.Incomes;
 public class RemoveIncomeTests : TestBase
 {
     [Test]
-    public async Task RemoveIncomeCommand_Tests()
+    public async Task RemoveIncomeCommand_RemovesIncome()
     {
         var userId = Guid.NewGuid();
         var incomeId = await AddNewIncomeAsync(userId);
 
-        var command = new RemoveIncomeCommand(incomeId, userId);
-        await FinanceTrackingModule.ExecuteCommandAsync(command);
+        await FinanceTrackingModule.ExecuteCommandAsync(new RemoveIncomeCommand(incomeId, userId));
 
         var income = await FinanceTrackingModule.ExecuteQueryAsync(new GetIncomeQuery(incomeId, userId));
 
         Assert.That(income, Is.Null);
+    }
+
+    [Test]
+    public async Task RemoveIncomeCommand_DecreasesBalanceOnCashWallet()
+    {
+        var userId = Guid.NewGuid();
+        var targetWalletId = await CreateCashWallet(userId, initialBalance: 100);
+        var incomeId = await AddNewIncomeAsync(userId, targetWalletId);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(new RemoveIncomeCommand(incomeId, userId));
+
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(targetWalletId, userId));
+        Assert.That(wallet!.Balance, Is.EqualTo(100));
+    }
+
+    [Test]
+    public async Task RemoveIncomeCommand_DecreasesBalanceOnDebitWallet()
+    {
+        var userId = Guid.NewGuid();
+        var targetWalletId = await CreateDebitWallet(userId, initialBalance: 100);
+        var incomeId = await AddNewIncomeAsync(userId, targetWalletId);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(new RemoveIncomeCommand(incomeId, userId));
+
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(targetWalletId, userId));
+        Assert.That(wallet!.Balance, Is.EqualTo(100));
+    }
+
+    [Test]
+    public async Task RemoveIncomeCommand_DecreasesBalanceOnCreditWallet()
+    {
+        var userId = Guid.NewGuid();
+        var targetWalletId = await CreateCreditWallet(userId, initialAvailableBalance: 100);
+        var incomeId = await AddNewIncomeAsync(userId, targetWalletId);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(new RemoveIncomeCommand(incomeId, userId));
+
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCreditWalletQuery(targetWalletId, userId));
+        Assert.That(wallet!.AvailableBalance, Is.EqualTo(100));
     }
 
     [Test]
@@ -55,14 +98,13 @@ public class RemoveIncomeTests : TestBase
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<AccessDeniedException>());
     }
 
-    private async Task<Guid> AddNewIncomeAsync(Guid userId)
+    private async Task<Guid> AddNewIncomeAsync(Guid userId, Guid? targetWalletId = null)
     {
-        var targetWalletId = await CreateWallet(userId);
         var categoryId = await CreateCategory();
 
         var command = new AddNewIncomeCommand(
             userId: userId,
-            targetWalletId: targetWalletId,
+            targetWalletId: targetWalletId ?? await CreateCashWallet(userId),
             categoryId: categoryId,
             amount: 100,
             currency: "USD",
@@ -75,13 +117,38 @@ public class RemoveIncomeTests : TestBase
         return incomeId;
     }
 
-    private async Task<Guid> CreateWallet(Guid userId)
+    private async Task<Guid> CreateCashWallet(Guid userId, int initialBalance = 100)
     {
         return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
-            userId,
+            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
             "Cash wallet",
             "USD",
-            100,
+            initialBalance,
+            "#000000",
+            "https://cdn.savify.io/icons/icon.svg",
+            true));
+    }
+
+    private async Task<Guid> CreateDebitWallet(Guid userId, int initialBalance = 100)
+    {
+        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewDebitWalletCommand(
+            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
+            "Debit wallet",
+            "USD",
+            initialBalance,
+            "#000000",
+            "https://cdn.savify.io/icons/icon.svg",
+            true));
+    }
+
+    private async Task<Guid> CreateCreditWallet(Guid userId, int initialAvailableBalance = 100)
+    {
+        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCreditWalletCommand(
+            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
+            "Debit wallet",
+            "USD",
+            initialAvailableBalance,
+            2000,
             "#000000",
             "https://cdn.savify.io/icons/icon.svg",
             true));
