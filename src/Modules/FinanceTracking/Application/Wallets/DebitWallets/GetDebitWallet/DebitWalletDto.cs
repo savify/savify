@@ -12,11 +12,9 @@ public class DebitWalletDto
 
     public required string Currency { get; init; }
 
-    public int Balance { get; init; }
+    public int Balance { get; set; }
 
     public required WalletViewMetadataDto ViewMetadata { get; set; }
-
-    public DateTime CreatedAt { get; init; }
 
     public bool IsRemoved { get; init; }
 

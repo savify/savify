@@ -1,17 +1,30 @@
 using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
+using App.Modules.FinanceTracking.Application.Wallets.DebitWallets;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.DebitWallets;
 
-internal class DebitWalletRepository(FinanceTrackingContext financeTrackingContext) : IDebitWalletRepository
+internal class DebitWalletRepository(
+    FinanceTrackingContext financeTrackingContext,
+    IWalletHistoryRepository walletHistoryRepository) : IDebitWalletRepository, IDebitWalletReadRepository
 {
     public async Task AddAsync(DebitWallet wallet)
     {
+        var walletHistory = WalletHistory.From(wallet);
+
+        await walletHistoryRepository.AddAsync(walletHistory);
         await financeTrackingContext.AddAsync(wallet);
+    }
+
+    public async Task SaveAsync(DebitWallet wallet)
+    {
+        var walletHistory = await walletHistoryRepository.GetByWalletIdAsync(wallet.Id);
+        walletHistory.AddRange(wallet.DomainEvents);
     }
 
     public async Task<DebitWallet> GetByIdAsync(WalletId id)
@@ -22,6 +35,9 @@ internal class DebitWalletRepository(FinanceTrackingContext financeTrackingConte
         {
             throw new NotFoundRepositoryException<DebitWallet>(id.Value);
         }
+
+        var walletHistory = await walletHistoryRepository.GetByWalletIdAsync(id);
+        wallet.Load(walletHistory.DomainEvents);
 
         return wallet;
     }
@@ -36,5 +52,12 @@ internal class DebitWalletRepository(FinanceTrackingContext financeTrackingConte
         }
 
         return wallet;
+    }
+
+    public async Task<int> GetBalanceAsync(WalletId id)
+    {
+        var wallet = await GetByIdAsync(id);
+
+        return wallet.Balance;
     }
 }

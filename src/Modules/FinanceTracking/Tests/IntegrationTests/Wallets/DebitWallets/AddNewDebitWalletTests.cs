@@ -31,7 +31,6 @@ public class AddNewDebitWalletTests : TestBase
         Assert.That(wallet.Balance, Is.EqualTo(command.Balance));
 
         Assert.That(wallet.ViewMetadata, Is.Not.Null);
-        Assert.That(wallet.ViewMetadata.WalletId, Is.EqualTo(walletId));
         Assert.That(wallet.ViewMetadata.Color, Is.EqualTo("#ffffff"));
         Assert.That(wallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/wallet.png"));
         Assert.That(wallet.ViewMetadata.IsConsideredInTotalBalance, Is.True);

@@ -6,6 +6,7 @@ using App.Modules.FinanceTracking.Application.Wallets;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.EditDebitWallet;
+using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.RemoveDebitWallet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,16 @@ public class DebitWalletsController(
         {
             Id = walletId
         });
+    }
+
+    [HttpGet("{walletId}")]
+    [HasPermission(FinanceTrackingPermissions.ManageWallets)]
+    [ProducesResponseType(typeof(DebitWalletDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get(Guid walletId)
+    {
+        var wallet = await financeTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(walletId, executionContextAccessor.UserId));
+
+        return Ok(wallet);
     }
 
     [HttpPatch("{walletId}")]

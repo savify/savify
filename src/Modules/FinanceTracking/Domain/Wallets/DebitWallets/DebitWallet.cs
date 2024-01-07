@@ -8,46 +8,55 @@ using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Rules;
+using App.Modules.FinanceTracking.Domain.Wallets.Events;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
-public class DebitWallet : Entity, IAggregateRoot
+public class DebitWallet : Wallet, IAggregateRoot
 {
-    public WalletId Id { get; private set; }
-
     public UserId UserId { get; private set; }
 
     private string _title;
 
     private Currency _currency;
 
+    private int _initialBalance;
+
     private int _balance;
 
     private BankAccountConnection? _bankAccountConnection;
 
-    private DateTime _createdAt;
-
-    private DateTime? _updatedAt;
-
-    private DateTime? _removedAt;
-
     private bool _isRemoved;
 
-    public static DebitWallet AddNew(UserId userId, string title, Currency currency, int balance = 0)
+    public int Balance => _balance;
+
+    public static DebitWallet AddNew(UserId userId, string title, Currency currency, int initialBalance = 0)
     {
-        return new DebitWallet(userId, title, currency, balance);
+        return new DebitWallet(userId, title, currency, initialBalance);
     }
 
-    public void Edit(string? newTitle, int? newBalance)
+    public void ChangeTitle(string newTitle)
     {
-        CheckRules(new DebitWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved),
-            new WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule(newBalance, HasConnectedBankAccount));
+        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 
-        _title = newTitle ?? _title;
-        _balance = newBalance ?? _balance;
-        _updatedAt = DateTime.UtcNow;
+        _title = newTitle;
+    }
 
-        AddDomainEvent(new DebitWalletEditedDomainEvent(Id, UserId, newBalance));
+    public void ChangeBalance(int newBalance)
+    {
+        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new WalletFinanceDetailsCannotBeChangedIfBankAccountIsConnectedRule(newBalance, HasConnectedBankAccount));
+
+        if (newBalance < _balance)
+        {
+            AddDomainEvent(new WalletBalanceDecreasedDomainEvent(Id, Money.From(_balance - newBalance, _currency), newBalance));
+        }
+        else
+        {
+            AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, Money.From(newBalance - _balance, _currency), newBalance));
+        }
+
+        _balance = newBalance;
     }
 
     public void Remove()
@@ -55,7 +64,6 @@ public class DebitWallet : Entity, IAggregateRoot
         CheckRules(new DebitWalletCannotBeRemovedMoreThanOnceRule(Id, _isRemoved));
 
         _isRemoved = true;
-        _removedAt = DateTime.UtcNow;
 
         AddDomainEvent(new DebitWalletRemovedDomainEvent(Id, UserId));
     }
@@ -71,28 +79,48 @@ public class DebitWallet : Entity, IAggregateRoot
     {
         CheckRules(new BankAccountCannotBeConnectedToWalletIfItAlreadyHasBankAccountConnectedRule(HasConnectedBankAccount));
 
+        ChangeBalance(balance);
         _bankAccountConnection = new BankAccountConnection(bankConnectionId, bankAccountId);
-        _balance = balance;
         _currency = currency;
-        _updatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new BankAccountWasConnectedToDebitWalletDomainEvent(Id, UserId, bankConnectionId, bankAccountId));
     }
 
     public bool HasConnectedBankAccount => _bankAccountConnection is not null;
 
-    private DebitWallet(UserId userId, string title, Currency currency, int balance)
+    public new void Load(IEnumerable<IDomainEvent> history)
+    {
+        _balance = _initialBalance;
+
+        base.Load(history);
+    }
+
+    protected override void Apply(IDomainEvent @event)
+    {
+        this.When((dynamic)@event);
+    }
+
+    private void When(WalletBalanceIncreasedDomainEvent @event)
+    {
+        _balance += @event.Amount.Amount;
+    }
+
+    private void When(WalletBalanceDecreasedDomainEvent @event)
+    {
+        _balance -= @event.Amount.Amount;
+    }
+
+    private DebitWallet(UserId userId, string title, Currency currency, int initialBalance)
     {
         Id = new WalletId(Guid.NewGuid());
         UserId = userId;
         _title = title;
         _currency = currency;
-        _balance = balance;
-        _createdAt = DateTime.UtcNow;
+        _initialBalance = initialBalance;
+        _balance = initialBalance;
 
         AddDomainEvent(new DebitWalletAddedDomainEvent(Id, userId, _currency));
     }
 
-    private DebitWallet()
-    { }
+    private DebitWallet() { }
 }

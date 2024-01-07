@@ -6,6 +6,8 @@ public interface IDebitWalletRepository
 {
     Task AddAsync(DebitWallet wallet);
 
+    Task SaveAsync(DebitWallet wallet);
+
     Task<DebitWallet> GetByIdAsync(WalletId id);
 
     Task<DebitWallet> GetByIdAndUserIdAsync(WalletId id, UserId userId);

@@ -1,7 +1,7 @@
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
-using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Events;
+using App.Modules.FinanceTracking.Domain.Wallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.FinanceTracking.UnitTests.Wallets.DebitWallets;
@@ -37,10 +37,10 @@ public class DebitWalletEditorTests : UnitTestBase
             "https://cdn.savify.localhost/icons/new-wallet.png",
             false);
 
-        var walletEditedDomainEvent = AssertPublishedDomainEvent<DebitWalletEditedDomainEvent>(wallet);
-        Assert.That(walletEditedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
-        Assert.That(walletEditedDomainEvent.UserId, Is.EqualTo(userId));
-        Assert.That(walletEditedDomainEvent.NewBalance, Is.EqualTo(2000));
+        var walletBalanceIncreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceIncreasedDomainEvent>(wallet);
+        Assert.That(walletBalanceIncreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
+        Assert.That(walletBalanceIncreasedDomainEvent.Amount, Is.EqualTo(Money.From(1000, Currency.From("PLN"))));
+        Assert.That(walletBalanceIncreasedDomainEvent.NewBalance, Is.EqualTo(2000));
 
         Assert.That(walletViewMetadata.Color, Is.EqualTo("#FFFFFF"));
         Assert.That(walletViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/new-wallet.png"));

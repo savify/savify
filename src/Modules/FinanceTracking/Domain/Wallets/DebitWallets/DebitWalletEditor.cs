@@ -17,7 +17,11 @@ public class DebitWalletEditor(
         bool? considerInTotalBalance)
     {
         var wallet = await debitWalletRepository.GetByIdAndUserIdAsync(walletId, userId);
-        wallet.Edit(title, balance);
+
+        if (title is not null) wallet.ChangeTitle(title);
+        if (balance is not null && balance != wallet.Balance) wallet.ChangeBalance((int)balance);
+
+        await debitWalletRepository.SaveAsync(wallet);
 
         var walletViewMetadata = await walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id);
         walletViewMetadata.Edit(color, icon, considerInTotalBalance);

@@ -2,7 +2,7 @@ using App.BuildingBlocks.Domain;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Rules;
 
-public class WalletFinanceDetailsCannotBeEditedIfBankAccountIsConnectedRule(
+public class WalletFinanceDetailsCannotBeChangedIfBankAccountIsConnectedRule(
     int? newBalance,
     bool hasBankAccountConnected) : IBusinessRule
 {

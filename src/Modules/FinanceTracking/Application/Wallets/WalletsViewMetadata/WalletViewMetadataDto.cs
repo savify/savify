@@ -2,8 +2,6 @@ namespace App.Modules.FinanceTracking.Application.Wallets.WalletsViewMetadata;
 
 public class WalletViewMetadataDto
 {
-    public Guid WalletId { get; set; }
-
     public string? Color { get; set; }
 
     public string? Icon { get; set; }
