@@ -4,6 +4,7 @@ using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCredit
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.EditCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
+using App.Modules.FinanceTracking.Domain.Wallets.ManualBalanceChanges;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Wallets.CreditWallets;
@@ -45,6 +46,38 @@ public class EditCreditWalletTests : TestBase
         Assert.That(editedWallet.ViewMetadata.Color, Is.EqualTo("#000000"));
         Assert.That(editedWallet.ViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/new-wallet.png"));
         Assert.That(editedWallet.ViewMetadata.IsConsideredInTotalBalance, Is.False);
+    }
+
+    [Test]
+    public async Task EditCreditWalletCommand_WhenChangingBalance_AddsManualBalanceChange()
+    {
+        var userId = Guid.NewGuid();
+        var walletId = await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCreditWalletCommand(
+            userId,
+            "Credit wallet",
+            "PLN",
+            1000,
+            1000,
+            "#ffffff",
+            "https://cdn.savify.localhost/icons/wallet.png",
+            true));
+
+        await FinanceTrackingModule.ExecuteCommandAsync(new EditCreditWalletCommand(
+            userId,
+            walletId,
+            "New title",
+            2000,
+            2000,
+            "#000000",
+            "https://cdn.savify.localhost/icons/new-wallet.png",
+            false));
+
+        var editedWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCreditWalletQuery(walletId, userId));
+        var manualBalanceChange = editedWallet!.ManualBalanceChanges.Single();
+
+        Assert.That(manualBalanceChange.Type, Is.EqualTo(ManualBalanceChangeType.Increase.Value));
+        Assert.That(manualBalanceChange.Amount, Is.EqualTo(1000));
+        Assert.That(manualBalanceChange.Currency, Is.EqualTo("PLN"));
     }
 
     [Test]

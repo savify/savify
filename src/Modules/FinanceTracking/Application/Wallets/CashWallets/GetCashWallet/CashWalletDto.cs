@@ -14,7 +14,9 @@ public class CashWalletDto
 
     public int Balance { get; set; }
 
+    public bool IsRemoved { get; init; }
+
     public required WalletViewMetadataDto ViewMetadata { get; set; }
 
-    public bool IsRemoved { get; init; }
+    public IEnumerable<ManualBalanceChangeDto> ManualBalanceChanges { get; set; } = new List<ManualBalanceChangeDto>();
 }

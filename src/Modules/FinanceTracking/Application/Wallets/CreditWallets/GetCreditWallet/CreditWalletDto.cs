@@ -16,9 +16,9 @@ public class CreditWalletDto
 
     public required string Currency { get; init; }
 
+    public bool IsRemoved { get; init; }
+
     public required WalletViewMetadataDto ViewMetadata { get; set; }
 
-    public DateTime CreatedAt { get; init; }
-
-    public bool IsRemoved { get; init; }
+    public IEnumerable<ManualBalanceChangeDto> ManualBalanceChanges { get; set; } = new List<ManualBalanceChangeDto>();
 }

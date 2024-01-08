@@ -1,5 +1,6 @@
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
+using App.Modules.FinanceTracking.Domain.Wallets.ManualBalanceChanges;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,5 +21,19 @@ internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<Cash
         builder.Property<bool>("_isRemoved");
 
         builder.OwnsOneCurrency("_currency");
+
+        builder.OwnsMany<ManualBalanceChange>("_manualBalanceChanges", b =>
+        {
+            b.WithOwner().HasForeignKey("WalletId");
+            b.ToTable("cash_wallet_manual_balance_changes");
+
+            b.OwnsOneMoney("Amount", "amount", "currency");
+            b.Property(c => c.MadeOn);
+
+            b.OwnsOne<ManualBalanceChangeType>(c => c.Type, tb =>
+            {
+                tb.Property<string>(t => t.Value).HasColumnName("type");
+            });
+        });
     }
 }

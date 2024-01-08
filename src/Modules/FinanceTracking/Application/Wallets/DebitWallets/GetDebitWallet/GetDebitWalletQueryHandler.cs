@@ -1,3 +1,4 @@
+using System.Data;
 using App.BuildingBlocks.Application.Data;
 using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
@@ -43,8 +44,19 @@ internal class GetDebitWalletQueryHandler(ISqlConnectionFactory sqlConnectionFac
         if (debitWallet is not null)
         {
             debitWallet.Balance = await debitWalletReadRepository.GetBalanceAsync(new WalletId(query.WalletId));
+            debitWallet.ManualBalanceChanges = await GetManualBalanceChanges(query.WalletId, connection);
         }
 
         return debitWallet;
+    }
+
+    private async Task<IEnumerable<ManualBalanceChangeDto>> GetManualBalanceChanges(Guid walletId, IDbConnection connection)
+    {
+        var manualChangesSql = $"""
+                                SELECT type, amount, currency, made_on AS madeOn
+                                FROM {DatabaseConfiguration.Schema.Name}.debit_wallet_manual_balance_changes WHERE wallet_id = @WalletId
+                                """;
+
+        return await connection.QueryAsync<ManualBalanceChangeDto>(manualChangesSql, new { WalletId = walletId });
     }
 }
