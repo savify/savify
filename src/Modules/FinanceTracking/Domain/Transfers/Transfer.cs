@@ -79,7 +79,7 @@ public class Transfer : Entity, IAggregateRoot
 
     public void Remove()
     {
-        AddDomainEvent(new TransferRemovedDomainEvent(Id));
+        AddDomainEvent(new TransferRemovedDomainEvent(Id, _sourceWalletId, _targetWalletId, _amount));
     }
 
     private Transfer(
