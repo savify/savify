@@ -51,15 +51,15 @@ public class CreditWallet : Wallet, IAggregateRoot
     {
         if (newAvailableBalance < _availableBalance)
         {
-            DecreaseAvailableBalance(Money.From(_availableBalance - newAvailableBalance, _currency));
+            DecreaseBalance(Money.From(_availableBalance - newAvailableBalance, _currency));
         }
         else
         {
-            IncreaseAvailableBalance(Money.From(newAvailableBalance - _availableBalance, _currency));
+            IncreaseBalance(Money.From(newAvailableBalance - _availableBalance, _currency));
         }
     }
 
-    public void IncreaseAvailableBalance(Money amount)
+    public override void IncreaseBalance(Money amount)
     {
         // TODO: check if available balance is not greater than credit limit
         CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
@@ -69,7 +69,7 @@ public class CreditWallet : Wallet, IAggregateRoot
         AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, amount, _availableBalance));
     }
 
-    public void DecreaseAvailableBalance(Money amount)
+    public override void DecreaseBalance(Money amount)
     {
         // TODO: check if available balance is not greater than credit limit
         CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));

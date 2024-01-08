@@ -139,7 +139,7 @@ public class CreditWalletsTests : UnitTestBase
         var wallet = CreditWallet.AddNew(userId, "Credit", Currency.From("PLN"), 1000, 1000);
         var amount = Money.From(100, Currency.From("PLN"));
 
-        wallet.IncreaseAvailableBalance(amount);
+        wallet.IncreaseBalance(amount);
 
         var walletBalanceIncreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceIncreasedDomainEvent>(wallet);
         Assert.That(walletBalanceIncreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
@@ -154,7 +154,7 @@ public class CreditWalletsTests : UnitTestBase
         var wallet = CreditWallet.AddNew(userId, "Credit", Currency.From("PLN"), 1000, 1000);
         var amount = Money.From(100, Currency.From("PLN"));
 
-        wallet.DecreaseAvailableBalance(amount);
+        wallet.DecreaseBalance(amount);
 
         var walletBalanceDecreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceDecreasedDomainEvent>(wallet);
         Assert.That(walletBalanceDecreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
@@ -169,8 +169,8 @@ public class CreditWalletsTests : UnitTestBase
         var wallet = CreditWallet.AddNew(userId, "Credit", Currency.From("PLN"), 1000, 1000);
         wallet.ClearDomainEvents();
 
-        wallet.IncreaseAvailableBalance(Money.From(1000, Currency.From("PLN")));
-        wallet.DecreaseAvailableBalance(Money.From(100, Currency.From("PLN")));
+        wallet.IncreaseBalance(Money.From(1000, Currency.From("PLN")));
+        wallet.DecreaseBalance(Money.From(100, Currency.From("PLN")));
 
         var walletHistory = wallet.DomainEvents;
 
