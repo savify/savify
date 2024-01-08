@@ -1,13 +1,17 @@
 using App.Modules.FinanceTracking.Domain.Expenses.Events;
-using App.Modules.FinanceTracking.Domain.Users.Tags;
+using App.Modules.FinanceTracking.Domain.Wallets;
 using MediatR;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.AddNewExpense;
 
-public class ExpenseAddedHandler(UserTagsUpdateService userTags) : INotificationHandler<ExpenseAddedDomainEvent>
+public class ExpenseAddedHandler(IWalletsRepository walletsRepository) : INotificationHandler<ExpenseAddedDomainEvent>
 {
-    public Task Handle(ExpenseAddedDomainEvent @event, CancellationToken cancellationToken)
+    public async Task Handle(ExpenseAddedDomainEvent @event, CancellationToken cancellationToken)
     {
-        return userTags.UpdateAsync(@event.UserId, @event.Tags);
+        var wallet = await walletsRepository.GetByWalletIdAsync(@event.SourceWalletId);
+
+        wallet.DecreaseBalance(@event.Amount);
+
+        await walletsRepository.UpdateHistoryAsync(wallet);
     }
 }

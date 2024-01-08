@@ -75,7 +75,7 @@ public class Expense : Entity, IAggregateRoot
 
     public void Remove()
     {
-        AddDomainEvent(new ExpenseRemovedDomainEvent(Id));
+        AddDomainEvent(new ExpenseRemovedDomainEvent(Id, _sourceWalletId, _amount));
     }
 
     private Expense(
