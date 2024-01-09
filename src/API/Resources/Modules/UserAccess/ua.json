@@ -35,5 +35,6 @@
   "Your password must contain at least one lowercase letter": "Ваш пароль повинен містити щонайменше одну маленьку літеру",
   "Your password must contain at least one number": "Ваш пароль повинен містити щонайменше одну цифру",
   "Your password must contain at least one special character (!? *.)": "Ваш пароль повинен містити щонайменше один спеціальний символ (!? *.)",
-  "Provided role must be one of the following: 'Admin', 'User'": "Роль повинна бути однією з наступних: 'Admin', 'User'"
+  "Provided role must be one of the following: 'Admin', 'User'": "Роль повинна бути однією з наступних: 'Admin', 'User'",
+  "Password reset cannot be finished if not confirmed": "Скидання пароля не може бути завершено, якщо не підтверджено"
 }

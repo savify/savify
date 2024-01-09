@@ -100,4 +100,40 @@ public class PasswordResetRequestTests : UnitTestBase
         AssertBrokenRule<ConfirmationCodeMustMatchRule>(() =>
             passwordResetRequest.Confirm(ConfirmationCode.From("INVALID")));
     }
+
+    [Test]
+    public void FinishingPasswordResetRequest_IsSuccessful()
+    {
+        var userDetailsProvider = Substitute.For<IUserDetailsProvider>();
+        var usersCounter = Substitute.For<IUsersCounter>();
+        usersCounter.CountUsersWithEmail("test@email.com").Returns(1);
+
+        var passwordResetRequest = PasswordResetRequest.Create(
+            "test@email.com",
+            ConfirmationCode.From("ABC123"),
+            usersCounter,
+            userDetailsProvider);
+
+        passwordResetRequest.Confirm(ConfirmationCode.From("ABC123"));
+        passwordResetRequest.Finish();
+
+        var passwordResetRequestFinishedDomainEvent = AssertPublishedDomainEvent<PasswordResetFinishedDomainEvent>(passwordResetRequest);
+        Assert.That(passwordResetRequestFinishedDomainEvent.PasswordResetRequestId, Is.EqualTo(passwordResetRequest.Id));
+    }
+
+    [Test]
+    public void FinishingPasswordResetRequest_WhenIsNotConfirmed_BreaksPasswordResetCannotBeFinishedIfNotConfirmedRule()
+    {
+        var userDetailsProvider = Substitute.For<IUserDetailsProvider>();
+        var usersCounter = Substitute.For<IUsersCounter>();
+        usersCounter.CountUsersWithEmail("test@email.com").Returns(1);
+
+        var passwordResetRequest = PasswordResetRequest.Create(
+            "test@email.com",
+            ConfirmationCode.From("ABC123"),
+            usersCounter,
+            userDetailsProvider);
+
+        AssertBrokenRule<PasswordResetCannotBeFinishedIfNotConfirmedRule>(() => passwordResetRequest.Finish());
+    }
 }

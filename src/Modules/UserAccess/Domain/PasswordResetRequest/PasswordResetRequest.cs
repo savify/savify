@@ -7,7 +7,7 @@ namespace App.Modules.UserAccess.Domain.PasswordResetRequest;
 
 public class PasswordResetRequest : Entity, IAggregateRoot
 {
-    private static readonly TimeSpan ValidTimeSpan = new(0, 30, 0);
+    private static readonly TimeSpan ValidTimeSpan = new(0, 5, 0);
 
     public PasswordResetRequestId Id { get; private set; }
 
@@ -49,6 +49,8 @@ public class PasswordResetRequest : Entity, IAggregateRoot
 
     public void Finish()
     {
+        CheckRules(new PasswordResetCannotBeFinishedIfNotConfirmedRule(_status));
+
         _status = PasswordResetRequestStatus.Finished;
 
         AddDomainEvent(new PasswordResetFinishedDomainEvent(Id));

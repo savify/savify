@@ -35,5 +35,6 @@
   "Your password must contain at least one lowercase letter": "Your password must contain at least one lowercase letter",
   "Your password must contain at least one number": "Your password must contain at least one number",
   "Your password must contain at least one special character (!? *.)": "Your password must contain at least one special character (!? *.)",
-  "Provided role must be one of the following: 'Admin', 'User'": "Provided role must be one of the following: 'Admin', 'User'"
+  "Provided role must be one of the following: 'Admin', 'User'": "Provided role must be one of the following: 'Admin', 'User'",
+  "Password reset cannot be finished if not confirmed": "Password reset cannot be finished if not confirmed"
 }
