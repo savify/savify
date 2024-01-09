@@ -1,5 +1,6 @@
 using App.Modules.UserAccess.Domain;
 using App.Modules.UserAccess.Domain.PasswordResetRequest;
+using App.Modules.UserAccess.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,6 +14,7 @@ public class PasswordResetRequestEntityTypeConfiguration : IEntityTypeConfigurat
 
         builder.HasKey(x => x.Id);
         builder.Property(b => b.Id);
+        builder.Property<UserId>(b => b.UserId);
 
         builder.Property<string>("_userEmail");
         builder.Property<DateTime>("_createdAt");

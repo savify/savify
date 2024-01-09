@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.UserAccess.Domain.PasswordResetRequest;
+using App.Modules.UserAccess.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.UserAccess.Infrastructure.Domain.PasswordResetRequests;
@@ -21,5 +22,12 @@ public class PasswordResetRequestRepository(UserAccessContext userAccessContext)
         }
 
         return passwordResetRequest;
+    }
+
+    public PasswordResetRequest? GetActiveByUserIdOrNullAsync(UserId userId)
+    {
+        var passwordResetRequests = userAccessContext.PasswordResetRequests.Where(x => x.UserId == userId).ToList();
+
+        return passwordResetRequests.SingleOrDefault(x => x.IsActive);
     }
 }

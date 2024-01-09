@@ -11,6 +11,8 @@ public class PasswordResetRequest : Entity, IAggregateRoot
 
     public PasswordResetRequestId Id { get; private set; }
 
+    public UserId UserId { get; private set; }
+
     private string _userEmail;
 
     private ConfirmationCode _confirmationCode;
@@ -23,11 +25,13 @@ public class PasswordResetRequest : Entity, IAggregateRoot
 
     private DateTime? _confirmedAt;
 
-    public static PasswordResetRequest Create(string userEmail, ConfirmationCode confirmationCode, IUsersCounter usersCounter)
+    public bool IsActive => _status == PasswordResetRequestStatus.WaitingForConfirmation && _validTill > DateTime.UtcNow;
+
+    public static PasswordResetRequest Create(string userEmail, ConfirmationCode confirmationCode, IUsersCounter usersCounter, IUserDetailsProvider userDetailsProvider)
     {
         CheckRules(new UserWithGivenEmailMustExistRule(userEmail, usersCounter));
 
-        return new PasswordResetRequest(userEmail, confirmationCode);
+        return new PasswordResetRequest(userDetailsProvider.ProvideUserIdByEmail(userEmail), userEmail, confirmationCode);
     }
 
     public void Confirm(ConfirmationCode confirmationCode)
@@ -43,14 +47,10 @@ public class PasswordResetRequest : Entity, IAggregateRoot
         AddDomainEvent(new PasswordResetRequestConfirmedDomainEvent(Id));
     }
 
-    public UserId GetUserId(IUserDetailsProvider userDetailsProvider)
-    {
-        return userDetailsProvider.ProvideUserIdByEmail(_userEmail);
-    }
-
-    private PasswordResetRequest(string userEmail, ConfirmationCode confirmationCode)
+    private PasswordResetRequest(UserId userId, string userEmail, ConfirmationCode confirmationCode)
     {
         Id = new PasswordResetRequestId(Guid.NewGuid());
+        UserId = userId;
 
         _userEmail = userEmail;
         _confirmationCode = confirmationCode;

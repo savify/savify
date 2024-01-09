@@ -15,10 +15,15 @@ public class PasswordResetRequestTests : UnitTestBase
         var usersCounter = Substitute.For<IUsersCounter>();
         usersCounter.CountUsersWithEmail("test@email.com").Returns(1);
 
+        var userId = new UserId(Guid.NewGuid());
+        var userDetailsProvider = Substitute.For<IUserDetailsProvider>();
+        userDetailsProvider.ProvideUserIdByEmail("test@email.com").Returns(userId);
+
         var passwordResetRequest = PasswordResetRequest.Create(
             "test@email.com",
             ConfirmationCode.From("ABC123"),
-            usersCounter);
+            usersCounter,
+            userDetailsProvider);
 
         var passwordResetRequestedDomainEvent = AssertPublishedDomainEvent<PasswordResetRequestedDomainEvent>(passwordResetRequest);
         Assert.That(passwordResetRequestedDomainEvent.UserEmail, Is.EqualTo("test@email.com"));
@@ -29,26 +34,29 @@ public class PasswordResetRequestTests : UnitTestBase
     [Test]
     public void CreatingPasswordResetRequest_WithNonExistingUserEmail_BreaksUserWithGivenEmailMustExistRule()
     {
+        var userDetailsProvider = Substitute.For<IUserDetailsProvider>();
         var usersCounter = Substitute.For<IUsersCounter>();
         usersCounter.CountUsersWithEmail("test@email.com").Returns(0);
-
 
         AssertBrokenRule<UserWithGivenEmailMustExistRule>(() => PasswordResetRequest.Create(
             "test@email.com",
             ConfirmationCode.From("ABC123"),
-            usersCounter));
+            usersCounter,
+            userDetailsProvider));
     }
 
     [Test]
     public void ConfirmingPasswordResetRequest_WithMatchingConfirmationCode_IsSuccessful()
     {
+        var userDetailsProvider = Substitute.For<IUserDetailsProvider>();
         var usersCounter = Substitute.For<IUsersCounter>();
         usersCounter.CountUsersWithEmail("test@email.com").Returns(1);
 
         var passwordResetRequest = PasswordResetRequest.Create(
             "test@email.com",
             ConfirmationCode.From("ABC123"),
-            usersCounter);
+            usersCounter,
+            userDetailsProvider);
 
         passwordResetRequest.Confirm(ConfirmationCode.From("ABC123"));
 
@@ -60,13 +68,15 @@ public class PasswordResetRequestTests : UnitTestBase
     [Test]
     public void ConfirmingPasswordResetRequest_WhenAlreadyConfirmed_BreaksPasswordResetRequestCannotBeConfirmedMoreThanOnceRule()
     {
+        var userDetailsProvider = Substitute.For<IUserDetailsProvider>();
         var usersCounter = Substitute.For<IUsersCounter>();
         usersCounter.CountUsersWithEmail("test@email.com").Returns(1);
 
         var passwordResetRequest = PasswordResetRequest.Create(
             "test@email.com",
             ConfirmationCode.From("ABC123"),
-            usersCounter);
+            usersCounter,
+            userDetailsProvider);
 
         passwordResetRequest.Confirm(ConfirmationCode.From("ABC123"));
 
@@ -77,34 +87,17 @@ public class PasswordResetRequestTests : UnitTestBase
     [Test]
     public void ConfirmingPasswordResetRequest_WithInvalidConfirmationCode_BreaksConfirmationCodeShouldMatchRule()
     {
+        var userDetailsProvider = Substitute.For<IUserDetailsProvider>();
         var usersCounter = Substitute.For<IUsersCounter>();
         usersCounter.CountUsersWithEmail("test@email.com").Returns(1);
 
         var passwordResetRequest = PasswordResetRequest.Create(
             "test@email.com",
             ConfirmationCode.From("ABC123"),
-            usersCounter);
+            usersCounter,
+            userDetailsProvider);
 
         AssertBrokenRule<ConfirmationCodeMustMatchRule>(() =>
             passwordResetRequest.Confirm(ConfirmationCode.From("INVALID")));
-    }
-
-    [Test]
-    public void GettingUserId_FromUserEmail_IsSuccessful()
-    {
-        var usersCounter = Substitute.For<IUsersCounter>();
-        usersCounter.CountUsersWithEmail("test@email.com").Returns(1);
-
-        var userDetailsProvider = Substitute.For<IUserDetailsProvider>();
-        userDetailsProvider.ProvideUserIdByEmail("test@email.com").Returns(new UserId(Guid.Parse("32fcdb2e-ce01-4996-94aa-a0dfc6f4c1f6")));
-
-        var passwordResetRequest = PasswordResetRequest.Create(
-            "test@email.com",
-            ConfirmationCode.From("ABC123"),
-            usersCounter);
-
-        var userId = passwordResetRequest.GetUserId(userDetailsProvider);
-
-        Assert.That(userId.Value, Is.EqualTo(Guid.Parse("32fcdb2e-ce01-4996-94aa-a0dfc6f4c1f6")));
     }
 }
