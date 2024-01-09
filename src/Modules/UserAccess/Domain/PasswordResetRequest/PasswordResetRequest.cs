@@ -25,7 +25,7 @@ public class PasswordResetRequest : Entity, IAggregateRoot
 
     private DateTime? _confirmedAt;
 
-    public bool IsActive => _status == PasswordResetRequestStatus.WaitingForConfirmation && _validTill > DateTime.UtcNow;
+    public bool IsActive => _status != PasswordResetRequestStatus.Finished && _validTill > DateTime.UtcNow;
 
     public static PasswordResetRequest Create(string userEmail, ConfirmationCode confirmationCode, IUsersCounter usersCounter, IUserDetailsProvider userDetailsProvider)
     {
@@ -45,6 +45,13 @@ public class PasswordResetRequest : Entity, IAggregateRoot
         _confirmedAt = DateTime.UtcNow;
 
         AddDomainEvent(new PasswordResetRequestConfirmedDomainEvent(Id));
+    }
+
+    public void Finish()
+    {
+        _status = PasswordResetRequestStatus.Finished;
+
+        AddDomainEvent(new PasswordResetFinishedDomainEvent(Id));
     }
 
     private PasswordResetRequest(UserId userId, string userEmail, ConfirmationCode confirmationCode)

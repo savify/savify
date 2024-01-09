@@ -6,6 +6,8 @@ public class ExecutionContextMock(Guid userId) : IExecutionContextAccessor
 {
     public Guid UserId { get; } = userId;
 
+    public string AccessToken { get; } = "access_token";
+
     // ReSharper disable once UnassignedGetOnlyAutoProperty
     public Guid CorrelationId { get; }
 

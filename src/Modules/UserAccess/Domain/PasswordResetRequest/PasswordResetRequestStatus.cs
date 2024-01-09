@@ -5,4 +5,6 @@ public record PasswordResetRequestStatus(string Value)
     public static PasswordResetRequestStatus WaitingForConfirmation = new(nameof(WaitingForConfirmation));
 
     public static PasswordResetRequestStatus Confirmed = new(nameof(Confirmed));
+
+    public static PasswordResetRequestStatus Finished = new(nameof(Finished));
 }
