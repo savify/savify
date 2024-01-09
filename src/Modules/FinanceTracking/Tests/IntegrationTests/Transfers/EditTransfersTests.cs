@@ -1,19 +1,15 @@
 ﻿using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Tests.Creating.OptionalParameters;
-using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
-using App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
 using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
-using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.Domain.Transfers;
-using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
 
 [TestFixture]
-public class EditTransferTests : TestBase
+public class EditTransfersTests : TransfersTestBase
 {
     [Test]
     public async Task EditTransferCommand_EditsTransfer()
@@ -21,7 +17,7 @@ public class EditTransferTests : TestBase
         var userId = Guid.NewGuid();
         var transferId = await AddNewTransferAsync(userId);
 
-        var editCommand = await CreateCommand(transferId, userId);
+        var editCommand = await CreateEditTransferCommand(transferId, userId);
 
         await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
 
@@ -45,7 +41,7 @@ public class EditTransferTests : TestBase
         var transferId = await AddNewTransferAsync(userId: userId);
 
         string[] newTags = ["New user tag 1", "New user tag 2"];
-        var command = await CreateCommand(transferId, userId, tags: newTags);
+        var command = await CreateEditTransferCommand(transferId, userId, tags: newTags);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -63,7 +59,7 @@ public class EditTransferTests : TestBase
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
         var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
 
-        var command = await CreateCommand(transferId, userId, sourceWalletId, targetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, targetWalletId, amount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -83,7 +79,7 @@ public class EditTransferTests : TestBase
         var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
 
         var newSourceWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateCommand(transferId, userId, newSourceWalletId, targetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, targetWalletId, amount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -105,7 +101,7 @@ public class EditTransferTests : TestBase
         var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
 
         var newTargetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateCommand(transferId, userId, sourceWalletId, newTargetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, newTargetWalletId, amount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -128,7 +124,7 @@ public class EditTransferTests : TestBase
 
         var newSourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var newTargetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateCommand(transferId, userId, newSourceWalletId, newTargetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, newTargetWalletId, amount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -148,7 +144,7 @@ public class EditTransferTests : TestBase
     {
         var notExistingTransferId = Guid.NewGuid();
 
-        var command = await CreateCommand(notExistingTransferId);
+        var command = await CreateEditTransferCommand(notExistingTransferId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<NotFoundRepositoryException<Transfer>>());
     }
@@ -159,7 +155,7 @@ public class EditTransferTests : TestBase
         var userId = Guid.NewGuid();
         var transferId = await AddNewTransferAsync(userId: userId);
 
-        var command = await CreateCommand(transferId);
+        var command = await CreateEditTransferCommand(transferId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<AccessDeniedException>());
     }
@@ -169,7 +165,7 @@ public class EditTransferTests : TestBase
     {
         var emptyTransferId = Guid.Empty;
 
-        var command = await CreateCommand(emptyTransferId);
+        var command = await CreateEditTransferCommand(emptyTransferId);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
@@ -179,7 +175,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = Guid.NewGuid();
 
-        var command = await CreateCommand(transferId, userId: OptionalParameter.Default);
+        var command = await CreateEditTransferCommand(transferId, userId: OptionalParameter.Default);
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
     }
@@ -189,7 +185,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = await CreateCommand(transferId, sourceWalletId: Guid.Empty);
+        var command = await CreateEditTransferCommand(transferId, sourceWalletId: Guid.Empty);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -201,7 +197,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = await CreateCommand(transferId, targetWalletId: Guid.Empty);
+        var command = await CreateEditTransferCommand(transferId, targetWalletId: Guid.Empty);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -215,7 +211,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = await CreateCommand(transferId, amount: amount);
+        var command = await CreateEditTransferCommand(transferId, amount: amount);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -231,7 +227,7 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = await CreateCommand(transferId, currency: currency);
+        var command = await CreateEditTransferCommand(transferId, currency: currency);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
@@ -243,72 +239,10 @@ public class EditTransferTests : TestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = await CreateCommand(transferId, madeOn: OptionalParameter.Default);
+        var command = await CreateEditTransferCommand(transferId, madeOn: OptionalParameter.Default);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),
             Throws.TypeOf<InvalidCommandException>());
-    }
-
-    private async Task<Guid> AddNewTransferAsync(
-        OptionalParameter<Guid> userId = default,
-        OptionalParameter<Guid> sourceWalletId = default,
-        OptionalParameter<Guid> targetWalletId = default,
-        OptionalParameter<int> amount = default)
-    {
-        var userIdValue = userId.GetValueOr(Guid.NewGuid());
-        var sourceWalletIdValue = sourceWalletId.GetValueOr(await CreateWallet(userIdValue));
-        var targetWalletIdValue = targetWalletId.GetValueOr(await CreateWallet(userIdValue));
-
-        var command = new AddNewTransferCommand(
-            userId: userIdValue,
-            sourceWalletId: sourceWalletIdValue,
-            targetWalletId: targetWalletIdValue,
-            amount: amount.GetValueOr(100),
-            currency: "USD",
-            madeOn: DateTime.UtcNow,
-            comment: "Savings transfer",
-            tags: ["Savings", "Minor"]);
-
-        var transferId = await FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        return transferId;
-    }
-
-    private async Task<EditTransferCommand> CreateCommand(
-        Guid transferId,
-        OptionalParameter<Guid> userId = default,
-        OptionalParameter<Guid> sourceWalletId = default,
-        OptionalParameter<Guid> targetWalletId = default,
-        OptionalParameter<int> amount = default,
-        OptionalParameter<string> currency = default,
-        OptionalParameter<DateTime> madeOn = default,
-        OptionalParameter<string> comment = default,
-        OptionalParameter<IEnumerable<string>> tags = default)
-    {
-        var userIdValue = userId.GetValueOr(Guid.NewGuid());
-
-        return new EditTransferCommand(
-            transferId,
-            userIdValue,
-            sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
-            targetWalletId.GetValueOr(await CreateWallet(userIdValue)),
-            amount.GetValueOr(500),
-            currency.GetValueOr("PLN"),
-            madeOn.GetValueOr(DateTime.UtcNow),
-            comment.GetValueOr("Edited transfer"),
-            tags.GetValueOr(["Edited"]));
-    }
-
-    private async Task<Guid> CreateWallet(Guid userId, int initialBalance = 100)
-    {
-        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
-            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
-            "Cash wallet",
-            "USD",
-            initialBalance,
-            "#000000",
-            "https://cdn.savify.io/icons/icon.svg",
-            true));
     }
 }
