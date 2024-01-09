@@ -18,9 +18,7 @@ internal class AddNewCreditWalletCommandValidator : Validator<AddNewCreditWallet
 
         RuleFor(c => c.AvailableBalance)
             .GreaterThanOrEqualTo(0)
-            .WithMessage("Available balance should be greater or equal to zero")
-            .LessThanOrEqualTo(cc => cc.CreditLimit)
-            .WithMessage("Available balance should be less than or equal to credit limit");
+            .WithMessage("Available balance should be greater or equal to zero");
 
         RuleFor(c => c.Currency)
             .NotEmpty()
