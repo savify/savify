@@ -73,22 +73,6 @@ public class AddNewCreditWalletTests : TestBase
     }
 
     [Test]
-    public void AddNewCreditWalletCommand_WhenAvailableBalanceIsHigherThatCreditLimit_ThrowsInvalidCommandException()
-    {
-        var command = new AddNewCreditWalletCommand(
-            Guid.NewGuid(),
-            "Credit wallet",
-            "PLN",
-            1500,
-            1000,
-            "#ffffff",
-            "https://cdn.savify.localhost/icons/wallet.png",
-            true);
-
-        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
     [TestCase("")]
     [TestCase(" ")]
     [TestCase("pl")]

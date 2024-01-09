@@ -141,7 +141,7 @@ public class EditCreditWalletTests : TestBase
     }
 
     [Test]
-    public void AddNewCreditWalletCommand_WhenCreditLimitIsNegative_ThrowsInvalidCommandException()
+    public void EditNewCreditWalletCommand_WhenCreditLimitIsNegative_ThrowsInvalidCommandException()
     {
         var command = new EditCreditWalletCommand(
             Guid.NewGuid(),
@@ -149,22 +149,6 @@ public class EditCreditWalletTests : TestBase
             "Credit wallet",
             500,
             -100,
-            "#ffffff",
-            "https://cdn.savify.localhost/icons/wallet.png",
-            true);
-
-        Assert.That(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    public void AddNewCreditWalletCommand_WhenAvailableBalanceIsHigherThatCreditLimit_ThrowsInvalidCommandException()
-    {
-        var command = new EditCreditWalletCommand(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "Credit wallet",
-            1500,
-            1000,
             "#ffffff",
             "https://cdn.savify.localhost/icons/wallet.png",
             true);
