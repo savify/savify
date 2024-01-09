@@ -92,6 +92,8 @@ public class Program
 
         // TODO: change for production
         app.UseCors(corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+        app.UseHttpsRedirection();
+        app.UseRouting();
 
         var supportedCultures = new[] { "en", "ua" };
         var localizationOptions = new RequestLocalizationOptions()
@@ -104,6 +106,7 @@ public class Program
 
         app.UseRequestLocalization(localizationOptions);
         app.UseMiddleware<CorrelationMiddleware>();
+        app.UseMiddleware<CheckTokenInvalidationMiddleware>();
         app.UseProblemDetails();
 
         if (!app.Environment.IsDevelopment())
@@ -117,9 +120,6 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-        app.UseHttpsRedirection();
-        app.UseRouting();
 
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         app.UseAuthentication();
