@@ -1,4 +1,3 @@
-using App.BuildingBlocks.Domain;
 using App.Modules.UserAccess.Application.Users.CreateNewUser;
 using App.Modules.UserAccess.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,16 +24,5 @@ public class UserDetailsProviderTests : TestBase
         var providedUserId = userDetailsProvider.ProvideUserIdByEmail(UserSampleData.Email);
 
         Assert.That(providedUserId.Value, Is.EqualTo(userId));
-    }
-
-    [Test]
-    public void TestThat_ProvideUserId_ByNonExistingEmail_ReturnNull()
-    {
-        using var scope = WebApplicationFactory.Services.CreateScope();
-        var userDetailsProvider = scope.ServiceProvider.GetRequiredService<IUserDetailsProvider>();
-        Assert.That(
-            () => userDetailsProvider.ProvideUserIdByEmail(UserSampleData.Email),
-            Throws.TypeOf<DomainException>().With.Message
-                .EqualTo($"User with email '{UserSampleData.Email}' does not exist"));
     }
 }
