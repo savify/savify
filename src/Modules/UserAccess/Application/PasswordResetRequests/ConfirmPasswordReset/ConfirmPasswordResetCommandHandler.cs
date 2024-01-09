@@ -20,7 +20,8 @@ internal class ConfirmPasswordResetCommandHandler(
         passwordResetRequest.Confirm(ConfirmationCode.From(command.ConfirmationCode));
 
         var token = authenticationTokenGenerator.GenerateAccessToken(
-            passwordResetRequest.GetUserId(userDetailsProvider).Value);
+            passwordResetRequest.GetUserId(userDetailsProvider).Value,
+            AccessTokenType.PasswordReset);
 
         return token.Value;
     }

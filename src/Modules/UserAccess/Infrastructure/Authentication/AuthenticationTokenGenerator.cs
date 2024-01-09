@@ -12,12 +12,19 @@ public class AuthenticationTokenGenerator(IAuthenticationConfigurationProvider c
 {
     private readonly AuthenticationConfiguration _configuration = configurationProvider.GetConfiguration();
 
-    public Token GenerateAccessToken(Guid userId)
+    public Token GenerateAccessToken(Guid userId, AccessTokenType type = AccessTokenType.Authentication)
     {
-        return GenerateAccessToken(userId, DateTime.UtcNow.AddSeconds(_configuration.AccessTokenTtl));
+        var ttl = type switch
+        {
+            AccessTokenType.Authentication => _configuration.AccessTokenTtl,
+            AccessTokenType.PasswordReset => _configuration.PasswordResetTokenTtl,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Invalid access token type")
+        };
+
+        return GenerateAccessToken(userId, DateTime.UtcNow.AddSeconds(ttl));
     }
 
-    public Token GenerateAccessToken(Guid userId, DateTime expires)
+    private Token GenerateAccessToken(Guid userId, DateTime expires)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.IssuerSigningKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

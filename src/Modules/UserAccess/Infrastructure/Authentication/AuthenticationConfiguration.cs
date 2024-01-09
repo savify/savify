@@ -10,5 +10,7 @@ public class AuthenticationConfiguration
 
     public int AccessTokenTtl { get; set; }
 
+    public int PasswordResetTokenTtl { get; set; }
+
     public int RefreshTokenTtl { get; set; }
 }
