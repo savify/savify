@@ -6,5 +6,5 @@ public class GetExpenseQuery(Guid expenseId, Guid userId) : QueryBase<ExpenseDto
 {
     public Guid ExpenseId { get; } = expenseId;
 
-    public Guid UserId { get; } = userId;
+    public Guid UserId { get; set; } = userId;
 }
