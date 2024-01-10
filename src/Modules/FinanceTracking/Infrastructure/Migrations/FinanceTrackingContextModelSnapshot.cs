@@ -1371,6 +1371,44 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.Navigation("Events");
                 });
+
+            modelBuilder.Entity("App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory.WalletHistory", b =>
+                {
+                    b.OwnsMany("App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory.WalletHistoryEvent", "Events", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("Data")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("data");
+
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("type");
+
+                            b1.Property<Guid>("WalletHistoryId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("wallet_history_id");
+
+                            b1.HasKey("Id")
+                                .HasName("pk_wallet_history_events");
+
+                            b1.HasIndex("WalletHistoryId")
+                                .HasDatabaseName("ix_wallet_history_events_wallet_history_id");
+
+                            b1.ToTable("wallet_history_events", "finance_tracking");
+
+                            b1.WithOwner()
+                                .HasForeignKey("WalletHistoryId")
+                                .HasConstraintName("fk_wallet_history_events_wallet_histories_wallet_history_id");
+                        });
+
+                    b.Navigation("Events");
+                });
 #pragma warning restore 612, 618
         }
     }
