@@ -3,6 +3,7 @@ using App.Modules.FinanceTracking.Application.Configuration.Commands;
 using App.Modules.FinanceTracking.Application.Configuration.Localization;
 using App.Modules.FinanceTracking.Application.Contracts;
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.Extensions.Localization;
 using static App.Modules.FinanceTracking.Infrastructure.Configuration.Processing.Decorators.ValidationCommandHandlerDecorator;
 
@@ -19,7 +20,7 @@ internal class ValidationCommandHandlerDecorator<T, TResult>(
 
     public async Task<TResult> Handle(T command, CancellationToken cancellationToken)
     {
-        Validate(command, validators, _localizer);
+        await Validate(command, validators, _localizer);
 
         return await decorated.Handle(command, cancellationToken);
     }
@@ -36,7 +37,7 @@ internal class ValidationCommandHandlerDecorator<T>(
 
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
-        Validate(command, validators, _localizer);
+        await Validate(command, validators, _localizer);
 
         await decorated.Handle(command, cancellationToken);
     }
@@ -44,10 +45,17 @@ internal class ValidationCommandHandlerDecorator<T>(
 
 internal static class ValidationCommandHandlerDecorator
 {
-    internal static void Validate<T>(T command, IEnumerable<IValidator<T>> validators, IStringLocalizer localizer)
+    internal static async Task Validate<T>(T command, IEnumerable<IValidator<T>> validators, IStringLocalizer localizer)
     {
-        var errors = validators
-            .Select(v => v.Validate(command))
+        var validationResults = new List<ValidationResult>();
+
+        foreach (var validator in validators)
+        {
+            var validationResult = await validator.ValidateAsync(command);
+            validationResults.Add(validationResult);
+        }
+
+        var errors = validationResults
             .SelectMany(result => result.Errors)
             .Where(error => error != null)
             .ToList();

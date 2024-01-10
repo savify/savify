@@ -27,4 +27,9 @@ public class CategoryRepository(FinanceTrackingContext financeTrackingContext) :
     {
         return financeTrackingContext.Categories.SingleOrDefaultAsync(c => c.ExternalId == externalId);
     }
+
+    public Task<bool> ExistsWithIdAsync(CategoryId id)
+    {
+        return financeTrackingContext.Categories.AnyAsync(c => c.Id == id);
+    }
 }

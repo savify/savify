@@ -14,16 +14,10 @@ public class AddNewTransferTests : TestBase
     [Test]
     public async Task AddNewTransferCommand_TransferIsAdded()
     {
-        var userId = Guid.NewGuid();
-
-        var sourceWalletId = await CreateWallet(userId);
-        var targetWalletId = await CreateWallet(userId);
-
-        var command = CreateCommand(userId, sourceWalletId, targetWalletId);
+        var command = await CreateCommand();
 
         var transferId = await FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, userId));
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, command.UserId));
 
         Assert.That(transfer, Is.Not.Null);
         Assert.That(transfer!.SourceWalletId, Is.EqualTo(command.SourceWalletId));
@@ -38,17 +32,13 @@ public class AddNewTransferTests : TestBase
     [Test]
     public async Task AddNewTransferCommand_UserTagsAreUpdated()
     {
-        var userId = Guid.NewGuid();
         string[] newTags = ["New user tag 1", "New user tag 2"];
 
-        var sourceWalletId = await CreateWallet(userId);
-        var targetWalletId = await CreateWallet(userId);
-
-        var command = CreateCommand(userId, sourceWalletId, targetWalletId, tags: newTags);
+        var command = await CreateCommand(tags: newTags);
 
         _ = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
-        var userTags = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(userId));
+        var userTags = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(command.UserId));
 
         Assert.That(userTags, Is.Not.Null);
         Assert.That(userTags!.Values, Is.SupersetOf(newTags));
@@ -57,7 +47,7 @@ public class AddNewTransferTests : TestBase
     [Test]
     public async Task AddNewTransferCommand_WhenUserIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
-        var command = CreateCommand(userId: Guid.Empty);
+        var command = await CreateCommand(userId: Guid.Empty);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -67,7 +57,7 @@ public class AddNewTransferTests : TestBase
     [Test]
     public async Task AddNewTransferCommand_WhenSourceWalletIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
-        var command = CreateCommand(sourceWalletId: Guid.Empty);
+        var command = await CreateCommand(sourceWalletId: Guid.Empty);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -77,7 +67,7 @@ public class AddNewTransferTests : TestBase
     [Test]
     public async Task AddNewTransferCommand_WhenTargetWalletIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
-        var command = CreateCommand(targetWalletId: Guid.Empty);
+        var command = await CreateCommand(targetWalletId: Guid.Empty);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -89,7 +79,7 @@ public class AddNewTransferTests : TestBase
     [TestCase(0)]
     public async Task AddNewTransferCommand_WhenAmountIsLessOrEqualToZero_ThrowsInvalidCommandException(int amount)
     {
-        var command = CreateCommand(amount: amount);
+        var command = await CreateCommand(amount: amount);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -103,7 +93,7 @@ public class AddNewTransferTests : TestBase
     [TestCase("PLNN")]
     public async Task AddNewTransferCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
     {
-        var command = CreateCommand(currency: currency);
+        var command = await CreateCommand(currency: currency);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -113,14 +103,14 @@ public class AddNewTransferTests : TestBase
     [Test]
     public async Task AddNewTransferCommand_WhenMadeOnIsDefaultDate_ThrowsInvalidCommandException()
     {
-        var command = CreateCommand(madeOn: OptionalParameter.Default);
+        var command = await CreateCommand(madeOn: OptionalParameter.Default);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
         await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
     }
 
-    private AddNewTransferCommand CreateCommand(
+    private async Task<AddNewTransferCommand> CreateCommand(
         OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> targetWalletId = default,
@@ -130,10 +120,12 @@ public class AddNewTransferTests : TestBase
         OptionalParameter<string> comment = default,
         OptionalParameter<IEnumerable<string>> tags = default)
     {
+        var userIdValue = userId.GetValueOr(Guid.NewGuid());
+
         return new AddNewTransferCommand(
-            userId.GetValueOr(Guid.NewGuid()),
-            sourceWalletId.GetValueOr(Guid.NewGuid()),
-            targetWalletId.GetValueOr(Guid.NewGuid()),
+            userIdValue,
+            sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
+            targetWalletId.GetValueOr(await CreateWallet(userIdValue)),
             amount.GetValueOr(100),
             currency.GetValueOr("USD"),
             madeOn.GetValueOr(DateTime.UtcNow),
@@ -144,7 +136,7 @@ public class AddNewTransferTests : TestBase
     private async Task<Guid> CreateWallet(Guid userId)
     {
         return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
-            userId,
+            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
             "Cash wallet",
             "USD",
             100,
