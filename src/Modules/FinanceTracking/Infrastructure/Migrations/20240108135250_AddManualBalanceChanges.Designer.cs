@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using App.Modules.FinanceTracking.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceTrackingContext))]
-    partial class FinanceTrackingContextModelSnapshot : ModelSnapshot
+    [Migration("20240108135250_AddManualBalanceChanges")]
+    partial class AddManualBalanceChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1332,44 +1335,6 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("_manualBalanceChanges");
-                });
-
-            modelBuilder.Entity("App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory.WalletHistory", b =>
-                {
-                    b.OwnsMany("App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory.WalletHistoryEvent", "Events", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("id");
-
-                            b1.Property<string>("Data")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("data");
-
-                            b1.Property<string>("Type")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("type");
-
-                            b1.Property<Guid>("WalletHistoryId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("wallet_history_id");
-
-                            b1.HasKey("Id")
-                                .HasName("pk_wallet_history_events");
-
-                            b1.HasIndex("WalletHistoryId")
-                                .HasDatabaseName("ix_wallet_history_events_wallet_history_id");
-
-                            b1.ToTable("wallet_history_events", "finance_tracking");
-
-                            b1.WithOwner()
-                                .HasForeignKey("WalletHistoryId")
-                                .HasConstraintName("fk_wallet_history_events_wallet_histories_wallet_history_id");
-                        });
-
-                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory.WalletHistory", b =>

@@ -14,11 +14,13 @@ public class DebitWalletDto
 
     public int Balance { get; set; }
 
-    public required WalletViewMetadataDto ViewMetadata { get; set; }
-
     public bool IsRemoved { get; init; }
 
     public Guid? BankConnectionId { get; init; }
 
     public Guid? BankAccountId { get; init; }
+
+    public required WalletViewMetadataDto ViewMetadata { get; set; }
+
+    public IEnumerable<ManualBalanceChangeDto> ManualBalanceChanges { get; set; } = new List<ManualBalanceChangeDto>();
 }

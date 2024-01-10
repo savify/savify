@@ -4,6 +4,7 @@ using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Rules;
 using App.Modules.FinanceTracking.Domain.Wallets.Events;
+using App.Modules.FinanceTracking.Domain.Wallets.ManualBalanceChanges;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 
@@ -39,11 +40,17 @@ public class CashWallet : Wallet, IAggregateRoot
     {
         if (newBalance < _balance)
         {
-            DecreaseBalance(Money.From(_balance - newBalance, _currency));
+            var amount = Money.From(_balance - newBalance, _currency);
+
+            DecreaseBalance(amount);
+            AddManualBalanceChange(amount, ManualBalanceChangeType.Decrease);
         }
         else
         {
-            IncreaseBalance(Money.From(newBalance - _balance, _currency));
+            var amount = Money.From(newBalance - _balance, _currency);
+
+            IncreaseBalance(amount);
+            AddManualBalanceChange(amount, ManualBalanceChangeType.Increase);
         }
     }
 
