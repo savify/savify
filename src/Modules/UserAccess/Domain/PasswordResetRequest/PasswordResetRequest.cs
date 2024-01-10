@@ -7,9 +7,11 @@ namespace App.Modules.UserAccess.Domain.PasswordResetRequest;
 
 public class PasswordResetRequest : Entity, IAggregateRoot
 {
-    private static readonly TimeSpan ValidTimeSpan = new(0, 30, 0);
+    private static readonly TimeSpan ValidTimeSpan = new(0, 5, 0);
 
     public PasswordResetRequestId Id { get; private set; }
+
+    public UserId UserId { get; private set; }
 
     private string _userEmail;
 
@@ -23,11 +25,13 @@ public class PasswordResetRequest : Entity, IAggregateRoot
 
     private DateTime? _confirmedAt;
 
-    public static PasswordResetRequest Create(string userEmail, ConfirmationCode confirmationCode, IUsersCounter usersCounter)
+    public bool IsActive => _status != PasswordResetRequestStatus.Finished && _validTill > DateTime.UtcNow;
+
+    public static PasswordResetRequest Create(string userEmail, ConfirmationCode confirmationCode, IUsersCounter usersCounter, IUserDetailsProvider userDetailsProvider)
     {
         CheckRules(new UserWithGivenEmailMustExistRule(userEmail, usersCounter));
 
-        return new PasswordResetRequest(userEmail, confirmationCode);
+        return new PasswordResetRequest(userDetailsProvider.ProvideUserIdByEmail(userEmail), userEmail, confirmationCode);
     }
 
     public void Confirm(ConfirmationCode confirmationCode)
@@ -43,14 +47,19 @@ public class PasswordResetRequest : Entity, IAggregateRoot
         AddDomainEvent(new PasswordResetRequestConfirmedDomainEvent(Id));
     }
 
-    public UserId GetUserId(IUserDetailsProvider userDetailsProvider)
+    public void Finish()
     {
-        return userDetailsProvider.ProvideUserIdByEmail(_userEmail);
+        CheckRules(new PasswordResetCannotBeFinishedIfNotConfirmedRule(_status));
+
+        _status = PasswordResetRequestStatus.Finished;
+
+        AddDomainEvent(new PasswordResetFinishedDomainEvent(Id));
     }
 
-    private PasswordResetRequest(string userEmail, ConfirmationCode confirmationCode)
+    private PasswordResetRequest(UserId userId, string userEmail, ConfirmationCode confirmationCode)
     {
         Id = new PasswordResetRequestId(Guid.NewGuid());
+        UserId = userId;
 
         _userEmail = userEmail;
         _confirmationCode = confirmationCode;

@@ -7,7 +7,8 @@ namespace App.Modules.UserAccess.Application.PasswordResetRequests.RequestPasswo
 
 internal class RequestPasswordResetCommandHandler(
     IPasswordResetRequestRepository passwordResetRequestRepository,
-    IUsersCounter usersCounter)
+    IUsersCounter usersCounter,
+    IUserDetailsProvider userDetailsProvider)
     : ICommandHandler<RequestPasswordResetCommand, Guid>
 {
     public async Task<Guid> Handle(RequestPasswordResetCommand command, CancellationToken cancellationToken)
@@ -15,7 +16,8 @@ internal class RequestPasswordResetCommandHandler(
         var passwordResetRequest = PasswordResetRequest.Create(
             command.Email,
             ConfirmationCode.Generate(),
-            usersCounter);
+            usersCounter,
+            userDetailsProvider);
 
         await passwordResetRequestRepository.AddAsync(passwordResetRequest);
 
