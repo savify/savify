@@ -4,6 +4,7 @@ using App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
 using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
@@ -12,7 +13,7 @@ namespace App.Modules.FinanceTracking.IntegrationTests.Transfers;
 public class AddNewTransferTests : TestBase
 {
     [Test]
-    public async Task AddNewTransferCommand_TransferIsAdded()
+    public async Task AddNewTransferCommand_AddsTransfer()
     {
         var command = await CreateCommand();
 
@@ -30,7 +31,7 @@ public class AddNewTransferTests : TestBase
     }
 
     [Test]
-    public async Task AddNewTransferCommand_UserTagsAreUpdated()
+    public async Task AddNewTransferCommand_UpdatesUserTags()
     {
         string[] newTags = ["New user tag 1", "New user tag 2"];
 
@@ -42,6 +43,23 @@ public class AddNewTransferTests : TestBase
 
         Assert.That(userTags, Is.Not.Null);
         Assert.That(userTags!.Values, Is.SupersetOf(newTags));
+    }
+
+    [Test]
+    public async Task AddNewTransferCommand_DecreasesBalanceOnSourceWallet_And_IncreasesBalanceOnTargetWallet()
+    {
+        var userId = Guid.NewGuid();
+        var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
+        var targetWalletId = await CreateWallet(userId, initialBalance: 100);
+        var command = await CreateCommand(userId, sourceWalletId, targetWalletId, amount: 50);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(command);
+
+        var sourceWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(sourceWalletId, userId));
+        var targetWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(targetWalletId, userId));
+
+        Assert.That(sourceWallet!.Balance, Is.EqualTo(50));
+        Assert.That(targetWallet!.Balance, Is.EqualTo(150));
     }
 
     [Test]
@@ -133,13 +151,13 @@ public class AddNewTransferTests : TestBase
             tags.GetValueOr(["Savings", "Minor"]));
     }
 
-    private async Task<Guid> CreateWallet(Guid userId)
+    private async Task<Guid> CreateWallet(Guid userId, int initialBalance = 100)
     {
         return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
             userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
             "Cash wallet",
             "USD",
-            100,
+            initialBalance,
             "#000000",
             "https://cdn.savify.io/icons/icon.svg",
             true));

@@ -7,6 +7,11 @@ using App.Modules.FinanceTracking.Application.Expenses.EditExpense;
 using App.Modules.FinanceTracking.Application.Expenses.GetExpense;
 using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCreditWallet;
+using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
+using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWallet;
+using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.FinanceTracking.Domain.Expenses;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 using Dapper;
@@ -18,12 +23,12 @@ namespace App.Modules.FinanceTracking.IntegrationTests.Expenses;
 public class EditExpenseTests : TestBase
 {
     [Test]
-    public async Task EditExpenseCommand_ExpenseIsEdited()
+    public async Task EditExpenseCommand_EditsExpense()
     {
         var userId = Guid.NewGuid();
         var expenseId = await AddNewExpenseAsync(userId);
 
-        var newSourceWalletId = await CreateWallet(userId);
+        var newSourceWalletId = await CreateCashWallet(userId);
         var newCategoryId = await CreateCategory();
 
         var editCommand = await CreateCommand(expenseId, userId, newSourceWalletId, newCategoryId);
@@ -44,12 +49,12 @@ public class EditExpenseTests : TestBase
     }
 
     [Test]
-    public async Task EditExpenseCommand_UserTagsAreUpdated()
+    public async Task EditExpenseCommand_UpdatesUserTags()
     {
         var userId = Guid.NewGuid();
         var expenseId = await AddNewExpenseAsync(userId: userId);
 
-        var newSourceWalletId = await CreateWallet(userId);
+        var newSourceWalletId = await CreateCashWallet(userId);
         var newCategoryId = await CreateCategory();
 
         string[] newTags = ["New user tag 1", "New user tag 2"];
@@ -61,6 +66,69 @@ public class EditExpenseTests : TestBase
 
         Assert.That(userTags, Is.Not.Null);
         Assert.That(userTags!.Values, Is.SupersetOf(newTags));
+    }
+
+    [Test]
+    public async Task EditExpenseCommand_WithUnchangedSourceWallet_UpdatesBalanceOnCashWallet()
+    {
+        var userId = Guid.NewGuid();
+        var sourceWalletId = await CreateCashWallet(userId, initialBalance: 400);
+        var incomeId = await AddNewExpenseAsync(userId, sourceWalletId);
+
+        var command = await CreateCommand(incomeId, userId, sourceWalletId, amount: 300);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(command);
+
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(sourceWalletId, userId));
+        Assert.That(wallet!.Balance, Is.EqualTo(100));
+    }
+
+    [Test]
+    public async Task EditExpenseCommand_WithUnchangedSourceWallet_UpdatesBalanceOnDebitWallet()
+    {
+        var userId = Guid.NewGuid();
+        var sourceWalletId = await CreateDebitWallet(userId, initialBalance: 400);
+        var incomeId = await AddNewExpenseAsync(userId, sourceWalletId);
+
+        var command = await CreateCommand(incomeId, userId, sourceWalletId, amount: 300);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(command);
+
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetDebitWalletQuery(sourceWalletId, userId));
+        Assert.That(wallet!.Balance, Is.EqualTo(100));
+    }
+
+    [Test]
+    public async Task EditExpenseCommand_WithUnchangedSourceWallet_UpdatesBalanceOnCreditWallet()
+    {
+        var userId = Guid.NewGuid();
+        var sourceWalletId = await CreateCreditWallet(userId, initialAvailableBalance: 400);
+        var incomeId = await AddNewExpenseAsync(userId, sourceWalletId);
+
+        var command = await CreateCommand(incomeId, userId, sourceWalletId, amount: 300);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(command);
+
+        var wallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCreditWalletQuery(sourceWalletId, userId));
+        Assert.That(wallet!.AvailableBalance, Is.EqualTo(100));
+    }
+
+    [Test]
+    public async Task EditExpenseCommand_WhenChangingSourceWallet_IncreasesBalanceOnOldWallet_And_DecreasesBalanceOnNewWallet()
+    {
+        var userId = Guid.NewGuid();
+        var sourceWalletId = await CreateCashWallet(userId, initialBalance: 400);
+        var expenseId = await AddNewExpenseAsync(userId, sourceWalletId);
+
+        var newSourceWalletId = await CreateCashWallet(userId, initialBalance: 400);
+        var command = await CreateCommand(expenseId, userId, newSourceWalletId, amount: 300);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(command);
+
+        var oldWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(sourceWalletId, userId));
+        var newWallet = await FinanceTrackingModule.ExecuteQueryAsync(new GetCashWalletQuery(newSourceWalletId, userId));
+        Assert.That(oldWallet!.Balance, Is.EqualTo(400));
+        Assert.That(newWallet!.Balance, Is.EqualTo(100));
     }
 
     [Test]
@@ -170,15 +238,15 @@ public class EditExpenseTests : TestBase
             Throws.TypeOf<InvalidCommandException>());
     }
 
-    private async Task<Guid> AddNewExpenseAsync(OptionalParameter<Guid> userId = default)
+    private async Task<Guid> AddNewExpenseAsync(OptionalParameter<Guid> userId = default, OptionalParameter<Guid> sourceWalletId = default)
     {
         var userIdValue = userId.GetValueOr(Guid.NewGuid());
-        var sourceWalletId = await CreateWallet(userIdValue);
+        var sourceWalletIdValue = sourceWalletId.GetValueOr(await CreateCashWallet(userIdValue));
         var categoryId = await CreateCategory();
 
         var command = new AddNewExpenseCommand(
             userId: userIdValue,
-            sourceWalletId: sourceWalletId,
+            sourceWalletId: sourceWalletIdValue,
             categoryId: categoryId,
             amount: 100,
             currency: "USD",
@@ -207,7 +275,7 @@ public class EditExpenseTests : TestBase
         return new EditExpenseCommand(
             expenseId,
             userIdValue,
-            sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
+            sourceWalletId.GetValueOr(await CreateCashWallet(userIdValue)),
             categoryId.GetValueOr(await CreateCategory()),
             amount.GetValueOr(500),
             currency.GetValueOr("PLN"),
@@ -216,13 +284,38 @@ public class EditExpenseTests : TestBase
             tags.GetValueOr(["Edited"]));
     }
 
-    private async Task<Guid> CreateWallet(Guid userId)
+    private async Task<Guid> CreateCashWallet(Guid userId, int initialBalance = 100)
     {
         return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
             userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
             "Cash wallet",
             "USD",
-            100,
+            initialBalance,
+            "#000000",
+            "https://cdn.savify.io/icons/icon.svg",
+            true));
+    }
+
+    private async Task<Guid> CreateDebitWallet(Guid userId, int initialBalance = 100)
+    {
+        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewDebitWalletCommand(
+            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
+            "Debit wallet",
+            "USD",
+            initialBalance,
+            "#000000",
+            "https://cdn.savify.io/icons/icon.svg",
+            true));
+    }
+
+    private async Task<Guid> CreateCreditWallet(Guid userId, int initialAvailableBalance = 100)
+    {
+        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCreditWalletCommand(
+            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
+            "Debit wallet",
+            "USD",
+            initialAvailableBalance,
+            2000,
             "#000000",
             "https://cdn.savify.io/icons/icon.svg",
             true));

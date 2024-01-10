@@ -6,7 +6,7 @@ public interface ICreditWalletRepository
 {
     Task AddAsync(CreditWallet wallet);
 
-    Task SaveAsync(CreditWallet wallet);
+    Task UpdateHistoryAsync(CreditWallet wallet);
 
     Task<CreditWallet> GetByIdAsync(WalletId id);
 

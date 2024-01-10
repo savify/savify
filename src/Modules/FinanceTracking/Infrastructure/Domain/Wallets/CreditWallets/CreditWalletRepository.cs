@@ -21,7 +21,7 @@ internal class CreditWalletRepository(
         await financeTrackingContext.AddAsync(wallet);
     }
 
-    public async Task SaveAsync(CreditWallet wallet)
+    public async Task UpdateHistoryAsync(CreditWallet wallet)
     {
         var walletHistory = await walletHistoryRepository.GetByWalletIdAsync(wallet.Id);
         walletHistory.AddRange(wallet.DomainEvents);

@@ -56,7 +56,7 @@ public class DebitWallet : Wallet, IAggregateRoot
         }
     }
 
-    public void IncreaseBalance(Money amount)
+    public override void IncreaseBalance(Money amount)
     {
         CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 
@@ -65,7 +65,7 @@ public class DebitWallet : Wallet, IAggregateRoot
         AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, amount, _balance));
     }
 
-    public void DecreaseBalance(Money amount)
+    public override void DecreaseBalance(Money amount)
     {
         CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 

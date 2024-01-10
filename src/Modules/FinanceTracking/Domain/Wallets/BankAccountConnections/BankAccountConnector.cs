@@ -23,7 +23,7 @@ public class BankAccountConnector(
             var bankAccount = bankConnection.GetBankAccountById(bankAccountId);
 
             wallet.ConnectBankAccount(bankConnectionId, bankAccountId, bankAccount.Balance, bankAccount.Currency);
-            await debitWalletRepository.SaveAsync(wallet);
+            await debitWalletRepository.UpdateHistoryAsync(wallet);
         }
 
         // TODO: handle credit wallets and throw exception in case wallet type is not debit or credit
