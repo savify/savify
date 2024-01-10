@@ -3,44 +3,66 @@ using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Rules;
+using App.Modules.FinanceTracking.Domain.Wallets.Events;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 
-public class CashWallet : Entity, IAggregateRoot
+public class CashWallet : Wallet, IAggregateRoot
 {
-    public WalletId Id { get; private set; }
-
     public UserId UserId { get; private set; }
 
     private string _title;
 
     private Currency _currency;
 
+    private int _initialBalance;
+
     private int _balance;
-
-    private DateTime _createdAt;
-
-    private DateTime? _updatedAt;
-
-    private DateTime? _removedAt;
 
     private bool _isRemoved;
 
-    public static CashWallet AddNew(UserId userId, string title, Currency currency, int balance = 0)
+    public int Balance => _balance;
+
+    public static CashWallet AddNew(UserId userId, string title, Currency currency, int initialBalance = 0)
     {
-        return new CashWallet(userId, title, currency, balance);
+        return new CashWallet(userId, title, currency, initialBalance);
     }
 
-    public void Edit(string? newTitle, Currency? newCurrency, int? newBalance)
+    public void ChangeTitle(string newTitle)
     {
-        CheckRules(new CashWalletCannotBeEditedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 
-        _title = newTitle ?? _title;
-        _currency = newCurrency ?? _currency;
-        _balance = newBalance ?? _balance;
-        _updatedAt = DateTime.UtcNow;
+        _title = newTitle;
+    }
 
-        AddDomainEvent(new CashWalletEditedDomainEvent(Id, UserId, newCurrency, newBalance));
+    public void ChangeBalance(int newBalance)
+    {
+        if (newBalance < _balance)
+        {
+            DecreaseBalance(Money.From(_balance - newBalance, _currency));
+        }
+        else
+        {
+            IncreaseBalance(Money.From(newBalance - _balance, _currency));
+        }
+    }
+
+    public void IncreaseBalance(Money amount)
+    {
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
+        _balance += amount.Amount;
+
+        AddDomainEvent(new WalletBalanceIncreasedDomainEvent(Id, amount, _balance));
+    }
+
+    public void DecreaseBalance(Money amount)
+    {
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+
+        _balance -= amount.Amount;
+
+        AddDomainEvent(new WalletBalanceDecreasedDomainEvent(Id, amount, _balance));
     }
 
     public void Remove()
@@ -48,19 +70,40 @@ public class CashWallet : Entity, IAggregateRoot
         CheckRules(new CashWalletCannotBeRemovedMoreThanOnceRule(Id, _isRemoved));
 
         _isRemoved = true;
-        _removedAt = DateTime.UtcNow;
 
         AddDomainEvent(new CashWalletRemovedDomainEvent(Id, UserId));
     }
 
-    private CashWallet(UserId userId, string title, Currency currency, int balance)
+    public new void Load(IEnumerable<IDomainEvent> history)
+    {
+        _balance = _initialBalance;
+
+        base.Load(history);
+    }
+
+    protected override void Apply(IDomainEvent @event)
+    {
+        this.When((dynamic)@event);
+    }
+
+    private void When(WalletBalanceIncreasedDomainEvent @event)
+    {
+        _balance += @event.Amount.Amount;
+    }
+
+    private void When(WalletBalanceDecreasedDomainEvent @event)
+    {
+        _balance -= @event.Amount.Amount;
+    }
+
+    private CashWallet(UserId userId, string title, Currency currency, int initialBalance)
     {
         Id = new WalletId(Guid.NewGuid());
         UserId = userId;
         _title = title;
         _currency = currency;
-        _balance = balance;
-        _createdAt = DateTime.UtcNow;
+        _initialBalance = initialBalance;
+        _balance = initialBalance;
 
         AddDomainEvent(new CashWalletAddedDomainEvent(Id, UserId, _currency));
     }

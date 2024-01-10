@@ -10,7 +10,7 @@
   "Available balance should be greater or equal to zero": "Available balance should be greater or equal to zero",
   "Available balance should be less than or equal to credit limit": "Available balance should be less than or equal to credit limit",
   "Wallet title length should contain minimum 3 characters": "Wallet title length should contain minimum 3 characters",
-  "Wallet with id '{0}' was already removed and cannot be edited": "Wallet with id '{0}' was already removed and cannot be edited",
+  "Wallet with id '{0}' was already removed and cannot be changed": "Wallet with id '{0}' was already removed and cannot be changed",
   "Wallet with id '{0}' was already removed": "Wallet with id '{0}' was already removed",
   "This wallet has bank account already connected": "This wallet has bank account already connected",
   "Wallet has bank account already connected": "Wallet has bank account already connected",

@@ -1,13 +1,13 @@
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
-using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.Events;
+using App.Modules.FinanceTracking.Domain.Wallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.FinanceTracking.UnitTests.Wallets.CreditWallets;
 
 [TestFixture]
-public class CreditWalletEditionServiceTests : UnitTestBase
+public class CreditWalletEditorTests : UnitTestBase
 {
     [Test]
     public async Task EditWallet_WhenWalletExists_ShouldEditWallet()
@@ -26,25 +26,25 @@ public class CreditWalletEditionServiceTests : UnitTestBase
         var walletViewMetadataRepository = Substitute.For<IWalletViewMetadataRepository>();
         walletViewMetadataRepository.GetByWalletIdAsync(wallet.Id).Returns(walletViewMetadata);
 
-        var creditWalletEditingService = new CreditWalletEditionService(creditWalletRepository, walletViewMetadataRepository);
+        var creditWalletEditingService = new CreditWalletEditor(creditWalletRepository, walletViewMetadataRepository);
 
         await creditWalletEditingService.EditWallet(
             userId,
             wallet.Id,
             "New cash",
-            new Currency("GBP"),
             2000,
             2000,
             "#FFFFFF",
             "https://cdn.savify.localhost/icons/new-wallet.png",
             false);
 
-        var walletEditedDomainEvent = AssertPublishedDomainEvent<CreditWalletEditedDomainEvent>(wallet);
-        Assert.That(walletEditedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
-        Assert.That(walletEditedDomainEvent.UserId, Is.EqualTo(userId));
-        Assert.That(walletEditedDomainEvent.NewCurrency, Is.EqualTo(new Currency("GBP")));
-        Assert.That(walletEditedDomainEvent.NewCreditLimit, Is.EqualTo(2000));
-        Assert.That(walletEditedDomainEvent.NewAvailableBalance, Is.EqualTo(2000));
+        Assert.That(wallet.AvailableBalance, Is.EqualTo(2000));
+        Assert.That(wallet.CreditLimit, Is.EqualTo(2000));
+
+        var walletBalanceIncreasedDomainEvent = AssertPublishedDomainEvent<WalletBalanceIncreasedDomainEvent>(wallet);
+        Assert.That(walletBalanceIncreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
+        Assert.That(walletBalanceIncreasedDomainEvent.Amount, Is.EqualTo(Money.From(1000, Currency.From("PLN"))));
+        Assert.That(walletBalanceIncreasedDomainEvent.NewBalance, Is.EqualTo(2000));
 
         Assert.That(walletViewMetadata.Color, Is.EqualTo("#FFFFFF"));
         Assert.That(walletViewMetadata.Icon, Is.EqualTo("https://cdn.savify.localhost/icons/new-wallet.png"));

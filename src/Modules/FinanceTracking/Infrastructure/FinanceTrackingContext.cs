@@ -27,6 +27,7 @@ using App.Modules.FinanceTracking.Infrastructure.Domain.UserTags;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CreditWallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.DebitWallets;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletViewMetadata;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Connections;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Customers;
@@ -43,6 +44,8 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
     public required DbSet<DebitWallet> DebitWallets { get; set; }
 
     public required DbSet<WalletViewMetadata> WalletsViewMetadata { get; set; }
+
+    public required DbSet<WalletHistory> WalletHistories { get; set; }
 
     public required DbSet<InvestmentPortfolio> InvestmentPortfolios { get; set; }
 
@@ -80,6 +83,7 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
         modelBuilder.ApplyConfiguration(new CreditWalletsEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new DebitWalletEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new WalletViewMetadataEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new WalletHistoryEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new InvestmentPortfolioEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new PortfolioViewMetadataEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BankConnectionProcessEntityTypeConfiguration());

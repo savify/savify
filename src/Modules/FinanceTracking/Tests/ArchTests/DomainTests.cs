@@ -25,6 +25,8 @@ public class DomainTests : TestBase
     {
         var entityTypes = Types.InAssembly(DomainAssembly)
             .That()
+            .AreNotAbstract()
+            .And()
             .Inherit(typeof(Entity)).GetTypes();
 
         var aggregateRoots = Types.InAssembly(DomainAssembly)
@@ -69,6 +71,8 @@ public class DomainTests : TestBase
     {
         var entityTypes = Types.InAssembly(DomainAssembly)
             .That()
+            .AreNotAbstract()
+            .And()
             .Inherit(typeof(Entity)).GetTypes();
 
         var failingTypes = new List<Type>();

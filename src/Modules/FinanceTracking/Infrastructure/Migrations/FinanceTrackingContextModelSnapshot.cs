@@ -414,30 +414,18 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.Property<int>("_balance")
+                    b.Property<int>("_initialBalance")
                         .HasColumnType("integer")
-                        .HasColumnName("balance");
-
-                    b.Property<DateTime>("_createdAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnName("initial_balance");
 
                     b.Property<bool>("_isRemoved")
                         .HasColumnType("boolean")
                         .HasColumnName("is_removed");
 
-                    b.Property<DateTime?>("_removedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("removed_at");
-
                     b.Property<string>("_title")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("title");
-
-                    b.Property<DateTime?>("_updatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_cash_wallets");
@@ -455,34 +443,22 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.Property<int>("_availableBalance")
-                        .HasColumnType("integer")
-                        .HasColumnName("available_balance");
-
-                    b.Property<DateTime>("_createdAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
                     b.Property<int>("_creditLimit")
                         .HasColumnType("integer")
                         .HasColumnName("credit_limit");
+
+                    b.Property<int>("_initialAvailableBalance")
+                        .HasColumnType("integer")
+                        .HasColumnName("initial_available_balance");
 
                     b.Property<bool>("_isRemoved")
                         .HasColumnType("boolean")
                         .HasColumnName("is_removed");
 
-                    b.Property<DateTime?>("_removedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("removed_at");
-
                     b.Property<string>("_title")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("title");
-
-                    b.Property<DateTime?>("_updatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_credit_wallets");
@@ -500,30 +476,18 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.Property<int>("_balance")
+                    b.Property<int>("_initialBalance")
                         .HasColumnType("integer")
-                        .HasColumnName("balance");
-
-                    b.Property<DateTime>("_createdAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnName("initial_balance");
 
                     b.Property<bool>("_isRemoved")
                         .HasColumnType("boolean")
                         .HasColumnName("is_removed");
 
-                    b.Property<DateTime?>("_removedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("removed_at");
-
                     b.Property<string>("_title")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("title");
-
-                    b.Property<DateTime?>("_updatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_debit_wallets");
@@ -555,6 +519,18 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                         .HasName("pk_wallet_view_metadata");
 
                     b.ToTable("wallet_view_metadata", "finance_tracking");
+                });
+
+            modelBuilder.Entity("App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory.WalletHistory", b =>
+                {
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("wallet_id");
+
+                    b.HasKey("WalletId")
+                        .HasName("pk_wallet_histories");
+
+                    b.ToTable("wallet_histories", "finance_tracking");
                 });
 
             modelBuilder.Entity("App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Connections.SaltEdgeConnection", b =>
@@ -1029,6 +1005,44 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 
                     b.Navigation("_currency")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory.WalletHistory", b =>
+                {
+                    b.OwnsMany("App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.WalletsHistory.WalletHistoryEvent", "Events", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("Data")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("data");
+
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("type");
+
+                            b1.Property<Guid>("WalletHistoryId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("wallet_history_id");
+
+                            b1.HasKey("Id")
+                                .HasName("pk_wallet_history_events");
+
+                            b1.HasIndex("WalletHistoryId")
+                                .HasDatabaseName("ix_wallet_history_events_wallet_history_id");
+
+                            b1.ToTable("wallet_history_events", "finance_tracking");
+
+                            b1.WithOwner()
+                                .HasForeignKey("WalletHistoryId")
+                                .HasConstraintName("fk_wallet_history_events_wallet_histories_wallet_history_id");
+                        });
+
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,7 +17,7 @@ public class ExecutionContextAccessor(IHttpContextAccessor httpContextAccessor) 
                 return Guid.Parse(httpContextAccessor.HttpContext!.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             }
 
-            throw new UserContextIsNotAvailableException("User context is not available");
+            throw new UserContextIsNotAvailableException("User is not authenticated");
         }
     }
 

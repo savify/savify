@@ -13,7 +13,7 @@ internal class AddNewCashWalletCommandHandler(CashWalletFactory cashWalletFactor
             new UserId(command.UserId),
             command.Title,
             new Currency(command.Currency),
-            command.Balance,
+            command.InitialBalance,
             command.Color,
             command.Icon,
             command.ConsiderInTotalBalance);

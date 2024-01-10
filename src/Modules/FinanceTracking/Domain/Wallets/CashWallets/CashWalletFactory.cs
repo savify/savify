@@ -4,27 +4,19 @@ using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 
-public class CashWalletFactory
+public class CashWalletFactory(
+    ICashWalletRepository cashWalletRepository,
+    IWalletViewMetadataRepository walletViewMetadataRepository)
 {
-    private readonly ICashWalletRepository _cashWalletRepository;
-
-    private readonly IWalletViewMetadataRepository _walletViewMetadataRepository;
-
-    public CashWalletFactory(ICashWalletRepository cashWalletRepository, IWalletViewMetadataRepository walletViewMetadataRepository)
-    {
-        _cashWalletRepository = cashWalletRepository;
-        _walletViewMetadataRepository = walletViewMetadataRepository;
-    }
-
-    public async Task<CashWallet> Create(UserId userId, string title, Currency currency, int balance, string color, string icon, bool considerInTotalBalance)
+    public async Task<CashWallet> Create(UserId userId, string title, Currency currency, int initialBalance, string color, string icon, bool considerInTotalBalance)
     {
         var wallet = CashWallet.AddNew(
             userId,
             title,
             currency,
-            balance);
+            initialBalance);
 
-        await _cashWalletRepository.AddAsync(wallet);
+        await cashWalletRepository.AddAsync(wallet);
 
         var viewMetadata = WalletViewMetadata.WalletViewMetadata.CreateForWallet(
             wallet.Id,
@@ -32,7 +24,7 @@ public class CashWalletFactory
             icon,
             considerInTotalBalance);
 
-        await _walletViewMetadataRepository.AddAsync(viewMetadata);
+        await walletViewMetadataRepository.AddAsync(viewMetadata);
 
         return wallet;
     }

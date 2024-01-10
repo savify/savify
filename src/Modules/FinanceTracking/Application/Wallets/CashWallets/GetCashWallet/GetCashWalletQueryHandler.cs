@@ -3,11 +3,12 @@ using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Configuration.Queries;
 using App.Modules.FinanceTracking.Application.Wallets.WalletsViewMetadata;
+using App.Modules.FinanceTracking.Domain.Wallets;
 using Dapper;
 
 namespace App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 
-internal class GetCashWalletQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+internal class GetCashWalletQueryHandler(ISqlConnectionFactory sqlConnectionFactory, ICashWalletReadRepository cashWalletReadRepository)
     : IQueryHandler<GetCashWalletQuery, CashWalletDto?>
 {
     public async Task<CashWalletDto?> Handle(GetCashWalletQuery query, CancellationToken cancellationToken)
@@ -15,7 +16,7 @@ internal class GetCashWalletQueryHandler(ISqlConnectionFactory sqlConnectionFact
         using var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
-                    SELECT c.id, c.user_id AS userId, c.title, c.currency, c.balance, c.created_at AS createdAt,
+                    SELECT c.id, c.user_id AS userId, c.title, c.currency,
                            c.is_removed AS isRemoved, v.wallet_id AS walletId, v.color, v.icon,
                            v.is_considered_in_total_balance AS isConsideredInTotalBalance
                     FROM {DatabaseConfiguration.Schema.Name}.cash_wallets c
@@ -36,6 +37,11 @@ internal class GetCashWalletQueryHandler(ISqlConnectionFactory sqlConnectionFact
         if (cashWallet is not null && cashWallet.UserId != query.UserId)
         {
             throw new AccessDeniedException();
+        }
+
+        if (cashWallet is not null)
+        {
+            cashWallet.Balance = await cashWalletReadRepository.GetBalanceAsync(new WalletId(query.WalletId));
         }
 
         return cashWallet;

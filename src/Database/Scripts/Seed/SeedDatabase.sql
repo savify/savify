@@ -33,9 +33,12 @@ INSERT INTO user_access.user_roles (role_code, user_id) VALUES ('User', '67c3112
 INSERT INTO notifications.user_notification_settings (id, user_id, email, name, preferred_language) VALUES ('dae48939-9cdb-42e6-8182-ff90bfb12b60', '67c31122-7efe-4397-8348-9f3d1bf22a50', 'user@email.com', 'User', 'en');
 
 -- Wallets --
-INSERT INTO finance_tracking.cash_wallets (id, user_id, balance, created_at, title, currency, updated_at, is_removed, removed_at) VALUES ('a86c8692-11ca-40c1-bc86-6dc6411c1f0b', '67c31122-7efe-4397-8348-9f3d1bf22a50', 100, '2023-08-16 14:53:52.906369 +00:00', 'New Cash wallet', 'GBP', null, false, null);
-INSERT INTO finance_tracking.credit_wallets (id, user_id, available_balance, created_at, credit_limit, title, currency, updated_at, is_removed, removed_at) VALUES ('f27a9fdd-1ef0-452e-9aec-67f3a9f83e4b', '67c31122-7efe-4397-8348-9f3d1bf22a50', 10000, '2023-08-16 09:54:37.839622 +00:00', 10000, 'Credit wallet', 'USD', null, false, null);
-INSERT INTO finance_tracking.debit_wallets (id, user_id, balance, created_at, title, currency, updated_at, is_removed, removed_at, bank_account_id, bank_connection_id) VALUES ('c37d08e5-0f88-4362-a49f-fc0844f994e5', '67c31122-7efe-4397-8348-9f3d1bf22a50', 1000, '2023-09-14 07:39:26.370806 +00:00', 'Debit wallet', 'PLN', null, false, null, null, null);
+INSERT INTO finance_tracking.cash_wallets (id, user_id, initial_balance, title, currency, is_removed) VALUES ('a86c8692-11ca-40c1-bc86-6dc6411c1f0b', '67c31122-7efe-4397-8348-9f3d1bf22a50', 100, 'New Cash wallet', 'GBP', false);
+INSERT INTO finance_tracking.wallet_histories (wallet_id) VALUES ('a86c8692-11ca-40c1-bc86-6dc6411c1f0b');
+INSERT INTO finance_tracking.credit_wallets (id, user_id, initial_available_balance, credit_limit, title, currency, is_removed) VALUES ('f27a9fdd-1ef0-452e-9aec-67f3a9f83e4b', '67c31122-7efe-4397-8348-9f3d1bf22a50', 10000, 10000, 'Credit wallet', 'USD', false);
+INSERT INTO finance_tracking.wallet_histories (wallet_id) VALUES ('f27a9fdd-1ef0-452e-9aec-67f3a9f83e4b');
+INSERT INTO finance_tracking.debit_wallets (id, user_id, initial_balance, title, currency, is_removed, bank_account_id, bank_connection_id) VALUES ('c37d08e5-0f88-4362-a49f-fc0844f994e5', '67c31122-7efe-4397-8348-9f3d1bf22a50', 1000, 'Debit wallet', 'PLN', false, null, null);
+INSERT INTO finance_tracking.wallet_histories (wallet_id) VALUES ('c37d08e5-0f88-4362-a49f-fc0844f994e5');
 
 -- Wallets View Metadata --
 INSERT INTO finance_tracking.wallet_view_metadata (wallet_id, color, icon, is_considered_in_total_balance) VALUES ('a86c8692-11ca-40c1-bc86-6dc6411c1f0b', '#000000', 'https://cdn.savify.localhost/icons/new-wallet.png', false);

@@ -12,9 +12,6 @@ internal class EditCreditWalletCommandValidator : Validator<EditCreditWalletComm
             .NotEmpty()
             .WithMessage("Please provide wallet title");
 
-        RuleFor(c => c.Currency)
-            .MustMatchCurrencyCodeIsoFormat();
-
         RuleFor(c => c.CreditLimit)
             .GreaterThanOrEqualTo(0)
             .WithMessage("Credit limit should be greater or equal to zero");
