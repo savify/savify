@@ -1,6 +1,5 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Events;
-using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Exceptions;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Services;
 
 namespace App.Modules.Banks.Domain.BanksSynchronisationProcessing;
@@ -25,14 +24,12 @@ public class BanksSynchronisationProcess : Entity, IAggregateRoot
     {
         var banksSynchronisationProcess = new BanksSynchronisationProcess(initiatedBy);
 
-        // TODO: for now synchronisation process will be synchronous; if execution time will be too large, we need to handle it asynchronous
-        try
+        var result = await banksSynchronisationService.SynchroniseAsync(banksSynchronisationProcess.Id);
+        if (result.IsSuccess)
         {
-            await banksSynchronisationService.SynchroniseAsync(banksSynchronisationProcess.Id);
-
             banksSynchronisationProcess.Finish();
         }
-        catch (BanksSynchronisationProcessException)
+        else
         {
             banksSynchronisationProcess.Fail();
         }

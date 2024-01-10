@@ -42,7 +42,6 @@ public class CreditWallet : Wallet, IAggregateRoot
 
     public void ChangeCreditLimit(int newCreditLimit)
     {
-        // TODO: check if available balance is not greater than credit limit
         CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 
         _creditLimit = newCreditLimit;
@@ -68,7 +67,6 @@ public class CreditWallet : Wallet, IAggregateRoot
 
     public override void IncreaseBalance(Money amount)
     {
-        // TODO: check if available balance is not greater than credit limit
         CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 
         _availableBalance += amount.Amount;
@@ -78,7 +76,6 @@ public class CreditWallet : Wallet, IAggregateRoot
 
     public override void DecreaseBalance(Money amount)
     {
-        // TODO: check if available balance is not greater than credit limit
         CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
 
         _availableBalance -= amount.Amount;

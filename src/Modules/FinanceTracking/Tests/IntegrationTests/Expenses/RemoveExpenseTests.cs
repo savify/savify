@@ -1,24 +1,16 @@
 ﻿using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
-using App.Modules.FinanceTracking.Application.Configuration.Data;
-using App.Modules.FinanceTracking.Application.Expenses.AddNewExpense;
 using App.Modules.FinanceTracking.Application.Expenses.GetExpense;
 using App.Modules.FinanceTracking.Application.Expenses.RemoveExpense;
-using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
-using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
-using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
 using App.Modules.FinanceTracking.Domain.Expenses;
-using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
-using Dapper;
-using Npgsql;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Expenses;
 
 [TestFixture]
-public class RemoveExpenseTests : TestBase
+public class RemoveExpenseTests : ExpensesTestBase
 {
     [Test]
     public async Task RemoveExpenseCommand_Tests()
@@ -97,74 +89,5 @@ public class RemoveExpenseTests : TestBase
         var command = new RemoveExpenseCommand(expenseId, Guid.NewGuid());
 
         await Assert.ThatAsync(() => FinanceTrackingModule.ExecuteCommandAsync(command), Throws.TypeOf<AccessDeniedException>());
-    }
-
-    private async Task<Guid> AddNewExpenseAsync(Guid userId, Guid? sourceWalletId = null)
-    {
-        var categoryId = await CreateCategory();
-
-        var command = new AddNewExpenseCommand(
-            userId: userId,
-            sourceWalletId: sourceWalletId ?? await CreateCashWallet(userId),
-            categoryId: categoryId,
-            amount: 100,
-            currency: "USD",
-            madeOn: DateTime.UtcNow,
-            comment: "Clothes",
-            tags: ["Clothes", "H&M"]);
-
-        var expenseId = await FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        return expenseId;
-    }
-
-    private async Task<Guid> CreateCashWallet(Guid userId, int initialBalance = 100)
-    {
-        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
-            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
-            "Cash wallet",
-            "USD",
-            initialBalance,
-            "#000000",
-            "https://cdn.savify.io/icons/icon.svg",
-            true));
-    }
-
-    private async Task<Guid> CreateDebitWallet(Guid userId, int initialBalance = 100)
-    {
-        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewDebitWalletCommand(
-            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
-            "Debit wallet",
-            "USD",
-            initialBalance,
-            "#000000",
-            "https://cdn.savify.io/icons/icon.svg",
-            true));
-    }
-
-    private async Task<Guid> CreateCreditWallet(Guid userId, int initialAvailableBalance = 100)
-    {
-        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCreditWalletCommand(
-            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
-            "Debit wallet",
-            "USD",
-            initialAvailableBalance,
-            2000,
-            "#000000",
-            "https://cdn.savify.io/icons/icon.svg",
-            true));
-    }
-
-    private async Task<Guid> CreateCategory()
-    {
-        await using var sqlConnection = new NpgsqlConnection(ConnectionString);
-
-        var categoryId = Guid.NewGuid();
-
-        var sql = $"INSERT INTO {DatabaseConfiguration.Schema.Name}.categories (id, external_id) VALUES (@Id, @ExternalId)";
-
-        await sqlConnection.ExecuteAsync(sql, new { Id = categoryId, ExternalId = Guid.NewGuid() });
-
-        return categoryId;
     }
 }

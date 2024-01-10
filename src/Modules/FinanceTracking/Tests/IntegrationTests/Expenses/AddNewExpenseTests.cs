@@ -1,29 +1,21 @@
 ﻿using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Tests.Creating.OptionalParameters;
-using App.Modules.FinanceTracking.Application.Configuration.Data;
-using App.Modules.FinanceTracking.Application.Expenses.AddNewExpense;
 using App.Modules.FinanceTracking.Application.Expenses.GetExpense;
 using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
-using App.Modules.FinanceTracking.Application.Wallets.CashWallets.AddNewCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
-using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.AddNewCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
-using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
-using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
-using Dapper;
-using Npgsql;
 
 namespace App.Modules.FinanceTracking.IntegrationTests.Expenses;
 
 [TestFixture]
-public class AddNewExpenseTests : TestBase
+public class AddNewExpenseTests : ExpensesTestBase
 {
     [Test]
     public async Task AddNewExpenseCommand_AddsExpense()
     {
         var userId = Guid.NewGuid();
-        var command = await CreateCommand(userId);
+        var command = await CreateAddNewExpenseCommand(userId);
 
         var expenseId = await FinanceTrackingModule.ExecuteCommandAsync(command);
         var expense = await FinanceTrackingModule.ExecuteQueryAsync(new GetExpenseQuery(expenseId, userId));
@@ -44,7 +36,7 @@ public class AddNewExpenseTests : TestBase
         var userId = Guid.NewGuid();
         string[] newTags = ["New user tag 1", "New user tag 2"];
 
-        var command = await CreateCommand(userId, tags: newTags);
+        var command = await CreateAddNewExpenseCommand(userId, tags: newTags);
 
         _ = await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -59,7 +51,7 @@ public class AddNewExpenseTests : TestBase
     {
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateCashWallet(userId, initialBalance: 500);
-        var command = await CreateCommand(userId, sourceWalletId, amount: 200);
+        var command = await CreateAddNewExpenseCommand(userId, sourceWalletId, amount: 200);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -72,7 +64,7 @@ public class AddNewExpenseTests : TestBase
     {
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateDebitWallet(userId, initialBalance: 500);
-        var command = await CreateCommand(userId, sourceWalletId, amount: 200);
+        var command = await CreateAddNewExpenseCommand(userId, sourceWalletId, amount: 200);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -85,7 +77,7 @@ public class AddNewExpenseTests : TestBase
     {
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateCreditWallet(userId, initialAvailableBalance: 500);
-        var command = await CreateCommand(userId, sourceWalletId, amount: 200);
+        var command = await CreateAddNewExpenseCommand(userId, sourceWalletId, amount: 200);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -96,7 +88,7 @@ public class AddNewExpenseTests : TestBase
     [Test]
     public async Task AddNewExpenseCommand_WhenUserIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
-        var command = await CreateCommand(userId: Guid.Empty);
+        var command = await CreateAddNewExpenseCommand(userId: Guid.Empty);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -106,7 +98,7 @@ public class AddNewExpenseTests : TestBase
     [Test]
     public async Task AddNewExpenseCommand_WhenSourceWalletIdIsEmptyGuid_ThrowsInvalidCommandException()
     {
-        var command = await CreateCommand(sourceWalletId: Guid.Empty);
+        var command = await CreateAddNewExpenseCommand(sourceWalletId: Guid.Empty);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -116,7 +108,7 @@ public class AddNewExpenseTests : TestBase
     [Test]
     public async Task AddNewExpenseCommand_WhenCategoryWithGivenIdDoesNotExist_ThrowsInvalidCommandException()
     {
-        var command = await CreateCommand(categoryId: Guid.NewGuid());
+        var command = await CreateAddNewExpenseCommand(categoryId: Guid.NewGuid());
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -128,7 +120,7 @@ public class AddNewExpenseTests : TestBase
     [TestCase(0)]
     public async Task AddNewExpenseCommand_WhenAmountIsLessOrEqualToZero_ThrowsInvalidCommandException(int amount)
     {
-        var command = await CreateCommand(amount: amount);
+        var command = await CreateAddNewExpenseCommand(amount: amount);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -142,7 +134,7 @@ public class AddNewExpenseTests : TestBase
     [TestCase("PLNN")]
     public async Task AddNewExpenseCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
     {
-        var command = await CreateCommand(currency: currency);
+        var command = await CreateAddNewExpenseCommand(currency: currency);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -152,83 +144,10 @@ public class AddNewExpenseTests : TestBase
     [Test]
     public async Task AddNewExpenseCommand_WhenMadeOnIsDefaultDate_ThrowsInvalidCommandException()
     {
-        var command = await CreateCommand(madeOn: OptionalParameter.Default);
+        var command = await CreateAddNewExpenseCommand(madeOn: OptionalParameter.Default);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 
         await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
-    }
-
-    private async Task<AddNewExpenseCommand> CreateCommand(
-        OptionalParameter<Guid> userId = default,
-        OptionalParameter<Guid> sourceWalletId = default,
-        OptionalParameter<Guid> categoryId = default,
-        OptionalParameter<int> amount = default,
-        OptionalParameter<string> currency = default,
-        OptionalParameter<DateTime> madeOn = default,
-        OptionalParameter<string> comment = default,
-        OptionalParameter<IEnumerable<string>> tags = default)
-    {
-        var userIdValue = userId.GetValueOr(Guid.NewGuid());
-
-        return new AddNewExpenseCommand(
-            userIdValue,
-            sourceWalletId.GetValueOr(await CreateCashWallet(userIdValue)),
-            categoryId.GetValueOr(await CreateCategory()),
-            amount.GetValueOr(100),
-            currency.GetValueOr("USD"),
-            madeOn.GetValueOr(DateTime.UtcNow),
-            comment.GetValueOr("Clothes"),
-            tags.GetValueOr(["Clothes", "H&M"]));
-    }
-
-    private async Task<Guid> CreateCashWallet(Guid userId, int initialBalance = 100)
-    {
-        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
-            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
-            "Cash wallet",
-            "USD",
-            initialBalance,
-            "#000000",
-            "https://cdn.savify.io/icons/icon.svg",
-            true));
-    }
-
-    private async Task<Guid> CreateDebitWallet(Guid userId, int initialBalance = 100)
-    {
-        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewDebitWalletCommand(
-            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
-            "Debit wallet",
-            "USD",
-            initialBalance,
-            "#000000",
-            "https://cdn.savify.io/icons/icon.svg",
-            true));
-    }
-
-    private async Task<Guid> CreateCreditWallet(Guid userId, int initialAvailableBalance = 100)
-    {
-        return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCreditWalletCommand(
-            userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
-            "Debit wallet",
-            "USD",
-            initialAvailableBalance,
-            2000,
-            "#000000",
-            "https://cdn.savify.io/icons/icon.svg",
-            true));
-    }
-
-    private async Task<Guid> CreateCategory()
-    {
-        await using var sqlConnection = new NpgsqlConnection(ConnectionString);
-
-        var categoryId = Guid.NewGuid();
-
-        var sql = $"INSERT INTO {DatabaseConfiguration.Schema.Name}.categories (id, external_id) VALUES (@Id, @ExternalId)";
-
-        await sqlConnection.ExecuteAsync(sql, new { Id = categoryId, ExternalId = Guid.NewGuid() });
-
-        return categoryId;
     }
 }

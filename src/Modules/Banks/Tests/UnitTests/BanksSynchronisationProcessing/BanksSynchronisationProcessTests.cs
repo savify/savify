@@ -1,8 +1,7 @@
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Events;
-using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Exceptions;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Services;
-using NSubstitute.ExceptionExtensions;
 
 namespace App.Modules.Banks.UnitTests.BanksSynchronisationProcessing;
 
@@ -13,6 +12,9 @@ public class BanksSynchronisationProcessTests : UnitTestBase
     public async Task StartingBanksSynchronisationProcess_ThatWasNotPerformedBefore_WillFinishWithSuccess()
     {
         var banksSynchronisationService = Substitute.For<IBanksSynchronisationService>();
+        banksSynchronisationService
+            .SynchroniseAsync(Arg.Any<BanksSynchronisationProcessId>())
+            .Returns(Result.Success);
 
         var banksSynchronisationProcess = await BanksSynchronisationProcess.Start(
             BanksSynchronisationProcessInitiator.InternalCommand,
@@ -30,12 +32,12 @@ public class BanksSynchronisationProcessTests : UnitTestBase
     }
 
     [Test]
-    public async Task BanksSynchronisationProcess_WhenBanksSynchronisationProcessExceptionWasThrown_WillFail()
+    public async Task BanksSynchronisationProcess_WhenSynchronisationHasFailed_WillFail()
     {
         var banksSynchronisationService = Substitute.For<IBanksSynchronisationService>();
         banksSynchronisationService
             .SynchroniseAsync(Arg.Any<BanksSynchronisationProcessId>())
-            .ThrowsAsync(new BanksSynchronisationProcessException("Some sync error message"));
+            .Returns(Result.Error);
 
         var banksSynchronisationProcess = await BanksSynchronisationProcess.Start(
             BanksSynchronisationProcessInitiator.InternalCommand,

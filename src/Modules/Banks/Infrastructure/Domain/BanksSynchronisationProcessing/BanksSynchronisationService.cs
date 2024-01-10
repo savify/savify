@@ -1,7 +1,7 @@
+using App.BuildingBlocks.Domain.Results;
 using App.Modules.Banks.Domain;
 using App.Modules.Banks.Domain.Banks;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing;
-using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Exceptions;
 using App.Modules.Banks.Domain.BanksSynchronisationProcessing.Services;
 using App.Modules.Banks.Domain.ExternalProviders;
 using App.Modules.Banks.Infrastructure.Integrations.SaltEdge;
@@ -14,14 +14,23 @@ public class BanksSynchronisationService(
     IBankRepository bankRepository)
     : IBanksSynchronisationService
 {
-    public async Task SynchroniseAsync(BanksSynchronisationProcessId banksSynchronisationProcessId)
+    public async Task<Result> SynchroniseAsync(BanksSynchronisationProcessId banksSynchronisationProcessId)
     {
         var banks = await bankRepository.GetAllAsync();
-        var externalProviders = await GetExternalProviders();
+
+        List<SaltEdgeProvider> externalProviders;
+        try
+        {
+            externalProviders = await saltEdgeIntegrationService.FetchProvidersAsync();
+        }
+        catch (SaltEdgeIntegrationException)
+        {
+            return Result.Error;
+        }
 
         foreach (var bank in banks)
         {
-            if (!externalProviders.Any(p => p.Code == bank.ExternalId))
+            if (externalProviders.All(p => p.Code != bank.ExternalId))
             {
                 bank.Disable();
             }
@@ -61,17 +70,7 @@ public class BanksSynchronisationService(
                     externalProvider.LogoUrl);
             }
         }
-    }
 
-    private async Task<List<SaltEdgeProvider>> GetExternalProviders(DateTime? fromDate = null)
-    {
-        try
-        {
-            return await saltEdgeIntegrationService.FetchProvidersAsync(fromDate);
-        }
-        catch (SaltEdgeIntegrationException exception)
-        {
-            throw new BanksSynchronisationProcessException(exception.Message);
-        }
+        return Result.Success;
     }
 }
