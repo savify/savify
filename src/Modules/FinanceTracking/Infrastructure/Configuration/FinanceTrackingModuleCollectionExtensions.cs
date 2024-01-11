@@ -25,6 +25,7 @@ public static class FinanceTrackingModuleCollectionExtensions
         services
             .AddDataAccessServices<FinanceTrackingContext>(connectionString)
             .AddDomainServices()
+            .AddApplicationServices()
             .AddIntegrationServices()
             .AddLocalizationServices()
             .AddLoggingServices()

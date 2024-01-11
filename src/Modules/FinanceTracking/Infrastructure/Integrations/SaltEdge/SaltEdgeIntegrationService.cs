@@ -2,13 +2,14 @@ using App.Integrations.SaltEdge.Client;
 using App.Integrations.SaltEdge.Requests;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Accounts;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Connections;
+using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Currencies;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.RequestContent;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.ResponseContent;
 using SaltEdgeConsent = App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.ResponseContent.SaltEdgeConsent;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge;
 
-public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client) : ISaltEdgeIntegrationService
+public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client) : ISaltEdgeIntegrationService, ISaltEdgeCurrenciesProvider
 {
     public async Task<CreateCustomerResponseContent> CreateCustomerAsync(Guid userId)
     {
@@ -104,5 +105,25 @@ public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client) : ISaltEdgeI
         }
 
         return accounts;
+    }
+
+    public async Task<IEnumerable<CurrencyDto>> FetchCurrenciesAsync()
+    {
+        var request = Request.Get("currencies");
+        var response = await client.SendAsync(request);
+
+        if (!response.IsSuccessful())
+        {
+            throw new SaltEdgeIntegrationException(response.Error!.Message);
+        }
+
+        var currencies = response.Content?.As<List<CurrencyDto>>();
+
+        if (currencies is null)
+        {
+            throw new SaltEdgeIntegrationException("Currencies were not found");
+        }
+
+        return currencies.AsEnumerable();
     }
 }
