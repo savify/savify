@@ -2,12 +2,7 @@ using App.Modules.Banks.Application.Contracts;
 
 namespace App.Modules.Banks.Application.BanksSynchronisationProcessing.SynchroniseBanks;
 
-public class SynchroniseBanksCommand : CommandBase<BanksSynchronisationResultDto>
+public class SynchroniseBanksCommand(Guid userId) : CommandBase<BanksSynchronisationResultDto>
 {
-    public Guid UserId { get; }
-
-    public SynchroniseBanksCommand(Guid userId)
-    {
-        UserId = userId;
-    }
+    public Guid UserId { get; } = userId;
 }
