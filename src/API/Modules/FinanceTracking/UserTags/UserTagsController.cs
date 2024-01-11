@@ -15,7 +15,7 @@ public class UserTagsController(
     : ControllerBase
 {
     [HttpGet("")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string[]), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get()
     {
@@ -23,14 +23,6 @@ public class UserTagsController(
 
         var userTags = await financeTrackingModule.ExecuteQueryAsync(new GetUserTagsQuery(userId));
 
-        if (userTags is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(new
-        {
-            UserTags = userTags.Values
-        });
+        return Ok(userTags?.Values);
     }
 }

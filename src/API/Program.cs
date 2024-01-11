@@ -42,7 +42,10 @@ public class Program
 
         ConfigureLogger(builder.Configuration, builder.Environment);
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(options =>
+        {
+            options.Filters.Add(new NotFoundActionFilterAttribute());
+        });
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
