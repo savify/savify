@@ -14,6 +14,8 @@ namespace App.Modules.UserAccess.IntegrationTests.SeedWork;
 
 public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
+    private readonly IExecutionContextAccessor _executionContextAccessor;
+
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
         .WithDatabase("savify")
@@ -27,9 +29,9 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 
     public string GetConnectionString() => _dbContainer.GetConnectionString();
 
-    public static async Task<CustomWebApplicationFactory<TProgram>> Create()
+    public static async Task<CustomWebApplicationFactory<TProgram>> Create(IExecutionContextAccessor executionContextAccessor)
     {
-        var factory = new CustomWebApplicationFactory<TProgram>();
+        var factory = new CustomWebApplicationFactory<TProgram>(executionContextAccessor);
         await factory.InitialiseDbContainerAsync();
 
         return factory;
@@ -41,7 +43,12 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
         {
             services.ReplaceDbContext<UserAccessContext>(_dbContainer.GetConnectionString());
             services.Replace(ServiceDescriptor.Scoped<ISqlConnectionFactory>(_ => new SqlConnectionFactory(_dbContainer.GetConnectionString())));
-            services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => new ExecutionContextMock(Guid.NewGuid())));
+            services.Replace(ServiceDescriptor.Scoped<IExecutionContextAccessor>(_ => _executionContextAccessor));
         });
+    }
+
+    private CustomWebApplicationFactory(IExecutionContextAccessor executionContextAccessor)
+    {
+        _executionContextAccessor = executionContextAccessor;
     }
 }

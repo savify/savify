@@ -34,4 +34,16 @@ public class RefreshTokenRepository(ISqlConnectionFactory sqlConnectionFactory) 
 
         await connection.ExecuteAsync(sql, new { userId, token, expiresAt });
     }
+
+    public async Task InvalidateAsync(Guid userId)
+    {
+        var connection = sqlConnectionFactory.GetOpenConnection();
+
+        var sql = $"""
+                   DELETE FROM {DatabaseConfiguration.Schema.Name}.refresh_tokens
+                   WHERE user_id = @userId
+                   """;
+
+        await connection.ExecuteAsync(sql, new { userId });
+    }
 }

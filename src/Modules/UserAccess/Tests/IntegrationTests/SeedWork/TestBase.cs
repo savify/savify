@@ -1,6 +1,7 @@
 using System.Data;
 using System.Reflection;
 using App.API;
+using App.BuildingBlocks.Application;
 using App.BuildingBlocks.Infrastructure.Configuration;
 using App.BuildingBlocks.Infrastructure.Configuration.Outbox;
 using App.BuildingBlocks.Infrastructure.DomainEventsDispatching;
@@ -24,6 +25,8 @@ public class TestBase
 
     protected string ConnectionString { get; private set; }
 
+    protected IExecutionContextAccessor ExecutionContextAccessor { get; private set; }
+
     protected IDomainNotificationsMapper<UserAccessContext> DomainNotificationsMapper { get; private set; }
 
     private static readonly Assembly ApplicationAssembly = Assembly.GetAssembly(typeof(CommandBase))!;
@@ -31,7 +34,8 @@ public class TestBase
     [OneTimeSetUp]
     public async Task Init()
     {
-        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create();
+        ExecutionContextAccessor = new ExecutionContextMock(Guid.NewGuid());
+        WebApplicationFactory = await CustomWebApplicationFactory<Program>.Create(ExecutionContextAccessor);
         CompositionRoot.SetServiceProvider(WebApplicationFactory.Services);
 
         ConnectionString = WebApplicationFactory.GetConnectionString();
