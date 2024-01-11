@@ -8,6 +8,8 @@ public class BankDto
 
     public required string CountryCode { get; init; }
 
+    public required bool IsBeta { get; init; }
+
     public required string DefaultLogoUrl { get; init; }
 
     public required string LogoUrl { get; init; }
