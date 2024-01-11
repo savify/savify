@@ -1,6 +1,7 @@
 using App.API.Modules.UserAccess.Authentication.Requests;
 using App.Modules.UserAccess.Application.Authentication;
 using App.Modules.UserAccess.Application.Authentication.AuthenticateUser;
+using App.Modules.UserAccess.Application.Authentication.Logout;
 using App.Modules.UserAccess.Application.Authentication.RefreshTokens;
 using App.Modules.UserAccess.Application.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -30,5 +31,15 @@ public class AuthenticationController(IUserAccessModule userAccessModule) : Cont
         var tokens = await userAccessModule.ExecuteCommandAsync(new RefreshTokensCommand(request.UserId, request.RefreshToken));
 
         return Ok(tokens);
+    }
+
+    [Authorize]
+    [HttpPost("logout")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> Logout()
+    {
+        await userAccessModule.ExecuteCommandAsync(new LogoutCommand());
+
+        return Ok();
     }
 }
