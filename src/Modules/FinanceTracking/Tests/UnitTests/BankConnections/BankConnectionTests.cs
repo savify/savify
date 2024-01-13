@@ -36,7 +36,7 @@ public class BankConnectionTests : UnitTestBase
             new UserId(Guid.NewGuid()),
             new Consent(DateTime.MaxValue));
 
-        bankConnection.AddBankAccount("123", "Test account", 1000, new Currency("USD"));
+        bankConnection.AddBankAccount("123", "Test account", 1000, Currency.From("USD"));
 
         var addedBankAccount = bankConnection.GetSingleBankAccount();
         Assert.That(addedBankAccount, Is.InstanceOf<BankAccount>());
@@ -51,8 +51,8 @@ public class BankConnectionTests : UnitTestBase
             new UserId(Guid.NewGuid()),
             new Consent(DateTime.MaxValue));
 
-        bankConnection.AddBankAccount("123", "Test account 1", 1000, new Currency("USD"));
-        bankConnection.AddBankAccount("456", "Test account 2", 1000, new Currency("PLN"));
+        bankConnection.AddBankAccount("123", "Test account 1", 1000, Currency.From("USD"));
+        bankConnection.AddBankAccount("456", "Test account 2", 1000, Currency.From("PLN"));
 
         Assert.That(bankConnection.HasMultipleBankAccounts, Is.True);
     }
@@ -81,8 +81,8 @@ public class BankConnectionTests : UnitTestBase
             new UserId(Guid.NewGuid()),
             new Consent(DateTime.MaxValue));
 
-        bankConnection.AddBankAccount("123", "Test account 1", 1000, new Currency("USD"));
-        bankConnection.AddBankAccount("456", "Test account 2", 1000, new Currency("PLN"));
+        bankConnection.AddBankAccount("123", "Test account 1", 1000, Currency.From("USD"));
+        bankConnection.AddBankAccount("456", "Test account 2", 1000, Currency.From("PLN"));
 
         AssertBrokenRule<BankConnectionMustHaveOnlyOneAccountRule>(() =>
         {

@@ -163,4 +163,79 @@ public class SaltEdgeHttpClientMocker
                     .WithStatusCode(200)
                     .WithBodyAsJson(hasMultipleAccounts ? multipleAccountsJson : singleAccountJson));
     }
+
+    public void MockFetchCurrenciesSuccessfulResponse()
+    {
+        var currenciesJson = new
+        {
+            data = new object[]
+            {
+                new
+                {
+                    code = "USD",
+                    name = "United States Dollar",
+                },
+                new
+                {
+                    code = "EUR",
+                    name = "Euro",
+                },
+                new
+                {
+                    code = "PLN",
+                    name = "Polish Zloty",
+                },
+                new
+                {
+                    code = "RUB",
+                    name = "A piece of shit",
+                },
+            }
+        };
+
+        _wireMock.Given(
+                Request.Create()
+                    .WithPath("/currencies")
+                    .UsingGet()
+            )
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(currenciesJson));
+    }
+
+    public void MockFetchExchangeRatesSuccessfulResponse()
+    {
+        var currenciesJson = new
+        {
+            data = new object[]
+            {
+                new
+                {
+                    currency_code = "USD",
+                    rate = 1m,
+                },
+                new
+                {
+                    currency_code = "EUR",
+                    rate = 1.20m,
+                },
+                new
+                {
+                    currency_code = "PLN",
+                    rate = 0.25m,
+                },
+            }
+        };
+
+        _wireMock.Given(
+                Request.Create()
+                    .WithPath("/rates")
+                    .UsingGet()
+            )
+            .RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithBodyAsJson(currenciesJson));
+    }
 }

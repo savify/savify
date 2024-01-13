@@ -51,7 +51,7 @@ public class BankConnectionProcessConnectionCreationTests : UnitTestBase
         await bankConnectionProcess.Redirect(_redirectionService);
 
         var bankConnectionStub = BankConnection.CreateFromBankConnectionProcess(bankConnectionProcess.Id, _bankId, _userId, new Consent(DateTime.MaxValue));
-        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, new Currency("USD"));
+        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, Currency.From("USD"));
 
         _connectionCreationService
             .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")
@@ -81,8 +81,8 @@ public class BankConnectionProcessConnectionCreationTests : UnitTestBase
         await bankConnectionProcess.Redirect(_redirectionService);
 
         var bankConnectionStub = BankConnection.CreateFromBankConnectionProcess(bankConnectionProcess.Id, _bankId, _userId, new Consent(DateTime.MaxValue));
-        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, new Currency("USD"));
-        bankConnectionStub.AddBankAccount("456", "Test Account 2", 100, new Currency("PLN"));
+        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, Currency.From("USD"));
+        bankConnectionStub.AddBankAccount("456", "Test Account 2", 100, Currency.From("PLN"));
 
         _connectionCreationService
             .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")
@@ -134,7 +134,7 @@ public class BankConnectionProcessConnectionCreationTests : UnitTestBase
         await bankConnectionProcess.Redirect(_redirectionService);
 
         var bankConnectionStub = BankConnection.CreateFromBankConnectionProcess(bankConnectionProcess.Id, _bankId, _userId, new Consent(DateTime.MaxValue));
-        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, new Currency("USD"));
+        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, Currency.From("USD"));
 
         _connectionCreationService
             .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")

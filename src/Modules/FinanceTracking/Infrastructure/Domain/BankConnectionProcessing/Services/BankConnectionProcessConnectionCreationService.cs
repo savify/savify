@@ -34,7 +34,7 @@ public class BankConnectionProcessConnectionCreationService(
                 account.Id,
                 account.Name,
                 (int)(account.Balance * 100.00),
-                new Currency(account.CurrencyCode)));
+                Currency.From(account.CurrencyCode)));
 
             await connectionRepository.AddAsync(saltEdgeConnection);
             await bankConnectionRepository.AddAsync(connection);

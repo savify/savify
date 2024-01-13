@@ -3,13 +3,14 @@ using App.Integrations.SaltEdge.Requests;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Accounts;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Connections;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Currencies;
+using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.ExchangeRates;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.RequestContent;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.ResponseContent;
 using SaltEdgeConsent = App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.ResponseContent.SaltEdgeConsent;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge;
 
-public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client) : ISaltEdgeIntegrationService, ISaltEdgeCurrenciesProvider
+public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client) : ISaltEdgeIntegrationService, ISaltEdgeCurrenciesProvider, ISaltEdgeExchangeRatesProvider
 {
     public async Task<CreateCustomerResponseContent> CreateCustomerAsync(Guid userId)
     {
@@ -125,5 +126,31 @@ public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client) : ISaltEdgeI
         }
 
         return currencies.AsEnumerable();
+    }
+
+    public async Task<IEnumerable<ExchangeRateDto>> FetchExchangeRatesAsync(DateTime? date = null)
+    {
+        var request = Request.Get("rates");
+
+        if (date is not null)
+        {
+            request = (GetRequest)request.WithQueryParameter("date", date);
+        }
+
+        var response = await client.SendAsync(request);
+
+        if (!response.IsSuccessful())
+        {
+            throw new SaltEdgeIntegrationException(response.Error!.Message);
+        }
+
+        var exchangeRates = response.Content?.As<List<ExchangeRateDto>>();
+
+        if (exchangeRates is null)
+        {
+            throw new SaltEdgeIntegrationException("Exchange rates were not found");
+        }
+
+        return exchangeRates.AsEnumerable();
     }
 }

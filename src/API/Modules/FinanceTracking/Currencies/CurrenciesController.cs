@@ -11,7 +11,7 @@ namespace App.API.Modules.FinanceTracking.Currencies;
 public class CurrenciesController(IFinanceTrackingModule financeTrackingModule) : ControllerBase
 {
     [HttpGet("")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string[]), StatusCodes.Status200OK)]
     public async Task<IActionResult> List()
     {
         var currencies = await financeTrackingModule.ExecuteQueryAsync(new GetCurrenciesQuery());
