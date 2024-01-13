@@ -2,7 +2,7 @@
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Tests.Creating.OptionalParameters;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
-using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+using App.Modules.FinanceTracking.Application.Users.Tags.GetUserTags;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.Domain.Transfers;
 

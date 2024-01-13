@@ -16,6 +16,7 @@ public class UserRegistrationConfirmedPublishNotificationHandler(IEventBus event
             notification.DomainEvent.UserRegistrationId.Value,
             notification.DomainEvent.Email,
             notification.DomainEvent.Name,
+            notification.DomainEvent.Country.Value,
             notification.DomainEvent.PreferredLanguage.Value));
     }
 }

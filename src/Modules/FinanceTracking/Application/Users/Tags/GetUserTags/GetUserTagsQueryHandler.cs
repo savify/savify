@@ -3,7 +3,7 @@ using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Application.Configuration.Queries;
 using Dapper;
 
-namespace App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+namespace App.Modules.FinanceTracking.Application.Users.Tags.GetUserTags;
 
 internal class GetUserTagsQueryHandler(ISqlConnectionFactory sqlConnectionFactory) : IQueryHandler<GetUserTagsQuery, UserTagsDto?>
 {

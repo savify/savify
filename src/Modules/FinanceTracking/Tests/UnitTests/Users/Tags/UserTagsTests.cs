@@ -1,6 +1,6 @@
 ﻿using App.Modules.FinanceTracking.Domain.Users;
 
-namespace App.Modules.FinanceTracking.UnitTests.UserTags;
+namespace App.Modules.FinanceTracking.UnitTests.Users.Tags;
 
 [TestFixture]
 public class UserTagsTests : UnitTestBase

@@ -1,6 +1,6 @@
 ﻿using App.BuildingBlocks.Application;
 using App.Modules.FinanceTracking.Application.Contracts;
-using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+using App.Modules.FinanceTracking.Application.Users.Tags.GetUserTags;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

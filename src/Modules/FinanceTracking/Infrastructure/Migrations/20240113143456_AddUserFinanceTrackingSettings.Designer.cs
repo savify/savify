@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using App.Modules.FinanceTracking.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.Modules.FinanceTracking.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceTrackingContext))]
-    partial class FinanceTrackingContextModelSnapshot : ModelSnapshot
+    [Migration("20240113143456_AddUserFinanceTrackingSettings")]
+    partial class AddUserFinanceTrackingSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -387,7 +390,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     b.ToTable("transfers", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings.CreateUserFinanceTrackingSettings", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings.UserFinanceTrackingSettings", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -403,7 +406,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                     b.ToTable("user_finance_tracking_settings", "finance_tracking");
                 });
 
-            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Users.Tags.Tags", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Users.Tags.UserTags", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -920,7 +923,7 @@ namespace App.Modules.FinanceTracking.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings.CreateUserFinanceTrackingSettings", b =>
+            modelBuilder.Entity("App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings.UserFinanceTrackingSettings", b =>
                 {
                     b.OwnsOne("App.Modules.FinanceTracking.Domain.Finance.Currency", "DefaultCurrency", b1 =>
                         {

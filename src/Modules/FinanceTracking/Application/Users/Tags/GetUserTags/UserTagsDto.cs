@@ -1,4 +1,4 @@
-﻿namespace App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+﻿namespace App.Modules.FinanceTracking.Application.Users.Tags.GetUserTags;
 
 public class UserTagsDto
 {

@@ -1,4 +1,6 @@
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
+using App.Modules.FinanceTracking.Application.Contracts;
+using App.Modules.FinanceTracking.Application.Users.FinanceTrackingSettings.GetUserFinanceTrackingSettings;
 using App.Modules.Notifications.Application.Contracts;
 using App.Modules.Notifications.Application.Emails;
 using App.Modules.Notifications.Application.UserNotificationSettings.GetUserNotificationSettings;
@@ -52,6 +54,24 @@ public class ConfirmUserRegistrationTests : TestBase
                 EmailSender), 20000);
     }
 
+    [Test]
+    public async Task CreatesUserFinanceTrackingSettings_WhenUserRegistrationWasConfirmed_Test()
+    {
+        var userRegistrationId = await UserAccessModule.ExecuteCommandAsync(new RegisterNewUserCommand(
+            "test@email.com",
+            "Test1234!",
+            "Name",
+            "PL",
+            "en"
+        ));
+        var confirmationCode = await GetUserRegistrationConfirmationCode(userRegistrationId);
+
+        await UserAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(userRegistrationId, confirmationCode));
+
+        await AssertEventually(
+            new GetCreatedUserFinanceTrackingSettingsFromFinanceTrackingProbe(userRegistrationId, FinanceTrackingModule), 20000);
+    }
+
     private class GetCreatedUserNotificationSettingsFromNotificationsProbe(
         Guid expectedUserId,
         INotificationsModule notificationsModule)
@@ -83,6 +103,39 @@ public class ConfirmUserRegistrationTests : TestBase
         }
 
         public string DescribeFailureTo() => $"Notification settings for user with id '{expectedUserId}' were not created";
+    }
+
+    private class GetCreatedUserFinanceTrackingSettingsFromFinanceTrackingProbe(
+        Guid expectedUserId,
+        IFinanceTrackingModule financeTrackingModule)
+        : IProbe
+    {
+        private UserFinanceTrackingSettingsDto? _financeTrackingSettings;
+
+        public bool IsSatisfied()
+        {
+            if (_financeTrackingSettings != null && _financeTrackingSettings.DefaultCurrency == "PLN")
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task SampleAsync()
+        {
+            try
+            {
+                _financeTrackingSettings = await financeTrackingModule.ExecuteQueryAsync(
+                    new GetUserFinanceTrackingSettingsQuery(expectedUserId));
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        public string DescribeFailureTo() => $"Finance Tracking settings for user with id '{expectedUserId}' were not created";
     }
 
     private class GetUserRegistrationConfirmedEmailProbe(

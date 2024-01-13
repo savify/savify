@@ -44,3 +44,6 @@ INSERT INTO finance_tracking.wallet_histories (wallet_id) VALUES ('c37d08e5-0f88
 INSERT INTO finance_tracking.wallet_view_metadata (wallet_id, color, icon, is_considered_in_total_balance) VALUES ('a86c8692-11ca-40c1-bc86-6dc6411c1f0b', '#000000', 'https://cdn.savify.localhost/icons/new-wallet.png', false);
 INSERT INTO finance_tracking.wallet_view_metadata (wallet_id, color, icon, is_considered_in_total_balance) VALUES ('f27a9fdd-1ef0-452e-9aec-67f3a9f83e4b', '#000000', 'https://cdn.savify.localhost/icons/new-wallet.png', false);
 INSERT INTO finance_tracking.wallet_view_metadata (wallet_id, color, icon, is_considered_in_total_balance) VALUES ('c37d08e5-0f88-4362-a49f-fc0844f994e5', '#ffffff', 'https://cdn.savify.localhost/icons/wallet.png', true);
+
+-- Users Finance Tracking Settings --
+INSERT INTO finance_tracking.user_finance_tracking_settings (id, user_id, currency) VALUES ('fa154d22-4deb-44b7-9d5c-aac63a30410a', '67c31122-7efe-4397-8348-9f3d1bf22a50', 'USD');

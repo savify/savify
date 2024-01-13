@@ -9,6 +9,7 @@ public class UserRegistrationConfirmedIntegrationEvent(
     Guid userId,
     string email,
     string name,
+    string country,
     string preferredLanguage)
     : IntegrationEvent(id, correlationId, occurredOn)
 {
@@ -17,6 +18,8 @@ public class UserRegistrationConfirmedIntegrationEvent(
     public string Email { get; } = email;
 
     public string Name { get; } = name;
+
+    public string Country { get; } = country;
 
     public string PreferredLanguage { get; } = preferredLanguage;
 }

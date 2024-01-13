@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.FinanceTracking.Infrastructure.Domain.UserTags;
+namespace App.Modules.FinanceTracking.Infrastructure.Domain.Users.Tags;
 
 internal class UserTagsEntityTypeConfiguration : IEntityTypeConfiguration<FinanceTracking.Domain.Users.Tags.UserTags>
 {

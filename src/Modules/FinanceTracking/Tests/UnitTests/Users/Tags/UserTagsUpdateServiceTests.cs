@@ -1,6 +1,6 @@
 ﻿using App.Modules.FinanceTracking.Domain.Users.Tags;
 
-namespace App.Modules.FinanceTracking.UnitTests.UserTags;
+namespace App.Modules.FinanceTracking.UnitTests.Users.Tags;
 
 [TestFixture]
 public class UserTagsUpdateServiceTests : UnitTestBase
@@ -19,7 +19,7 @@ public class UserTagsUpdateServiceTests : UnitTestBase
     {
         // Arrange
         var userId = new Domain.Users.UserId(Guid.NewGuid());
-        var userTags = Domain.Users.Tags.UserTags.Create(userId);
+        var userTags = UserTags.Create(userId);
         _repository.GetByUserIdOrDefaultAsync(userId).Returns(userTags);
 
         string[] tags = ["tag1", "tag2"];
@@ -35,7 +35,7 @@ public class UserTagsUpdateServiceTests : UnitTestBase
     public async Task Update_WhenUserTagsDoesNotExist_CreatesNewOne()
     {
         // Arrange
-        Domain.Users.Tags.UserTags? notExistingUserTags = null;
+        UserTags? notExistingUserTags = null;
 
         var userId = new Domain.Users.UserId(Guid.NewGuid());
         _repository.GetByUserIdOrDefaultAsync(userId).Returns(notExistingUserTags);
@@ -46,6 +46,6 @@ public class UserTagsUpdateServiceTests : UnitTestBase
         await _service.UpdateAsync(userId, tags);
 
         // Assert
-        await _repository.Received(1).AddAsync(Arg.Is<Domain.Users.Tags.UserTags>(u => u.UserId == userId));
+        await _repository.Received(1).AddAsync(Arg.Is<UserTags>(u => u.UserId == userId));
     }
 }
