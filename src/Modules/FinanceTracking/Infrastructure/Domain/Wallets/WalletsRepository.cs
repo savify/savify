@@ -1,3 +1,4 @@
+using App.BuildingBlocks.Application.Exceptions;
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
@@ -21,6 +22,18 @@ public class WalletsRepository(FinanceTrackingContext financeTrackingContext, IW
 
         var walletHistory = await walletHistoryRepository.GetByWalletIdAsync(walletId);
         wallet.Load(walletHistory.DomainEvents);
+
+        return wallet;
+    }
+
+    public async Task<Wallet> GetByWalletIdAndUserIdAsync(WalletId walletId, UserId userId)
+    {
+        var wallet = await GetByWalletIdAsync(walletId);
+
+        if (wallet.UserId != userId)
+        {
+            throw new AccessDeniedException();
+        }
 
         return wallet;
     }

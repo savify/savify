@@ -12,8 +12,8 @@ public class TransfersTestBase : TestBase
         OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> targetWalletId = default,
-        OptionalParameter<int> amount = default,
-        OptionalParameter<string> currency = default,
+        OptionalParameter<int> sourceAmount = default,
+        OptionalParameter<int?> targetAmount = default,
         OptionalParameter<DateTime> madeOn = default,
         OptionalParameter<string> comment = default,
         OptionalParameter<IEnumerable<string>> tags = default)
@@ -24,8 +24,8 @@ public class TransfersTestBase : TestBase
             userIdValue,
             sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
             targetWalletId.GetValueOr(await CreateWallet(userIdValue)),
-            amount.GetValueOr(100),
-            currency.GetValueOr("USD"),
+            sourceAmount.GetValueOr(100),
+            targetAmount.GetValueOr(null),
             madeOn.GetValueOr(DateTime.UtcNow),
             comment.GetValueOr("Savings transfer"),
             tags.GetValueOr(["Savings", "Minor"]));
@@ -35,7 +35,8 @@ public class TransfersTestBase : TestBase
         OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> targetWalletId = default,
-        OptionalParameter<int> amount = default)
+        OptionalParameter<int> sourceAmount = default,
+        OptionalParameter<int?> targetAmount = default)
     {
         var userIdValue = userId.GetValueOr(Guid.NewGuid());
         var sourceWalletIdValue = sourceWalletId.GetValueOr(await CreateWallet(userIdValue));
@@ -45,8 +46,8 @@ public class TransfersTestBase : TestBase
             userId: userIdValue,
             sourceWalletId: sourceWalletIdValue,
             targetWalletId: targetWalletIdValue,
-            amount: amount.GetValueOr(100),
-            currency: "USD",
+            sourceAmount: sourceAmount.GetValueOr(100),
+            targetAmount: targetAmount.GetValueOr(null),
             madeOn: DateTime.UtcNow,
             comment: "Savings transfer",
             tags: ["Savings", "Minor"]);
@@ -61,8 +62,8 @@ public class TransfersTestBase : TestBase
         OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> targetWalletId = default,
-        OptionalParameter<int> amount = default,
-        OptionalParameter<string> currency = default,
+        OptionalParameter<int> sourceAmount = default,
+        OptionalParameter<int?> targetAmount = default,
         OptionalParameter<DateTime> madeOn = default,
         OptionalParameter<string> comment = default,
         OptionalParameter<IEnumerable<string>> tags = default)
@@ -74,8 +75,8 @@ public class TransfersTestBase : TestBase
             userIdValue,
             sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
             targetWalletId.GetValueOr(await CreateWallet(userIdValue)),
-            amount.GetValueOr(500),
-            currency.GetValueOr("PLN"),
+            sourceAmount.GetValueOr(500),
+            targetAmount.GetValueOr(null),
             madeOn.GetValueOr(DateTime.UtcNow),
             comment.GetValueOr("Edited transfer"),
             tags.GetValueOr(["Edited"]));

@@ -13,7 +13,7 @@ public record TransactionAmount
 
     public static TransactionAmount From(Money source, Money target)
     {
-        var exchangeRate = ExchangeRate.For(source.Currency, target.Currency, (decimal) target.Amount / source.Amount);
+        var exchangeRate = ExchangeRate.For(source.Currency, target.Currency, (decimal)target.Amount / source.Amount);
 
         return new TransactionAmount(source, target, exchangeRate);
     }
@@ -22,7 +22,7 @@ public record TransactionAmount
     {
         BusinessRuleChecker.CheckRules(new SourceCurrencyMustMatchExchangeRateFromCurrencyRule(source, exchangeRate));
 
-        var target = Money.From((int) (source.Amount * exchangeRate.Rate), exchangeRate.To);
+        var target = Money.From((int)(source.Amount * exchangeRate.Rate), exchangeRate.To);
 
         return new TransactionAmount(source, target, exchangeRate);
     }

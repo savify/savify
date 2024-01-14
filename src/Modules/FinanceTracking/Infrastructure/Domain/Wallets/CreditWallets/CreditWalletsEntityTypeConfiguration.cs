@@ -21,7 +21,7 @@ internal class CreditWalletsEntityTypeConfiguration : IEntityTypeConfiguration<C
         builder.Property<int>("_creditLimit");
         builder.Property<bool>("_isRemoved");
 
-        builder.OwnsOneCurrency("_currency");
+        builder.OwnsOneCurrency(w => w.Currency);
 
         builder.OwnsMany<ManualBalanceChange>("_manualBalanceChanges", b =>
         {

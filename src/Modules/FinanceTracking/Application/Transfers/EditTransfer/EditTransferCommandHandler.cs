@@ -6,18 +6,31 @@ using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 
-internal class EditTransferCommandHandler(ITransferRepository transferRepository, IWalletsRepository walletsRepository) : ICommandHandler<EditTransferCommand>
+internal class EditTransferCommandHandler(ITransferRepository transferRepository, IWalletsRepository walletsRepository, TransactionAmountFactory transactionAmountFactory) : ICommandHandler<EditTransferCommand>
 {
     public async Task Handle(EditTransferCommand command, CancellationToken cancellationToken)
     {
+        var sourceWalletId = new WalletId(command.SourceWalletId);
+        var targetWalletId = new WalletId(command.TargetWalletId);
+        var userId = new UserId(command.UserId);
+
+        var sourceWallet = await walletsRepository.GetByWalletIdAndUserIdAsync(sourceWalletId, userId);
+        var targetWallet = await walletsRepository.GetByWalletIdAndUserIdAsync(targetWalletId, userId);
+
         var transfer = await transferRepository.GetByIdAndUserIdAsync(new TransferId(command.TransferId), new UserId(command.UserId));
 
+        var transactionAmount = await transactionAmountFactory.CreateAsync(
+            command.SourceAmount,
+            sourceWallet.Currency,
+            command.TargetAmount,
+            targetWallet.Currency,
+            command.MadeOn);
+
         transfer.Edit(
-            new WalletId(command.SourceWalletId),
-            new WalletId(command.TargetWalletId),
-            Money.From(command.Amount, command.Currency),
+            sourceWallet,
+            targetWallet,
+            transactionAmount,
             command.MadeOn,
-            walletsRepository,
             command.Comment,
             command.Tags);
     }

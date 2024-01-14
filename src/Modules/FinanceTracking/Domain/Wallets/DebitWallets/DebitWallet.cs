@@ -15,11 +15,7 @@ namespace App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
 public class DebitWallet : Wallet, IAggregateRoot
 {
-    public UserId UserId { get; private set; }
-
     private string _title;
-
-    private Currency _currency;
 
     private int _initialBalance;
 
@@ -49,14 +45,14 @@ public class DebitWallet : Wallet, IAggregateRoot
 
         if (newBalance < _balance)
         {
-            var amount = Money.From(_balance - newBalance, _currency);
+            var amount = Money.From(_balance - newBalance, Currency);
 
             DecreaseBalance(amount);
             AddManualBalanceChange(amount, ManualBalanceChangeType.Decrease);
         }
         else
         {
-            var amount = Money.From(newBalance - _balance, _currency);
+            var amount = Money.From(newBalance - _balance, Currency);
 
             IncreaseBalance(amount);
             AddManualBalanceChange(amount, ManualBalanceChangeType.Increase);
@@ -103,7 +99,7 @@ public class DebitWallet : Wallet, IAggregateRoot
 
         ChangeBalance(balance);
         _bankAccountConnection = new BankAccountConnection(bankConnectionId, bankAccountId);
-        _currency = currency;
+        Currency = currency;
 
         AddDomainEvent(new BankAccountWasConnectedToDebitWalletDomainEvent(Id, UserId, bankConnectionId, bankAccountId));
     }
@@ -137,11 +133,11 @@ public class DebitWallet : Wallet, IAggregateRoot
         Id = new WalletId(Guid.NewGuid());
         UserId = userId;
         _title = title;
-        _currency = currency;
+        Currency = currency;
         _initialBalance = initialBalance;
         _balance = initialBalance;
 
-        AddDomainEvent(new DebitWalletAddedDomainEvent(Id, userId, _currency));
+        AddDomainEvent(new DebitWalletAddedDomainEvent(Id, userId, Currency));
     }
 
     private DebitWallet() { }

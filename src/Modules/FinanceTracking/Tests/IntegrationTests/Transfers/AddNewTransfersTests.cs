@@ -23,10 +23,10 @@ public class AddNewTransfersTests : TransfersTestBase
         Assert.That(transfer.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(command.Comment));
         Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags!));
-        Assert.That(transfer.SourceAmount, Is.EqualTo(command.Amount));
-        Assert.That(transfer.SourceCurrency, Is.EqualTo(command.Currency));
-        Assert.That(transfer.TargetAmount, Is.EqualTo(command.Amount));
-        Assert.That(transfer.TargetCurrency, Is.EqualTo(command.Currency));
+        Assert.That(transfer.SourceAmount, Is.EqualTo(command.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(command.SourceAmount));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("USD"));
         Assert.That(transfer.ExchangeRate, Is.EqualTo(decimal.One));
     }
 
@@ -51,7 +51,7 @@ public class AddNewTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateAddNewTransferCommand(userId, sourceWalletId, targetWalletId, amount: 50);
+        var command = await CreateAddNewTransferCommand(userId, sourceWalletId, targetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -97,21 +97,7 @@ public class AddNewTransfersTests : TransfersTestBase
     [TestCase(0)]
     public async Task AddNewTransferCommand_WhenAmountIsLessOrEqualToZero_ThrowsInvalidCommandException(int amount)
     {
-        var command = await CreateAddNewTransferCommand(amount: amount);
-
-        var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase(null!)]
-    [TestCase("")]
-    [TestCase("PL")]
-    [TestCase("PLNN")]
-    public async Task AddNewTransferCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
-    {
-        var command = await CreateAddNewTransferCommand(currency: currency);
+        var command = await CreateAddNewTransferCommand(sourceAmount: amount);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 

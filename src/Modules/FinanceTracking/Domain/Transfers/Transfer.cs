@@ -31,41 +31,35 @@ public class Transfer : Entity, IAggregateRoot
 
     public static Transfer AddNew(
         UserId userId,
-        WalletId sourceWalletId,
-        WalletId targetWalletId,
-        Money amount,
+        Wallet sourceWallet,
+        Wallet targetWallet,
+        TransactionAmount amount,
         DateTime madeOn,
-        IWalletsRepository walletsRepository,
         string? comment,
         IEnumerable<string>? tags)
     {
-        var transactionAmount = TransactionAmount.From(amount);
-
-        return new Transfer(userId, sourceWalletId, targetWalletId, transactionAmount, madeOn, walletsRepository, comment, tags);
+        return new Transfer(userId, sourceWallet, targetWallet, amount, madeOn, comment, tags);
     }
 
     public void Edit(
-        WalletId newSourceWalletId,
-        WalletId newTargetWalletId,
-        Money newAmount,
+        Wallet newSourceWallet,
+        Wallet newTargetWallet,
+        TransactionAmount newAmount,
         DateTime newMadeOn,
-        IWalletsRepository walletsRepository,
         string? newComment,
         IEnumerable<string>? newTags)
     {
         CheckRules(
-            new TransferSourceAndTargetWalletsMustBeDifferentRule(newSourceWalletId, newTargetWalletId),
-            new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(UserId, newSourceWalletId, newTargetWalletId, walletsRepository));
-
-        var newTransactionAmount = TransactionAmount.From(newAmount);
+            new TransferSourceAndTargetWalletsMustBeDifferentRule(newSourceWallet.Id, newTargetWallet.Id),
+            new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(UserId, newSourceWallet, newTargetWallet));
 
         var oldSourceWalletId = _sourceWalletId;
         var oldTargetWalletId = _targetWalletId;
         var oldAmount = _amount;
 
-        _sourceWalletId = newSourceWalletId;
-        _targetWalletId = newTargetWalletId;
-        _amount = newTransactionAmount;
+        _sourceWalletId = newSourceWallet.Id;
+        _targetWalletId = newTargetWallet.Id;
+        _amount = newAmount;
         _madeOn = newMadeOn;
         _comment = newComment ?? string.Empty;
         _tags = newTags?.ToArray() ?? [];
@@ -88,22 +82,21 @@ public class Transfer : Entity, IAggregateRoot
 
     private Transfer(
         UserId userId,
-        WalletId sourceWalletId,
-        WalletId targetWalletId,
+        Wallet sourceWallet,
+        Wallet targetWallet,
         TransactionAmount amount,
         DateTime madeOn,
-        IWalletsRepository walletsRepository,
         string? comment,
         IEnumerable<string>? tags)
     {
         CheckRules(
-            new TransferSourceAndTargetWalletsMustBeDifferentRule(sourceWalletId, targetWalletId),
-            new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(userId, sourceWalletId, targetWalletId, walletsRepository));
+            new TransferSourceAndTargetWalletsMustBeDifferentRule(sourceWallet.Id, targetWallet.Id),
+            new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(userId, sourceWallet, targetWallet));
 
         Id = new TransferId(Guid.NewGuid());
         UserId = userId;
-        _sourceWalletId = sourceWalletId;
-        _targetWalletId = targetWalletId;
+        _sourceWalletId = sourceWallet.Id;
+        _targetWalletId = targetWallet.Id;
         _amount = amount;
         _madeOn = madeOn;
         _comment = comment ?? string.Empty;

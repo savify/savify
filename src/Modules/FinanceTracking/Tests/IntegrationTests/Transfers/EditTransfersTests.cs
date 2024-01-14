@@ -30,10 +30,10 @@ public class EditTransfersTests : TransfersTestBase
         Assert.That(transfer.MadeOn, Is.EqualTo(editCommand.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(editCommand.Comment));
         Assert.That(transfer.Tags, Is.EquivalentTo(editCommand.Tags!));
-        Assert.That(transfer.SourceAmount, Is.EqualTo(editCommand.Amount));
-        Assert.That(transfer.SourceCurrency, Is.EqualTo(editCommand.Currency));
-        Assert.That(transfer.TargetAmount, Is.EqualTo(editCommand.Amount));
-        Assert.That(transfer.TargetCurrency, Is.EqualTo(editCommand.Currency));
+        Assert.That(transfer.SourceAmount, Is.EqualTo(editCommand.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(editCommand.SourceAmount));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("USD"));
         Assert.That(transfer.ExchangeRate, Is.EqualTo(decimal.One));
     }
 
@@ -60,9 +60,9 @@ public class EditTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
+        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, sourceAmount: 100);
 
-        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, targetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, targetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -79,10 +79,10 @@ public class EditTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
+        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, sourceAmount: 100);
 
         var newSourceWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, targetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, targetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -101,10 +101,10 @@ public class EditTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
+        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, sourceAmount: 100);
 
         var newTargetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, newTargetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, newTargetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -123,11 +123,11 @@ public class EditTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
+        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, sourceAmount: 100);
 
         var newSourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var newTargetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, newTargetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, newTargetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -214,23 +214,7 @@ public class EditTransfersTests : TransfersTestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = await CreateEditTransferCommand(transferId, amount: amount);
-
-        await Assert.ThatAsync(
-            () => FinanceTrackingModule.ExecuteCommandAsync(command),
-            Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase(null!)]
-    [TestCase("")]
-    [TestCase("PL")]
-    [TestCase("PLNN")]
-    public async Task EditTransferCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
-    {
-        var transferId = await AddNewTransferAsync();
-
-        var command = await CreateEditTransferCommand(transferId, currency: currency);
+        var command = await CreateEditTransferCommand(transferId, sourceAmount: amount);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),

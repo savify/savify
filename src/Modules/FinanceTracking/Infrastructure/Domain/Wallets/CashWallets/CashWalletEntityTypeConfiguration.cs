@@ -20,7 +20,7 @@ internal class CashWalletEntityTypeConfiguration : IEntityTypeConfiguration<Cash
         builder.Property<int>("_initialBalance");
         builder.Property<bool>("_isRemoved");
 
-        builder.OwnsOneCurrency("_currency");
+        builder.OwnsOneCurrency(w => w.Currency);
 
         builder.OwnsMany<ManualBalanceChange>("_manualBalanceChanges", b =>
         {
