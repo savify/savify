@@ -36,9 +36,9 @@ public record TransactionAmount
 
     private TransactionAmount(Money source, Money target, ExchangeRate exchangeRate)
     {
-        Source = source;
-        Target = target;
-        ExchangeRate = exchangeRate;
+        Source = Money.From(source);
+        Target = Money.From(target);
+        ExchangeRate = ExchangeRate.For(exchangeRate);
     }
 
     private TransactionAmount() { }

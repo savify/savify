@@ -18,10 +18,12 @@ public record ExchangeRate
         return new ExchangeRate(from, to, Math.Round(fromToUsd / toToUsd, 2));
     }
 
+    public static ExchangeRate For(ExchangeRate origin) => new(origin.From, origin.To, origin.Rate);
+
     private ExchangeRate(Currency from, Currency to, decimal rate)
     {
-        From = from;
-        To = to;
+        From = Currency.From(from);
+        To = Currency.From(to);
         Rate = rate;
     }
 

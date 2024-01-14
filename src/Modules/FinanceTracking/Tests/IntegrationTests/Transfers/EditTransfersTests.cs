@@ -27,11 +27,14 @@ public class EditTransfersTests : TransfersTestBase
         Assert.That(transfer!.Id, Is.EqualTo(transferId));
         Assert.That(transfer.SourceWalletId, Is.EqualTo(editCommand.SourceWalletId));
         Assert.That(transfer.TargetWalletId, Is.EqualTo(editCommand.TargetWalletId));
-        Assert.That(transfer.Amount, Is.EqualTo(editCommand.Amount));
-        Assert.That(transfer.Currency, Is.EqualTo(editCommand.Currency));
         Assert.That(transfer.MadeOn, Is.EqualTo(editCommand.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(editCommand.Comment));
         Assert.That(transfer.Tags, Is.EquivalentTo(editCommand.Tags!));
+        Assert.That(transfer.SourceAmount, Is.EqualTo(editCommand.Amount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo(editCommand.Currency));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(editCommand.Amount));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo(editCommand.Currency));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(decimal.One));
     }
 
     [Test]

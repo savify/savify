@@ -20,11 +20,14 @@ public class AddNewTransfersTests : TransfersTestBase
         Assert.That(transfer, Is.Not.Null);
         Assert.That(transfer!.SourceWalletId, Is.EqualTo(command.SourceWalletId));
         Assert.That(transfer.TargetWalletId, Is.EqualTo(command.TargetWalletId));
-        Assert.That(transfer.Amount, Is.EqualTo(command.Amount));
-        Assert.That(transfer.Currency, Is.EqualTo(command.Currency));
         Assert.That(transfer.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(command.Comment));
         Assert.That(transfer.Tags, Is.EquivalentTo(command.Tags!));
+        Assert.That(transfer.SourceAmount, Is.EqualTo(command.Amount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo(command.Currency));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(command.Amount));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo(command.Currency));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(decimal.One));
     }
 
     [Test]

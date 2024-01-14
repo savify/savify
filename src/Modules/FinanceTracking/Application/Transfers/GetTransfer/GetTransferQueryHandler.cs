@@ -13,7 +13,8 @@ internal class GetTransferQueryHandler(ISqlConnectionFactory sqlConnectionFactor
         using var connection = sqlConnectionFactory.GetOpenConnection();
 
         var sql = $"""
-                   SELECT t.id, t.user_id as userId, t.source_wallet_id as sourceWalletId, t.target_wallet_id as targetWalletId, t.amount, t.currency, t.made_on as madeOn, t.comment, t.tags
+                   SELECT t.id, t.user_id as userId, t.source_wallet_id as sourceWalletId, t.target_wallet_id as targetWalletId, t.made_on as madeOn, t.comment, t.tags,
+                        t.source_amount as SourceAmount, t.source_currency_code as SourceCurrency, t.target_amount as TargetAmount, t.target_currency_code as TargetCurrency, t.exchange_rate_rate as ExchangeRate
                    FROM {DatabaseConfiguration.Schema.Name}.transfers t
                    WHERE t.id = @TransferId
                    """;

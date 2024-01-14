@@ -6,6 +6,8 @@ public record Currency
 
     public static Currency From(string value) => new(value);
 
+    public static Currency From(Currency origin) => new(origin.Value);
+
     public static IEnumerable<Currency> DisabledCurrencies => new[]
     {
         From("RUB")
