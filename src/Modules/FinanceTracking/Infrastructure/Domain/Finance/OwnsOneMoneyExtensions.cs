@@ -1,4 +1,5 @@
-﻿using App.Modules.FinanceTracking.Domain.Finance;
+﻿using System.Linq.Expressions;
+using App.Modules.FinanceTracking.Domain.Finance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -6,7 +7,8 @@ namespace App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 
 internal static class OwnsOneMoneyExtensions
 {
-    public static EntityTypeBuilder<TEntity> OwnsOneMoney<TEntity>(this EntityTypeBuilder<TEntity> builder, string navigationName, string? amountColumnName = null, string? currencyColumnName = null)
+    public static void OwnsOneMoney<TEntity>(this EntityTypeBuilder<TEntity> builder, string navigationName,
+        string? amountColumnName = null, string? currencyColumnName = null)
         where TEntity : class
     {
         builder.OwnsOne<Money>(navigationName, b =>
@@ -15,8 +17,18 @@ internal static class OwnsOneMoneyExtensions
         });
 
         builder.Navigation(navigationName).IsRequired();
+    }
 
-        return builder;
+    public static void OwnsOneMoney<TEntity, TDependentEntity>(this OwnedNavigationBuilder<TEntity, TDependentEntity> builder, Expression<Func<TDependentEntity, Money?>> navigationExpression, string? amountColumnName = null, string? currencyColumnName = null)
+        where TEntity : class
+        where TDependentEntity : class
+    {
+        builder.OwnsOne(navigationExpression, b =>
+        {
+            b.ConfigureMoney(amountColumnName, currencyColumnName);
+        });
+
+        builder.Navigation(navigationExpression).IsRequired();
     }
 
     public static void OwnsOneMoney<TOwnerEntity, TDependentEntity>(this OwnedNavigationBuilder<TOwnerEntity, TDependentEntity> builder, string navigationName, string? amountColumnName = null, string? currencyColumnName = null)

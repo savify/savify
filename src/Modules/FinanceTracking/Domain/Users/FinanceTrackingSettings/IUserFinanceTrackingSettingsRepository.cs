@@ -2,9 +2,9 @@ namespace App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings;
 
 public interface IUserFinanceTrackingSettingsRepository
 {
-    Task AddAsync(CreateUserFinanceTrackingSettings settings);
+    Task AddAsync(UserFinanceTrackingSettings settings);
 
-    Task<CreateUserFinanceTrackingSettings> GetByIdAsync(UserFinanceTrackingSettingsId id);
+    Task<UserFinanceTrackingSettings> GetByIdAsync(UserFinanceTrackingSettingsId id);
 
-    Task<CreateUserFinanceTrackingSettings> GetByUserIdAsync(UserId userId);
+    Task<UserFinanceTrackingSettings> GetByUserIdAsync(UserId userId);
 }

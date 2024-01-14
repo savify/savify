@@ -5,7 +5,7 @@ using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
 namespace App.Modules.FinanceTracking.IntegrationTests.Users.FinanceTrackingSettings;
 
 [TestFixture]
-public class CreateUserFinanceTrackingSettingsTests : TestBase
+public class UserFinanceTrackingSettingsTests : TestBase
 {
     [Test]
     [TestCase("PL", "PLN")]

@@ -1,8 +1,7 @@
-using App.Modules.FinanceTracking.Application.ExchangeRates;
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.ExchangeRates;
 
-namespace App.Modules.FinanceTracking.Infrastructure.Application.ExchangeRates;
+namespace App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 
 public class ExchangeRatesProvider(ISaltEdgeExchangeRatesProvider saltEdgeExchangeRatesProvider) : IExchangeRatesProvider
 {

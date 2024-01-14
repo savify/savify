@@ -14,7 +14,7 @@ public class UserFinanceTrackingSettingsTests : UnitTestBase
         var userId = new UserId(Guid.NewGuid());
         var defaultCurrency = Currency.From("USD");
 
-        var settings = CreateUserFinanceTrackingSettings.Create(userId, defaultCurrency);
+        var settings = UserFinanceTrackingSettings.Create(userId, defaultCurrency);
 
         Assert.That(settings.UserId, Is.EqualTo(userId));
         Assert.That(settings.DefaultCurrency, Is.EqualTo(defaultCurrency));
@@ -25,7 +25,7 @@ public class UserFinanceTrackingSettingsTests : UnitTestBase
     {
         var userId = new UserId(Guid.NewGuid());
         var defaultCurrency = Currency.From("USD");
-        var settings = CreateUserFinanceTrackingSettings.Create(userId, defaultCurrency);
+        var settings = UserFinanceTrackingSettings.Create(userId, defaultCurrency);
 
         var newDefaultCurrency = Currency.From("PLN");
         settings.UpdateDefaultCurrency(newDefaultCurrency);

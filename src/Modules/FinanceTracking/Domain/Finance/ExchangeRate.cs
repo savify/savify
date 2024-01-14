@@ -24,4 +24,6 @@ public record ExchangeRate
         To = to;
         Rate = rate;
     }
+
+    private ExchangeRate() { }
 }

@@ -7,30 +7,30 @@ namespace App.Modules.FinanceTracking.Infrastructure.Domain.Users.FinanceTrackin
 
 public class UserFinanceTrackingSettingsRepository(FinanceTrackingContext context) : IUserFinanceTrackingSettingsRepository
 {
-    public async Task AddAsync(CreateUserFinanceTrackingSettings settings)
+    public async Task AddAsync(UserFinanceTrackingSettings settings)
     {
         await context.AddAsync(settings);
     }
 
-    public async Task<CreateUserFinanceTrackingSettings> GetByIdAsync(UserFinanceTrackingSettingsId id)
+    public async Task<UserFinanceTrackingSettings> GetByIdAsync(UserFinanceTrackingSettingsId id)
     {
         var settings = await context.UserFinanceTrackingSettings.SingleOrDefaultAsync(s => s.Id == id);
 
         if (settings is null)
         {
-            throw new NotFoundRepositoryException<CreateUserFinanceTrackingSettings>(id.Value);
+            throw new NotFoundRepositoryException<UserFinanceTrackingSettings>(id.Value);
         }
 
         return settings;
     }
 
-    public async Task<CreateUserFinanceTrackingSettings> GetByUserIdAsync(UserId userId)
+    public async Task<UserFinanceTrackingSettings> GetByUserIdAsync(UserId userId)
     {
         var settings = await context.UserFinanceTrackingSettings.SingleOrDefaultAsync(s => s.UserId == userId);
 
         if (settings is null)
         {
-            throw new NotFoundRepositoryException<CreateUserFinanceTrackingSettings>("Finance Tracking settings for user with ID {0} were not found", [userId.Value]);
+            throw new NotFoundRepositoryException<UserFinanceTrackingSettings>("Finance Tracking settings for user with ID {0} were not found", [userId.Value]);
         }
 
         return settings;

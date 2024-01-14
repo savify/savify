@@ -31,7 +31,8 @@ public class TransferTests : UnitTestBase
         Assert.That(transferAddedDomainEvent.UserId, Is.EqualTo(userId));
         Assert.That(transferAddedDomainEvent.SourceWalletId, Is.EqualTo(sourceWalletId));
         Assert.That(transferAddedDomainEvent.TargetWalletId, Is.EqualTo(targetWalletId));
-        Assert.That(transferAddedDomainEvent.Amount, Is.EqualTo(amount));
+        Assert.That(transferAddedDomainEvent.Amount.Source, Is.EqualTo(amount));
+        Assert.That(transferAddedDomainEvent.Amount.Target, Is.EqualTo(amount));
         Assert.That(transferAddedDomainEvent.Tags, Is.EquivalentTo(tags));
     }
 
@@ -111,8 +112,11 @@ public class TransferTests : UnitTestBase
         Assert.That(transferEditedDomainEvent.OldTargetWalletId, Is.EqualTo(targetWalletId));
         Assert.That(transferEditedDomainEvent.NewTargetWalletId, Is.EqualTo(newTargetWalletId));
 
-        Assert.That(transferEditedDomainEvent.OldAmount, Is.EqualTo(amount));
-        Assert.That(transferEditedDomainEvent.NewAmount, Is.EqualTo(newAmount));
+        Assert.That(transferEditedDomainEvent.OldAmount.Source, Is.EqualTo(amount));
+        Assert.That(transferEditedDomainEvent.NewAmount.Source, Is.EqualTo(newAmount));
+
+        Assert.That(transferEditedDomainEvent.OldAmount.Target, Is.EqualTo(amount));
+        Assert.That(transferEditedDomainEvent.NewAmount.Target, Is.EqualTo(newAmount));
 
         Assert.That(transferEditedDomainEvent.UserId, Is.EqualTo(userId));
         Assert.That(transferEditedDomainEvent.Tags, Is.EqualTo(newTags));

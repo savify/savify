@@ -9,12 +9,11 @@ internal class TransferAddedHandler(IWalletsRepository walletsRepository) : INot
     public async Task Handle(TransferAddedDomainEvent @event, CancellationToken cancellationToken)
     {
         var sourceWallet = await walletsRepository.GetByWalletIdAsync(@event.SourceWalletId);
-        var targetWallet = await walletsRepository.GetByWalletIdAsync(@event.TargetWalletId);
-
-        sourceWallet.DecreaseBalance(@event.Amount);
-        targetWallet.IncreaseBalance(@event.Amount);
-
+        sourceWallet.DecreaseBalance(@event.Amount.Source);
         await walletsRepository.UpdateHistoryAsync(sourceWallet);
+
+        var targetWallet = await walletsRepository.GetByWalletIdAsync(@event.TargetWalletId);
+        targetWallet.IncreaseBalance(@event.Amount.Target);
         await walletsRepository.UpdateHistoryAsync(targetWallet);
     }
 }

@@ -13,7 +13,7 @@ internal class CreateUserFinanceTrackingSettingsCommandHandler(
     {
         var currency = GetCurrencyByCountryCode(command.CountryCode);
 
-        var financeTrackingSettings = Domain.Users.FinanceTrackingSettings.CreateUserFinanceTrackingSettings.Create(
+        var financeTrackingSettings = UserFinanceTrackingSettings.Create(
             new UserId(command.UserId),
             currency);
 

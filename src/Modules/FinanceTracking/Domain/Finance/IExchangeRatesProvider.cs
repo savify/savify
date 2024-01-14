@@ -1,6 +1,4 @@
-using App.Modules.FinanceTracking.Domain.Finance;
-
-namespace App.Modules.FinanceTracking.Application.ExchangeRates;
+namespace App.Modules.FinanceTracking.Domain.Finance;
 
 public interface IExchangeRatesProvider
 {

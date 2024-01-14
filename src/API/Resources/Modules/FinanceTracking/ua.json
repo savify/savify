@@ -40,5 +40,6 @@
   "Please provide income category id": "Будь ласка, вкажіть ID категорії доходу",
   "Income amount must be bigger than 0": "Сумма доходу повинна бути більшою за 0",
   "Please provide income currency": "Будь ласка, вкажіть валюту доходу",
-  "Please provide income's made on date": "Будь ласка, вкажіть дату доходу"
+  "Please provide income's made on date": "Будь ласка, вкажіть дату доходу",
+  "Source currency '{0}' doesn't match exchange rate currency '{1}'": "Вихідна валюта '{0}' не співпадає з цільовою валютою '{1}' в курсі"
 }

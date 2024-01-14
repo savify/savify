@@ -11,8 +11,8 @@ internal class TransferRemovedHandler(IWalletsRepository walletsRepository) : IN
         var sourceWallet = await walletsRepository.GetByWalletIdAsync(@event.SourceWalletId);
         var targetWallet = await walletsRepository.GetByWalletIdAsync(@event.TargetWalletId);
 
-        sourceWallet.IncreaseBalance(@event.Amount);
-        targetWallet.DecreaseBalance(@event.Amount);
+        sourceWallet.IncreaseBalance(@event.Amount.Source);
+        targetWallet.DecreaseBalance(@event.Amount.Target);
 
         await walletsRepository.UpdateHistoryAsync(sourceWallet);
         await walletsRepository.UpdateHistoryAsync(targetWallet);

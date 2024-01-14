@@ -10,8 +10,8 @@ public class TransferEditedDomainEvent(
     WalletId newSourceWalletId,
     WalletId oldTargetWalletId,
     WalletId newTargetWalletId,
-    Money oldAmount,
-    Money newAmount,
+    TransactionAmount oldAmount,
+    TransactionAmount newAmount,
     IEnumerable<string> tags) : DomainEventBase
 {
     public UserId UserId { get; } = userId;
@@ -22,8 +22,8 @@ public class TransferEditedDomainEvent(
     public WalletId OldTargetWalletId { get; } = oldTargetWalletId;
     public WalletId NewTargetWalletId { get; } = newTargetWalletId;
 
-    public Money OldAmount { get; } = oldAmount;
-    public Money NewAmount { get; } = newAmount;
+    public TransactionAmount OldAmount { get; } = oldAmount;
+    public TransactionAmount NewAmount { get; } = newAmount;
 
     public IEnumerable<string> Tags { get; } = tags;
 }

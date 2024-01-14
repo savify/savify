@@ -63,7 +63,7 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
 
     public required DbSet<UserTags> UserTags { get; set; }
 
-    public required DbSet<CreateUserFinanceTrackingSettings> UserFinanceTrackingSettings { get; set; }
+    public required DbSet<UserFinanceTrackingSettings> UserFinanceTrackingSettings { get; set; }
 
     public required DbSet<OutboxMessage> OutboxMessages { get; set; }
 

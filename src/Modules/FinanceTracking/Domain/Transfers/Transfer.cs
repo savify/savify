@@ -17,7 +17,7 @@ public class Transfer : Entity, IAggregateRoot
 
     private WalletId _targetWalletId;
 
-    private Money _amount;
+    private TransactionAmount _amount;
 
     private DateTime _madeOn;
 
@@ -39,7 +39,9 @@ public class Transfer : Entity, IAggregateRoot
         string? comment,
         IEnumerable<string>? tags)
     {
-        return new Transfer(userId, sourceWalletId, targetWalletId, amount, madeOn, walletsRepository, comment, tags);
+        var transactionAmount = TransactionAmount.From(amount);
+
+        return new Transfer(userId, sourceWalletId, targetWalletId, transactionAmount, madeOn, walletsRepository, comment, tags);
     }
 
     public void Edit(
@@ -55,13 +57,15 @@ public class Transfer : Entity, IAggregateRoot
             new TransferSourceAndTargetWalletsMustBeDifferentRule(newSourceWalletId, newTargetWalletId),
             new TransferSourceAndTargetMustBeOwnedByTheSameUserRule(UserId, newSourceWalletId, newTargetWalletId, walletsRepository));
 
+        var newTransactionAmount = TransactionAmount.From(newAmount);
+
         var oldSourceWalletId = _sourceWalletId;
         var oldTargetWalletId = _targetWalletId;
         var oldAmount = _amount;
 
         _sourceWalletId = newSourceWalletId;
         _targetWalletId = newTargetWalletId;
-        _amount = newAmount;
+        _amount = newTransactionAmount;
         _madeOn = newMadeOn;
         _comment = newComment ?? string.Empty;
         _tags = newTags?.ToArray() ?? [];
@@ -86,7 +90,7 @@ public class Transfer : Entity, IAggregateRoot
         UserId userId,
         WalletId sourceWalletId,
         WalletId targetWalletId,
-        Money amount,
+        TransactionAmount amount,
         DateTime madeOn,
         IWalletsRepository walletsRepository,
         string? comment,

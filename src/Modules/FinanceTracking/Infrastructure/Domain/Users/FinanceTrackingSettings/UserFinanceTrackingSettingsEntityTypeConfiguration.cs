@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.Users.FinanceTrackingSettings;
 
-public class UserFinanceTrackingSettingsEntityTypeConfiguration : IEntityTypeConfiguration<CreateUserFinanceTrackingSettings>
+public class UserFinanceTrackingSettingsEntityTypeConfiguration : IEntityTypeConfiguration<UserFinanceTrackingSettings>
 {
-    public void Configure(EntityTypeBuilder<CreateUserFinanceTrackingSettings> builder)
+    public void Configure(EntityTypeBuilder<UserFinanceTrackingSettings> builder)
     {
         builder.ToTable("user_finance_tracking_settings");
 

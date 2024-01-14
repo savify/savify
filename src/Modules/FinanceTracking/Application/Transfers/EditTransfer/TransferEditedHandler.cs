@@ -38,11 +38,11 @@ internal class TransferEditedHandler(IWalletsRepository walletsRepository) : INo
         var sourceWallet = await walletsRepository.GetByWalletIdAsync(@event.OldSourceWalletId);
         var targetWallet = await walletsRepository.GetByWalletIdAsync(@event.OldTargetWalletId);
 
-        sourceWallet.IncreaseBalance(@event.OldAmount);
-        sourceWallet.DecreaseBalance(@event.NewAmount);
+        sourceWallet.IncreaseBalance(@event.OldAmount.Source);
+        sourceWallet.DecreaseBalance(@event.NewAmount.Source);
 
-        targetWallet.DecreaseBalance(@event.OldAmount);
-        targetWallet.IncreaseBalance(@event.NewAmount);
+        targetWallet.DecreaseBalance(@event.OldAmount.Target);
+        targetWallet.IncreaseBalance(@event.NewAmount.Target);
 
         await walletsRepository.UpdateHistoryAsync(sourceWallet);
         await walletsRepository.UpdateHistoryAsync(targetWallet);
@@ -55,11 +55,11 @@ internal class TransferEditedHandler(IWalletsRepository walletsRepository) : INo
         var oldTargetWallet = await walletsRepository.GetByWalletIdAsync(@event.OldTargetWalletId);
         var newTargetWallet = await walletsRepository.GetByWalletIdAsync(@event.NewTargetWalletId);
 
-        oldSourceWallet.IncreaseBalance(@event.OldAmount);
-        newSourceWallet.DecreaseBalance(@event.NewAmount);
+        oldSourceWallet.IncreaseBalance(@event.OldAmount.Source);
+        newSourceWallet.DecreaseBalance(@event.NewAmount.Source);
 
-        oldTargetWallet.DecreaseBalance(@event.OldAmount);
-        newTargetWallet.IncreaseBalance(@event.NewAmount);
+        oldTargetWallet.DecreaseBalance(@event.OldAmount.Target);
+        newTargetWallet.IncreaseBalance(@event.NewAmount.Target);
 
         await walletsRepository.UpdateHistoryAsync(oldSourceWallet);
         await walletsRepository.UpdateHistoryAsync(newSourceWallet);
@@ -73,11 +73,11 @@ internal class TransferEditedHandler(IWalletsRepository walletsRepository) : INo
         var newSourceWallet = await walletsRepository.GetByWalletIdAsync(@event.NewSourceWalletId);
         var targetWallet = await walletsRepository.GetByWalletIdAsync(@event.OldTargetWalletId);
 
-        oldSourceWallet.IncreaseBalance(@event.OldAmount);
-        newSourceWallet.DecreaseBalance(@event.NewAmount);
+        oldSourceWallet.IncreaseBalance(@event.OldAmount.Source);
+        newSourceWallet.DecreaseBalance(@event.NewAmount.Source);
 
-        targetWallet.DecreaseBalance(@event.OldAmount);
-        targetWallet.IncreaseBalance(@event.NewAmount);
+        targetWallet.DecreaseBalance(@event.OldAmount.Target);
+        targetWallet.IncreaseBalance(@event.NewAmount.Target);
 
         await walletsRepository.UpdateHistoryAsync(oldSourceWallet);
         await walletsRepository.UpdateHistoryAsync(newSourceWallet);
@@ -90,11 +90,11 @@ internal class TransferEditedHandler(IWalletsRepository walletsRepository) : INo
         var oldTargetWallet = await walletsRepository.GetByWalletIdAsync(@event.OldTargetWalletId);
         var newTargetWallet = await walletsRepository.GetByWalletIdAsync(@event.NewTargetWalletId);
 
-        sourceWallet.IncreaseBalance(@event.OldAmount);
-        sourceWallet.DecreaseBalance(@event.NewAmount);
+        sourceWallet.IncreaseBalance(@event.OldAmount.Source);
+        sourceWallet.DecreaseBalance(@event.NewAmount.Source);
 
-        oldTargetWallet.DecreaseBalance(@event.OldAmount);
-        newTargetWallet.IncreaseBalance(@event.NewAmount);
+        oldTargetWallet.DecreaseBalance(@event.OldAmount.Target);
+        newTargetWallet.IncreaseBalance(@event.NewAmount.Target);
 
         await walletsRepository.UpdateHistoryAsync(sourceWallet);
         await walletsRepository.UpdateHistoryAsync(oldTargetWallet);
