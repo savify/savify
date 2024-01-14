@@ -38,6 +38,46 @@ public class EditTransfersTests : TransfersTestBase
     }
 
     [Test]
+    public async Task EditTransferCommand_WithTargetWalletWithDifferentCurrency_CalculatesExchangeRate_AndEditsTransfer()
+    {
+        SaltEdgeHttpClientMocker.MockFetchExchangeRatesSuccessfulResponse();
+
+        var userId = Guid.NewGuid();
+        var transferId = await AddNewTransferAsync(userId);
+
+        var editCommand = await CreateEditTransferCommand(transferId, userId, targetCurrency: "PLN");
+
+        await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
+
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, userId));
+
+        Assert.That(transfer!.SourceAmount, Is.EqualTo(editCommand.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(editCommand.SourceAmount * 4));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("PLN"));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(4m));
+    }
+
+    [Test]
+    public async Task EditTransferCommand_WithTargetWalletWithDifferentCurrency_AndWithGivenTargetAmount_EditsTransfer_WithCustomExchangeRate()
+    {
+        var userId = Guid.NewGuid();
+        var transferId = await AddNewTransferAsync(userId);
+
+        var editCommand = await CreateEditTransferCommand(transferId, userId, sourceAmount: 200, targetAmount: 810, targetCurrency: "PLN");
+
+        await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
+
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, userId));
+
+        Assert.That(transfer!.SourceAmount, Is.EqualTo(editCommand.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(810));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("PLN"));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(4.05m));
+    }
+
+    [Test]
     public async Task EditTransferCommand_UpdatesUserTags()
     {
         var userId = Guid.NewGuid();

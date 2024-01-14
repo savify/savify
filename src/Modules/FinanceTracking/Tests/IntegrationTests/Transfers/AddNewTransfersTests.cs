@@ -31,6 +31,39 @@ public class AddNewTransfersTests : TransfersTestBase
     }
 
     [Test]
+    public async Task AddNewTransferCommand_WithTargetWalletWithDifferentCurrency_CalculatesExchangeRate_AndAddsTransfer()
+    {
+        SaltEdgeHttpClientMocker.MockFetchExchangeRatesSuccessfulResponse();
+
+        var command = await CreateAddNewTransferCommand(targetWalletCurrency: "PLN");
+
+        var transferId = await FinanceTrackingModule.ExecuteCommandAsync(command);
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, command.UserId));
+
+        Assert.That(transfer!.SourceAmount, Is.EqualTo(command.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(command.SourceAmount * 4));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("PLN"));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(4m));
+    }
+
+    [Test]
+    public async Task AddNewTransferCommand_WithTargetWalletWithDifferentCurrency_AndWithGivenTargetAmount_AddsTransfer_WithCustomExchangeRate()
+    {
+        var command = await CreateAddNewTransferCommand(targetAmount: 405, targetWalletCurrency: "PLN");
+
+        var transferId = await FinanceTrackingModule.ExecuteCommandAsync(command);
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, command.UserId));
+
+
+        Assert.That(transfer!.SourceAmount, Is.EqualTo(command.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(405));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("PLN"));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(4.05m));
+    }
+
+    [Test]
     public async Task AddNewTransferCommand_UpdatesUserTags()
     {
         string[] newTags = ["New user tag 1", "New user tag 2"];

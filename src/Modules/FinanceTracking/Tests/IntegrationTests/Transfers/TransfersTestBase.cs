@@ -12,6 +12,7 @@ public class TransfersTestBase : TestBase
         OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> targetWalletId = default,
+        OptionalParameter<string> targetWalletCurrency = default,
         OptionalParameter<int> sourceAmount = default,
         OptionalParameter<int?> targetAmount = default,
         OptionalParameter<DateTime> madeOn = default,
@@ -23,7 +24,7 @@ public class TransfersTestBase : TestBase
         return new AddNewTransferCommand(
             userIdValue,
             sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
-            targetWalletId.GetValueOr(await CreateWallet(userIdValue)),
+            targetWalletId.GetValueOr(await CreateWallet(userIdValue, currency: targetWalletCurrency.GetValueOr("USD"))),
             sourceAmount.GetValueOr(100),
             targetAmount.GetValueOr(null),
             madeOn.GetValueOr(DateTime.UtcNow),
@@ -62,6 +63,7 @@ public class TransfersTestBase : TestBase
         OptionalParameter<Guid> userId = default,
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> targetWalletId = default,
+        OptionalParameter<string> targetCurrency = default,
         OptionalParameter<int> sourceAmount = default,
         OptionalParameter<int?> targetAmount = default,
         OptionalParameter<DateTime> madeOn = default,
@@ -74,7 +76,7 @@ public class TransfersTestBase : TestBase
             transferId,
             userIdValue,
             sourceWalletId.GetValueOr(await CreateWallet(userIdValue)),
-            targetWalletId.GetValueOr(await CreateWallet(userIdValue)),
+            targetWalletId.GetValueOr(await CreateWallet(userIdValue, currency: targetCurrency.GetValueOr("USD"))),
             sourceAmount.GetValueOr(500),
             targetAmount.GetValueOr(null),
             madeOn.GetValueOr(DateTime.UtcNow),
@@ -82,12 +84,12 @@ public class TransfersTestBase : TestBase
             tags.GetValueOr(["Edited"]));
     }
 
-    protected async Task<Guid> CreateWallet(Guid userId, int initialBalance = 100)
+    protected async Task<Guid> CreateWallet(Guid userId, int initialBalance = 100, string currency = "USD")
     {
         return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
             userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
             "Cash wallet",
-            "USD",
+            currency,
             initialBalance,
             "#000000",
             "https://cdn.savify.io/icons/icon.svg",
