@@ -1,12 +1,11 @@
 ﻿using App.Modules.FinanceTracking.Application.Configuration.Commands;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Application.Transfers.EditTransfer;
 
-internal class EditTransferCommandHandler(ITransferRepository transferRepository, IWalletsRepository walletsRepository, TransactionAmountFactory transactionAmountFactory) : ICommandHandler<EditTransferCommand>
+internal class EditTransferCommandHandler(ITransferRepository transferRepository, IWalletsRepository walletsRepository, TransferAmountFactory transferAmountFactory) : ICommandHandler<EditTransferCommand>
 {
     public async Task Handle(EditTransferCommand command, CancellationToken cancellationToken)
     {
@@ -19,7 +18,7 @@ internal class EditTransferCommandHandler(ITransferRepository transferRepository
 
         var transfer = await transferRepository.GetByIdAndUserIdAsync(new TransferId(command.TransferId), new UserId(command.UserId));
 
-        var transactionAmount = await transactionAmountFactory.CreateAsync(
+        var transactionAmount = await transferAmountFactory.CreateAsync(
             command.SourceAmount,
             sourceWallet.Currency,
             command.TargetAmount,

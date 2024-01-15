@@ -1,12 +1,11 @@
 ﻿using App.Modules.FinanceTracking.Application.Configuration.Commands;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Transfers;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Application.Transfers.AddNewTransfer;
 
-internal class AddNewTransferCommandHandler(ITransferRepository transferRepository, IWalletsRepository walletsRepository, TransactionAmountFactory transactionAmountFactory) : ICommandHandler<AddNewTransferCommand, Guid>
+internal class AddNewTransferCommandHandler(ITransferRepository transferRepository, IWalletsRepository walletsRepository, TransferAmountFactory transferAmountFactory) : ICommandHandler<AddNewTransferCommand, Guid>
 {
     public async Task<Guid> Handle(AddNewTransferCommand command, CancellationToken cancellationToken)
     {
@@ -17,7 +16,7 @@ internal class AddNewTransferCommandHandler(ITransferRepository transferReposito
         var sourceWallet = await walletsRepository.GetByWalletIdAndUserIdAsync(sourceWalletId, userId);
         var targetWallet = await walletsRepository.GetByWalletIdAndUserIdAsync(targetWalletId, userId);
 
-        var transactionAmount = await transactionAmountFactory.CreateAsync(
+        var transactionAmount = await transferAmountFactory.CreateAsync(
             command.SourceAmount,
             sourceWallet.Currency,
             command.TargetAmount,

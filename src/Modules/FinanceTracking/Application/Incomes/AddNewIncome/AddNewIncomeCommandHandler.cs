@@ -11,13 +11,17 @@ internal class AddNewIncomeCommandHandler(IIncomeRepository incomeRepository, IW
 {
     public async Task<Guid> Handle(AddNewIncomeCommand command, CancellationToken cancellationToken)
     {
+        var userId = new UserId(command.UserId);
+        var targetWalletId = new WalletId(command.TargetWalletId);
+
+        var targetWallet = await walletsRepository.GetByWalletIdAndUserIdAsync(targetWalletId, userId);
+
         var income = Income.AddNew(
-            new UserId(command.UserId),
-            new WalletId(command.TargetWalletId),
+            userId,
+            targetWallet,
             new CategoryId(command.CategoryId),
-            Money.From(command.Amount, command.Currency),
+            Money.From(command.Amount, targetWallet.Currency),
             command.MadeOn,
-            walletsRepository,
             command.Comment,
             command.Tags);
 

@@ -1,5 +1,4 @@
 ﻿using App.BuildingBlocks.Domain;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Transfers.Events;
 using App.Modules.FinanceTracking.Domain.Transfers.Rules;
 using App.Modules.FinanceTracking.Domain.Users;
@@ -17,7 +16,7 @@ public class Transfer : Entity, IAggregateRoot
 
     private WalletId _targetWalletId;
 
-    private TransactionAmount _amount;
+    private TransferAmount _amount;
 
     private DateTime _madeOn;
 
@@ -33,7 +32,7 @@ public class Transfer : Entity, IAggregateRoot
         UserId userId,
         Wallet sourceWallet,
         Wallet targetWallet,
-        TransactionAmount amount,
+        TransferAmount amount,
         DateTime madeOn,
         string? comment,
         IEnumerable<string>? tags)
@@ -44,7 +43,7 @@ public class Transfer : Entity, IAggregateRoot
     public void Edit(
         Wallet newSourceWallet,
         Wallet newTargetWallet,
-        TransactionAmount newAmount,
+        TransferAmount newAmount,
         DateTime newMadeOn,
         string? newComment,
         IEnumerable<string>? newTags)
@@ -84,7 +83,7 @@ public class Transfer : Entity, IAggregateRoot
         UserId userId,
         Wallet sourceWallet,
         Wallet targetWallet,
-        TransactionAmount amount,
+        TransferAmount amount,
         DateTime madeOn,
         string? comment,
         IEnumerable<string>? tags)
