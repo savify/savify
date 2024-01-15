@@ -24,7 +24,6 @@ public class AddNewExpenseTests : ExpensesTestBase
         Assert.That(expense!.SourceWalletId, Is.EqualTo(command.SourceWalletId));
         Assert.That(expense.CategoryId, Is.EqualTo(command.CategoryId));
         Assert.That(expense.Amount, Is.EqualTo(command.Amount));
-        Assert.That(expense.Currency, Is.EqualTo(command.Currency));
         Assert.That(expense.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(expense.Comment, Is.EqualTo(command.Comment));
         Assert.That(expense.Tags, Is.EquivalentTo(command.Tags!));
@@ -121,20 +120,6 @@ public class AddNewExpenseTests : ExpensesTestBase
     public async Task AddNewExpenseCommand_WhenAmountIsLessOrEqualToZero_ThrowsInvalidCommandException(int amount)
     {
         var command = await CreateAddNewExpenseCommand(amount: amount);
-
-        var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase(null!)]
-    [TestCase("")]
-    [TestCase("PL")]
-    [TestCase("PLNN")]
-    public async Task AddNewExpenseCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
-    {
-        var command = await CreateAddNewExpenseCommand(currency: currency);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 

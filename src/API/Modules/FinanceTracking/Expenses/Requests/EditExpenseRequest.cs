@@ -8,8 +8,6 @@ public class EditExpenseRequest
 
     public int Amount { get; set; }
 
-    public string Currency { get; set; }
-
     public DateTime MadeOn { get; set; }
 
     public string? Comment { get; set; }
