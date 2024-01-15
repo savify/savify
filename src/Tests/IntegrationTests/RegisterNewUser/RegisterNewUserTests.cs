@@ -22,7 +22,7 @@ public class RegisterNewUserTests : TestBase
             new GetUserRegistrationConfirmationEmailProbe(
                 "test@email.com",
                 "Savify - Welcome - Please confirm your registration",
-                EmailSender), 20000);
+                EmailSender));
     }
 
     private class GetUserRegistrationConfirmationEmailProbe(

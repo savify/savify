@@ -23,7 +23,7 @@ public class RequestPasswordResetTests : TestBase
             new GetPasswordResetConfirmationCodeEmailProbe(
                 "test@email.com",
                 "Savify - Password reset request",
-                EmailSender), 20000);
+                EmailSender));
     }
 
     private class GetPasswordResetConfirmationCodeEmailProbe(

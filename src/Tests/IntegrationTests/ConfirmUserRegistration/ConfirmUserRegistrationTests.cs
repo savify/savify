@@ -30,7 +30,7 @@ public class ConfirmUserRegistrationTests : TestBase
         await UserAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(userRegistrationId, confirmationCode));
 
         await AssertEventually(
-            new GetCreatedUserNotificationSettingsFromNotificationsProbe(userRegistrationId, NotificationsModule), 20000);
+            new GetCreatedUserNotificationSettingsFromNotificationsProbe(userRegistrationId, NotificationsModule));
     }
 
     [Test]
@@ -51,7 +51,7 @@ public class ConfirmUserRegistrationTests : TestBase
             new GetUserRegistrationConfirmedEmailProbe(
                 "test@email.com",
                 "Savify - You have successfully registered at Savify",
-                EmailSender), 20000);
+                EmailSender));
     }
 
     [Test]
@@ -69,7 +69,7 @@ public class ConfirmUserRegistrationTests : TestBase
         await UserAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(userRegistrationId, confirmationCode));
 
         await AssertEventually(
-            new GetCreatedUserFinanceTrackingSettingsFromFinanceTrackingProbe(userRegistrationId, FinanceTrackingModule), 20000);
+            new GetCreatedUserFinanceTrackingSettingsFromFinanceTrackingProbe(userRegistrationId, FinanceTrackingModule));
     }
 
     private class GetCreatedUserNotificationSettingsFromNotificationsProbe(
