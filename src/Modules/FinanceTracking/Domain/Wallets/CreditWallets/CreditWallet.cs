@@ -5,6 +5,7 @@ using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.Rules;
 using App.Modules.FinanceTracking.Domain.Wallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.ManualBalanceChanges;
+using App.Modules.FinanceTracking.Domain.Wallets.Rules;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
 
@@ -63,7 +64,8 @@ public class CreditWallet : Wallet, IAggregateRoot
 
     public override void IncreaseBalance(Money amount)
     {
-        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new BalanceChangeAmountMustBeInTheWalletCurrencyRule(amount, Currency));
 
         _availableBalance += amount.Amount;
 
@@ -72,7 +74,8 @@ public class CreditWallet : Wallet, IAggregateRoot
 
     public override void DecreaseBalance(Money amount)
     {
-        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new BalanceChangeAmountMustBeInTheWalletCurrencyRule(amount, Currency));
 
         _availableBalance -= amount.Amount;
 
