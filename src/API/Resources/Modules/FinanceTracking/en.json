@@ -43,5 +43,6 @@
   "Please provide income currency": "Please provide income currency",
   "Please provide income's made on date": "Please provide income's made on date",
   "Source currency '{0}' doesn't match exchange rate currency '{1}'": "Source currency '{0}' doesn't match exchange rate currency '{1}'",
-  "Currency '{0}' does not match wallet currency '{1}'": "Currency '{0}' does not match wallet currency '{1}'"
+  "Currency '{0}' does not match wallet currency '{1}'": "Currency '{0}' does not match wallet currency '{1}'",
+  "End date cannot be earlier than start date": "End date cannot be earlier than start date"
 }

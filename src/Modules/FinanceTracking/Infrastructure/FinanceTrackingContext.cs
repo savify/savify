@@ -4,6 +4,7 @@ using App.BuildingBlocks.Infrastructure.Outbox;
 using App.Modules.FinanceTracking.Application.Configuration.Data;
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing;
 using App.Modules.FinanceTracking.Domain.BankConnections;
+using App.Modules.FinanceTracking.Domain.Budgets;
 using App.Modules.FinanceTracking.Domain.Categories;
 using App.Modules.FinanceTracking.Domain.Expenses;
 using App.Modules.FinanceTracking.Domain.Incomes;
@@ -18,6 +19,7 @@ using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.WalletViewMetadata;
 using App.Modules.FinanceTracking.Infrastructure.Domain.BankConnectionProcessing;
 using App.Modules.FinanceTracking.Infrastructure.Domain.BankConnections;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Budgets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Categories;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Expenses;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Incomes;
@@ -65,6 +67,8 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
 
     public required DbSet<UserFinanceTrackingSettings> UserFinanceTrackingSettings { get; set; }
 
+    public required DbSet<Budget> Budgets { get; set; }
+
     public required DbSet<OutboxMessage> OutboxMessages { get; set; }
 
     public required DbSet<InboxMessage> InboxMessages { get; set; }
@@ -98,6 +102,7 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
         modelBuilder.ApplyConfiguration(new IncomeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserTagsEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserFinanceTrackingSettingsEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new BudgetEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeCustomerEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeConnectionEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());
