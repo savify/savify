@@ -2,7 +2,7 @@ using App.Modules.FinanceTracking.Application.Contracts;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.AddNewExpense;
 
-public class AddNewExpenseCommand(Guid userId, Guid sourceWalletId, Guid categoryId, int amount, string currency, DateTime madeOn, string? comment, IEnumerable<string>? tags)
+public class AddNewExpenseCommand(Guid userId, Guid sourceWalletId, Guid categoryId, int amount, DateTime madeOn, string? comment, IEnumerable<string>? tags)
     : CommandBase<Guid>
 {
     public Guid UserId { get; } = userId;
@@ -12,8 +12,6 @@ public class AddNewExpenseCommand(Guid userId, Guid sourceWalletId, Guid categor
     public Guid CategoryId { get; } = categoryId;
 
     public int Amount { get; } = amount;
-
-    public string Currency { get; } = currency;
 
     public DateTime MadeOn { get; } = madeOn;
 

@@ -1,15 +1,18 @@
 using App.BuildingBlocks.Tests.IntegrationTests.Probing;
 using App.Modules.Notifications.Application.Emails;
+using App.Modules.UserAccess.Application.Configuration.Data;
+using App.Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using App.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
-using App.Modules.UserAccess.Application.UserRegistrations.RenewUserRegistration;
+using Dapper;
+using Npgsql;
 
-namespace App.IntegrationTests.RenewUserRegistration;
+namespace App.IntegrationTests.ConfirmUserRegistration;
 
 [TestFixture]
-public class RenewUserRegistrationTests : TestBase
+public class SendUserRegistrationConfirmationEmailTests : TestBase
 {
     [Test]
-    public async Task SendUserRegistrationRenewalEmail_WhenUserRegistrationWasRenewed_Test()
+    public async Task SendUserRegistrationConfirmedEmail_WhenUserRegistrationWasConfirmed_Test()
     {
         var userRegistrationId = await UserAccessModule.ExecuteCommandAsync(new RegisterNewUserCommand(
             "test@email.com",
@@ -18,17 +21,18 @@ public class RenewUserRegistrationTests : TestBase
             "PL",
             "en"
         ));
+        var confirmationCode = await GetUserRegistrationConfirmationCode(userRegistrationId);
 
-        await UserAccessModule.ExecuteCommandAsync(new RenewUserRegistrationCommand(userRegistrationId));
+        await UserAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(userRegistrationId, confirmationCode));
 
         await AssertEventually(
-            new GetUserRegistrationRenewalEmailProbe(
+            new GetUserRegistrationConfirmedEmailProbe(
                 "test@email.com",
-                "Savify - New confirmation code requested",
+                "Savify - You have successfully registered at Savify",
                 EmailSender));
     }
 
-    private class GetUserRegistrationRenewalEmailProbe(
+    private class GetUserRegistrationConfirmedEmailProbe(
         string expectedRecipientEmailAddress,
         string expectedEmailSubject,
         IEmailSender emailSender)
@@ -62,6 +66,15 @@ public class RenewUserRegistrationTests : TestBase
             return Task.CompletedTask;
         }
 
-        public string DescribeFailureTo() => $"User registration renewal email was not sent to '{expectedRecipientEmailAddress}'";
+        public string DescribeFailureTo() => $"User registration confirmed email was not sent to '{expectedRecipientEmailAddress}'";
+    }
+
+    private async Task<string> GetUserRegistrationConfirmationCode(Guid userRegistrationId)
+    {
+        await using var sqlConnection = new NpgsqlConnection(ConnectionString);
+
+        var sql = $"SELECT confirmation_code FROM {DatabaseConfiguration.Schema.Name}.user_registrations u WHERE u.id = @userRegistrationId";
+
+        return (await sqlConnection.QuerySingleOrDefaultAsync<string>(sql, new { userRegistrationId }))!;
     }
 }

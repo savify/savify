@@ -10,6 +10,7 @@ using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.DebitWallets.Rules;
 using App.Modules.FinanceTracking.Domain.Wallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.ManualBalanceChanges;
+using App.Modules.FinanceTracking.Domain.Wallets.Rules;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.DebitWallets;
 
@@ -61,7 +62,8 @@ public class DebitWallet : Wallet, IAggregateRoot
 
     public override void IncreaseBalance(Money amount)
     {
-        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new BalanceChangeAmountMustBeInTheWalletCurrencyRule(amount, Currency));
 
         _balance += amount.Amount;
 
@@ -70,7 +72,8 @@ public class DebitWallet : Wallet, IAggregateRoot
 
     public override void DecreaseBalance(Money amount)
     {
-        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new DebitWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new BalanceChangeAmountMustBeInTheWalletCurrencyRule(amount, Currency));
 
         _balance -= amount.Amount;
 

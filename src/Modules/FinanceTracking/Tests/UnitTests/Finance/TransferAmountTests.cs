@@ -1,9 +1,10 @@
 using App.Modules.FinanceTracking.Domain.Finance;
+using App.Modules.FinanceTracking.Domain.Transfers;
 
 namespace App.Modules.FinanceTracking.UnitTests.Finance;
 
 [TestFixture]
-public class TransactionAmountTests : UnitTestBase
+public class TransferAmountTests : UnitTestBase
 {
     [Test]
     public void CreateFrom_SourceAndTargetAmount_ReturnsTransactionAmountWithCalculatedExchangeRate()
@@ -11,7 +12,7 @@ public class TransactionAmountTests : UnitTestBase
         var source = Money.From(100, Currency.From("PLN"));
         var target = Money.From(25, Currency.From("USD"));
 
-        var amount = TransactionAmount.From(source, target);
+        var amount = TransferAmount.From(source, target);
 
         Assert.That(amount.Source, Is.EqualTo(source));
         Assert.That(amount.Target, Is.EqualTo(target));
@@ -26,7 +27,7 @@ public class TransactionAmountTests : UnitTestBase
         var source = Money.From(100, Currency.From("PLN"));
         var exchangeRate = ExchangeRate.For(source.Currency, Currency.From("USD"), 0.25m);
 
-        var amount = TransactionAmount.From(source, exchangeRate);
+        var amount = TransferAmount.From(source, exchangeRate);
 
         Assert.That(amount.Source, Is.EqualTo(source));
         Assert.That(amount.Target, Is.EqualTo(Money.From(25, Currency.From("USD"))));
@@ -38,7 +39,7 @@ public class TransactionAmountTests : UnitTestBase
     {
         var source = Money.From(100, Currency.From("PLN"));
 
-        var amount = TransactionAmount.From(source);
+        var amount = TransferAmount.From(source);
 
         Assert.That(amount.Source, Is.EqualTo(source));
         Assert.That(amount.Target, Is.EqualTo(source));

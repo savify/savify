@@ -32,32 +32,30 @@ public class Income : Entity, IAggregateRoot
 
     public static Income AddNew(
         UserId userId,
-        WalletId targetWalletId,
+        Wallet targetWallet,
         CategoryId categoryId,
         Money amount,
         DateTime madeOn,
-        IWalletsRepository walletsRepository,
         string? comment,
         IEnumerable<string>? tags)
     {
-        return new Income(userId, targetWalletId, categoryId, amount, madeOn, walletsRepository, comment, tags);
+        return new Income(userId, targetWallet, categoryId, amount, madeOn, comment, tags);
     }
 
     public void Edit(
-        WalletId newTargetWalletId,
+        Wallet newTargetWallet,
         CategoryId newCategoryId,
         Money newAmount,
         DateTime newMadeOn,
-        IWalletsRepository walletsRepository,
         string? newComment,
         IEnumerable<string>? newTags)
     {
-        CheckRules(new IncomeTargetWalletMustBeOwnedByUserRule(UserId, newTargetWalletId, walletsRepository));
+        CheckRules(new IncomeTargetWalletMustBeOwnedByUserRule(UserId, newTargetWallet));
 
         var oldTargetWalletId = _targetWalletId;
         var oldAmount = _amount;
 
-        _targetWalletId = newTargetWalletId;
+        _targetWalletId = newTargetWallet.Id;
         _categoryId = newCategoryId;
         _amount = newAmount;
         _madeOn = newMadeOn;
@@ -80,19 +78,18 @@ public class Income : Entity, IAggregateRoot
 
     private Income(
         UserId userId,
-        WalletId targetWalletId,
+        Wallet targetWallet,
         CategoryId categoryId,
         Money amount,
         DateTime madeOn,
-        IWalletsRepository walletsRepository,
         string? comment,
         IEnumerable<string>? tags)
     {
-        CheckRules(new IncomeTargetWalletMustBeOwnedByUserRule(userId, targetWalletId, walletsRepository));
+        CheckRules(new IncomeTargetWalletMustBeOwnedByUserRule(userId, targetWallet));
 
         Id = new IncomeId(Guid.NewGuid());
         UserId = userId;
-        _targetWalletId = targetWalletId;
+        _targetWalletId = targetWallet.Id;
         _categoryId = categoryId;
         _amount = amount;
         _madeOn = madeOn;

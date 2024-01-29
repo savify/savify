@@ -4,7 +4,7 @@ using App.Modules.FinanceTracking.Domain.Expenses.Events;
 using App.Modules.FinanceTracking.Domain.Expenses.Rules;
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
-using App.Modules.FinanceTracking.Domain.Wallets;
+using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 
 namespace App.Modules.FinanceTracking.UnitTests.Expenses;
 
@@ -15,21 +15,20 @@ public class ExpenseTests : UnitTestBase
     public void AddingNewExpense_IsSuccessful()
     {
         var userId = new UserId(Guid.NewGuid());
-        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
+
         var categoryId = new CategoryId(Guid.NewGuid());
-        var amount = Money.From(100, "PLN");
+        var amount = Money.From(100, Currency.From("PLN"));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
-        var walletsRepository = Substitute.For<IWalletsRepository>();
-        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
 
-        var expense = Expense.AddNew(userId, sourceWalletId, categoryId, amount, madeOn, walletsRepository, comment, tags);
+        var expense = Expense.AddNew(userId, sourceWallet, categoryId, amount, madeOn, comment, tags);
 
         var expenseAddedDomainEvent = AssertPublishedDomainEvent<ExpenseAddedDomainEvent>(expense);
 
         Assert.That(expenseAddedDomainEvent.UserId, Is.EqualTo(userId));
-        Assert.That(expenseAddedDomainEvent.SourceWalletId, Is.EqualTo(sourceWalletId));
+        Assert.That(expenseAddedDomainEvent.SourceWalletId, Is.EqualTo(sourceWallet.Id));
         Assert.That(expenseAddedDomainEvent.CategoryId, Is.EqualTo(categoryId));
         Assert.That(expenseAddedDomainEvent.Amount, Is.EqualTo(amount));
         Assert.That(expenseAddedDomainEvent.Tags, Is.EquivalentTo(tags));
@@ -38,20 +37,18 @@ public class ExpenseTests : UnitTestBase
     [Test]
     public void AddingNewExpense_WhenUserDoesNotOwnSourceWallet_BreaksExpenseSourceWalletMustBeOwnedByUserRule()
     {
-        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var userId = new UserId(Guid.NewGuid());
+        var sourceWallet = CashWallet.AddNew(new UserId(Guid.NewGuid()), "Cash", Currency.From("PLN"));
         var categoryId = new CategoryId(Guid.NewGuid());
 
-        var userId = new UserId(Guid.NewGuid());
-        var amount = Money.From(100, "PLN");
+        var amount = Money.From(100, Currency.From("PLN"));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
-        var walletsRepository = Substitute.For<IWalletsRepository>();
-        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(false);
 
         AssertBrokenRule<ExpenseSourceWalletMustBeOwnedByUserRule>(() =>
         {
-            _ = Expense.AddNew(userId, sourceWalletId, categoryId, amount, madeOn, walletsRepository, comment, tags);
+            _ = Expense.AddNew(userId, sourceWallet, categoryId, amount, madeOn, comment, tags);
         });
     }
 
@@ -59,31 +56,28 @@ public class ExpenseTests : UnitTestBase
     public void EditingExpense_IsSuccessful()
     {
         var userId = new UserId(Guid.NewGuid());
-        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var categoryId = new CategoryId(Guid.NewGuid());
-        var amount = Money.From(100, "PLN");
+        var amount = Money.From(100, Currency.From("PLN"));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
-        var walletsRepository = Substitute.For<IWalletsRepository>();
-        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
 
-        var expense = Expense.AddNew(userId, sourceWalletId, categoryId, amount, madeOn, walletsRepository, comment, tags);
+        var expense = Expense.AddNew(userId, sourceWallet, categoryId, amount, madeOn, comment, tags);
 
-        var newSourceWalletId = new WalletId(Guid.NewGuid());
+        var newSourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("USD"));
         var newCategoryId = new CategoryId(Guid.NewGuid());
-        var newAmount = Money.From(500, "USD");
+        var newAmount = Money.From(500, Currency.From("USD"));
         var newMadeOn = DateTime.UtcNow;
         var newComment = "Edited comment";
         string[] newTags = ["New Tag1", "New Tag2"];
-        walletsRepository.ExistsForUserIdAndWalletId(userId, newSourceWalletId).Returns(true);
 
-        expense.Edit(newSourceWalletId, newCategoryId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
+        expense.Edit(newSourceWallet, newCategoryId, newAmount, newMadeOn, newComment, newTags);
 
         var expenseEditedDomainEvent = AssertPublishedDomainEvent<ExpenseEditedDomainEvent>(expense);
 
-        Assert.That(expenseEditedDomainEvent.OldSourceWalletId, Is.EqualTo(sourceWalletId));
-        Assert.That(expenseEditedDomainEvent.NewSourceWalletId, Is.EqualTo(newSourceWalletId));
+        Assert.That(expenseEditedDomainEvent.OldSourceWalletId, Is.EqualTo(sourceWallet.Id));
+        Assert.That(expenseEditedDomainEvent.NewSourceWalletId, Is.EqualTo(newSourceWallet.Id));
 
         Assert.That(expenseEditedDomainEvent.OldAmount, Is.EqualTo(amount));
         Assert.That(expenseEditedDomainEvent.NewAmount, Is.EqualTo(newAmount));
@@ -96,28 +90,25 @@ public class ExpenseTests : UnitTestBase
     public void EditingExpense_WhenUserDoesNotOwnNewSourceWallet_BreaksExpenseSourceWalletMustBeOwnedByUserRule()
     {
         var userId = new UserId(Guid.NewGuid());
-        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var categoryId = new CategoryId(Guid.NewGuid());
-        var amount = Money.From(100, "PLN");
+        var amount = Money.From(100, Currency.From("PLN"));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
-        var walletsRepository = Substitute.For<IWalletsRepository>();
-        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
 
-        var expense = Expense.AddNew(userId, sourceWalletId, categoryId, amount, madeOn, walletsRepository, comment, tags);
+        var expense = Expense.AddNew(userId, sourceWallet, categoryId, amount, madeOn, comment, tags);
 
-        var newSourceWalletId = new WalletId(Guid.NewGuid());
+        var newSourceWallet = CashWallet.AddNew(new UserId(Guid.NewGuid()), "Cash", Currency.From("USD"));
         var newCategoryId = new CategoryId(Guid.NewGuid());
-        var newAmount = Money.From(500, "USD");
+        var newAmount = Money.From(500, Currency.From("USD"));
         var newMadeOn = DateTime.UtcNow;
         var newComment = "Edited comment";
         string[] newTags = ["New Tag1", "New Tag2"];
-        walletsRepository.ExistsForUserIdAndWalletId(userId, newSourceWalletId).Returns(false);
 
         AssertBrokenRule<ExpenseSourceWalletMustBeOwnedByUserRule>(() =>
         {
-            expense.Edit(newSourceWalletId, newCategoryId, newAmount, newMadeOn, walletsRepository, newComment, newTags);
+            expense.Edit(newSourceWallet, newCategoryId, newAmount, newMadeOn, newComment, newTags);
         });
     }
 
@@ -125,21 +116,21 @@ public class ExpenseTests : UnitTestBase
     public void RemovingExpense_IsSuccessful()
     {
         var userId = new UserId(Guid.NewGuid());
-        var sourceWalletId = new WalletId(Guid.NewGuid());
+        var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var categoryId = new CategoryId(Guid.NewGuid());
-        var amount = Money.From(100, "PLN");
+        var amount = Money.From(100, Currency.From("PLN"));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
-        var walletsRepository = Substitute.For<IWalletsRepository>();
-        walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId).Returns(true);
 
-        var expense = Expense.AddNew(userId, sourceWalletId, categoryId, amount, madeOn, walletsRepository, comment, tags);
+        var expense = Expense.AddNew(userId, sourceWallet, categoryId, amount, madeOn, comment, tags);
 
         expense.Remove();
 
         var expenseRemovedDomainEvent = AssertPublishedDomainEvent<ExpenseRemovedDomainEvent>(expense);
 
         Assert.That(expenseRemovedDomainEvent.ExpenseId, Is.EqualTo(expense.Id));
+        Assert.That(expenseRemovedDomainEvent.SourceWalletId, Is.EqualTo(sourceWallet.Id));
+        Assert.That(expenseRemovedDomainEvent.Amount, Is.EqualTo(amount));
     }
 }

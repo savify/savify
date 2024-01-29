@@ -11,14 +11,18 @@ internal class EditExpenseCommandHandler(IExpenseRepository expenseRepository, I
 {
     public async Task Handle(EditExpenseCommand command, CancellationToken cancellationToken)
     {
+        var userId = new UserId(command.UserId);
+        var sourceWalletId = new WalletId(command.SourceWalletId);
+
+        var sourceWallet = await walletsRepository.GetByWalletIdAndUserIdAsync(sourceWalletId, userId);
+
         var expense = await expenseRepository.GetByIdAndUserIdAsync(new ExpenseId(command.ExpenseId), new UserId(command.UserId));
 
         expense.Edit(
-            new WalletId(command.SourceWalletId),
+            sourceWallet,
             new CategoryId(command.CategoryId),
-            Money.From(command.Amount, command.Currency),
+            Money.From(command.Amount, sourceWallet.Currency),
             command.MadeOn,
-            walletsRepository,
             command.Comment,
             command.Tags);
     }

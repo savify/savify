@@ -17,7 +17,7 @@ public class TransferTests : UnitTestBase
         var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var targetWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
 
-        var amount = TransactionAmount.From(Money.From(100, Currency.From("PLN")));
+        var amount = TransferAmount.From(Money.From(100, Currency.From("PLN")));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
@@ -40,7 +40,7 @@ public class TransferTests : UnitTestBase
         var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var targetWallet = sourceWallet;
 
-        var amount = TransactionAmount.From(Money.From(100, Currency.From("PLN")));
+        var amount = TransferAmount.From(Money.From(100, Currency.From("PLN")));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
@@ -58,7 +58,7 @@ public class TransferTests : UnitTestBase
         var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var targetWallet = CashWallet.AddNew(new UserId(Guid.NewGuid()), "Cash", Currency.From("PLN"));
 
-        var amount = TransactionAmount.From(Money.From(100, Currency.From("PLN")));
+        var amount = TransferAmount.From(Money.From(100, Currency.From("PLN")));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
@@ -76,7 +76,7 @@ public class TransferTests : UnitTestBase
         var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var targetWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
 
-        var amount = TransactionAmount.From(Money.From(100, Currency.From("PLN")));
+        var amount = TransferAmount.From(Money.From(100, Currency.From("PLN")));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
@@ -86,7 +86,7 @@ public class TransferTests : UnitTestBase
         var newSourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var newTargetWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
 
-        var newAmount = TransactionAmount.From(Money.From(500, Currency.From("PLN")));
+        var newAmount = TransferAmount.From(Money.From(500, Currency.From("PLN")));
         var newMadeOn = DateTime.UtcNow;
         var newComment = "Edited comment";
         string[] newTags = ["New Tag1", "New Tag2"];
@@ -118,7 +118,7 @@ public class TransferTests : UnitTestBase
         var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var targetWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
 
-        var amount = TransactionAmount.From(Money.From(100, Currency.From("PLN")));
+        var amount = TransferAmount.From(Money.From(100, Currency.From("PLN")));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
@@ -128,7 +128,7 @@ public class TransferTests : UnitTestBase
         var newSourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var newTargetWallet = newSourceWallet;
 
-        var newAmount = TransactionAmount.From(Money.From(500, Currency.From("PLN")));
+        var newAmount = TransferAmount.From(Money.From(500, Currency.From("PLN")));
         var newMadeOn = DateTime.UtcNow;
         var newComment = "Edited comment";
         string[] newTags = ["New Tag1", "New Tag2"];
@@ -146,7 +146,7 @@ public class TransferTests : UnitTestBase
         var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var targetWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
 
-        var amount = TransactionAmount.From(Money.From(100, Currency.From("PLN")));
+        var amount = TransferAmount.From(Money.From(100, Currency.From("PLN")));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];
@@ -156,7 +156,7 @@ public class TransferTests : UnitTestBase
         var newSourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var newTargetWallet = CashWallet.AddNew(new UserId(Guid.NewGuid()), "Cash", Currency.From("PLN"));
 
-        var newAmount = TransactionAmount.From(Money.From(500, Currency.From("PLN")));
+        var newAmount = TransferAmount.From(Money.From(500, Currency.From("PLN")));
         var newMadeOn = DateTime.UtcNow;
         var newComment = "Edited comment";
         string[] newTags = ["New Tag1", "New Tag2"];
@@ -174,7 +174,7 @@ public class TransferTests : UnitTestBase
         var sourceWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
         var targetWallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"));
 
-        var amount = TransactionAmount.From(Money.From(100, Currency.From("PLN")));
+        var amount = TransferAmount.From(Money.From(100, Currency.From("PLN")));
         var madeOn = DateTime.UtcNow;
         var comment = "Some comment";
         string[] tags = ["Tag1", "Tag2"];

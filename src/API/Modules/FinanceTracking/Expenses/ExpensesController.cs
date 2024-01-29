@@ -28,7 +28,6 @@ public class ExpensesController(
             request.SourceWalletId,
             request.CategoryId,
             request.Amount,
-            request.Currency,
             request.MadeOn,
             request.Comment,
             request.Tags));
@@ -50,7 +49,6 @@ public class ExpensesController(
             request.SourceWalletId,
             request.CategoryId,
             request.Amount,
-            request.Currency,
             request.MadeOn,
             request.Comment,
             request.Tags));

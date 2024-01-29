@@ -2,7 +2,7 @@ using App.Modules.FinanceTracking.Application.Contracts;
 
 namespace App.Modules.FinanceTracking.Application.Expenses.EditExpense;
 
-public class EditExpenseCommand(Guid expenseId, Guid userId, Guid sourceWalletId, Guid categoryId, int amount, string currency, DateTime madeOn, string? comment, IEnumerable<string>? tags)
+public class EditExpenseCommand(Guid expenseId, Guid userId, Guid sourceWalletId, Guid categoryId, int amount, DateTime madeOn, string? comment, IEnumerable<string>? tags)
     : CommandBase
 {
     public Guid ExpenseId { get; } = expenseId;
@@ -14,8 +14,6 @@ public class EditExpenseCommand(Guid expenseId, Guid userId, Guid sourceWalletId
     public Guid CategoryId { get; } = categoryId;
 
     public int Amount { get; } = amount;
-
-    public string Currency { get; } = currency;
 
     public DateTime MadeOn { get; } = madeOn;
 
