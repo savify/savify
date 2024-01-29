@@ -4,6 +4,7 @@ using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Rules;
 using App.Modules.FinanceTracking.Domain.Wallets.Events;
+using App.Modules.FinanceTracking.Domain.Wallets.Rules;
 
 namespace App.Modules.FinanceTracking.UnitTests.Wallets.CashWallets;
 
@@ -124,6 +125,16 @@ public class CashWalletsTests : UnitTestBase
     }
 
     [Test]
+    public void IncreaseBalance_WhenCurrenciesDontMatch_BreaksBalanceChangeAmountMustBeInTheWalletCurrencyRule()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var wallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
+        var amount = Money.From(100, Currency.From("USD"));
+
+        AssertBrokenRule<BalanceChangeAmountMustBeInTheWalletCurrencyRule>(() => wallet.IncreaseBalance(amount));
+    }
+
+    [Test]
     public void DecreaseBalance_AddsDomainEvent()
     {
         var userId = new UserId(Guid.NewGuid());
@@ -136,6 +147,16 @@ public class CashWalletsTests : UnitTestBase
         Assert.That(walletBalanceDecreasedDomainEvent.WalletId, Is.EqualTo(wallet.Id));
         Assert.That(walletBalanceDecreasedDomainEvent.Amount, Is.EqualTo(amount));
         Assert.That(walletBalanceDecreasedDomainEvent.NewBalance, Is.EqualTo(900));
+    }
+
+    [Test]
+    public void DecreaseBalance_WhenCurrenciesDontMatch_BreaksBalanceChangeAmountMustBeInTheWalletCurrencyRule()
+    {
+        var userId = new UserId(Guid.NewGuid());
+        var wallet = CashWallet.AddNew(userId, "Cash", Currency.From("PLN"), 1000);
+        var amount = Money.From(100, Currency.From("USD"));
+
+        AssertBrokenRule<BalanceChangeAmountMustBeInTheWalletCurrencyRule>(() => wallet.DecreaseBalance(amount));
     }
 
     [Test]

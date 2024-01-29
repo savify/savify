@@ -1,16 +1,17 @@
 ﻿using System.Linq.Expressions;
-using App.Modules.FinanceTracking.Domain.Finance;
+using App.Modules.FinanceTracking.Domain.Transfers;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace App.Modules.FinanceTracking.Infrastructure.Domain.Finance;
+namespace App.Modules.FinanceTracking.Infrastructure.Domain.Transfers;
 
-internal static class OwnsOneTransactionAmountExtensions
+internal static class OwnsOneTranserAmountExtensions
 {
     public static void OwnsOneTransactionAmount<TEntity>(this EntityTypeBuilder<TEntity> builder, string navigationName,
         Action<TransactionAmountOptions>? configure = null)
         where TEntity : class
     {
-        builder.OwnsOne<TransactionAmount>(navigationName, b =>
+        builder.OwnsOne<TransferAmount>(navigationName, b =>
         {
             b.ConfigureTransactionAmount(configure);
         });
@@ -22,7 +23,7 @@ internal static class OwnsOneTransactionAmountExtensions
         where TOwnerEntity : class
         where TDependentEntity : class
     {
-        builder.OwnsOne<TransactionAmount>(navigationName, b =>
+        builder.OwnsOne<TransferAmount>(navigationName, b =>
         {
             b.ConfigureTransactionAmount(configure);
         });
@@ -30,7 +31,7 @@ internal static class OwnsOneTransactionAmountExtensions
         builder.Navigation(navigationName).IsRequired();
     }
 
-    public static void OwnsOneTransactionAmount<TOwnerEntity, TDependentEntity>(this OwnedNavigationBuilder<TOwnerEntity, TDependentEntity> builder, Expression<Func<TDependentEntity, TransactionAmount?>> navigationExpression, Action<TransactionAmountOptions>? configure = null)
+    public static void OwnsOneTransactionAmount<TOwnerEntity, TDependentEntity>(this OwnedNavigationBuilder<TOwnerEntity, TDependentEntity> builder, Expression<Func<TDependentEntity, TransferAmount?>> navigationExpression, Action<TransactionAmountOptions>? configure = null)
         where TOwnerEntity : class
         where TDependentEntity : class
     {
@@ -42,7 +43,7 @@ internal static class OwnsOneTransactionAmountExtensions
         builder.Navigation(navigationExpression).IsRequired();
     }
 
-    private static void ConfigureTransactionAmount<TOwnerEntity>(this OwnedNavigationBuilder<TOwnerEntity, TransactionAmount> builder, Action<TransactionAmountOptions>? configure)
+    private static void ConfigureTransactionAmount<TOwnerEntity>(this OwnedNavigationBuilder<TOwnerEntity, TransferAmount> builder, Action<TransactionAmountOptions>? configure)
         where TOwnerEntity : class
     {
         var options = new TransactionAmountOptions();

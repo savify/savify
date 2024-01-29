@@ -24,7 +24,7 @@ public class AddNewIncomeTests : IncomesTestBase
         Assert.That(income!.TargetWalletId, Is.EqualTo(command.TargetWalletId));
         Assert.That(income.CategoryId, Is.EqualTo(command.CategoryId));
         Assert.That(income.Amount, Is.EqualTo(command.Amount));
-        Assert.That(income.Currency, Is.EqualTo(command.Currency));
+        Assert.That(income.Currency, Is.EqualTo("USD"));
         Assert.That(income.MadeOn, Is.EqualTo(command.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(income.Comment, Is.EqualTo(command.Comment));
         Assert.That(income.Tags, Is.EquivalentTo(command.Tags!));
@@ -121,20 +121,6 @@ public class AddNewIncomeTests : IncomesTestBase
     public async Task AddNewIncomeCommand_WhenAmountIsLessOrEqualToZero_ThrowsInvalidCommandException(int amount)
     {
         var command = await CreateAddNewIncomeCommand(amount: amount);
-
-        var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
-
-        await Assert.ThatAsync(act, Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase(null!)]
-    [TestCase("")]
-    [TestCase("PL")]
-    [TestCase("PLNN")]
-    public async Task AddNewIncomeCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
-    {
-        var command = await CreateAddNewIncomeCommand(currency: currency);
 
         var act = () => FinanceTrackingModule.ExecuteCommandAsync(command);
 

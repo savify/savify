@@ -41,5 +41,6 @@
   "Income amount must be bigger than 0": "Сумма доходу повинна бути більшою за 0",
   "Please provide income currency": "Будь ласка, вкажіть валюту доходу",
   "Please provide income's made on date": "Будь ласка, вкажіть дату доходу",
-  "Source currency '{0}' doesn't match exchange rate currency '{1}'": "Вихідна валюта '{0}' не співпадає з цільовою валютою '{1}' в курсі"
+  "Source currency '{0}' doesn't match exchange rate currency '{1}'": "Вихідна валюта '{0}' не співпадає з цільовою валютою '{1}' в курсі",
+  "Currency '{0}' does not match wallet currency '{1}'": "Валюта '{0}' не співпадає з валютою гаманця '{1}'"
 }

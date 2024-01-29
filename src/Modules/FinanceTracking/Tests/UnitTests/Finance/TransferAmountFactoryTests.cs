@@ -1,9 +1,10 @@
 using App.Modules.FinanceTracking.Domain.Finance;
+using App.Modules.FinanceTracking.Domain.Transfers;
 
 namespace App.Modules.FinanceTracking.UnitTests.Finance;
 
 [TestFixture]
-public class TransactionAmountFactoryTests : UnitTestBase
+public class TransferAmountFactoryTests : UnitTestBase
 {
     [Test]
     public async Task CreateAsync_WithoutGivenTargetAmount_ButWithDifferentTargetCurrency_GetsExchangeRateFromProvider()
@@ -16,7 +17,7 @@ public class TransactionAmountFactoryTests : UnitTestBase
         exchangeRatesProvider.GetExchangeRateFor(sourceCurrency, targetCurrency, Arg.Any<DateTime>())
             .Returns(Task.FromResult(exchangeRate));
 
-        var factory = new TransactionAmountFactory(exchangeRatesProvider);
+        var factory = new TransferAmountFactory(exchangeRatesProvider);
 
         var amount = await factory.CreateAsync(100, sourceCurrency, null, targetCurrency, DateTime.Now);
 
@@ -32,7 +33,7 @@ public class TransactionAmountFactoryTests : UnitTestBase
         var targetCurrency = Currency.From("PLN");
 
         var exchangeRatesProvider = Substitute.For<IExchangeRatesProvider>();
-        var factory = new TransactionAmountFactory(exchangeRatesProvider);
+        var factory = new TransferAmountFactory(exchangeRatesProvider);
 
         var amount = await factory.CreateAsync(100, sourceCurrency, 400, targetCurrency, DateTime.Now);
 
@@ -47,7 +48,7 @@ public class TransactionAmountFactoryTests : UnitTestBase
         var currency = Currency.From("USD");
 
         var exchangeRatesProvider = Substitute.For<IExchangeRatesProvider>();
-        var factory = new TransactionAmountFactory(exchangeRatesProvider);
+        var factory = new TransferAmountFactory(exchangeRatesProvider);
 
         var amount = await factory.CreateAsync(100, currency, null, currency, DateTime.Now);
 

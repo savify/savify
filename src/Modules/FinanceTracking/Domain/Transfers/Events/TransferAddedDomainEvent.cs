@@ -1,10 +1,10 @@
 ﻿using App.BuildingBlocks.Domain;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Domain.Transfers.Events;
-public class TransferAddedDomainEvent(TransferId transferId, UserId userId, WalletId sourceWalletId, WalletId targetWalletId, TransactionAmount amount, IEnumerable<string> tags) : DomainEventBase
+
+public class TransferAddedDomainEvent(TransferId transferId, UserId userId, WalletId sourceWalletId, WalletId targetWalletId, TransferAmount amount, IEnumerable<string> tags) : DomainEventBase
 {
     public TransferId TransferId { get; } = transferId;
 
@@ -14,7 +14,7 @@ public class TransferAddedDomainEvent(TransferId transferId, UserId userId, Wall
 
     public WalletId TargetWalletId { get; } = targetWalletId;
 
-    public TransactionAmount Amount { get; } = amount;
+    public TransferAmount Amount { get; } = amount;
 
     public IEnumerable<string> Tags { get; } = tags;
 }
