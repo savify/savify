@@ -6,9 +6,9 @@ public class EditTransferRequest
 
     public Guid TargetWalletId { get; set; }
 
-    public int Amount { get; set; }
+    public int SourceAmount { get; set; }
 
-    public string Currency { get; set; }
+    public int? TargetAmount { get; set; }
 
     public DateTime MadeOn { get; set; }
 

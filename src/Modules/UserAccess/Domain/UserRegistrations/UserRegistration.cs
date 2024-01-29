@@ -65,7 +65,7 @@ public class UserRegistration : Entity, IAggregateRoot
         _status = UserRegistrationStatus.Confirmed;
         _confirmedAt = DateTime.UtcNow;
 
-        AddDomainEvent(new UserRegistrationConfirmedDomainEvent(Id, _email, _name, _preferredLanguage));
+        AddDomainEvent(new UserRegistrationConfirmedDomainEvent(Id, _email, _name, _country, _preferredLanguage));
     }
 
     public void Renew(ConfirmationCode confirmationCode)

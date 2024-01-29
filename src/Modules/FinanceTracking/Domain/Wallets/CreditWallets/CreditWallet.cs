@@ -5,13 +5,12 @@ using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets.Rules;
 using App.Modules.FinanceTracking.Domain.Wallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.ManualBalanceChanges;
+using App.Modules.FinanceTracking.Domain.Wallets.Rules;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
 
 public class CreditWallet : Wallet, IAggregateRoot
 {
-    public UserId UserId { get; private set; }
-
     private string _title;
 
     private int _initialAvailableBalance;
@@ -19,8 +18,6 @@ public class CreditWallet : Wallet, IAggregateRoot
     private int _availableBalance;
 
     private int _creditLimit;
-
-    private Currency _currency;
 
     private bool _isRemoved;
 
@@ -51,14 +48,14 @@ public class CreditWallet : Wallet, IAggregateRoot
     {
         if (newAvailableBalance < _availableBalance)
         {
-            var amount = Money.From(_availableBalance - newAvailableBalance, _currency);
+            var amount = Money.From(_availableBalance - newAvailableBalance, Currency);
 
             DecreaseBalance(amount);
             AddManualBalanceChange(amount, ManualBalanceChangeType.Decrease);
         }
         else
         {
-            var amount = Money.From(newAvailableBalance - _availableBalance, _currency);
+            var amount = Money.From(newAvailableBalance - _availableBalance, Currency);
 
             IncreaseBalance(amount);
             AddManualBalanceChange(amount, ManualBalanceChangeType.Increase);
@@ -67,7 +64,8 @@ public class CreditWallet : Wallet, IAggregateRoot
 
     public override void IncreaseBalance(Money amount)
     {
-        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new BalanceChangeAmountMustBeInTheWalletCurrencyRule(amount, Currency));
 
         _availableBalance += amount.Amount;
 
@@ -76,7 +74,8 @@ public class CreditWallet : Wallet, IAggregateRoot
 
     public override void DecreaseBalance(Money amount)
     {
-        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CreditWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new BalanceChangeAmountMustBeInTheWalletCurrencyRule(amount, Currency));
 
         _availableBalance -= amount.Amount;
 
@@ -122,9 +121,9 @@ public class CreditWallet : Wallet, IAggregateRoot
         _initialAvailableBalance = initialAvailableBalance;
         _availableBalance = initialAvailableBalance;
         _creditLimit = creditLimit;
-        _currency = currency;
+        Currency = currency;
 
-        AddDomainEvent(new CreditWalletAddedDomainEvent(Id, UserId, _currency));
+        AddDomainEvent(new CreditWalletAddedDomainEvent(Id, UserId, Currency));
     }
 
     private CreditWallet() { }

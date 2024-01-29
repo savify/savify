@@ -12,7 +12,7 @@ internal class AddNewCashWalletCommandHandler(CashWalletFactory cashWalletFactor
         var wallet = await cashWalletFactory.Create(
             new UserId(command.UserId),
             command.Title,
-            new Currency(command.Currency),
+            Currency.From(command.Currency),
             command.InitialBalance,
             command.Color,
             command.Icon,

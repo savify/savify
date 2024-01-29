@@ -25,7 +25,7 @@ public class RenewUserRegistrationTests : TestBase
             new GetUserRegistrationRenewalEmailProbe(
                 "test@email.com",
                 "Savify - New confirmation code requested",
-                EmailSender), 20000);
+                EmailSender));
     }
 
     private class GetUserRegistrationRenewalEmailProbe(

@@ -8,5 +8,7 @@ public interface IWalletsRepository
 
     Task<Wallet> GetByWalletIdAsync(WalletId walletId);
 
+    Task<Wallet> GetByWalletIdAndUserIdAsync(WalletId walletId, UserId userId);
+
     Task UpdateHistoryAsync(Wallet wallet);
 }

@@ -11,13 +11,17 @@ internal class AddNewExpenseCommandHandler(IExpenseRepository expenseRepository,
 {
     public async Task<Guid> Handle(AddNewExpenseCommand command, CancellationToken cancellationToken)
     {
+        var userId = new UserId(command.UserId);
+        var sourceWalletId = new WalletId(command.SourceWalletId);
+
+        var sourceWallet = await walletsRepository.GetByWalletIdAndUserIdAsync(sourceWalletId, userId);
+
         var expense = Expense.AddNew(
-            new UserId(command.UserId),
-            new WalletId(command.SourceWalletId),
+            userId,
+            sourceWallet,
             new CategoryId(command.CategoryId),
-            Money.From(command.Amount, command.Currency),
+            Money.From(command.Amount, sourceWallet.Currency),
             command.MadeOn,
-            walletsRepository,
             command.Comment,
             command.Tags);
 

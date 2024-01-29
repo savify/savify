@@ -2,7 +2,7 @@
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Tests.Creating.OptionalParameters;
 using App.Modules.FinanceTracking.Application.Incomes.GetIncome;
-using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+using App.Modules.FinanceTracking.Application.Users.Tags.GetUserTags;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
@@ -19,7 +19,7 @@ public class EditIncomeTests : IncomesTestBase
         var userId = Guid.NewGuid();
         var incomeId = await AddNewIncomeAsync(userId);
 
-        var newTargetWalletId = await CreateCashWallet(userId);
+        var newTargetWalletId = await CreateCashWallet(userId, currency: "PLN");
         var newCategoryId = await CreateCategory();
 
         var editCommand = await CreateEditIncomeCommand(incomeId, userId, newTargetWalletId, newCategoryId);
@@ -33,7 +33,7 @@ public class EditIncomeTests : IncomesTestBase
         Assert.That(income.TargetWalletId, Is.EqualTo(editCommand.TargetWalletId));
         Assert.That(income.CategoryId, Is.EqualTo(editCommand.CategoryId));
         Assert.That(income.Amount, Is.EqualTo(editCommand.Amount));
-        Assert.That(income.Currency, Is.EqualTo(editCommand.Currency));
+        Assert.That(income.Currency, Is.EqualTo("PLN"));
         Assert.That(income.MadeOn, Is.EqualTo(editCommand.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(income.Comment, Is.EqualTo(editCommand.Comment));
         Assert.That(income.Tags, Is.EquivalentTo(editCommand.Tags!));
@@ -195,22 +195,6 @@ public class EditIncomeTests : IncomesTestBase
         var incomeId = await AddNewIncomeAsync();
 
         var command = await CreateEditIncomeCommand(incomeId, amount: amount);
-
-        await Assert.ThatAsync(
-            () => FinanceTrackingModule.ExecuteCommandAsync(command),
-            Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase(null!)]
-    [TestCase("")]
-    [TestCase("PL")]
-    [TestCase("PLNN")]
-    public async Task EditIncomeCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
-    {
-        var incomeId = await AddNewIncomeAsync();
-
-        var command = await CreateEditIncomeCommand(incomeId, currency: currency);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),

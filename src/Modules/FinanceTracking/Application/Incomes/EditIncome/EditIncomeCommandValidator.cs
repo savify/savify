@@ -1,5 +1,4 @@
 using App.BuildingBlocks.Application.Validators;
-using App.Modules.FinanceTracking.Application.Validation;
 using App.Modules.FinanceTracking.Domain.Categories;
 using FluentValidation;
 
@@ -31,11 +30,6 @@ internal class EditIncomeCommandValidator : Validator<EditIncomeCommand>
         RuleFor(c => c.Amount)
             .GreaterThan(0)
             .WithMessage("Income amount must be bigger than 0");
-
-        RuleFor(c => c.Currency)
-            .NotEmpty()
-            .WithMessage("Please provide income currency")
-            .MustMatchCurrencyCodeIsoFormat();
 
         RuleFor(c => c.MadeOn)
             .NotEmpty()

@@ -27,8 +27,8 @@ public class TransfersController(
             executionContextAccessor.UserId,
             request.SourceWalletId,
             request.TargetWalletId,
-            request.Amount,
-            request.Currency,
+            request.SourceAmount,
+            request.TargetAmount,
             request.MadeOn,
             request.Comment,
             request.Tags));
@@ -49,8 +49,8 @@ public class TransfersController(
             executionContextAccessor.UserId,
             request.SourceWalletId,
             request.TargetWalletId,
-            request.Amount,
-            request.Currency,
+            request.SourceAmount,
+            request.TargetAmount,
             request.MadeOn,
             request.Comment,
             request.Tags));

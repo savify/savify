@@ -2,7 +2,7 @@
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Tests.Creating.OptionalParameters;
 using App.Modules.FinanceTracking.Application.Expenses.GetExpense;
-using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+using App.Modules.FinanceTracking.Application.Users.Tags.GetUserTags;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.Application.Wallets.CreditWallets.GetCreditWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.GetDebitWallet;
@@ -19,7 +19,7 @@ public class EditExpenseTests : ExpensesTestBase
         var userId = Guid.NewGuid();
         var expenseId = await AddNewExpenseAsync(userId);
 
-        var newSourceWalletId = await CreateCashWallet(userId);
+        var newSourceWalletId = await CreateCashWallet(userId, currency: "PLN");
         var newCategoryId = await CreateCategory();
 
         var editCommand = await CreateEditExpenseCommand(expenseId, userId, newSourceWalletId, newCategoryId);
@@ -33,7 +33,7 @@ public class EditExpenseTests : ExpensesTestBase
         Assert.That(expense.SourceWalletId, Is.EqualTo(editCommand.SourceWalletId));
         Assert.That(expense.CategoryId, Is.EqualTo(editCommand.CategoryId));
         Assert.That(expense.Amount, Is.EqualTo(editCommand.Amount));
-        Assert.That(expense.Currency, Is.EqualTo(editCommand.Currency));
+        Assert.That(expense.Currency, Is.EqualTo("PLN"));
         Assert.That(expense.MadeOn, Is.EqualTo(editCommand.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(expense.Comment, Is.EqualTo(editCommand.Comment));
         Assert.That(expense.Tags, Is.EquivalentTo(editCommand.Tags!));
@@ -195,22 +195,6 @@ public class EditExpenseTests : ExpensesTestBase
         var expenseId = await AddNewExpenseAsync();
 
         var command = await CreateEditExpenseCommand(expenseId, amount: amount);
-
-        await Assert.ThatAsync(
-            () => FinanceTrackingModule.ExecuteCommandAsync(command),
-            Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase(null!)]
-    [TestCase("")]
-    [TestCase("PL")]
-    [TestCase("PLNN")]
-    public async Task EditExpenseCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
-    {
-        var expenseId = await AddNewExpenseAsync();
-
-        var command = await CreateEditExpenseCommand(expenseId, currency: currency);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),

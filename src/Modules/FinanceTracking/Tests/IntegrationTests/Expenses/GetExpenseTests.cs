@@ -38,7 +38,6 @@ public class GetExpenseTests : ExpensesTestBase
             sourceWalletId: sourceWalletId,
             categoryId: categoryId,
             amount: 100,
-            currency: "USD",
             madeOn: DateTime.UtcNow,
             comment: "Clothes",
             tags: ["Clothes", "H&M"]);

@@ -21,7 +21,7 @@ internal class DebitWalletEntityTypeConfiguration : IEntityTypeConfiguration<Deb
         builder.Property<int>("_initialBalance");
         builder.Property<bool>("_isRemoved");
 
-        builder.OwnsOneCurrency("_currency");
+        builder.OwnsOneCurrency(w => w.Currency);
 
         builder.OwnsOne<BankAccountConnection>("_bankAccountConnection", b =>
         {

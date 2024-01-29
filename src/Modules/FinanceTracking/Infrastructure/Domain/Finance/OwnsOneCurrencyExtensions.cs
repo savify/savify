@@ -19,6 +19,18 @@ public static class OwnsOneCurrencyExtensions
         return builder;
     }
 
+    public static EntityTypeBuilder<TEntity> OwnsOneCurrency<TEntity>(this EntityTypeBuilder<TEntity> builder, Expression<Func<TEntity, Currency?>> navigationExpression, string? currencyColumnName = null) where TEntity : class
+    {
+        builder.OwnsOne(navigationExpression, b =>
+        {
+            b.ConfigureCurrency(currencyColumnName);
+        });
+
+        builder.Navigation(navigationExpression).IsRequired();
+
+        return builder;
+    }
+
     public static void OwnsOneCurrency<TEntity, TDependentEntity>(this OwnedNavigationBuilder<TEntity, TDependentEntity> builder, string navigationName, string? currencyColumnName = null)
         where TEntity : class
         where TDependentEntity : class

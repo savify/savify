@@ -96,7 +96,7 @@ public class BankConnectionProcessRedirectionTests : UnitTestBase
         _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(redirection);
 
         var bankConnectionStub = BankConnection.CreateFromBankConnectionProcess(bankConnectionProcess.Id, _bankId, _userId, new Consent(DateTime.MaxValue));
-        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, new Currency("USD"));
+        bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, Currency.From("USD"));
 
         _connectionCreationService
             .CreateConnection(bankConnectionProcess.Id, _userId, _bankId, "123456")

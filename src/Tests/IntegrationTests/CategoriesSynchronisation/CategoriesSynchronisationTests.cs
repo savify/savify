@@ -22,7 +22,7 @@ public class CategoriesSynchronisationTests : TestBase
         var expectedCategories = categories.Select(c => new CategoryIds(c.Id, c.ExternalId)).ToList();
 
         await AssertEventually(
-            new GetCreatedCategoriesFromFinanceTrackingProbe(expectedCategories, ConnectionString), 20000);
+            new GetCreatedCategoriesFromFinanceTrackingProbe(expectedCategories, ConnectionString));
     }
 
     private class GetCreatedCategoriesFromFinanceTrackingProbe(

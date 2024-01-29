@@ -18,7 +18,6 @@ public class ExpensesTestBase : TestBase
     OptionalParameter<Guid> sourceWalletId = default,
     OptionalParameter<Guid> categoryId = default,
     OptionalParameter<int> amount = default,
-    OptionalParameter<string> currency = default,
     OptionalParameter<DateTime> madeOn = default,
     OptionalParameter<string> comment = default,
     OptionalParameter<IEnumerable<string>> tags = default)
@@ -30,7 +29,6 @@ public class ExpensesTestBase : TestBase
             sourceWalletId.GetValueOr(await CreateCashWallet(userIdValue)),
             categoryId.GetValueOr(await CreateCategory()),
             amount.GetValueOr(100),
-            currency.GetValueOr("USD"),
             madeOn.GetValueOr(DateTime.UtcNow),
             comment.GetValueOr("Clothes"),
             tags.GetValueOr(["Clothes", "H&M"]));
@@ -47,7 +45,6 @@ public class ExpensesTestBase : TestBase
             sourceWalletId: sourceWalletIdValue,
             categoryId: categoryId,
             amount: 100,
-            currency: "USD",
             madeOn: DateTime.UtcNow,
             comment: "Savings expense",
             tags: ["Savings", "Minor"]);
@@ -63,7 +60,6 @@ public class ExpensesTestBase : TestBase
         OptionalParameter<Guid> sourceWalletId = default,
         OptionalParameter<Guid> categoryId = default,
         OptionalParameter<int> amount = default,
-        OptionalParameter<string> currency = default,
         OptionalParameter<DateTime> madeOn = default,
         OptionalParameter<string> comment = default,
         OptionalParameter<IEnumerable<string>> tags = default)
@@ -76,18 +72,17 @@ public class ExpensesTestBase : TestBase
             sourceWalletId.GetValueOr(await CreateCashWallet(userIdValue)),
             categoryId.GetValueOr(await CreateCategory()),
             amount.GetValueOr(500),
-            currency.GetValueOr("PLN"),
             madeOn.GetValueOr(DateTime.UtcNow),
             comment.GetValueOr("Edited expense"),
             tags.GetValueOr(["Edited"]));
     }
 
-    protected async Task<Guid> CreateCashWallet(Guid userId, int initialBalance = 100)
+    protected async Task<Guid> CreateCashWallet(Guid userId, int initialBalance = 100, string currency = "USD")
     {
         return await FinanceTrackingModule.ExecuteCommandAsync(new AddNewCashWalletCommand(
             userId.Equals(Guid.Empty) ? Guid.NewGuid() : userId,
             "Cash wallet",
-            "USD",
+            currency,
             initialBalance,
             "#000000",
             "https://cdn.savify.io/icons/icon.svg",

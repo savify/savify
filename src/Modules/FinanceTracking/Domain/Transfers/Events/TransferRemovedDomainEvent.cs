@@ -1,9 +1,9 @@
 ﻿using App.BuildingBlocks.Domain;
-using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Domain.Transfers.Events;
-public class TransferRemovedDomainEvent(TransferId transferId, WalletId sourceWalletId, WalletId targetWalletId, Money amount) : DomainEventBase
+
+public class TransferRemovedDomainEvent(TransferId transferId, WalletId sourceWalletId, WalletId targetWalletId, TransferAmount amount) : DomainEventBase
 {
     public TransferId TransferId { get; } = transferId;
 
@@ -11,5 +11,5 @@ public class TransferRemovedDomainEvent(TransferId transferId, WalletId sourceWa
 
     public WalletId TargetWalletId { get; } = targetWalletId;
 
-    public Money Amount { get; } = amount;
+    public TransferAmount Amount { get; } = amount;
 }

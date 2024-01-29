@@ -10,6 +10,7 @@ using App.Modules.FinanceTracking.Domain.Incomes;
 using App.Modules.FinanceTracking.Domain.Portfolios.InvestmentPortfolios;
 using App.Modules.FinanceTracking.Domain.Portfolios.PortfolioViewMetadata;
 using App.Modules.FinanceTracking.Domain.Transfers;
+using App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings;
 using App.Modules.FinanceTracking.Domain.Users.Tags;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.Domain.Wallets.CreditWallets;
@@ -23,7 +24,8 @@ using App.Modules.FinanceTracking.Infrastructure.Domain.Incomes;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Portfolios.InvestmentPortfolios;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Portfolios.PortfolioViewMetadata;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Transfers;
-using App.Modules.FinanceTracking.Infrastructure.Domain.UserTags;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Users.FinanceTrackingSettings;
+using App.Modules.FinanceTracking.Infrastructure.Domain.Users.Tags;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CashWallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.CreditWallets;
 using App.Modules.FinanceTracking.Infrastructure.Domain.Wallets.DebitWallets;
@@ -61,6 +63,8 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
 
     public required DbSet<UserTags> UserTags { get; set; }
 
+    public required DbSet<UserFinanceTrackingSettings> UserFinanceTrackingSettings { get; set; }
+
     public required DbSet<OutboxMessage> OutboxMessages { get; set; }
 
     public required DbSet<InboxMessage> InboxMessages { get; set; }
@@ -93,6 +97,7 @@ public class FinanceTrackingContext(DbContextOptions<FinanceTrackingContext> opt
         modelBuilder.ApplyConfiguration(new ExpenseEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new IncomeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new UserTagsEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new UserFinanceTrackingSettingsEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeCustomerEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new SaltEdgeConnectionEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OutboxMessageEntityTypeConfiguration());

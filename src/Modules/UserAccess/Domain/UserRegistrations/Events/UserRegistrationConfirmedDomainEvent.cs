@@ -3,21 +3,21 @@ using App.Modules.UserAccess.Domain.Users;
 
 namespace App.Modules.UserAccess.Domain.UserRegistrations.Events;
 
-public class UserRegistrationConfirmedDomainEvent : DomainEventBase
+public class UserRegistrationConfirmedDomainEvent(
+    UserRegistrationId userRegistrationId,
+    string email,
+    string name,
+    Country country,
+    Language preferredLanguage)
+    : DomainEventBase
 {
-    public UserRegistrationId UserRegistrationId { get; }
+    public UserRegistrationId UserRegistrationId { get; } = userRegistrationId;
 
-    public string Email { get; }
+    public string Email { get; } = email;
 
-    public string Name { get; }
+    public string Name { get; } = name;
 
-    public Language PreferredLanguage { get; }
+    public Country Country { get; } = country;
 
-    public UserRegistrationConfirmedDomainEvent(UserRegistrationId userRegistrationId, string email, string name, Language preferredLanguage)
-    {
-        UserRegistrationId = userRegistrationId;
-        Email = email;
-        Name = name;
-        PreferredLanguage = preferredLanguage;
-    }
+    public Language PreferredLanguage { get; } = preferredLanguage;
 }

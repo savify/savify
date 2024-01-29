@@ -25,6 +25,8 @@ namespace App.IntegrationTests.SeedWork;
 
 public class TestBase
 {
+    protected const int TestExecutionTimeout = 30000;
+
     protected CustomWebApplicationFactory<Program> WebApplicationFactory { get; private set; }
 
     protected IBanksModule BanksModule { get; private set; }
@@ -83,7 +85,7 @@ public class TestBase
         await ClearDatabase(sqlConnection);
     }
 
-    protected static async Task AssertEventually(IProbe probe, int timeout)
+    protected static async Task AssertEventually(IProbe probe, int timeout = TestExecutionTimeout)
     {
         await new Poller(timeout).CheckAsync(probe);
     }

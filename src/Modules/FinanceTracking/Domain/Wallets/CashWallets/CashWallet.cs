@@ -5,16 +5,13 @@ using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.CashWallets.Rules;
 using App.Modules.FinanceTracking.Domain.Wallets.Events;
 using App.Modules.FinanceTracking.Domain.Wallets.ManualBalanceChanges;
+using App.Modules.FinanceTracking.Domain.Wallets.Rules;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets.CashWallets;
 
 public class CashWallet : Wallet, IAggregateRoot
 {
-    public UserId UserId { get; private set; }
-
     private string _title;
-
-    private Currency _currency;
 
     private int _initialBalance;
 
@@ -40,14 +37,14 @@ public class CashWallet : Wallet, IAggregateRoot
     {
         if (newBalance < _balance)
         {
-            var amount = Money.From(_balance - newBalance, _currency);
+            var amount = Money.From(_balance - newBalance, Currency);
 
             DecreaseBalance(amount);
             AddManualBalanceChange(amount, ManualBalanceChangeType.Decrease);
         }
         else
         {
-            var amount = Money.From(newBalance - _balance, _currency);
+            var amount = Money.From(newBalance - _balance, Currency);
 
             IncreaseBalance(amount);
             AddManualBalanceChange(amount, ManualBalanceChangeType.Increase);
@@ -56,7 +53,8 @@ public class CashWallet : Wallet, IAggregateRoot
 
     public override void IncreaseBalance(Money amount)
     {
-        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new BalanceChangeAmountMustBeInTheWalletCurrencyRule(amount, Currency));
 
         _balance += amount.Amount;
 
@@ -65,7 +63,8 @@ public class CashWallet : Wallet, IAggregateRoot
 
     public override void DecreaseBalance(Money amount)
     {
-        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved));
+        CheckRules(new CashWalletCannotBeChangedIfWasRemovedRule(Id, _isRemoved),
+            new BalanceChangeAmountMustBeInTheWalletCurrencyRule(amount, Currency));
 
         _balance -= amount.Amount;
 
@@ -108,11 +107,11 @@ public class CashWallet : Wallet, IAggregateRoot
         Id = new WalletId(Guid.NewGuid());
         UserId = userId;
         _title = title;
-        _currency = currency;
+        Currency = currency;
         _initialBalance = initialBalance;
         _balance = initialBalance;
 
-        AddDomainEvent(new CashWalletAddedDomainEvent(Id, UserId, _currency));
+        AddDomainEvent(new CashWalletAddedDomainEvent(Id, UserId, Currency));
     }
 
     private CashWallet() { }

@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Domain;
 using App.Modules.FinanceTracking.Domain.Finance;
+using App.Modules.FinanceTracking.Domain.Users;
 using App.Modules.FinanceTracking.Domain.Wallets.ManualBalanceChanges;
 
 namespace App.Modules.FinanceTracking.Domain.Wallets;
@@ -7,6 +8,10 @@ namespace App.Modules.FinanceTracking.Domain.Wallets;
 public abstract class Wallet : Entity
 {
     public WalletId Id { get; protected set; }
+
+    public UserId UserId { get; protected set; }
+
+    public Currency Currency { get; protected set; }
 
     private List<ManualBalanceChange> _manualBalanceChanges = new();
 

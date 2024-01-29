@@ -2,7 +2,7 @@
 using App.BuildingBlocks.Infrastructure.Exceptions;
 using App.BuildingBlocks.Tests.Creating.OptionalParameters;
 using App.Modules.FinanceTracking.Application.Transfers.GetTransfer;
-using App.Modules.FinanceTracking.Application.UserTags.GetUserTags;
+using App.Modules.FinanceTracking.Application.Users.Tags.GetUserTags;
 using App.Modules.FinanceTracking.Application.Wallets.CashWallets.GetCashWallet;
 using App.Modules.FinanceTracking.Domain.Transfers;
 
@@ -27,11 +27,54 @@ public class EditTransfersTests : TransfersTestBase
         Assert.That(transfer!.Id, Is.EqualTo(transferId));
         Assert.That(transfer.SourceWalletId, Is.EqualTo(editCommand.SourceWalletId));
         Assert.That(transfer.TargetWalletId, Is.EqualTo(editCommand.TargetWalletId));
-        Assert.That(transfer.Amount, Is.EqualTo(editCommand.Amount));
-        Assert.That(transfer.Currency, Is.EqualTo(editCommand.Currency));
         Assert.That(transfer.MadeOn, Is.EqualTo(editCommand.MadeOn).Within(TimeSpan.FromSeconds(1)));
         Assert.That(transfer.Comment, Is.EqualTo(editCommand.Comment));
         Assert.That(transfer.Tags, Is.EquivalentTo(editCommand.Tags!));
+        Assert.That(transfer.SourceAmount, Is.EqualTo(editCommand.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(editCommand.SourceAmount));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(decimal.One));
+    }
+
+    [Test]
+    public async Task EditTransferCommand_WithTargetWalletWithDifferentCurrency_CalculatesExchangeRate_AndEditsTransfer()
+    {
+        SaltEdgeHttpClientMocker.MockFetchExchangeRatesSuccessfulResponse();
+
+        var userId = Guid.NewGuid();
+        var transferId = await AddNewTransferAsync(userId);
+
+        var editCommand = await CreateEditTransferCommand(transferId, userId, targetCurrency: "PLN");
+
+        await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
+
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, userId));
+
+        Assert.That(transfer!.SourceAmount, Is.EqualTo(editCommand.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(editCommand.SourceAmount * 4));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("PLN"));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(4m));
+    }
+
+    [Test]
+    public async Task EditTransferCommand_WithTargetWalletWithDifferentCurrency_AndWithGivenTargetAmount_EditsTransfer_WithCustomExchangeRate()
+    {
+        var userId = Guid.NewGuid();
+        var transferId = await AddNewTransferAsync(userId);
+
+        var editCommand = await CreateEditTransferCommand(transferId, userId, sourceAmount: 200, targetAmount: 810, targetCurrency: "PLN");
+
+        await FinanceTrackingModule.ExecuteCommandAsync(editCommand);
+
+        var transfer = await FinanceTrackingModule.ExecuteQueryAsync(new GetTransferQuery(transferId, userId));
+
+        Assert.That(transfer!.SourceAmount, Is.EqualTo(editCommand.SourceAmount));
+        Assert.That(transfer.SourceCurrency, Is.EqualTo("USD"));
+        Assert.That(transfer.TargetAmount, Is.EqualTo(810));
+        Assert.That(transfer.TargetCurrency, Is.EqualTo("PLN"));
+        Assert.That(transfer.ExchangeRate, Is.EqualTo(4.05m));
     }
 
     [Test]
@@ -57,9 +100,9 @@ public class EditTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
+        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, sourceAmount: 100);
 
-        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, targetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, targetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -76,10 +119,10 @@ public class EditTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
+        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, sourceAmount: 100);
 
         var newSourceWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, targetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, targetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -98,10 +141,10 @@ public class EditTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
+        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, sourceAmount: 100);
 
         var newTargetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, newTargetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, sourceWalletId, newTargetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -120,11 +163,11 @@ public class EditTransfersTests : TransfersTestBase
         var userId = Guid.NewGuid();
         var sourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var targetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, amount: 100);
+        var transferId = await AddNewTransferAsync(userId, sourceWalletId, targetWalletId, sourceAmount: 100);
 
         var newSourceWalletId = await CreateWallet(userId, initialBalance: 100);
         var newTargetWalletId = await CreateWallet(userId, initialBalance: 100);
-        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, newTargetWalletId, amount: 50);
+        var command = await CreateEditTransferCommand(transferId, userId, newSourceWalletId, newTargetWalletId, sourceAmount: 50);
 
         await FinanceTrackingModule.ExecuteCommandAsync(command);
 
@@ -211,23 +254,7 @@ public class EditTransfersTests : TransfersTestBase
     {
         var transferId = await AddNewTransferAsync();
 
-        var command = await CreateEditTransferCommand(transferId, amount: amount);
-
-        await Assert.ThatAsync(
-            () => FinanceTrackingModule.ExecuteCommandAsync(command),
-            Throws.TypeOf<InvalidCommandException>());
-    }
-
-    [Test]
-    [TestCase(null!)]
-    [TestCase("")]
-    [TestCase("PL")]
-    [TestCase("PLNN")]
-    public async Task EditTransferCommand_WhenCurrencyIsNotIsoFormat_ThrowsInvalidCommandException(string currency)
-    {
-        var transferId = await AddNewTransferAsync();
-
-        var command = await CreateEditTransferCommand(transferId, currency: currency);
+        var command = await CreateEditTransferCommand(transferId, sourceAmount: amount);
 
         await Assert.ThatAsync(
             () => FinanceTrackingModule.ExecuteCommandAsync(command),

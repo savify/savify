@@ -6,12 +6,10 @@ namespace App.Modules.FinanceTracking.Domain.Transfers.Rules;
 
 public class TransferSourceAndTargetMustBeOwnedByTheSameUserRule(
     UserId userId,
-    WalletId sourceWalletId,
-    WalletId targetWalletId,
-    IWalletsRepository walletsRepository) : IBusinessRule
+    Wallet sourceWallet,
+    Wallet targetWallet) : IBusinessRule
 {
-    public bool IsBroken() => !(walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId) &&
-                              walletsRepository.ExistsForUserIdAndWalletId(userId, targetWalletId));
+    public bool IsBroken() => !(userId == sourceWallet.UserId && userId == targetWallet.UserId);
 
     public string MessageTemplate => "Source and target wallets must be owned by the same user";
 }

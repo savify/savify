@@ -4,9 +4,9 @@ using App.Modules.FinanceTracking.Domain.Wallets;
 
 namespace App.Modules.FinanceTracking.Domain.Expenses.Rules;
 
-public class ExpenseSourceWalletMustBeOwnedByUserRule(UserId userId, WalletId sourceWalletId, IWalletsRepository walletsRepository) : IBusinessRule
+public class ExpenseSourceWalletMustBeOwnedByUserRule(UserId userId, Wallet sourceWallet) : IBusinessRule
 {
-    public bool IsBroken() => !walletsRepository.ExistsForUserIdAndWalletId(userId, sourceWalletId);
+    public bool IsBroken() => sourceWallet.UserId != userId;
 
     public string MessageTemplate => "Source wallet must be owned by the user";
 }
