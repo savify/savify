@@ -7,7 +7,7 @@ public class RepositoryExceptionProblemDetails : ProblemDetails
 {
     public RepositoryExceptionProblemDetails(RepositoryException exception)
     {
-        Title = "Repository error";
+        Title = "Resource not found";
         Detail = exception.Message;
 
         if (exception.GetType().GetGenericTypeDefinition() == typeof(NotFoundRepositoryException<>))

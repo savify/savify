@@ -33,6 +33,11 @@ public class Budget : Entity, IAggregateRoot
         AddDomainEvent(new BudgetEditedDomainEvent(Id, UserId));
     }
 
+    public void Remove()
+    {
+        AddDomainEvent(new BudgetRemovedDomainEvent(Id, UserId));
+    }
+
     private Budget(UserId userId, BudgetPeriod period, IEnumerable<CategoryBudget> categoriesBudget)
     {
         Id = new BudgetId(Guid.NewGuid());

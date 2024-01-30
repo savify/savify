@@ -3,6 +3,7 @@ using App.API.Modules.FinanceTracking.Budgets.Requests;
 using App.BuildingBlocks.Application;
 using App.Modules.FinanceTracking.Application.Budgets.AddBudget;
 using App.Modules.FinanceTracking.Application.Budgets.EditBudget;
+using App.Modules.FinanceTracking.Application.Budgets.RemoveBudget;
 using App.Modules.FinanceTracking.Application.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,5 +51,18 @@ public class BudgetsController(
         ));
 
         return Ok();
+    }
+
+    [HttpDelete("{budgetId}")]
+    [HasPermission(FinanceTrackingPermissions.ManageBudgets)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> Remove(Guid budgetId)
+    {
+        await financeTrackingModule.ExecuteCommandAsync(new RemoveBudgetCommand(
+            budgetId,
+            executionContextAccessor.UserId
+        ));
+
+        return NoContent();
     }
 }

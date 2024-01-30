@@ -6,16 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.FinanceTracking.Infrastructure.Domain.Budgets;
 
-public class BudgetRepository(FinanceTrackingContext financeTrackingContext) : IBudgetRepository
+public class BudgetRepository(FinanceTrackingContext context) : IBudgetRepository
 {
     public async Task AddAsync(Budget budget)
     {
-        await financeTrackingContext.AddAsync(budget);
+        await context.AddAsync(budget);
+    }
+
+    public void Remove(Budget budget)
+    {
+        context.Remove(budget);
     }
 
     public async Task<Budget> GetByIdAsync(BudgetId id)
     {
-        var budget = await financeTrackingContext.Budgets.SingleOrDefaultAsync(e => e.Id == id);
+        var budget = await context.Budgets.SingleOrDefaultAsync(e => e.Id == id);
 
         if (budget is null)
         {

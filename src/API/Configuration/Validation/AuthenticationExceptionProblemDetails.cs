@@ -7,7 +7,7 @@ public class AuthenticationExceptionProblemDetails : ProblemDetails
 {
     public AuthenticationExceptionProblemDetails(AuthenticationException exception)
     {
-        Title = "Authentication exception";
+        Title = "User is not authenticated";
         Status = StatusCodes.Status401Unauthorized;
         Detail = exception.Message;
     }

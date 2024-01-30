@@ -17,7 +17,6 @@ public class AddBudgetCommandValidator : Validator<AddBudgetCommand>
                 var supportedCurrencyCodes = (await currenciesProvider.GetCurrenciesAsync()).Select(c => c.Value).ToArray();
 
                 return supportedCurrencyCodes.Contains(currencyCode);
-
             })
             .WithMessage("Given currency code is not supported");
 
