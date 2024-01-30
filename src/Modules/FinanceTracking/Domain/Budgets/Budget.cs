@@ -19,11 +19,6 @@ public class Budget : Entity, IAggregateRoot
         return new Budget(userId, period, categoriesBudget);
     }
 
-    public Budget CloneForPeriod(BudgetPeriod period)
-    {
-        return new Budget(UserId, period, _categoriesBudget);
-    }
-
     public void Edit(BudgetPeriod newPeriod, IEnumerable<CategoryBudget> newCategoriesBudget)
     {
         _period = newPeriod;
