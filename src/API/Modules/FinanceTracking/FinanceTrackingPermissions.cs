@@ -10,5 +10,7 @@ public static class FinanceTrackingPermissions
 
     public const string ManageIncomes = nameof(ManageIncomes);
 
+    public const string ManageBudgets = nameof(ManageBudgets);
+
     public const string ConnectBankAccountsToWallets = nameof(ConnectBankAccountsToWallets);
 }

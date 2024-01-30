@@ -5,6 +5,7 @@ INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageWal
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageTransfers', 'ManageTransfers', 'Allows to manage Transfers');
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageExpenses', 'ManageExpenses', 'Allows to manage Expenses');
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageIncomes', 'ManageIncomes', 'Allows to manage Incomes');
+INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageBudgets', 'ManageBudgets', 'Allows to manage Budgets');
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ConnectBankAccountsToWallets', 'ConnectBankAccountsToWallets', 'Allows to connect bank account to wallets');
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageBanks', 'ManageBanks', 'Allows to manage banks');
 INSERT INTO user_access.permissions (code, name, description) VALUES ('ManageCategories', 'ManageCategories', 'Allows to manage categories');
@@ -18,6 +19,7 @@ INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageTransfers');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageExpenses');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageIncomes');
+INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageBudgets');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ConnectBankAccountsToWallets');
 INSERT INTO user_access.roles_permissions (role_code, permission_code) VALUES ('User', 'ManageCustomCategories');
 
