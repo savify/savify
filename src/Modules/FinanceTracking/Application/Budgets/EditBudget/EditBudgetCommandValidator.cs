@@ -4,11 +4,11 @@ using App.Modules.FinanceTracking.Application.Validation.Currency;
 using App.Modules.FinanceTracking.Domain.Categories;
 using FluentValidation;
 
-namespace App.Modules.FinanceTracking.Application.Budgets.AddBudget;
+namespace App.Modules.FinanceTracking.Application.Budgets.EditBudget;
 
-public class AddBudgetCommandValidator : Validator<AddBudgetCommand>
+public class EditBudgetCommandValidator : Validator<EditBudgetCommand>
 {
-    public AddBudgetCommandValidator(ICurrenciesProvider currenciesProvider, ICategoryRepository categoryRepository)
+    public EditBudgetCommandValidator(ICurrenciesProvider currenciesProvider, ICategoryRepository categoryRepository)
     {
         RuleFor(c => c.Currency)
             .MustBeInCurrencyCodeIsoFormat()

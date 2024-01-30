@@ -28,11 +28,7 @@ public class Budget : Entity, IAggregateRoot
     {
         _period = newPeriod;
 
-        _categoriesBudget = new List<CategoryBudget>();
-        foreach (var categoryBudget in newCategoriesBudget)
-        {
-            _categoriesBudget.Add(categoryBudget);
-        }
+        _categoriesBudget = newCategoriesBudget.ToList();
 
         AddDomainEvent(new BudgetEditedDomainEvent(Id, UserId));
     }
@@ -42,11 +38,7 @@ public class Budget : Entity, IAggregateRoot
         Id = new BudgetId(Guid.NewGuid());
         UserId = userId;
         _period = period;
-        _categoriesBudget = new List<CategoryBudget>();
-        foreach (var categoryBudget in categoriesBudget)
-        {
-            _categoriesBudget.Add(categoryBudget);
-        }
+        _categoriesBudget = categoriesBudget.ToList();
 
         AddDomainEvent(new BudgetAddedDomainEvent(Id, UserId));
     }

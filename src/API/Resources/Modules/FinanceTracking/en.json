@@ -45,5 +45,7 @@
   "Source currency '{0}' doesn't match exchange rate currency '{1}'": "Source currency '{0}' doesn't match exchange rate currency '{1}'",
   "Currency '{0}' does not match wallet currency '{1}'": "Currency '{0}' does not match wallet currency '{1}'",
   "End date cannot be earlier than start date": "End date cannot be earlier than start date",
-  "Given currency code is not supported": "Given currency code is not supported"
+  "Given currency code is not supported": "Given currency code is not supported",
+  "Budget amount for each category cannot be negative": "Budget amount for each category cannot be negative",
+  "Some of provided categories does not exist": "Some of provided categories does not exist"
 }
