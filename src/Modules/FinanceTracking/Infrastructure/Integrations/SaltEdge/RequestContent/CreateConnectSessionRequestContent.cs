@@ -36,7 +36,7 @@ public class Consent
 public class Attempt(
     Guid bankConnectionProcessId,
     string returnTo,
-    string locale = "en",
+    string locale,
     bool fetchedAccountsNotify = true)
 {
     public string ReturnTo { get; } = returnTo;

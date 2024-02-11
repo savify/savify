@@ -22,7 +22,6 @@ public class BankConnectionProcessRedirectionService(
 
         try
         {
-            // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
             var responseContent = await saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl, language.Value);
 
             return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt.ToUniversalTime());

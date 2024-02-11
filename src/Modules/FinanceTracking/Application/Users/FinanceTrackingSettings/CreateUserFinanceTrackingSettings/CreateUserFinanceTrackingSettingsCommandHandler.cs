@@ -15,7 +15,8 @@ internal class CreateUserFinanceTrackingSettingsCommandHandler(
 
         var financeTrackingSettings = UserFinanceTrackingSettings.Create(
             new UserId(command.UserId),
-            currency);
+            currency,
+            Language.From(command.PreferredLanguage));
 
         await userFinanceTrackingSettingsRepository.AddAsync(financeTrackingSettings);
     }
