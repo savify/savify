@@ -6,6 +6,7 @@ using App.Modules.FinanceTracking.Domain.BankConnectionProcessing.Services;
 using App.Modules.FinanceTracking.Domain.BankConnections;
 using App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts;
 using App.Modules.FinanceTracking.Domain.Users;
+using App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings;
 using App.Modules.FinanceTracking.Domain.Wallets;
 using App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections;
 
@@ -40,12 +41,12 @@ public class BankConnectionProcess : Entity, IAggregateRoot
         return new BankConnectionProcess(userId, bankId, walletId, walletType);
     }
 
-    public async Task<Result<string, RedirectionError>> Redirect(IBankConnectionProcessRedirectionService redirectionService)
+    public async Task<Result<string, RedirectionError>> Redirect(IBankConnectionProcessRedirectionService redirectionService, Language language)
     {
         CheckRules(new BankConnectionProcessCannotMakeRedirectionWhenRedirectUrlIsExpiredRule(_status),
             new CannotOperateOnBankConnectionProcessWithFinalStatusRule(_status));
 
-        var redirectionResult = await redirectionService.Redirect(Id, UserId, BankId);
+        var redirectionResult = await redirectionService.Redirect(Id, UserId, BankId, language);
 
         if (redirectionResult.IsError && redirectionResult.Error == RedirectionError.ExternalProviderError)
         {

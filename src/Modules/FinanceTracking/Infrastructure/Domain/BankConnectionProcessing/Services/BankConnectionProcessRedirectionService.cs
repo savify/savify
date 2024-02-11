@@ -3,6 +3,7 @@ using App.Modules.FinanceTracking.Domain.BankConnectionProcessing;
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing.Services;
 using App.Modules.FinanceTracking.Domain.BankConnections;
 using App.Modules.FinanceTracking.Domain.Users;
+using App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Customers;
 
@@ -13,7 +14,7 @@ public class BankConnectionProcessRedirectionService(
     ISaltEdgeIntegrationService saltEdgeIntegrationService)
     : IBankConnectionProcessRedirectionService
 {
-    public async Task<Result<Redirection, RedirectionError>> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId)
+    public async Task<Result<Redirection, RedirectionError>> Redirect(BankConnectionProcessId id, UserId userId, BankId bankId, Language language)
     {
         var customer = await customerRepository.GetAsync(userId.Value);
         var providerCode = "fakebank_interactive_xf"; // TODO: get provider code (external bank id) from 'Banks' module
@@ -22,7 +23,7 @@ public class BankConnectionProcessRedirectionService(
         try
         {
             // TODO: handle different locales (languages) at CreateConnectSessionRequestContent.Attempt (get language from User)
-            var responseContent = await saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl);
+            var responseContent = await saltEdgeIntegrationService.CreateConnectSessionAsync(id.Value, customer.Id, providerCode, returnToUrl, language.Value);
 
             return new Redirection(responseContent.ConnectUrl, responseContent.ExpiresAt.ToUniversalTime());
         }
