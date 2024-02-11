@@ -12,9 +12,11 @@ public class UserFinanceTrackingSettings : Entity
 
     public Currency DefaultCurrency { get; private set; }
 
-    public static UserFinanceTrackingSettings Create(UserId userId, Currency defaultCurrency)
+    public Language PreferredLanguage { get; private set; }
+
+    public static UserFinanceTrackingSettings Create(UserId userId, Currency defaultCurrency, Language preferredLanguage)
     {
-        return new UserFinanceTrackingSettings(userId, defaultCurrency);
+        return new UserFinanceTrackingSettings(userId, defaultCurrency, preferredLanguage);
     }
 
     public void UpdateDefaultCurrency(Currency newDefaultCurrency)
@@ -24,11 +26,12 @@ public class UserFinanceTrackingSettings : Entity
         AddDomainEvent(new UsersDefaultCurrencyUpdatedDomainEvent(UserId, DefaultCurrency));
     }
 
-    private UserFinanceTrackingSettings(UserId userId, Currency defaultCurrency)
+    private UserFinanceTrackingSettings(UserId userId, Currency defaultCurrency, Language preferredLanguage)
     {
         Id = new UserFinanceTrackingSettingsId(Guid.NewGuid());
         UserId = userId;
         DefaultCurrency = defaultCurrency;
+        PreferredLanguage = preferredLanguage;
     }
 
     private UserFinanceTrackingSettings() { }

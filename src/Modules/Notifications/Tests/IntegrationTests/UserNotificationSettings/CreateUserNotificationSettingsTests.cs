@@ -1,3 +1,4 @@
+using App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings;
 using App.Modules.Notifications.Application.UserNotificationSettings.CreateUserNotificationSettings;
 using App.Modules.Notifications.Domain.UserNotificationSettings;
 using Microsoft.Extensions.DependencyInjection;

@@ -13,6 +13,7 @@ public class UserRegistrationConfirmedIntegrationEventHandler(ICommandScheduler 
             @event.Id,
             @event.CorrelationId,
             @event.UserId,
-            @event.Country));
+            @event.Country,
+            @event.PreferredLanguage));
     }
 }

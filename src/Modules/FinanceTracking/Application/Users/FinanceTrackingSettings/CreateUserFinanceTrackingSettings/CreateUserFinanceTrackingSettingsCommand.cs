@@ -8,10 +8,13 @@ public class CreateUserFinanceTrackingSettingsCommand(
     Guid id,
     Guid correlationId,
     Guid userId,
-    string countryCode)
+    string countryCode,
+    string preferredLanguage)
     : InternalCommandBase(id, correlationId)
 {
     internal Guid UserId { get; } = userId;
 
     internal string CountryCode { get; } = countryCode;
+
+    internal string PreferredLanguage { get; } = preferredLanguage;
 }
