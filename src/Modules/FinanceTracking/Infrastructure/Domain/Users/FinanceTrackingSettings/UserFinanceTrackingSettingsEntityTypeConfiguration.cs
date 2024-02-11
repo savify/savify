@@ -15,5 +15,9 @@ public class UserFinanceTrackingSettingsEntityTypeConfiguration : IEntityTypeCon
         builder.HasKey(x => x.Id);
         builder.Property<UserId>(x => x.UserId);
         builder.OwnsOneCurrency("DefaultCurrency");
+        builder.OwnsOne(x => x.PreferredLanguage, b =>
+        {
+            b.Property(p => p.Value).IsRequired().HasColumnName("preferred_language");
+        });
     }
 }
