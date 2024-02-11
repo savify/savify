@@ -6,8 +6,10 @@ using App.Modules.FinanceTracking.Domain.BankConnections;
 using App.Modules.FinanceTracking.Domain.BankConnections.BankAccounts;
 using App.Modules.FinanceTracking.Domain.Finance;
 using App.Modules.FinanceTracking.Domain.Users;
+using App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings;
 using App.Modules.FinanceTracking.Domain.Wallets;
 using App.Modules.FinanceTracking.Domain.Wallets.BankAccountConnections;
+using Castle.DynamicProxy;
 
 namespace App.Modules.FinanceTracking.UnitTests.BankConnectionProcessing;
 
@@ -19,6 +21,8 @@ public class BankConnectionProcessBankAccountChoosingTests : UnitTestBase
     private static BankId _bankId = null!;
 
     private static WalletId _walletId = null!;
+
+    private static Language _language = null!;
 
     private static IBankConnectionProcessInitiationService _initiationService = null!;
 
@@ -46,9 +50,9 @@ public class BankConnectionProcessBankAccountChoosingTests : UnitTestBase
         var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
 
         var redirection = new Redirection("https://redirect-url.com/connect", DateTime.MaxValue);
-        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(redirection);
+        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId, _language).Returns(redirection);
 
-        await bankConnectionProcess.Redirect(_redirectionService);
+        await bankConnectionProcess.Redirect(_redirectionService, _language);
 
         var bankConnectionStub = BankConnection.CreateFromBankConnectionProcess(bankConnectionProcess.Id, _bankId, _userId, new Consent(DateTime.MaxValue));
         bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, Currency.From("USD"));
@@ -80,9 +84,9 @@ public class BankConnectionProcessBankAccountChoosingTests : UnitTestBase
         var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
 
         var redirection = new Redirection("https://redirect-url.com/connect", DateTime.MaxValue);
-        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId).Returns(redirection);
+        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId, _language).Returns(redirection);
 
-        await bankConnectionProcess.Redirect(_redirectionService);
+        await bankConnectionProcess.Redirect(_redirectionService, _language);
 
         var bankConnectionStub = BankConnection.CreateFromBankConnectionProcess(bankConnectionProcess.Id, _bankId, _userId, new Consent(DateTime.MaxValue));
         bankConnectionStub.AddBankAccount("123", "Test Account 1", 100, Currency.From("USD"));

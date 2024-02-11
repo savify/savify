@@ -10,7 +10,7 @@ public interface ISaltEdgeIntegrationService
     public Task<CreateCustomerResponseContent> CreateCustomerAsync(Guid userId);
 
     public Task<CreateConnectSessionResponseContent> CreateConnectSessionAsync(Guid bankConnectionProcessId,
-        string customerId, string providerCode, string returnToUrl);
+        string customerId, string providerCode, string returnToUrl, string language);
 
     public Task<SaltEdgeConnection> FetchConnectionAsync(string connectionId);
 

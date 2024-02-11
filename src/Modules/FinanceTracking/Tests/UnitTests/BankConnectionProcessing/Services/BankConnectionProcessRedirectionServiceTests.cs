@@ -1,6 +1,7 @@
 using App.Modules.FinanceTracking.Domain.BankConnectionProcessing;
 using App.Modules.FinanceTracking.Domain.BankConnections;
 using App.Modules.FinanceTracking.Domain.Users;
+using App.Modules.FinanceTracking.Domain.Users.FinanceTrackingSettings;
 using App.Modules.FinanceTracking.Infrastructure.Domain.BankConnectionProcessing.Services;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge;
 using App.Modules.FinanceTracking.Infrastructure.Integrations.SaltEdge.Customers;
@@ -17,6 +18,7 @@ public class BankConnectionProcessRedirectionServiceTests : UnitTestBase
         var bankConnectionProcessId = new BankConnectionProcessId(Guid.NewGuid());
         var userId = new UserId(Guid.NewGuid());
         var bankId = new BankId(Guid.NewGuid());
+        var language = new Language("en");
 
         var customerRepository = Substitute.For<ISaltEdgeCustomerRepository>();
         customerRepository.GetAsync(userId.Value).Returns(new SaltEdgeCustomer("123456", userId.Value));
@@ -33,12 +35,13 @@ public class BankConnectionProcessRedirectionServiceTests : UnitTestBase
             bankConnectionProcessId.Value,
             "123456",
             "fakebank_interactive_xf",
-            "https://display-parameters.com/")
+            "https://display-parameters.com/",
+            language.Value)
             .Returns(responseContent);
 
         var redirectionService = new BankConnectionProcessRedirectionService(customerRepository, integrationService);
 
-        var redirectionResult = await redirectionService.Redirect(bankConnectionProcessId, userId, bankId);
+        var redirectionResult = await redirectionService.Redirect(bankConnectionProcessId, userId, bankId, language);
 
         Assert.That(redirectionResult.Success.Url, Is.EqualTo(responseContent.ConnectUrl));
         Assert.That(redirectionResult.Success.ExpiresAt, Is.EqualTo(responseContent.ExpiresAt));
@@ -47,6 +50,7 @@ public class BankConnectionProcessRedirectionServiceTests : UnitTestBase
         await integrationService.Received(1).CreateConnectSessionAsync(bankConnectionProcessId.Value,
             "123456",
             "fakebank_interactive_xf",
-            "https://display-parameters.com/");
+            "https://display-parameters.com/",
+            language.Value);
     }
 }

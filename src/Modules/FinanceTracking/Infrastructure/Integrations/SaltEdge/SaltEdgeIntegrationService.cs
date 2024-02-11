@@ -26,14 +26,14 @@ public class SaltEdgeIntegrationService(ISaltEdgeHttpClient client) : ISaltEdgeI
         return response.Content?.As<CreateCustomerResponseContent>()!;
     }
 
-    public async Task<CreateConnectSessionResponseContent> CreateConnectSessionAsync(Guid bankConnectionProcessId, string customerId, string providerCode, string returnToUrl)
+    public async Task<CreateConnectSessionResponseContent> CreateConnectSessionAsync(Guid bankConnectionProcessId, string customerId, string providerCode, string returnToUrl, string language)
     {
         var request = Request.Post("connect_sessions/create")
             .WithContent(new CreateConnectSessionRequestContent(
                 customerId,
                 providerCode,
                 Consent.Default,
-                new Attempt(bankConnectionProcessId, returnToUrl)));
+                new Attempt(bankConnectionProcessId, returnToUrl, language)));
 
         var response = await client.SendAsync(request);
 

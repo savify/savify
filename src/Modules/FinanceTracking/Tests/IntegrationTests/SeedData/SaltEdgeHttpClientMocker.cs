@@ -49,7 +49,11 @@ public class SaltEdgeHttpClientMocker
                         data = new
                         {
                             customer_id = BankConnectionProcessingData.ExternalCustomerId,
-                            provider_code = BankConnectionProcessingData.ExternalProviderCode
+                            provider_code = BankConnectionProcessingData.ExternalProviderCode,
+                            attempt = new
+                            {
+                                locale = BankConnectionProcessingData.UserLanguage
+                            }
                         }
                     }))
                     .UsingPost()
