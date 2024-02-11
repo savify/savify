@@ -18,7 +18,7 @@ public class BankConnectionProcessExpirationTests : UnitTestBase
 
     private static WalletId _walletId = null!;
 
-    private static Language _userPreferredLanguage = null!;
+    private static Language _language = null!;
 
     private static IBankConnectionProcessInitiationService _initiationService = null!;
 
@@ -41,9 +41,9 @@ public class BankConnectionProcessExpirationTests : UnitTestBase
         var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
 
         var redirection = new Redirection("https://redirect-url.com/connect", DateTime.MinValue);
-        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId, _userPreferredLanguage).Returns(redirection);
+        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId, _language).Returns(redirection);
 
-        await bankConnectionProcess.Redirect(_redirectionService, _userPreferredLanguage);
+        await bankConnectionProcess.Redirect(_redirectionService, _language);
 
         bankConnectionProcess.Expire();
 
@@ -57,9 +57,9 @@ public class BankConnectionProcessExpirationTests : UnitTestBase
         var bankConnectionProcess = await BankConnectionProcess.Initiate(_userId, _bankId, _walletId, WalletType.Debit, _initiationService);
 
         var redirection = new Redirection("https://redirect-url.com/connect", DateTime.MaxValue);
-        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId, _userPreferredLanguage).Returns(redirection);
+        _redirectionService.Redirect(bankConnectionProcess.Id, _userId, _bankId, _language).Returns(redirection);
 
-        await bankConnectionProcess.Redirect(_redirectionService, _userPreferredLanguage);
+        await bankConnectionProcess.Redirect(_redirectionService, _language);
 
         AssertBrokenRule<RedirectUrlShouldBeExpiredRule>(() =>
         {
