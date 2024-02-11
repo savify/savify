@@ -20,7 +20,8 @@ public class UserFinanceTrackingSettingsTests : TestBase
             id: Guid.NewGuid(),
             correlationId: Guid.NewGuid(),
             userId: userId,
-            countryCode: countryCode));
+            countryCode: countryCode,
+            preferredLanguage: "en"));
 
         var settings = await FinanceTrackingModule.ExecuteQueryAsync(new GetUserFinanceTrackingSettingsQuery(userId));
 

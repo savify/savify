@@ -1,5 +1,6 @@
 using App.BuildingBlocks.Application.Exceptions;
 using App.Modules.FinanceTracking.Application.BankConnectionProcessing.GetBankConnectionProcess;
+using App.Modules.FinanceTracking.Application.Users.FinanceTrackingSettings.CreateUserFinanceTrackingSettings;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.AddNewDebitWallet;
 using App.Modules.FinanceTracking.Application.Wallets.DebitWallets.ConnectBankAccountToDebitWallet;
 using App.Modules.FinanceTracking.IntegrationTests.SeedWork;
@@ -24,6 +25,7 @@ public class GetBankConnectionProcessTests : TestBase
         SaltEdgeHttpClientMocker.MockCreateCustomerSuccessfulResponse();
         SaltEdgeHttpClientMocker.MockCreateConnectSessionSuccessfulResponse();
         var walletId = await AddDebitWalletFor(BankConnectionProcessingData.UserId);
+        await AddUserSettingsFor(BankConnectionProcessingData.UserId);
         var result = await FinanceTrackingModule.ExecuteCommandAsync(new ConnectBankAccountToDebitWalletCommand(BankConnectionProcessingData.UserId, walletId, BankConnectionProcessingData.BankId));
 
         Assert.That(() => FinanceTrackingModule.ExecuteQueryAsync(
@@ -42,5 +44,17 @@ public class GetBankConnectionProcessTests : TestBase
             true);
 
         return await FinanceTrackingModule.ExecuteCommandAsync(command);
+    }
+
+    private async Task AddUserSettingsFor(Guid userId)
+    {
+        var command = new CreateUserFinanceTrackingSettingsCommand(
+            id: Guid.NewGuid(),
+            correlationId: Guid.NewGuid(),
+            userId,
+            countryCode: "US",
+            preferredLanguage: BankConnectionProcessingData.UserLanguage);
+
+        await FinanceTrackingModule.ExecuteCommandAsync(command);
     }
 }

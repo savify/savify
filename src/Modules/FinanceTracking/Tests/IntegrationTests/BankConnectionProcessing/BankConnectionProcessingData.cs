@@ -6,6 +6,8 @@ public static class BankConnectionProcessingData
 
     public static Guid BankId = Guid.Parse("16b85058-cd7d-4571-a768-d45bec4bba11");
 
+    public static readonly string UserLanguage = "en";
+
     public static readonly string CountryCode = "XF";
 
     public static readonly string ExternalProviderCode = "fakebank_interactive_xf";

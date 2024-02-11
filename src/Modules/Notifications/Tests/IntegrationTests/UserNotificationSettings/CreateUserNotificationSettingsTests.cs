@@ -28,6 +28,6 @@ public class CreateUserNotificationSettingsTests : TestBase
         Assert.That(notificationSettings.UserId.Value, Is.EqualTo(userId));
         Assert.That(notificationSettings.Name, Is.EqualTo("Name"));
         Assert.That(notificationSettings.Email, Is.EqualTo("test@email.com"));
-        Assert.That(notificationSettings.PreferredLanguage, Is.EqualTo(Language.From("en")));
+        Assert.That(notificationSettings.PreferredLanguage, Is.EqualTo(Domain.UserNotificationSettings.Language.From("en")));
     }
 }
